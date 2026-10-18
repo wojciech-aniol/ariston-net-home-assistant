@@ -7,9 +7,14 @@ import logging
 
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
+from homeassistant.core import HomeAssistant, callback
 
-from .const import ARISTON_SENSOR_TYPES, DOMAIN, AristonSensorEntityDescription
+from .const import (
+    ARISTON_SENSOR_TYPES,
+    DOMAIN,
+    ENERGY_COORDINATOR,
+    AristonSensorEntityDescription,
+)
 from .coordinator import DeviceDataUpdateCoordinator
 from .entity import AristonEntity
 
@@ -20,29 +25,65 @@ async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry, async_add_entities
 ) -> None:
     """Set up the Ariston sensors from config entry."""
+    coordinators = hass.data[DOMAIN][entry.unique_id]
     ariston_sensors: list[AristonSensor] = []
+    skipped_energy_descriptions: list[AristonSensorEntityDescription] = []
 
     for description in ARISTON_SENSOR_TYPES:
-        coordinator: DeviceDataUpdateCoordinator = hass.data[DOMAIN][entry.unique_id][
+        coordinator: DeviceDataUpdateCoordinator = coordinators[
             description.coordinator
         ]
-        if (
-            coordinator
-            and coordinator.device
-            and coordinator.device.are_device_features_available(
-                description.device_features,
-                description.system_types,
-                description.whe_types,
-            )
-        ):
+        if _is_sensor_available(coordinator, description):
             ariston_sensors.append(
                 AristonSensor(
                     coordinator,
                     description,
                 )
             )
+        elif description.coordinator == ENERGY_COORDINATOR:
+            skipped_energy_descriptions.append(description)
 
     async_add_entities(ariston_sensors)
+
+    energy_coordinator = coordinators[ENERGY_COORDINATOR]
+    if not energy_coordinator or energy_coordinator.last_update_success:
+        return
+
+    # Energy features are known only after the first good energy update.
+    @callback
+    def async_add_energy_sensors() -> None:
+        """Add the energy sensors once energy data is available."""
+        if (
+            not energy_coordinator.last_update_success
+            or not skipped_energy_descriptions
+        ):
+            return
+        async_add_entities(
+            AristonSensor(energy_coordinator, description)
+            for description in skipped_energy_descriptions
+            if _is_sensor_available(energy_coordinator, description)
+        )
+        skipped_energy_descriptions.clear()
+
+    entry.async_on_unload(
+        energy_coordinator.async_add_listener(async_add_energy_sensors)
+    )
+
+
+def _is_sensor_available(
+    coordinator: DeviceDataUpdateCoordinator,
+    description: AristonSensorEntityDescription,
+) -> bool:
+    """Return True if the device supports the sensor."""
+    return bool(
+        coordinator
+        and coordinator.device
+        and coordinator.device.are_device_features_available(
+            description.device_features,
+            description.system_types,
+            description.whe_types,
+        )
+    )
 
 
 class AristonSensor(AristonEntity, SensorEntity):
