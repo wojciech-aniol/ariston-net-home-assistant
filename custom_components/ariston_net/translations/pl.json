@@ -28,7 +28,7 @@
           "energy_scan_interval": "Interwał skanowania energii (minuty)",
           "bus_errors_scan_interval": "Interwał skanowania błędów magistrali (sekundy)"
         },
-        "title": "Konfiguruj Ariston"
+        "title": "Konfiguruj Ariston NET"
       }
     }
   }

@@ -27,7 +27,7 @@
           "energy_scan_interval": "Intervalo de escaneo de Energia(minutos)",
           "bus_errors_scan_interval": "Intervalo de escaneo de errores de BUS(segundos)"
         },
-        "title": "Configurar Ariston"
+        "title": "Configurar Ariston NET"
       }
     }
   }

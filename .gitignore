@@ -132,4 +132,4 @@ dmypy.json
 *.db*
 *.log*
 *.yaml
-!custom_components/ariston/*.yaml
+!custom_components/ariston_net/*.yaml

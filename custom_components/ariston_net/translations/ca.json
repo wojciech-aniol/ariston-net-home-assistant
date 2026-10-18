@@ -28,7 +28,7 @@
           "energy_scan_interval": "Interval d'exploració d'energia (minuts)",
           "bus_errors_scan_interval": "Interval d'exploració d'errors de bus (segons)"
         },
-        "title": "Configura l'Ariston"
+        "title": "Configura l'Ariston NET"
       }
     }
   }
