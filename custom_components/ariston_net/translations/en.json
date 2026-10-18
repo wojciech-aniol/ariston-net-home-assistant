@@ -26,7 +26,9 @@
         "data": {
           "extra_energy_features": "Extra energy related entities",
           "scan_interval": "Zone Scan Interval (seconds)",
+          "enable_energy": "Poll energy data",
           "energy_scan_interval": "Energy Scan Interval (minutes)",
+          "enable_bus_errors": "Poll bus errors",
           "bus_errors_scan_interval": "Bus Errors Scan Interval (seconds)"
         },
         "title": "Configure Ariston NET"

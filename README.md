@@ -46,6 +46,10 @@ Changes made in this fork:
 - An error from the bus errors endpoint no longer stops the setup.
 - New select entity "Ariston NET plant mode" (GALEVO): Summer, Winter, Heating only and so on,
   as listed by the cloud. It does the same as the climate preset, for the whole plant.
+- Options **Poll energy data** and **Poll bus errors** turn off these cloud requests and their
+  entities.
+- Total energy sensors stay `unknown` until the cloud energy data changes once. Before that the
+  library has no reset time, so statistics would count the same value again after each restart.
 
 The commit messages list what was skipped from each pull request and why.
 
@@ -77,8 +81,8 @@ Home Assistant.
 - Services are `ariston_net.create_vacation` and `ariston_net.set_item_by_id`.
 - Config entries of the `ariston` domain are not migrated. Set up the integration again.
 - Default polling: state every 180 s, energy every 60 min, bus errors every 600 s
-  (**Configure** in the integration options). The Ariston cloud throttles accounts (HTTP 429 and 500),
-  so do not poll more often. Every other integration that uses the same account adds to the load.
+  (**Configure** in the integration options, where you can also turn off energy and bus errors
+  polling). The Ariston cloud throttles accounts (HTTP 429 and 500), so do not poll more often. Every other integration that uses the same account adds to the load.
 - The climate HVAC mode `off` uses the plant mode `OFF` when the device has it, which also turns
   off domestic hot water. To keep hot water and stop heating, select the plant mode `Summer`
   (select entity or climate preset).

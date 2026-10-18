@@ -26,6 +26,8 @@ from .const import (
     DEFAULT_ENERGY_SCAN_INTERVAL_MINUTES,
     DEFAULT_SCAN_INTERVAL_SECONDS,
     DOMAIN,
+    ENABLE_BUS_ERRORS,
+    ENABLE_ENERGY,
     ENERGY_SCAN_INTERVAL,
 )
 
@@ -188,9 +190,17 @@ class AristonOptionsFlow(config_entries.OptionsFlow):
                         default=scan_interval,
                     ): int,
                     vol.Optional(
+                        ENABLE_ENERGY,
+                        default=options.get(ENABLE_ENERGY, True),
+                    ): bool,
+                    vol.Optional(
                         ENERGY_SCAN_INTERVAL,
                         default=energy_scan_interval,
                     ): int,
+                    vol.Optional(
+                        ENABLE_BUS_ERRORS,
+                        default=options.get(ENABLE_BUS_ERRORS, True),
+                    ): bool,
                     vol.Optional(
                         BUS_ERRORS_SCAN_INTERVAL,
                         default=bus_errors_scan_interval,

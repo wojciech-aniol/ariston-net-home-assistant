@@ -12,12 +12,14 @@ import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from homeassistant.config_entries import ConfigEntryState
-from homeassistant.const import STATE_ON, STATE_UNAVAILABLE
+from homeassistant.const import STATE_ON, STATE_UNAVAILABLE, STATE_UNKNOWN
 from homeassistant.core import HomeAssistant
 
 from custom_components.ariston_net.const import (
     BUS_ERRORS_COORDINATOR,
     DOMAIN,
+    ENABLE_BUS_ERRORS,
+    ENABLE_ENERGY,
     ENERGY_COORDINATOR,
 )
 
@@ -141,12 +143,24 @@ async def test_energy_sensors_created_with_energy_data(
     mock_ariston: MagicMock,
     config_entry: MockConfigEntry,
 ) -> None:
-    """Test energy sensors are created when energy data loads."""
+    """Test a total energy sensor waits for the energy data to change."""
     api.async_get_consumptions_sequences.return_value = [CH_ENERGY_SEQUENCE]
 
     await setup_integration(hass, config_entry)
 
-    assert hass.states.get(CH_ENERGY).state == "2.5"
+    state = hass.states.get(CH_ENERGY)
+    assert state.state == STATE_UNKNOWN
+    assert state.attributes.get("last_reset") is None
+
+    api.async_get_consumptions_sequences.return_value = [
+        CH_ENERGY_SEQUENCE | {"v": [1.5, 2.5, 3.0]}
+    ]
+    await hass.data[DOMAIN][GATEWAY][ENERGY_COORDINATOR].async_refresh()
+    await hass.async_block_till_done()
+
+    state = hass.states.get(CH_ENERGY)
+    assert state.state == "3.0"
+    assert state.attributes["last_reset"] is not None
 
 
 async def test_energy_sensors_added_after_later_refresh(
@@ -167,7 +181,7 @@ async def test_energy_sensors_added_after_later_refresh(
 
     state = hass.states.get(CH_ENERGY)
     assert state is not None
-    assert state.state == "2.5"
+    assert state.state == STATE_UNKNOWN
 
 
 async def test_bus_errors_failure_does_not_fail_setup(
@@ -188,6 +202,47 @@ async def test_bus_errors_failure_does_not_fail_setup(
     assert hass.states.get(ERRORS_COUNT).state == STATE_UNAVAILABLE
     assert hass.states.get(CLIMATE).state != STATE_UNAVAILABLE
     assert hass.states.get(HEATING_PUMP).state == STATE_ON
+
+
+async def test_energy_polling_can_be_disabled(
+    hass: HomeAssistant,
+    api: MagicMock,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+) -> None:
+    """Test the energy option skips the energy endpoint and sensors."""
+    hass.config_entries.async_update_entry(
+        config_entry, options={ENABLE_ENERGY: False}
+    )
+    api.async_get_consumptions_sequences.return_value = [CH_ENERGY_SEQUENCE]
+
+    await setup_integration(hass, config_entry)
+
+    assert config_entry.state is ConfigEntryState.LOADED
+    api.async_get_consumptions_sequences.assert_not_called()
+    assert not hass.data[DOMAIN][GATEWAY][ENERGY_COORDINATOR]
+    assert hass.states.get(CH_ENERGY) is None
+    assert hass.states.get(ERRORS_COUNT) is not None
+
+
+async def test_bus_errors_polling_can_be_disabled(
+    hass: HomeAssistant,
+    api: MagicMock,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+) -> None:
+    """Test the bus errors option skips the bus errors endpoint and sensor."""
+    hass.config_entries.async_update_entry(
+        config_entry, options={ENABLE_BUS_ERRORS: False}
+    )
+
+    await setup_integration(hass, config_entry)
+
+    assert config_entry.state is ConfigEntryState.LOADED
+    api.async_get_bus_errors.assert_not_called()
+    assert not hass.data[DOMAIN][GATEWAY][BUS_ERRORS_COORDINATOR]
+    assert hass.states.get(ERRORS_COUNT) is None
+    assert hass.states.get(CLIMATE) is not None
 
 
 async def test_unload_entry(

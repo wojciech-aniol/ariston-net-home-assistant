@@ -25,7 +25,9 @@
         "data": {
           "extra_energy_features": "Dodatkowe encje związane z energią",
           "scan_interval": "Interwał skanowania strefy (sekundy)",
+          "enable_energy": "Pobieraj dane o energii",
           "energy_scan_interval": "Interwał skanowania energii (minuty)",
+          "enable_bus_errors": "Pobieraj błędy magistrali",
           "bus_errors_scan_interval": "Interwał skanowania błędów magistrali (sekundy)"
         },
         "title": "Konfiguruj Ariston NET"

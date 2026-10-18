@@ -57,6 +57,8 @@ ENERGY_COORDINATOR: Final[str] = "energy_coordinator"
 ENERGY_SCAN_INTERVAL: Final[str] = "energy_scan_interval"
 BUS_ERRORS_COORDINATOR: Final[str] = "bus_errors_coordinator"
 BUS_ERRORS_SCAN_INTERVAL: Final[str] = "bus_errors_scan_interval"
+ENABLE_ENERGY: Final[str] = "enable_energy"
+ENABLE_BUS_ERRORS: Final[str] = "enable_bus_errors"
 API_URL_SETTING: Final[str] = "api_url_setting"
 API_USER_AGENT: Final[str] = "api_user_agent"
 

@@ -32,6 +32,8 @@ from .const import (
     DEFAULT_ENERGY_SCAN_INTERVAL_MINUTES,
     DEFAULT_SCAN_INTERVAL_SECONDS,
     DOMAIN,
+    ENABLE_BUS_ERRORS,
+    ENABLE_ENERGY,
     ENERGY_COORDINATOR,
     ENERGY_SCAN_INTERVAL,
 )
@@ -102,36 +104,38 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         )
 
         hass.data.setdefault(DOMAIN, {}).setdefault(
-            entry.unique_id, {COORDINATOR: {}, ENERGY_COORDINATOR: {}}
+            entry.unique_id,
+            {COORDINATOR: {}, BUS_ERRORS_COORDINATOR: {}, ENERGY_COORDINATOR: {}},
         )
         hass.data[DOMAIN][entry.unique_id][COORDINATOR] = coordinator
 
         await coordinator.async_config_entry_first_refresh()
 
-        bus_errors_scan_interval_seconds = entry.options.get(
-            BUS_ERRORS_SCAN_INTERVAL, DEFAULT_BUS_ERRORS_SCAN_INTERVAL_SECONDS
-        )
-        bus_errors_coordinator = DeviceDataUpdateCoordinator(
-            hass,
-            device,
-            bus_errors_scan_interval_seconds,
-            BUS_ERRORS_COORDINATOR,
-            device.async_get_bus_errors,
-        )
-        hass.data[DOMAIN][entry.unique_id][BUS_ERRORS_COORDINATOR] = (
-            bus_errors_coordinator
-        )
-        # Bus errors are optional, like the energy data below.
-        try:
-            await bus_errors_coordinator.async_config_entry_first_refresh()
-        except ConfigEntryNotReady as error:
-            _LOGGER.warning(
-                "Could not fetch Ariston bus errors, continuing without "
-                "them for now: %s",
-                error,
+        if entry.options.get(ENABLE_BUS_ERRORS, True):
+            bus_errors_scan_interval_seconds = entry.options.get(
+                BUS_ERRORS_SCAN_INTERVAL, DEFAULT_BUS_ERRORS_SCAN_INTERVAL_SECONDS
             )
+            bus_errors_coordinator = DeviceDataUpdateCoordinator(
+                hass,
+                device,
+                bus_errors_scan_interval_seconds,
+                BUS_ERRORS_COORDINATOR,
+                device.async_get_bus_errors,
+            )
+            hass.data[DOMAIN][entry.unique_id][BUS_ERRORS_COORDINATOR] = (
+                bus_errors_coordinator
+            )
+            # Bus errors are optional, like the energy data below.
+            try:
+                await bus_errors_coordinator.async_config_entry_first_refresh()
+            except ConfigEntryNotReady as error:
+                _LOGGER.warning(
+                    "Could not fetch Ariston bus errors, continuing without "
+                    "them for now: %s",
+                    error,
+                )
 
-        if device.has_metering:
+        if device.has_metering and entry.options.get(ENABLE_ENERGY, True):
             energy_interval_minutes = entry.options.get(
                 ENERGY_SCAN_INTERVAL, DEFAULT_ENERGY_SCAN_INTERVAL_MINUTES
             )

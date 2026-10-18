@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import UTC, datetime
 import logging
 
 from homeassistant.components.sensor import SensorEntity
@@ -19,6 +19,9 @@ from .coordinator import DeviceDataUpdateCoordinator
 from .entity import AristonEntity, is_entity_supported
 
 _LOGGER = logging.getLogger(__name__)
+
+# The library uses this reset time until the energy data changes once.
+UNKNOWN_RESET = datetime.fromtimestamp(0, UTC)
 
 
 async def async_setup_entry(
@@ -92,6 +95,9 @@ class AristonSensor(AristonEntity, SensorEntity):
     @property
     def native_value(self):
         """Return value of sensor."""
+        # Without a real reset time, statistics count the value again after a restart.
+        if self.entity_description.get_last_reset is not None and self.last_reset is None:
+            return None
         return self.entity_description.get_native_value(self)
 
     @property
@@ -109,6 +115,8 @@ class AristonSensor(AristonEntity, SensorEntity):
     def last_reset(self) -> datetime | None:
         """Return the time when the sensor was last reset, if any."""
         if self.entity_description.get_last_reset is not None:
-            return self.entity_description.get_last_reset(self)
+            last_reset = self.entity_description.get_last_reset(self)
+            if last_reset != UNKNOWN_RESET:
+                return last_reset
 
         return None
