@@ -570,7 +570,7 @@ ARISTON_BINARY_SENSOR_TYPES: list[AristonBinarySensorEntityDescription] = [
         name=f"{NAME} is heating pump on",
         icon="mdi:heat-pump-outline",
         get_is_on=lambda entity: entity.device.is_heating_pump_on_value,
-        device_features=[DeviceFeatures.HYBRID_SYS],
+        device_features=[DeviceFeatures.HP_SYS],
         system_types=[SystemType.GALEVO],
     ),
     AristonBinarySensorEntityDescription(
