@@ -159,7 +159,12 @@ class AristonThermostat(AristonEntity, ClimateEntity):
                     supported_modes.append(HVACMode.COOL)
         if self.device.is_zone_mode_options_contains_time_program(self.zone):
             supported_modes.append(HVACMode.AUTO)
-        if self.device.is_zone_mode_options_contains_off(self.zone):
+        # Some Nimbus zones have no OFF option, but the plant mode can still
+        # turn heating off (OFF or SUMMER, see async_set_hvac_mode).
+        if (
+            self.device.plant_mode_supported
+            or self.device.is_zone_mode_options_contains_off(self.zone)
+        ):
             supported_modes.append(HVACMode.OFF)
 
         return supported_modes
