@@ -2,23 +2,41 @@
 
 # Ariston NET for Home Assistant
 
-This is a fork of [fustom/ariston-remotethermo-home-assistant-v3](https://github.com/fustom/ariston-remotethermo-home-assistant-v3).
-It uses the domain `ariston_net`, so it can be installed:
+This is a fork of [fustom/ariston-remotethermo-home-assistant-v3](https://github.com/fustom/ariston-remotethermo-home-assistant-v3),
+based on upstream v0.19.9. The integration and the [`ariston`](https://pypi.org/project/ariston/)
+library ([fustom/python-ariston-api](https://github.com/fustom/python-ariston-api)) are the work of
+[@fustom](https://github.com/fustom). This fork uses the library version 0.19.9 without changes.
+
+> [!WARNING]
+> **This fork is completely vibe-coded.** An AI coding assistant
+> ([Claude Code](https://claude.com/claude-code)) wrote all the changes, the tests, the commit
+> messages and this README. A human chose what to change and tests it on one real device.
+> Read the code before you rely on it.
+
+The fork uses its own domain `ariston_net`, so it can be installed:
 
 - next to another custom integration that uses the `ariston` domain, for example
   [chomupashchuk's v2](https://github.com/chomupashchuk/ariston-remotethermo-home-assistant-v2);
 - on Home Assistant 2026.8 and newer, where the `ariston` domain is also used by a built-in
   virtual integration (Ariston air conditioners through Midea).
 
-It still uses the [`ariston`](https://pypi.org/project/ariston/) Python library
-([fustom/python-ariston-api](https://github.com/fustom/python-ariston-api)), version 0.19.9.
+It is tested on an Ariston Nimbus 120 S-T NET R32 heat pump (GALEVO). Other devices keep the
+upstream support, but they are not tested here.
 
-The fork is tested on an Ariston Nimbus 120 S-T NET R32 heat pump. Other devices keep the upstream
-support, but they are not tested here.
+## What is different from the original
 
-## Changes compared to upstream v0.19.9
+### Breaking changes
 
-Upstream changes merged after the v0.19.9 release:
+- Domain `ariston_net` instead of `ariston`. Config entries of the `ariston` domain are not
+  migrated: set up the integration again.
+- Entity names start with "Ariston NET", so entity IDs change (see [Good to know](#good-to-know)).
+- Services are `ariston_net.create_vacation` and `ariston_net.set_item_by_id`.
+- Entities the device never reports are not created: the flame sensor needs a flame value, the
+  CH return temperature needs its menu value.
+
+### From upstream pull requests
+
+Merged upstream after the v0.19.9 release:
 
 - [#442](https://github.com/fustom/ariston-remotethermo-home-assistant-v3/pull/442) by @dvapelnik:
   `hvac_action` is `heating` also when only the heat pump runs (no flame).
@@ -41,21 +59,30 @@ Ported from open or closed upstream pull requests:
   HVAC mode `off` is offered when the device supports plant modes (older Nimbus zones have no
   `off` option).
 
-Changes made in this fork:
+The commit messages list what was skipped from each pull request and why.
 
+### New in this fork
+
+- Select entity "Ariston NET plant mode" (GALEVO): Summer, Winter, Heating only and so on, as
+  listed by the cloud. It does the same as the climate preset, for the whole plant.
 - An error from the bus errors endpoint no longer stops the setup.
-- New select entity "Ariston NET plant mode" (GALEVO): Summer, Winter, Heating only and so on,
-  as listed by the cloud. It does the same as the climate preset, for the whole plant.
-- Entities the device never reports are not created: the flame sensor needs a flame value, the
-  CH return temperature needs its menu value.
-- Diagnostics (**Download diagnostics** on the integration page) with the raw cloud data. Login,
-  gateway, serial numbers and names are removed.
+- Energy sensors are added when the energy data first loads after a failed start.
 - Options **Poll energy data** and **Poll bus errors** turn off these cloud requests and their
   entities.
 - Total energy sensors stay `unknown` until the cloud energy data changes once. Before that the
   library has no reset time, so statistics would count the same value again after each restart.
+- Diagnostics (**Download diagnostics** on the integration page) with the raw cloud data. Login,
+  gateway, serial numbers and names are removed.
+- Its own icon (`custom_components/ariston_net/brand`).
+- Unit tests with a fake Ariston cloud, run in GitHub Actions.
 
-The commit messages list what was skipped from each pull request and why.
+### Offered back to upstream
+
+Draft pull requests to fustom:
+[#494](https://github.com/fustom/ariston-remotethermo-home-assistant-v3/pull/494) (rate limit backoff),
+[#495](https://github.com/fustom/ariston-remotethermo-home-assistant-v3/pull/495) (bus errors no
+longer stop the setup) and
+[#496](https://github.com/fustom/ariston-remotethermo-home-assistant-v3/pull/496) (plant mode select).
 
 ## Installation
 
@@ -82,8 +109,6 @@ Home Assistant.
   `binary_sensor.<device>_ariston_net_is_heating_pump_on`, for example
   `binary_sensor.dom_ariston_net_is_heating_pump_on` for a device named "Dom". Climate and water
   heater entities use only the device name (`climate.dom`, `water_heater.dom`).
-- Services are `ariston_net.create_vacation` and `ariston_net.set_item_by_id`.
-- Config entries of the `ariston` domain are not migrated. Set up the integration again.
 - Default polling: state every 180 s, energy every 60 min, bus errors every 600 s
   (**Configure** in the integration options, where you can also turn off energy and bus errors
   polling). The Ariston cloud throttles accounts (HTTP 429 and 500), so do not poll more often.
