@@ -1,0 +1,2 @@
+ariston==0.19.9
+pytest-homeassistant-custom-component==0.13.373
