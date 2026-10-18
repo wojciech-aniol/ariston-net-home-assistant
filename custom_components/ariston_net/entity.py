@@ -20,6 +20,25 @@ from .coordinator import DeviceDataUpdateCoordinator
 _LOGGER = logging.getLogger(__name__)
 
 
+def is_entity_supported(
+    coordinator: DeviceDataUpdateCoordinator | None,
+    description: AristonBaseEntityDescription,
+) -> bool:
+    """Return True if the device has the features and the data for the entity."""
+    if not coordinator or not coordinator.device:
+        return False
+    device = coordinator.device
+    if not device.are_device_features_available(
+        description.device_features,
+        description.system_types,
+        description.whe_types,
+    ):
+        return False
+    return description.get_is_supported is None or bool(
+        description.get_is_supported(device)
+    )
+
+
 class AristonEntity(CoordinatorEntity, ABC):
     """Generic Ariston entity (base class)."""
 

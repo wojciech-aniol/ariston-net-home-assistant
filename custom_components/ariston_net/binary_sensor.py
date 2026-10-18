@@ -20,7 +20,7 @@ from .const import (
     AristonBinarySensorEntityDescription,
 )
 from .coordinator import DeviceDataUpdateCoordinator
-from .entity import AristonEntity
+from .entity import AristonEntity, is_entity_supported
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -44,15 +44,7 @@ async def async_setup_entry(
         coordinator: DeviceDataUpdateCoordinator = hass.data[DOMAIN][entry.unique_id][
             description.coordinator
         ]
-        if (
-            coordinator
-            and coordinator.device
-            and coordinator.device.are_device_features_available(
-                description.device_features,
-                description.system_types,
-                description.whe_types,
-            )
-        ):
+        if is_entity_supported(coordinator, description):
             ariston_binary_sensors.append(AristonBinarySensor(coordinator, description))
 
     async_add_entities(ariston_binary_sensors)

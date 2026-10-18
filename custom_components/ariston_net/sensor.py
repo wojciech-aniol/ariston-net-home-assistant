@@ -16,7 +16,7 @@ from .const import (
     AristonSensorEntityDescription,
 )
 from .coordinator import DeviceDataUpdateCoordinator
-from .entity import AristonEntity
+from .entity import AristonEntity, is_entity_supported
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -75,15 +75,7 @@ def _is_sensor_available(
     description: AristonSensorEntityDescription,
 ) -> bool:
     """Return True if the device supports the sensor."""
-    return bool(
-        coordinator
-        and coordinator.device
-        and coordinator.device.are_device_features_available(
-            description.device_features,
-            description.system_types,
-            description.whe_types,
-        )
-    )
+    return is_entity_supported(coordinator, description)
 
 
 class AristonSensor(AristonEntity, SensorEntity):

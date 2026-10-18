@@ -85,6 +85,8 @@ class AristonBaseEntityDescription(EntityDescription):
     system_types: list[SystemType] | None = None
     whe_types: list[WheType] | None = None
     zone: bool = False
+    # Checked once at setup with the device; False skips the entity.
+    get_is_supported: Callable[[Any], bool] | None = None
 
 
 @dataclass(kw_only=True, frozen=True)
@@ -264,6 +266,7 @@ ARISTON_SENSOR_TYPES: list[AristonSensorEntityDescription] = [
         state_class=SensorStateClass.MEASUREMENT,
         get_native_value=lambda entity: entity.device.ch_return_temp_value,
         get_native_unit_of_measurement=lambda entity: entity.device.ch_return_temp_unit,
+        get_is_supported=lambda device: device.ch_return_temp_value is not None,
         system_types=[SystemType.GALEVO],
     ),
     AristonSensorEntityDescription(
@@ -586,6 +589,7 @@ ARISTON_BINARY_SENSOR_TYPES: list[AristonBinarySensorEntityDescription] = [
         name=f"{NAME} is flame on",
         icon="mdi:fire",
         get_is_on=lambda entity: entity.device.is_flame_on_value,
+        get_is_supported=lambda device: device.is_flame_on_value is not None,
         system_types=[SystemType.GALEVO, SystemType.BSB],
     ),
     AristonBinarySensorEntityDescription(
