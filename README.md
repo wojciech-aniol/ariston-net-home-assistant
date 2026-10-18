@@ -1,8 +1,101 @@
-[![CodeQL](https://github.com/fustom/ariston-remotethermo-home-assistant-v3/actions/workflows/codeql.yml/badge.svg?branch=main)](https://github.com/fustom/ariston-remotethermo-home-assistant-v3/actions/workflows/codeql.yml)
-[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg)](https://github.com/hacs/integration)
-[![HACS Action](https://github.com/fustom/ariston-remotethermo-home-assistant-v3/actions/workflows/hacs.yml/badge.svg)](https://github.com/fustom/ariston-remotethermo-home-assistant-v3/actions/workflows/hacs.yml)
-[![Validate with hassfest](https://github.com/fustom/ariston-remotethermo-home-assistant-v3/actions/workflows/hassfest.yml/badge.svg)](https://github.com/fustom/ariston-remotethermo-home-assistant-v3/actions/workflows/hassfest.yml)
-# Ariston NET remotethermo integration for Home Assistant
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://hacs.xyz/docs/faq/custom_repositories/)
+
+# Ariston NET for Home Assistant
+
+This is a fork of [fustom/ariston-remotethermo-home-assistant-v3](https://github.com/fustom/ariston-remotethermo-home-assistant-v3).
+It uses the domain `ariston_net`, so it can be installed:
+
+- next to another custom integration that uses the `ariston` domain, for example
+  [chomupashchuk's v2](https://github.com/chomupashchuk/ariston-remotethermo-home-assistant-v2);
+- on Home Assistant 2026.8 and newer, where the `ariston` domain is also used by a built-in
+  virtual integration (Ariston air conditioners through Midea).
+
+It still uses the [`ariston`](https://pypi.org/project/ariston/) Python library
+([fustom/python-ariston-api](https://github.com/fustom/python-ariston-api)), version 0.19.9.
+
+The fork is tested on an Ariston Nimbus 120 S-T NET R32 heat pump. Other devices keep the upstream
+support, but they are not tested here.
+
+## Changes compared to upstream v0.19.9
+
+Upstream changes merged after the v0.19.9 release:
+
+- [#442](https://github.com/fustom/ariston-remotethermo-home-assistant-v3/pull/442) by @dvapelnik:
+  `hvac_action` is `heating` also when only the heat pump runs (no flame).
+- [#443](https://github.com/fustom/ariston-remotethermo-home-assistant-v3/pull/443) by @dvapelnik:
+  presets map to the real plant mode value, so preset `OFF` no longer selects "Cooling only".
+
+Ported from open or closed upstream pull requests:
+
+- [#489](https://github.com/fustom/ariston-remotethermo-home-assistant-v3/pull/489) by @gatisvil (part):
+  the "is heating pump on" binary sensor now appears on pure heat pump systems (`hpSys`), not only
+  on hybrid systems.
+- [#476](https://github.com/fustom/ariston-remotethermo-home-assistant-v3/pull/476) by @alxrxs:
+  an error from the energy report endpoint no longer stops the setup.
+- [#452](https://github.com/fustom/ariston-remotethermo-home-assistant-v3/pull/452) by @vinivinilos
+  (rewritten): on HTTP 429 the update interval doubles, up to 8 times, and goes back after the next
+  successful update.
+- [#477](https://github.com/fustom/ariston-remotethermo-home-assistant-v3/pull/477) by @dvapelnik:
+  DHW current and target temperature sensors for GALEVO and BSB.
+- [#445](https://github.com/fustom/ariston-remotethermo-home-assistant-v3/pull/445) by @thor2002ro (part):
+  HVAC mode `off` is offered when the device supports plant modes (older Nimbus zones have no
+  `off` option).
+
+Changes made in this fork:
+
+- An error from the bus errors endpoint no longer stops the setup.
+- New select entity "Ariston NET plant mode" (GALEVO): Summer, Winter, Heating only and so on,
+  as listed by the cloud. It does the same as the climate preset, for the whole plant.
+
+The commit messages list what was skipped from each pull request and why.
+
+## Installation
+
+### HACS (custom repository)
+
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=wojciech-aniol&repository=ariston-remotethermo-home-assistant-v3&category=integration)
+
+1. In HACS open the menu (⋮) → **Custom repositories**.
+2. Repository: `https://github.com/wojciech-aniol/ariston-remotethermo-home-assistant-v3`,
+   type: **Integration**. Select **Add**.
+3. Open **Ariston NET** in HACS and select **Download**.
+4. Restart Home Assistant.
+5. **Settings → Devices & services → Add integration → Ariston NET**. Log in with your Ariston NET
+   account.
+
+### Manual
+
+Copy `custom_components/ariston_net` to `<config>/custom_components/ariston_net` and restart
+Home Assistant.
+
+## Good to know
+
+- Entity names start with "Ariston NET", so entity IDs look like
+  `binary_sensor.ariston_net_is_heating_pump_on`. Climate and water heater entities use the device
+  name from the cloud.
+- Services are `ariston_net.create_vacation` and `ariston_net.set_item_by_id`.
+- Config entries of the `ariston` domain are not migrated. Set up the integration again.
+- Default polling: state every 180 s, energy every 60 min, bus errors every 600 s
+  (**Configure** in the integration options). The Ariston cloud throttles accounts (HTTP 429 and 500),
+  so do not poll more often. Every other integration that uses the same account adds to the load.
+- The climate HVAC mode `off` uses the plant mode `OFF` when the device has it, which also turns
+  off domestic hot water. To keep hot water and stop heating, select the plant mode `Summer`
+  (select entity or climate preset).
+
+## Credits
+
+- [@fustom](https://github.com/fustom): the original integration and the `ariston` library.
+- [@chomupashchuk](https://github.com/chomupashchuk): the v2 integration that inspired it.
+- The authors of the ported pull requests listed above.
+- [@mauropriori](https://github.com/mauropriori): [ariston_net](https://github.com/mauropriori/ariston_net),
+  another fork with the same domain. Some changes here follow its approach.
+
+MIT License, see [LICENSE](LICENSE).
+
+## About the upstream integration
+
+The rest of this page is from the upstream README.
+
 This integration inspired by chomupashchuk fantastic work https://github.com/chomupashchuk/ariston-remotethermo-home-assistant-v2
 But it does not use Ariston website. It uses Ariston API what I reversed engineered.
 
@@ -17,25 +110,11 @@ But it does not use Ariston website. It uses Ariston API what I reversed enginee
 | Less sensors, switches, etc |  More sensors, switches, etc |
 | New code, may contains lot of bugs | Old, tested code |
 
-## TODO
-- Localization. Avaliable in english, catalan, italian, russian and ukranian.
-- More sensors, switches, binary sersors, selectors, services.
-- Exception handling.
-- More logs.
-- Unit tests.
-- Fun.
-
-## Integration was tested on and works with:
+### Integration was tested on and works with:
 - Ariston Alteas One 24
 - Ariston Velis Evo
 - Ariston Velis Lux
 - Ariston Lydos Hybrid
-
-Feel free to test something else and create new issue / pull request if something goes wrong.
-
-## Installation
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=fustom&repository=ariston-remotethermo-home-assistant-v3&category=integration) or copy ariston folder to your configuration/custom_components path.
-Use the add integration UI to set up your device.
 
 | ![Kazam_screenshot_00003](https://user-images.githubusercontent.com/6751243/146653448-ff7b6f9d-cbf1-4555-9a75-61bf68bc9d3e.png) | ![Kazam_screenshot_00004](https://user-images.githubusercontent.com/6751243/146653484-52e39d78-7c6f-44ae-888d-acf246147290.png) | ![Kazam_screenshot_00010](https://user-images.githubusercontent.com/6751243/147890590-6c4ebf38-16d9-421f-9b81-8f43298ec62f.png) |
 :-------------------------:|:-------------------------:|:-------------------------:
