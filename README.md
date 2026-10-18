@@ -70,9 +70,10 @@ Home Assistant.
 
 ## Good to know
 
-- Entity names start with "Ariston NET", so entity IDs look like
-  `binary_sensor.ariston_net_is_heating_pump_on`. Climate and water heater entities use the device
-  name from the cloud.
+- Home Assistant puts the device name in front of the entity name, so entity IDs look like
+  `binary_sensor.<device>_ariston_net_is_heating_pump_on`, for example
+  `binary_sensor.dom_ariston_net_is_heating_pump_on` for a device named "Dom". Climate and water
+  heater entities use only the device name (`climate.dom`, `water_heater.dom`).
 - Services are `ariston_net.create_vacation` and `ariston_net.set_item_by_id`.
 - Config entries of the `ariston` domain are not migrated. Set up the integration again.
 - Default polling: state every 180 s, energy every 60 min, bus errors every 600 s
