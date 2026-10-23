@@ -12,6 +12,8 @@ from homeassistant.const import CONF_DEVICE, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
+from pytest_homeassistant_custom_component.syrupy import HomeAssistantSnapshotExtension
+from syrupy.assertion import SnapshotAssertion
 
 from custom_components.ariston_net.const import DOMAIN
 
@@ -91,7 +93,7 @@ PROPERTIES: dict[str, Any] = {
         {
             "id": "ZoneComfortTemp",
             "zone": 1,
-            "value": 21.0,
+            "value": 22.0,
             "min": 10.0,
             "max": 30.0,
             "step": 0.5,
@@ -101,7 +103,7 @@ PROPERTIES: dict[str, Any] = {
         {
             "id": "HeatingFlowTemp",
             "zone": 1,
-            "value": 35.0,
+            "value": 38.0,
             "min": 20.0,
             "max": 45.0,
             "step": 1.0,
@@ -120,6 +122,82 @@ PROPERTIES: dict[str, Any] = {
         },
     ]
 }
+
+# Data a real device can send on top of the default set, so every GALEVO entity exists.
+FULL_FEATURES: dict[str, Any] = {
+    "hybridSys": True,
+    "bufferTimeProgAvailable": True,
+}
+
+FULL_ITEMS: list[dict[str, Any]] = [
+    {"id": "IsQuite", "zone": 0, "value": False},
+    {
+        "id": "HybridMode",
+        "zone": 0,
+        "value": 1,
+        "options": [0, 1, 2],
+        "optTexts": ["Economy", "Green", "Heat pump only"],
+    },
+    {
+        "id": "BufferControlMode",
+        "zone": 0,
+        "value": 0,
+        "options": [0, 1],
+        "optTexts": ["Off", "Time program"],
+    },
+]
+
+MENU_ITEMS: list[dict[str, Any]] = [
+    {"id": 119, "value": 80.0, "unit": "%"},
+    {"id": 124, "value": 30.5, "unit": "°C"},
+]
+
+BUS_ERRORS: list[dict[str, Any]] = [
+    {
+        "gw": GATEWAY,
+        "timestamp": "2026-10-18T10:00:00",
+        "fault": 902,
+        "mult": 0,
+        "code": "902",
+        "pri": 1,
+        "errDex": "Low water pressure",
+        "res": False,
+        "blk": False,
+    }
+]
+
+# Plain numbers, not the library enums, so a new library version cannot change
+# the data. Each consumption type gets its own values.
+CONSUMPTION_TYPES = (1, 2, 3, 7, 8, 9, 10, 20, 21)
+LAST_DAY = 1
+
+CONSUMPTIONS_SEQUENCES: list[dict[str, Any]] = [
+    {"k": k, "p": LAST_DAY, "v": [k + 0.25, k + 0.5]} for k in CONSUMPTION_TYPES
+]
+
+CONSUMPTIONS_SETTINGS: dict[str, Any] = {
+    "currency": 2,
+    "gasType": 0,
+    "gasEnergyUnit": 0,
+    "elecCost": 0.25,
+    "gasCost": 0.1,
+}
+
+ENERGY_ACCOUNT: dict[str, Any] = {
+    "LastMonth": [
+        {"gas": 30, "elect": 120, "cool": 5},
+        {"gas": 12, "elect": 40},
+    ]
+}
+
+
+@pytest.fixture
+def snapshot(snapshot: SnapshotAssertion) -> SnapshotAssertion:
+    """Return the snapshot fixture with the Home Assistant extension.
+
+    The plugin has the same fixture, but the syrupy one wins over it.
+    """
+    return snapshot.use_extension(HomeAssistantSnapshotExtension)
 
 
 @pytest.fixture(autouse=True)
@@ -151,6 +229,30 @@ def api(features: dict[str, Any], properties: dict[str, Any]) -> MagicMock:
     api.async_get_consumptions_settings = AsyncMock(return_value={})
     api.async_get_energy_account = AsyncMock(return_value={})
     api.async_set_property = AsyncMock()
+    api.async_set_holiday = AsyncMock()
+    return api
+
+
+@pytest.fixture
+def full_galevo(
+    api: MagicMock,
+    device: AristonGalevoDevice,
+    features: dict[str, Any],
+    properties: dict[str, Any],
+) -> MagicMock:
+    """Make the fake cloud send data for every GALEVO entity."""
+    features.update(copy.deepcopy(FULL_FEATURES))
+    properties["items"].extend(copy.deepcopy(FULL_ITEMS))
+    device.attributes["hpmpSys"] = True
+    api.async_get_menu_items.return_value = copy.deepcopy(MENU_ITEMS)
+    api.async_get_bus_errors.return_value = copy.deepcopy(BUS_ERRORS)
+    api.async_get_consumptions_sequences.return_value = copy.deepcopy(
+        CONSUMPTIONS_SEQUENCES
+    )
+    api.async_get_consumptions_settings.return_value = copy.deepcopy(
+        CONSUMPTIONS_SETTINGS
+    )
+    api.async_get_energy_account.return_value = copy.deepcopy(ENERGY_ACCOUNT)
     return api
 
 
@@ -185,6 +287,19 @@ def config_entry(hass: HomeAssistant) -> MockConfigEntry:
     )
     entry.add_to_hass(hass)
     return entry
+
+
+@pytest.fixture
+async def init_full_integration(
+    hass: HomeAssistant,
+    config_entry: MockConfigEntry,
+    mock_ariston: MagicMock,
+    full_galevo: MagicMock,
+) -> MockConfigEntry:
+    """Set up the integration with the full GALEVO data."""
+    await hass.config_entries.async_setup(config_entry.entry_id)
+    await hass.async_block_till_done()
+    return config_entry
 
 
 @pytest.fixture

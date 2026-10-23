@@ -35,7 +35,8 @@ upstream integration" matters. Of `translations/` read only `en.json`.
 - Never change the unique_id, entity_id or name of an existing entity. Most unique_ids are built
   from the entity name (`entity.py`), so a new name means a new unique_id. Climate uses
   `{gateway}_{zone}` and the water heater `{gateway}-water_heater`. `tests/test_snapshots.py`
-  guards this: an unplanned snapshot change means the code change is wrong.
+  guards this for a one-zone GALEVO device so far: an unplanned snapshot change means the code
+  change is wrong.
 - Never shorten the default polling intervals or add cloud requests per poll. The cloud throttles
   accounts (HTTP 429 and 500).
 - Keep config entry data and option keys. A change needs a config entry migration and a test.

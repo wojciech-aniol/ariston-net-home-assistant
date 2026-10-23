@@ -1,0 +1,375 @@
+# serializer version: 1
+# name: test_diagnostics_match_snapshot
+  dict({
+    'coordinators': dict({
+      'bus_errors_coordinator': dict({
+        'last_update_success': True,
+        'update_interval': '0:10:00',
+      }),
+      'coordinator': dict({
+        'last_update_success': True,
+        'update_interval': '0:03:00',
+      }),
+      'energy_coordinator': dict({
+        'last_update_success': True,
+        'update_interval': '1:00:00',
+      }),
+    }),
+    'device': dict({
+      'attributes': dict({
+        'fwVer': '1.2.3',
+        'gw': '**REDACTED**',
+        'hpmpSys': True,
+        'name': '**REDACTED**',
+        'sn': '**REDACTED**',
+        'sys': 3,
+      }),
+      'bus_errors': list([
+        dict({
+          'blk': False,
+          'code': '902',
+          'errDex': 'Low water pressure',
+          'fault': 902,
+          'gw': '**REDACTED**',
+          'mult': 0,
+          'pri': 1,
+          'res': False,
+          'timestamp': '2026-10-18T10:00:00',
+        }),
+      ]),
+      'consumptions_sequences': list([
+        dict({
+          'k': 1,
+          'p': 1,
+          'v': list([
+            1.25,
+            1.5,
+          ]),
+        }),
+        dict({
+          'k': 2,
+          'p': 1,
+          'v': list([
+            2.25,
+            2.5,
+          ]),
+        }),
+        dict({
+          'k': 3,
+          'p': 1,
+          'v': list([
+            3.25,
+            3.5,
+          ]),
+        }),
+        dict({
+          'k': 7,
+          'p': 1,
+          'v': list([
+            7.25,
+            7.5,
+          ]),
+        }),
+        dict({
+          'k': 8,
+          'p': 1,
+          'v': list([
+            8.25,
+            8.5,
+          ]),
+        }),
+        dict({
+          'k': 9,
+          'p': 1,
+          'v': list([
+            9.25,
+            9.5,
+          ]),
+        }),
+        dict({
+          'k': 10,
+          'p': 1,
+          'v': list([
+            10.25,
+            10.5,
+          ]),
+        }),
+        dict({
+          'k': 20,
+          'p': 1,
+          'v': list([
+            20.25,
+            20.5,
+          ]),
+        }),
+        dict({
+          'k': 21,
+          'p': 1,
+          'v': list([
+            21.25,
+            21.5,
+          ]),
+        }),
+      ]),
+      'custom_features': dict({
+        'CENTRAL_COOLING_TOTAL_ENERGY': True,
+        'CENTRAL_HEATING_ELECTRICITY': True,
+        'CENTRAL_HEATING_GAS': True,
+        'CENTRAL_HEATING_TOTAL_ENERGY': True,
+        <DeviceProperties.CH_FLOW_TEMP: 'ChFlowTemp'>: True,
+        'DOMESTIC_HOT_WATER_ELECTRICITY': True,
+        'DOMESTIC_HOT_WATER_GAS': True,
+        'DOMESTIC_HOT_WATER_HEATING_PUMP_ELECTRICITY': True,
+        'DOMESTIC_HOT_WATER_RESISTOR_ELECTRICITY': True,
+        'DOMESTIC_HOT_WATER_TOTAL_ENERGY': True,
+        <DeviceProperties.DHW_STORAGE_TEMPERATURE: 'DhwStorageTemperature'>: True,
+        <DeviceProperties.IS_QUIET: 'IsQuite'>: True,
+        'hasDhw': True,
+        'hasOutsideTemp': True,
+      }),
+      'data': dict({
+        'items': list([
+          dict({
+            'id': 'PlantMode',
+            'optTexts': list([
+              'Summer',
+              'Winter',
+              'Heating only',
+              'Cooling only',
+              'Off',
+            ]),
+            'options': list([
+              0,
+              1,
+              2,
+              4,
+              5,
+            ]),
+            'value': 1,
+            'zone': 0,
+          }),
+          dict({
+            'id': 'IsFlameOn',
+            'value': False,
+            'zone': 0,
+          }),
+          dict({
+            'id': 'IsHeatingPumpOn',
+            'value': True,
+            'zone': 0,
+          }),
+          dict({
+            'expiresOn': None,
+            'id': 'Holiday',
+            'value': False,
+            'zone': 0,
+          }),
+          dict({
+            'id': 'OutsideTemp',
+            'max': 99,
+            'unit': '°C',
+            'value': 8.5,
+            'zone': 0,
+          }),
+          dict({
+            'id': 'HeatingCircuitPressure',
+            'unit': 'bar',
+            'value': 1.6,
+            'zone': 0,
+          }),
+          dict({
+            'id': 'ChFlowTemp',
+            'unit': '°C',
+            'value': 35.0,
+            'zone': 0,
+          }),
+          dict({
+            'id': 'ChFlowSetpointTemp',
+            'unit': '°C',
+            'value': 36.0,
+            'zone': 0,
+          }),
+          dict({
+            'decimals': 0,
+            'id': 'DhwTemp',
+            'max': 65.0,
+            'min': 40.0,
+            'step': 1.0,
+            'unit': '°C',
+            'value': 50.0,
+            'zone': 0,
+          }),
+          dict({
+            'id': 'DhwStorageTemperature',
+            'max': 99,
+            'value': 47.5,
+            'zone': 0,
+          }),
+          dict({
+            'id': 'DhwMode',
+            'optTexts': list([
+              'Time based',
+              'Always active',
+            ]),
+            'options': list([
+              1,
+              2,
+            ]),
+            'value': 1,
+            'zone': 0,
+          }),
+          dict({
+            'id': 'AutomaticThermoregulation',
+            'value': 1,
+            'zone': 0,
+          }),
+          dict({
+            'id': 'ZoneMode',
+            'optTexts': list([
+              'Manual',
+              'Programmed',
+            ]),
+            'options': list([
+              2,
+              3,
+            ]),
+            'value': 2,
+            'zone': 1,
+          }),
+          dict({
+            'decimals': 1,
+            'id': 'ZoneMeasuredTemp',
+            'unit': '°C',
+            'value': 21.5,
+            'zone': 1,
+          }),
+          dict({
+            'id': 'ZoneDesiredTemp',
+            'step': 0.5,
+            'value': 21.0,
+            'zone': 1,
+          }),
+          dict({
+            'id': 'ZoneComfortTemp',
+            'max': 30.0,
+            'min': 10.0,
+            'step': 0.5,
+            'value': 22.0,
+            'zone': 1,
+          }),
+          dict({
+            'id': 'ZoneHeatRequest',
+            'value': True,
+            'zone': 1,
+          }),
+          dict({
+            'id': 'ZoneEconomyTemp',
+            'value': 18.0,
+            'zone': 1,
+          }),
+          dict({
+            'decimals': 0,
+            'id': 'HeatingFlowTemp',
+            'max': 45.0,
+            'min': 20.0,
+            'step': 1.0,
+            'unit': '°C',
+            'value': 38.0,
+            'zone': 1,
+          }),
+          dict({
+            'decimals': 0,
+            'id': 'HeatingFlowOffset',
+            'max': 10.0,
+            'min': -10.0,
+            'step': 1.0,
+            'unit': '°C',
+            'value': 0.0,
+            'zone': 1,
+          }),
+          dict({
+            'id': 'IsQuite',
+            'value': False,
+            'zone': 0,
+          }),
+          dict({
+            'id': 'HybridMode',
+            'optTexts': list([
+              'Economy',
+              'Green',
+              'Heat pump only',
+            ]),
+            'options': list([
+              0,
+              1,
+              2,
+            ]),
+            'value': 1,
+            'zone': 0,
+          }),
+          dict({
+            'id': 'BufferControlMode',
+            'optTexts': list([
+              'Off',
+              'Time program',
+            ]),
+            'options': list([
+              0,
+              1,
+            ]),
+            'value': 0,
+            'zone': 0,
+          }),
+        ]),
+      }),
+      'features': dict({
+        'autoThermoReg': True,
+        'bufferTimeProgAvailable': True,
+        'dhwModeChangeable': True,
+        'hasBoiler': True,
+        'hasMetering': True,
+        'hpSys': True,
+        'hybridSys': True,
+        'zones': list([
+          dict({
+            'isHidden': False,
+            'name': '',
+            'num': 1,
+            'roomSens': True,
+          }),
+        ]),
+      }),
+      'firmware_version': '1.2.3',
+      'menu_items': list([
+        dict({
+          'id': 119,
+          'unit': '%',
+          'value': 80.0,
+        }),
+        dict({
+          'id': 124,
+          'unit': '°C',
+          'value': 30.5,
+        }),
+      ]),
+      'system_type': 'GALEVO',
+      'whe_model_type': 0,
+      'whe_type': 'Unknown',
+    }),
+    'entry': dict({
+      'data': dict({
+        'device': dict({
+          'fwVer': '1.2.3',
+          'gw': '**REDACTED**',
+          'name': '**REDACTED**',
+          'sn': '**REDACTED**',
+          'sys': 3,
+        }),
+        'password': '**REDACTED**',
+        'username': '**REDACTED**',
+      }),
+      'options': dict({
+      }),
+    }),
+  })
+# ---
