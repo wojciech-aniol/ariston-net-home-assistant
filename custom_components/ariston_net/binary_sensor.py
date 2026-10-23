@@ -4,14 +4,13 @@ from __future__ import annotations
 
 import logging
 
-import voluptuous as vol
-
 from ariston.const import DeviceProperties, SystemType
 from homeassistant.components.binary_sensor import BinarySensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_DEVICE_ID
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import config_validation as cv, device_registry as dr
+import voluptuous as vol
 
 from .const import (
     ARISTON_BINARY_SENSOR_TYPES,

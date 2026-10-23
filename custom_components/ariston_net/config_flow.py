@@ -5,8 +5,6 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-import voluptuous as vol
-
 from ariston import Ariston, DeviceAttribute
 from ariston.const import ARISTON_API_URL, ARISTON_USER_AGENT
 from homeassistant import config_entries
@@ -17,6 +15,7 @@ from homeassistant.const import (
     CONF_USERNAME,
 )
 from homeassistant.core import callback
+import voluptuous as vol
 
 from .const import (
     API_URL_SETTING,

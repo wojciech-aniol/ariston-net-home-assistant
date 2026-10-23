@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 
-from ariston.const import PlantMode, ZoneMode, BsbZoneMode
+from ariston.const import BsbZoneMode, PlantMode, ZoneMode
 from homeassistant.components.climate import (
     ClimateEntity,
     ClimateEntityFeature,
@@ -165,7 +165,9 @@ class AristonThermostat(AristonEntity, ClimateEntity):
     def hvac_action(self):
         """Return the current running hvac operation."""
         if_flame_on = bool(self.device.is_flame_on_value)
-        if_heating_pump_on = bool(getattr(self.device, 'is_heating_pump_on_value', False))
+        if_heating_pump_on = bool(
+            getattr(self.device, "is_heating_pump_on_value", False)
+        )
 
         if_not_idle = if_flame_on or if_heating_pump_on
 

@@ -6,9 +6,6 @@ from unittest.mock import ANY, AsyncMock, MagicMock
 
 from ariston import AristonGalevoDevice
 from ariston.const import PlantMode
-import pytest
-from pytest_homeassistant_custom_component.common import MockConfigEntry
-
 from homeassistant.components.climate import ATTR_PRESET_MODE, HVACMode
 from homeassistant.components.select import (
     ATTR_OPTION,
@@ -18,6 +15,8 @@ from homeassistant.components.select import (
 )
 from homeassistant.const import ATTR_ENTITY_ID
 from homeassistant.core import HomeAssistant
+import pytest
+from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from .conftest import GATEWAY, PLANT_MODE_TEXTS
 
@@ -80,7 +79,13 @@ async def test_select_plant_mode_updates_climate(
     await select_plant_mode(hass, "Summer")
 
     api.async_set_property.assert_awaited_once_with(
-        GATEWAY, 0, ANY, "PlantMode", PlantMode.SUMMER.value, PlantMode.WINTER.value, "si"
+        GATEWAY,
+        0,
+        ANY,
+        "PlantMode",
+        PlantMode.SUMMER.value,
+        PlantMode.WINTER.value,
+        "si",
     )
     assert hass.states.get(PLANT_MODE).state == "Summer"
     climate = hass.states.get(CLIMATE)
