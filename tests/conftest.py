@@ -8,7 +8,6 @@ from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
 from ariston import AristonGalevoDevice
-from ariston.const import ConsumptionTimeInterval, ConsumptionType
 from homeassistant.const import CONF_DEVICE, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
 import pytest
@@ -94,7 +93,7 @@ PROPERTIES: dict[str, Any] = {
         {
             "id": "ZoneComfortTemp",
             "zone": 1,
-            "value": 21.0,
+            "value": 22.0,
             "min": 10.0,
             "max": 30.0,
             "step": 0.5,
@@ -104,7 +103,7 @@ PROPERTIES: dict[str, Any] = {
         {
             "id": "HeatingFlowTemp",
             "zone": 1,
-            "value": 35.0,
+            "value": 38.0,
             "min": 20.0,
             "max": 45.0,
             "step": 1.0,
@@ -167,13 +166,13 @@ BUS_ERRORS: list[dict[str, Any]] = [
     }
 ]
 
+# Plain numbers, not the library enums, so a new library version cannot change
+# the data. Each consumption type gets its own values.
+CONSUMPTION_TYPES = (1, 2, 3, 7, 8, 9, 10, 20, 21)
+LAST_DAY = 1
+
 CONSUMPTIONS_SEQUENCES: list[dict[str, Any]] = [
-    {
-        "k": consumption_type.value,
-        "p": ConsumptionTimeInterval.LAST_DAY.value,
-        "v": [1.5, 2.5],
-    }
-    for consumption_type in ConsumptionType
+    {"k": k, "p": LAST_DAY, "v": [k + 0.25, k + 0.5]} for k in CONSUMPTION_TYPES
 ]
 
 CONSUMPTIONS_SETTINGS: dict[str, Any] = {
@@ -186,15 +185,18 @@ CONSUMPTIONS_SETTINGS: dict[str, Any] = {
 
 ENERGY_ACCOUNT: dict[str, Any] = {
     "LastMonth": [
-        {"gas": 0, "elect": 120, "cool": 5},
-        {"gas": 0, "elect": 40},
+        {"gas": 30, "elect": 120, "cool": 5},
+        {"gas": 12, "elect": 40},
     ]
 }
 
 
 @pytest.fixture
 def snapshot(snapshot: SnapshotAssertion) -> SnapshotAssertion:
-    """Return the snapshot fixture with the Home Assistant extension."""
+    """Return the snapshot fixture with the Home Assistant extension.
+
+    The plugin has the same fixture, but the syrupy one wins over it.
+    """
     return snapshot.use_extension(HomeAssistantSnapshotExtension)
 
 
@@ -285,6 +287,19 @@ def config_entry(hass: HomeAssistant) -> MockConfigEntry:
     )
     entry.add_to_hass(hass)
     return entry
+
+
+@pytest.fixture
+async def init_full_integration(
+    hass: HomeAssistant,
+    config_entry: MockConfigEntry,
+    mock_ariston: MagicMock,
+    full_galevo: MagicMock,
+) -> MockConfigEntry:
+    """Set up the integration with the full GALEVO data."""
+    await hass.config_entries.async_setup(config_entry.entry_id)
+    await hass.async_block_till_done()
+    return config_entry
 
 
 @pytest.fixture
