@@ -133,3 +133,6 @@ dmypy.json
 *.log*
 *.yaml
 !custom_components/ariston_net/*.yaml
+# Personal agent instructions
+CLAUDE.local.md
+.claude/settings.local.json

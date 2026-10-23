@@ -8,11 +8,10 @@ from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
 from ariston import AristonGalevoDevice
-import pytest
-from pytest_homeassistant_custom_component.common import MockConfigEntry
-
 from homeassistant.const import CONF_DEVICE, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
+import pytest
+from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.ariston_net.const import DOMAIN
 

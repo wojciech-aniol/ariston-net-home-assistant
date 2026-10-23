@@ -1,2 +1,4 @@
 ariston==0.19.9
+pytest-cov==7.1.0
 pytest-homeassistant-custom-component==0.13.373
+ruff==0.17.2
