@@ -257,6 +257,22 @@ def full_galevo(
 
 
 @pytest.fixture
+def second_zone(features: dict[str, Any], properties: dict[str, Any]) -> int:
+    """Add a second zone with its own values and return its number."""
+    zone = 2
+    features["zones"].append(
+        {"num": zone, "name": "", "roomSens": True, "isHidden": False}
+    )
+    zone_items = [item for item in properties["items"] if item["zone"] == 1]
+    for item in copy.deepcopy(zone_items):
+        item["zone"] = zone
+        if isinstance(item["value"], float):
+            item["value"] += 1
+        properties["items"].append(item)
+    return zone
+
+
+@pytest.fixture
 def device(api: MagicMock) -> AristonGalevoDevice:
     """Return a GALEVO device that talks to the fake cloud."""
     return AristonGalevoDevice(api, copy.deepcopy(CLOUD_DEVICE))

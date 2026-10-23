@@ -768,3 +768,25 @@ async def test_set_temperature_without_temperature_raises(
 
     with pytest.raises(ValueError, match="Missing parameter temperature"):
         await entity.async_set_temperature()
+
+
+async def test_set_temperature_uses_zone_of_entity(
+    hass: HomeAssistant,
+    device: AristonGalevoDevice,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+    second_zone: int,
+) -> None:
+    """Test the climate of the second zone sets the temperature of that zone."""
+    await hass.config_entries.async_setup(config_entry.entry_id)
+    await hass.async_block_till_done()
+    device.async_set_comfort_temp = AsyncMock()
+
+    await hass.services.async_call(
+        CLIMATE_DOMAIN,
+        SERVICE_SET_TEMPERATURE,
+        {ATTR_ENTITY_ID: f"{CLIMATE}_{second_zone}", ATTR_TEMPERATURE: 19.5},
+        blocking=True,
+    )
+
+    device.async_set_comfort_temp.assert_awaited_once_with(19.5, second_zone)
