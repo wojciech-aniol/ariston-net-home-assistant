@@ -4,10 +4,10 @@ from __future__ import annotations
 
 from collections.abc import Generator
 import copy
+from datetime import timedelta
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from ariston.const import ARISTON_API_URL, ARISTON_USER_AGENT
 from homeassistant.config_entries import SOURCE_USER
 from homeassistant.const import (
     CONF_DEVICE,
@@ -23,10 +23,13 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 from custom_components.ariston_net.const import (
     API_URL_SETTING,
     API_USER_AGENT,
+    BUS_ERRORS_COORDINATOR,
     BUS_ERRORS_SCAN_INTERVAL,
+    COORDINATOR,
     DOMAIN,
     ENABLE_BUS_ERRORS,
     ENABLE_ENERGY,
+    ENERGY_COORDINATOR,
     ENERGY_SCAN_INTERVAL,
 )
 
@@ -35,8 +38,8 @@ from .conftest import CLOUD_DEVICE, GATEWAY
 USER_INPUT: dict[str, Any] = {
     CONF_USERNAME: "new@example.com",
     CONF_PASSWORD: "new-password",
-    API_URL_SETTING: ARISTON_API_URL,
-    API_USER_AGENT: ARISTON_USER_AGENT,
+    API_URL_SETTING: "https://cloud.example.com/api/v2/",
+    API_USER_AGENT: "TestAgent/1.0",
 }
 
 OTHER_DEVICE: dict[str, Any] = {
@@ -113,7 +116,10 @@ async def test_user_step_one_device_creates_entry(
     assert result["result"].unique_id == GATEWAY
     assert result["data"] == USER_INPUT | {CONF_DEVICE: CLOUD_DEVICE}
     flow_ariston.async_connect.assert_awaited_once_with(
-        "new@example.com", "new-password", ARISTON_API_URL, ARISTON_USER_AGENT
+        "new@example.com",
+        "new-password",
+        "https://cloud.example.com/api/v2/",
+        "TestAgent/1.0",
     )
     mock_setup_entry.assert_awaited_once()
 
@@ -223,10 +229,12 @@ async def test_reauth_flow_saves_new_login(
 
 
 async def test_options_flow_shows_defaults(
-    hass: HomeAssistant, init_integration: MockConfigEntry
+    hass: HomeAssistant, config_entry: MockConfigEntry, mock_setup_entry: AsyncMock
 ) -> None:
     """Test the options form shows the default of each option."""
-    result = await hass.config_entries.options.async_init(init_integration.entry_id)
+    await hass.config_entries.async_setup(config_entry.entry_id)
+
+    result = await hass.config_entries.options.async_init(config_entry.entry_id)
 
     assert result["type"] is FlowResultType.FORM
     assert schema_defaults(result) == {
@@ -251,11 +259,10 @@ async def test_options_flow_shows_saved_options(
 
 
 async def test_options_flow_saves_options(
-    hass: HomeAssistant, init_integration: MockConfigEntry, api: MagicMock
+    hass: HomeAssistant, init_integration: MockConfigEntry
 ) -> None:
     """Test the options flow saves all five options and reloads the entry."""
     result = await hass.config_entries.options.async_init(init_integration.entry_id)
-    api.async_get_consumptions_sequences.reset_mock()
 
     result = await hass.config_entries.options.async_configure(
         result["flow_id"], user_input=OPTIONS
@@ -264,4 +271,8 @@ async def test_options_flow_saves_options(
 
     assert result["type"] is FlowResultType.CREATE_ENTRY
     assert init_integration.options == OPTIONS
-    api.async_get_consumptions_sequences.assert_not_called()
+    coordinators = hass.data[DOMAIN][GATEWAY]
+    assert coordinators[COORDINATOR].update_interval == timedelta(seconds=300)
+    # Disabled coordinators are kept as empty placeholders.
+    assert not coordinators[ENERGY_COORDINATOR]
+    assert not coordinators[BUS_ERRORS_COORDINATOR]
