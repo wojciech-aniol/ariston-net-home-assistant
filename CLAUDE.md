@@ -9,7 +9,7 @@ fustom/ariston-remotethermo-home-assistant-v3. Code in `custom_components/aristo
 
 - Set up once: `uv venv --python 3.14 .venv && uv pip install --python .venv/bin/python -r requirements_test.txt`
 - Tests: `.venv/bin/python -m pytest -q`
-- Coverage: `.venv/bin/python -m pytest -q --cov=custom_components.ariston_net --cov-branch --cov-report=term-missing:skip-covered`
+- Coverage: `.venv/bin/python -m pytest -q --cov` (settings and the floor are in `pyproject.toml`)
 - Lint and format: `.venv/bin/ruff check --fix . && .venv/bin/ruff format .`
 - Accept snapshot changes: add `--snapshot-update`, only when the change is the goal.
 

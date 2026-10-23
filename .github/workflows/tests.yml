@@ -19,5 +19,9 @@ jobs:
           cache-dependency-path: requirements_test.txt
       - name: Install dependencies
         run: pip install -r requirements_test.txt
+      - name: Lint
+        run: ruff check .
+      - name: Check format
+        run: ruff format --check .
       - name: Run tests
-        run: pytest -q
+        run: pytest -q --cov
