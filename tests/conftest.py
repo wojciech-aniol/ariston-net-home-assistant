@@ -15,7 +15,7 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 from pytest_homeassistant_custom_component.syrupy import HomeAssistantSnapshotExtension
 from syrupy.assertion import SnapshotAssertion
 
-from custom_components.ariston_net.const import DOMAIN
+from custom_components.ariston_net.const import DOMAIN, ENERGY_COORDINATOR
 
 GATEWAY = "F0AD4E000001"
 
@@ -189,6 +189,16 @@ ENERGY_ACCOUNT: dict[str, Any] = {
         {"gas": 12, "elect": 40},
     ]
 }
+
+
+async def refresh_energy(hass: HomeAssistant, api: MagicMock) -> None:
+    """Send new energy data, so the total energy sensors get a value."""
+    api.async_get_consumptions_sequences.return_value = [
+        sequence | {"v": [*sequence["v"], sequence["v"][-1] + 1]}
+        for sequence in api.async_get_consumptions_sequences.return_value
+    ]
+    await hass.data[DOMAIN][GATEWAY][ENERGY_COORDINATOR].async_refresh()
+    await hass.async_block_till_done()
 
 
 @pytest.fixture
