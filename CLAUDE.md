@@ -32,13 +32,15 @@ upstream integration" matters. Of `translations/` read only `en.json`.
 
 ## Hard rules
 
-- Never change the unique_id, entity_id or name of an existing entity. The unique_id is built from
-  the entity name (`entity.py`), so a new name means a new unique_id. The snapshot tests guard this:
-  an unplanned snapshot change means the code change is wrong.
+- Never change the unique_id, entity_id or name of an existing entity. Most unique_ids are built
+  from the entity name (`entity.py`), so a new name means a new unique_id. Climate uses
+  `{gateway}_{zone}` and the water heater `{gateway}-water_heater`. `tests/test_snapshots.py`
+  guards this: an unplanned snapshot change means the code change is wrong.
 - Never shorten the default polling intervals or add cloud requests per poll. The cloud throttles
   accounts (HTTP 429 and 500).
 - Keep config entry data and option keys. A change needs a config entry migration and a test.
-- Keep `strings.json` and `translations/en.json` the same.
+- Keep the keys of `strings.json` and `translations/en.json` the same. `strings.json` may use
+  `[%key:...%]` references, `en.json` holds the final English text.
 - Ask the user before a tag or release, a refactor bigger than the plan says, or a new `ariston`
   version.
 - Code, comments, commits and README are in English.
