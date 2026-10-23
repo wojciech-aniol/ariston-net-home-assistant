@@ -214,7 +214,7 @@ class AristonThermostat(AristonEntity, ClimateEntity):
                     # DHW is working, so use Winter where CH and DHW are active
                     await self.device.async_set_plant_mode(PlantMode.WINTER)
                 # hvac is OFF, so use heating only, if not supported then winter
-                elif PlantMode.HEATING_ONLY in plant_modes:
+                elif PlantMode.HEATING_ONLY.value in plant_modes:
                     await self.device.async_set_plant_mode(PlantMode.HEATING_ONLY)
                 else:
                     await self.device.async_set_plant_mode(PlantMode.WINTER)
@@ -227,24 +227,18 @@ class AristonThermostat(AristonEntity, ClimateEntity):
                     # DHW is working, so use Winter and change mode
                     await self.device.async_set_plant_mode(PlantMode.WINTER)
                 # hvac is OFF, so use heating only, if not supported then winter
-                elif PlantMode.HEATING_ONLY in plant_modes:
+                elif PlantMode.HEATING_ONLY.value in plant_modes:
                     await self.device.async_set_plant_mode(PlantMode.HEATING_ONLY)
                 else:
                     await self.device.async_set_plant_mode(PlantMode.WINTER)
-                if ZoneMode.MANUAL_NIGHT in zone_modes:
-                    await self.device.async_set_zone_mode(
-                        ZoneMode.MANUAL_NIGHT, self.zone
-                    )
-                else:
-                    await self.device.async_set_zone_mode(ZoneMode.MANUAL, self.zone)
+                await self.device.async_set_zone_mode(
+                    self._manual_zone_mode(zone_modes), self.zone
+                )
             elif hvac_mode == HVACMode.COOL:
                 await self.device.async_set_plant_mode(PlantMode.COOLING)
-                if ZoneMode.MANUAL_NIGHT in zone_modes:
-                    await self.device.async_set_zone_mode(
-                        ZoneMode.MANUAL_NIGHT, self.zone
-                    )
-                else:
-                    await self.device.async_set_zone_mode(ZoneMode.MANUAL, self.zone)
+                await self.device.async_set_zone_mode(
+                    self._manual_zone_mode(zone_modes), self.zone
+                )
         # Plant mode is not supported (BSB device)
         elif hvac_mode == HVACMode.OFF:
             await self.device.async_set_zone_mode(BsbZoneMode.OFF, self.zone)
@@ -254,6 +248,13 @@ class AristonThermostat(AristonEntity, ClimateEntity):
             await self.device.async_set_zone_mode(BsbZoneMode.MANUAL, self.zone)
 
         self.async_write_ha_state()
+
+    @staticmethod
+    def _manual_zone_mode(zone_modes: list[int]) -> ZoneMode:
+        """Return the manual zone mode the device offers."""
+        if ZoneMode.MANUAL_NIGHT.value in zone_modes:
+            return ZoneMode.MANUAL_NIGHT
+        return ZoneMode.MANUAL
 
     async def async_set_preset_mode(self, preset_mode):
         """Set new target preset mode."""
@@ -270,24 +271,34 @@ class AristonThermostat(AristonEntity, ClimateEntity):
         # Get current states
         current_plant_in_cool = self.device.is_plant_in_cool_mode
         zone_modes = self.device.get_zone_mode_options(self.zone)
+        zone_is_off = self.device.get_zone_mode(self.zone) == ZoneMode.OFF
 
         # When leaving cooling, set the zone to manual heat before the plant mode
         if (
             current_plant_in_cool
             and plant_mode != PlantMode.COOLING
-            and ZoneMode.MANUAL in zone_modes
+            and ZoneMode.MANUAL.value in zone_modes
         ):
             await self.device.async_set_zone_mode(ZoneMode.MANUAL, self.zone)
+            zone_is_off = False
 
         # Set the plant mode
         await self.device.async_set_plant_mode(plant_mode)
 
         # Special handling for OFF mode
-        if (
-            plant_mode == PlantMode.OFF
-            and self.device.is_zone_mode_options_contains_off(self.zone)
-        ):
-            await self.device.async_set_zone_mode(BsbZoneMode.OFF, self.zone)
+        if plant_mode == PlantMode.OFF:
+            if self.device.is_zone_mode_options_contains_off(self.zone):
+                await self.device.async_set_zone_mode(ZoneMode.OFF, self.zone)
+        # The OFF preset turns the zone off, so turn it on again to heat or cool
+        elif zone_is_off and plant_mode in [
+            PlantMode.WINTER,
+            PlantMode.HEATING_ONLY,
+            PlantMode.COOLING,
+            PlantMode.COOLING_ONLY,
+        ]:
+            await self.device.async_set_zone_mode(
+                self._manual_zone_mode(zone_modes), self.zone
+            )
 
         # Refresh coordinator to get updated device state
         await self.coordinator.async_request_refresh()
