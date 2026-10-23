@@ -1,0 +1,3948 @@
+# serializer version: 1
+# name: test_default_data_entities_match_snapshot[binary_sensor][binary_sensor.nimbus_ariston_net_holiday_mode-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': None,
+    'entity_id': 'binary_sensor.nimbus_ariston_net_holiday_mode',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET holiday mode',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:island',
+    'original_name': 'Ariston NET holiday mode',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET holiday mode',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[binary_sensor][binary_sensor.nimbus_ariston_net_holiday_mode-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET holiday mode',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:island',
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.nimbus_ariston_net_holiday_mode',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'off',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[binary_sensor][binary_sensor.nimbus_ariston_net_is_flame_on-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': None,
+    'entity_id': 'binary_sensor.nimbus_ariston_net_is_flame_on',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET is flame on',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:fire',
+    'original_name': 'Ariston NET is flame on',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET is flame on',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[binary_sensor][binary_sensor.nimbus_ariston_net_is_flame_on-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET is flame on',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:fire',
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.nimbus_ariston_net_is_flame_on',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'off',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[binary_sensor][binary_sensor.nimbus_ariston_net_is_heating_pump_on-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': None,
+    'entity_id': 'binary_sensor.nimbus_ariston_net_is_heating_pump_on',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET is heating pump on',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:heat-pump-outline',
+    'original_name': 'Ariston NET is heating pump on',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET is heating pump on',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[binary_sensor][binary_sensor.nimbus_ariston_net_is_heating_pump_on-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET is heating pump on',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:heat-pump-outline',
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.nimbus_ariston_net_is_heating_pump_on',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'on',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[climate][climate.nimbus-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <ClimateEntityCapabilityAttribute.HVAC_MODES: 'hvac_modes'>: list([
+        <HVACMode.HEAT: 'heat'>,
+        <HVACMode.COOL: 'cool'>,
+        <HVACMode.AUTO: 'auto'>,
+        <HVACMode.OFF: 'off'>,
+      ]),
+      <ClimateEntityCapabilityAttribute.MAX_TEMP: 'max_temp'>: 30.0,
+      <ClimateEntityCapabilityAttribute.MIN_TEMP: 'min_temp'>: 10.0,
+      <ClimateEntityCapabilityAttribute.PRESET_MODES: 'preset_modes'>: list([
+        'Summer',
+        'Winter',
+        'Heating only',
+        'Cooling only',
+        'Off',
+      ]),
+      <ClimateEntityCapabilityAttribute.TARGET_TEMP_STEP: 'target_temp_step'>: 0.5,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'climate',
+    'entity_category': None,
+    'entity_id': 'climate.nimbus',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Nimbus',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:radiator',
+    'original_name': 'Nimbus',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': <ClimateEntityFeature: 401>,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001_1',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[climate][climate.nimbus-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <ClimateEntityStateAttribute.CURRENT_TEMPERATURE: 'current_temperature'>: 21.5,
+      'economy_temp': 18.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus',
+      'heat_request': True,
+      <ClimateEntityStateAttribute.HVAC_ACTION: 'hvac_action'>: <HVACAction.HEATING: 'heating'>,
+      <ClimateEntityCapabilityAttribute.HVAC_MODES: 'hvac_modes'>: list([
+        <HVACMode.HEAT: 'heat'>,
+        <HVACMode.COOL: 'cool'>,
+        <HVACMode.AUTO: 'auto'>,
+        <HVACMode.OFF: 'off'>,
+      ]),
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:radiator',
+      <ClimateEntityCapabilityAttribute.MAX_TEMP: 'max_temp'>: 30.0,
+      <ClimateEntityCapabilityAttribute.MIN_TEMP: 'min_temp'>: 10.0,
+      <ClimateEntityStateAttribute.PRESET_MODE: 'preset_mode'>: 'Winter',
+      <ClimateEntityCapabilityAttribute.PRESET_MODES: 'preset_modes'>: list([
+        'Summer',
+        'Winter',
+        'Heating only',
+        'Cooling only',
+        'Off',
+      ]),
+      <EntityStateAttribute.SUPPORTED_FEATURES: 'supported_features'>: <ClimateEntityFeature: 401>,
+      <ClimateEntityCapabilityAttribute.TARGET_TEMP_STEP: 'target_temp_step'>: 0.5,
+      <ClimateEntityStateAttribute.TARGET_TEMPERATURE: 'temperature'>: 21.0,
+      'zone_number': 1,
+    }),
+    'context': <ANY>,
+    'entity_id': 'climate.nimbus',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'heat',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[number][number.nimbus_ariston_net_elec_cost-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <NumberEntityCapabilityAttribute.MAX: 'max'>: 9223372036854775807,
+      <NumberEntityCapabilityAttribute.MIN: 'min'>: 0,
+      <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
+      <NumberEntityCapabilityAttribute.STEP: 'step'>: 0.01,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'number',
+    'entity_category': <EntityCategory.CONFIG: 'config'>,
+    'entity_id': 'number.nimbus_ariston_net_elec_cost',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET elec cost',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:currency-sign',
+    'original_name': 'Ariston NET elec cost',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET elec cost',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[number][number.nimbus_ariston_net_elec_cost-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET elec cost',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:currency-sign',
+      <NumberEntityCapabilityAttribute.MAX: 'max'>: 9223372036854775807,
+      <NumberEntityCapabilityAttribute.MIN: 'min'>: 0,
+      <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
+      <NumberEntityCapabilityAttribute.STEP: 'step'>: 0.01,
+    }),
+    'context': <ANY>,
+    'entity_id': 'number.nimbus_ariston_net_elec_cost',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[number][number.nimbus_ariston_net_gas_cost-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <NumberEntityCapabilityAttribute.MAX: 'max'>: 9223372036854775807,
+      <NumberEntityCapabilityAttribute.MIN: 'min'>: 0,
+      <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
+      <NumberEntityCapabilityAttribute.STEP: 'step'>: 0.01,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'number',
+    'entity_category': <EntityCategory.CONFIG: 'config'>,
+    'entity_id': 'number.nimbus_ariston_net_gas_cost',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET gas cost',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:currency-sign',
+    'original_name': 'Ariston NET gas cost',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET gas cost',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[number][number.nimbus_ariston_net_gas_cost-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET gas cost',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:currency-sign',
+      <NumberEntityCapabilityAttribute.MAX: 'max'>: 9223372036854775807,
+      <NumberEntityCapabilityAttribute.MIN: 'min'>: 0,
+      <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
+      <NumberEntityCapabilityAttribute.STEP: 'step'>: 0.01,
+    }),
+    'context': <ANY>,
+    'entity_id': 'number.nimbus_ariston_net_gas_cost',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[number][number.nimbus_ariston_net_heating_flow_offset_1-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <NumberEntityCapabilityAttribute.MAX: 'max'>: 10.0,
+      <NumberEntityCapabilityAttribute.MIN: 'min'>: -10.0,
+      <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
+      <NumberEntityCapabilityAttribute.STEP: 'step'>: 1.0,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'number',
+    'entity_category': <EntityCategory.CONFIG: 'config'>,
+    'entity_id': 'number.nimbus_ariston_net_heating_flow_offset_1',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET heating flow offset 1',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:progress-wrench',
+    'original_name': 'Ariston NET heating flow offset 1',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET heating flow offset 1-1',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[number][number.nimbus_ariston_net_heating_flow_offset_1-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET heating flow offset 1',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:progress-wrench',
+      <NumberEntityCapabilityAttribute.MAX: 'max'>: 10.0,
+      <NumberEntityCapabilityAttribute.MIN: 'min'>: -10.0,
+      <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
+      <NumberEntityCapabilityAttribute.STEP: 'step'>: 1.0,
+    }),
+    'context': <ANY>,
+    'entity_id': 'number.nimbus_ariston_net_heating_flow_offset_1',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '0.0',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[number][number.nimbus_ariston_net_heating_flow_temperature_1-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <NumberEntityCapabilityAttribute.MAX: 'max'>: 45.0,
+      <NumberEntityCapabilityAttribute.MIN: 'min'>: 20.0,
+      <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
+      <NumberEntityCapabilityAttribute.STEP: 'step'>: 1.0,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'number',
+    'entity_category': <EntityCategory.CONFIG: 'config'>,
+    'entity_id': 'number.nimbus_ariston_net_heating_flow_temperature_1',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET heating flow temperature 1',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:thermometer',
+    'original_name': 'Ariston NET heating flow temperature 1',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET heating flow temperature 1-1',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[number][number.nimbus_ariston_net_heating_flow_temperature_1-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET heating flow temperature 1',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:thermometer',
+      <NumberEntityCapabilityAttribute.MAX: 'max'>: 45.0,
+      <NumberEntityCapabilityAttribute.MIN: 'min'>: 20.0,
+      <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
+      <NumberEntityCapabilityAttribute.STEP: 'step'>: 1.0,
+    }),
+    'context': <ANY>,
+    'entity_id': 'number.nimbus_ariston_net_heating_flow_temperature_1',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '35.0',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[select][select.nimbus_ariston_net_currency-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'ARS',
+        'EUR',
+        'BYN',
+        'CNY',
+        'HRK',
+        'CZK',
+        'DKK',
+        'HKD',
+        'HUF',
+        'IRR',
+        'KZT',
+        'CHF',
+        'MOP',
+        'PLZ',
+        'RON',
+        'RUB',
+        'TRY',
+        'UAH',
+        'GBP',
+        'USD',
+      ]),
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'select',
+    'entity_category': <EntityCategory.CONFIG: 'config'>,
+    'entity_id': 'select.nimbus_ariston_net_currency',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET currency',
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.MONETARY: 'monetary'>,
+    'original_icon': 'mdi:cash-100',
+    'original_name': 'Ariston NET currency',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET currency',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[select][select.nimbus_ariston_net_currency-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'monetary',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET currency',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash-100',
+      <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'ARS',
+        'EUR',
+        'BYN',
+        'CNY',
+        'HRK',
+        'CZK',
+        'DKK',
+        'HKD',
+        'HUF',
+        'IRR',
+        'KZT',
+        'CHF',
+        'MOP',
+        'PLZ',
+        'RON',
+        'RUB',
+        'TRY',
+        'UAH',
+        'GBP',
+        'USD',
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'select.nimbus_ariston_net_currency',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[select][select.nimbus_ariston_net_gas_energy_unit-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'KWH',
+        'GIGA_JOULE',
+        'THERM',
+        'MEGA_BTU',
+        'SMC',
+        'CUBE_METER',
+      ]),
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'select',
+    'entity_category': <EntityCategory.CONFIG: 'config'>,
+    'entity_id': 'select.nimbus_ariston_net_gas_energy_unit',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET gas energy unit',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:cube-scan',
+    'original_name': 'Ariston NET gas energy unit',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET gas energy unit',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[select][select.nimbus_ariston_net_gas_energy_unit-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET gas energy unit',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cube-scan',
+      <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'KWH',
+        'GIGA_JOULE',
+        'THERM',
+        'MEGA_BTU',
+        'SMC',
+        'CUBE_METER',
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'select.nimbus_ariston_net_gas_energy_unit',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[select][select.nimbus_ariston_net_gas_type-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'NATURAL_GAS',
+        'LPG',
+        'AIR_PROPANED',
+        'GPO',
+        'PROPANE',
+      ]),
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'select',
+    'entity_category': <EntityCategory.CONFIG: 'config'>,
+    'entity_id': 'select.nimbus_ariston_net_gas_type',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET gas type',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:gas-cylinder',
+    'original_name': 'Ariston NET gas type',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET gas type',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[select][select.nimbus_ariston_net_gas_type-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET gas type',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:gas-cylinder',
+      <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'NATURAL_GAS',
+        'LPG',
+        'AIR_PROPANED',
+        'GPO',
+        'PROPANE',
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'select.nimbus_ariston_net_gas_type',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[select][select.nimbus_ariston_net_plant_mode-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'Summer',
+        'Winter',
+        'Heating only',
+        'Cooling only',
+        'Off',
+      ]),
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'select',
+    'entity_category': None,
+    'entity_id': 'select.nimbus_ariston_net_plant_mode',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET plant mode',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:sun-snowflake-variant',
+    'original_name': 'Ariston NET plant mode',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET plant mode',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[select][select.nimbus_ariston_net_plant_mode-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET plant mode',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:sun-snowflake-variant',
+      <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'Summer',
+        'Winter',
+        'Heating only',
+        'Cooling only',
+        'Off',
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'select.nimbus_ariston_net_plant_mode',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'Winter',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_ch_flow_setpoint_temp-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.nimbus_ariston_net_ch_flow_setpoint_temp',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET CH flow setpoint temp',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 1,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.TEMPERATURE: 'temperature'>,
+    'original_icon': None,
+    'original_name': 'Ariston NET CH flow setpoint temp',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET CH flow setpoint temp',
+    'unit_of_measurement': <UnitOfTemperature.CELSIUS: '°C'>,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_ch_flow_setpoint_temp-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'temperature',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET CH flow setpoint temp',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfTemperature.CELSIUS: '°C'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_ch_flow_setpoint_temp',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '36.0',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_ch_flow_temp-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.nimbus_ariston_net_ch_flow_temp',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET CH flow temp',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 1,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.TEMPERATURE: 'temperature'>,
+    'original_icon': None,
+    'original_name': 'Ariston NET CH flow temp',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET CH flow temp',
+    'unit_of_measurement': <UnitOfTemperature.CELSIUS: '°C'>,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_ch_flow_temp-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'temperature',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET CH flow temp',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfTemperature.CELSIUS: '°C'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_ch_flow_temp',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '35.0',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_dhw_current_temperature-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.nimbus_ariston_net_dhw_current_temperature',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET DHW current temperature',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 1,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.TEMPERATURE: 'temperature'>,
+    'original_icon': 'mdi:thermometer-water',
+    'original_name': 'Ariston NET DHW current temperature',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET DHW current temperature',
+    'unit_of_measurement': <UnitOfTemperature.CELSIUS: '°C'>,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_dhw_current_temperature-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'temperature',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET DHW current temperature',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:thermometer-water',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfTemperature.CELSIUS: '°C'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_dhw_current_temperature',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '47.5',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_dhw_target_temperature-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.nimbus_ariston_net_dhw_target_temperature',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET DHW target temperature',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 1,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.TEMPERATURE: 'temperature'>,
+    'original_icon': 'mdi:thermometer-chevron-up',
+    'original_name': 'Ariston NET DHW target temperature',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET DHW target temperature',
+    'unit_of_measurement': <UnitOfTemperature.CELSIUS: '°C'>,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_dhw_target_temperature-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'temperature',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET DHW target temperature',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:thermometer-chevron-up',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfTemperature.CELSIUS: '°C'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_dhw_target_temperature',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '50.0',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_electricity_consumption_for_heating_last_month-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.nimbus_ariston_net_electricity_consumption_for_heating_last_month',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET electricity consumption for heating last month',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET electricity consumption for heating last month',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET electricity consumption for heating last month',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_electricity_consumption_for_heating_last_month-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET electricity consumption for heating last month',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_electricity_consumption_for_heating_last_month',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '0',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_electricity_consumption_for_water_last_month-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.nimbus_ariston_net_electricity_consumption_for_water_last_month',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET electricity consumption for water last month',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET electricity consumption for water last month',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET electricity consumption for water last month',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_electricity_consumption_for_water_last_month-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET electricity consumption for water last month',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_electricity_consumption_for_water_last_month',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_errors_count-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.nimbus_ariston_net_errors_count',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET errors count',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:alert-outline',
+    'original_name': 'Ariston NET errors count',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET errors count',
+    'unit_of_measurement': '',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_errors_count-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'errors': list([
+      ]),
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET errors count',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:alert-outline',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: '',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_errors_count',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '0',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_gas_consumption_for_heating_last_month-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.nimbus_ariston_net_gas_consumption_for_heating_last_month',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET gas consumption for heating last month',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET gas consumption for heating last month',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET gas consumption for heating last month',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_gas_consumption_for_heating_last_month-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET gas consumption for heating last month',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_gas_consumption_for_heating_last_month',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_gas_consumption_for_water_last_month-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.nimbus_ariston_net_gas_consumption_for_water_last_month',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET gas consumption for water last month',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET gas consumption for water last month',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET gas consumption for water last month',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_gas_consumption_for_water_last_month-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET gas consumption for water last month',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_gas_consumption_for_water_last_month',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_heating_circuit_pressure-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.nimbus_ariston_net_heating_circuit_pressure',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET heating circuit pressure',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.PRESSURE: 'pressure'>,
+    'original_icon': None,
+    'original_name': 'Ariston NET heating circuit pressure',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET heating circuit pressure',
+    'unit_of_measurement': 'bar',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_heating_circuit_pressure-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'pressure',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET heating circuit pressure',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'bar',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_heating_circuit_pressure',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '1.6',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_outside_temp-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.nimbus_ariston_net_outside_temp',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET Outside temp',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 1,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.TEMPERATURE: 'temperature'>,
+    'original_icon': None,
+    'original_name': 'Ariston NET Outside temp',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET Outside temp',
+    'unit_of_measurement': <UnitOfTemperature.CELSIUS: '°C'>,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_outside_temp-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'temperature',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET Outside temp',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfTemperature.CELSIUS: '°C'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_outside_temp',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '8.5',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_signal_strength-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.nimbus_ariston_net_signal_strength',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET signal strength',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': None,
+    'original_name': 'Ariston NET signal strength',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET signal strength',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_signal_strength-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET signal strength',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_signal_strength',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[switch][switch.nimbus_ariston_net_automatic_thermoregulation-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'switch',
+    'entity_category': None,
+    'entity_id': 'switch.nimbus_ariston_net_automatic_thermoregulation',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET automatic thermoregulation',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:radiator',
+    'original_name': 'Ariston NET automatic thermoregulation',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET automatic thermoregulation',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[switch][switch.nimbus_ariston_net_automatic_thermoregulation-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET automatic thermoregulation',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:radiator',
+    }),
+    'context': <ANY>,
+    'entity_id': 'switch.nimbus_ariston_net_automatic_thermoregulation',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'on',
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[water_heater][water_heater.nimbus-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <WaterHeaterCapabilityAttribute.MAX_TEMP: 'max_temp'>: 65,
+      <WaterHeaterCapabilityAttribute.MIN_TEMP: 'min_temp'>: 40,
+      <WaterHeaterCapabilityAttribute.OPERATION_LIST: 'operation_list'>: list([
+        'Time based',
+        'Always active',
+      ]),
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'water_heater',
+    'entity_category': None,
+    'entity_id': 'water_heater.nimbus',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Nimbus',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:water-pump',
+    'original_name': 'Nimbus',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': <WaterHeaterEntityFeature: 3>,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-water_heater',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_default_data_entities_match_snapshot[water_heater][water_heater.nimbus-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <WaterHeaterStateAttribute.CURRENT_TEMPERATURE: 'current_temperature'>: 48,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:water-pump',
+      <WaterHeaterCapabilityAttribute.MAX_TEMP: 'max_temp'>: 65,
+      <WaterHeaterCapabilityAttribute.MIN_TEMP: 'min_temp'>: 40,
+      <WaterHeaterCapabilityAttribute.OPERATION_LIST: 'operation_list'>: list([
+        'Time based',
+        'Always active',
+      ]),
+      <WaterHeaterStateAttribute.OPERATION_MODE: 'operation_mode'>: 'Time based',
+      <EntityStateAttribute.SUPPORTED_FEATURES: 'supported_features'>: <WaterHeaterEntityFeature: 3>,
+      <WaterHeaterStateAttribute.TARGET_TEMP_HIGH: 'target_temp_high'>: None,
+      <WaterHeaterStateAttribute.TARGET_TEMP_LOW: 'target_temp_low'>: None,
+      'target_temp_step': 1.0,
+      <WaterHeaterStateAttribute.TARGET_TEMPERATURE: 'temperature'>: 50,
+    }),
+    'context': <ANY>,
+    'entity_id': 'water_heater.nimbus',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'Time based',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[binary_sensor][binary_sensor.nimbus_ariston_net_holiday_mode-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': None,
+    'entity_id': 'binary_sensor.nimbus_ariston_net_holiday_mode',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET holiday mode',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:island',
+    'original_name': 'Ariston NET holiday mode',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET holiday mode',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[binary_sensor][binary_sensor.nimbus_ariston_net_holiday_mode-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET holiday mode',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:island',
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.nimbus_ariston_net_holiday_mode',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'off',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[binary_sensor][binary_sensor.nimbus_ariston_net_is_flame_on-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': None,
+    'entity_id': 'binary_sensor.nimbus_ariston_net_is_flame_on',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET is flame on',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:fire',
+    'original_name': 'Ariston NET is flame on',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET is flame on',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[binary_sensor][binary_sensor.nimbus_ariston_net_is_flame_on-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET is flame on',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:fire',
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.nimbus_ariston_net_is_flame_on',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'off',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[binary_sensor][binary_sensor.nimbus_ariston_net_is_heating_pump_on-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': None,
+    'entity_id': 'binary_sensor.nimbus_ariston_net_is_heating_pump_on',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET is heating pump on',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:heat-pump-outline',
+    'original_name': 'Ariston NET is heating pump on',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET is heating pump on',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[binary_sensor][binary_sensor.nimbus_ariston_net_is_heating_pump_on-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET is heating pump on',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:heat-pump-outline',
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.nimbus_ariston_net_is_heating_pump_on',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'on',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[climate][climate.nimbus-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <ClimateEntityCapabilityAttribute.HVAC_MODES: 'hvac_modes'>: list([
+        <HVACMode.HEAT: 'heat'>,
+        <HVACMode.COOL: 'cool'>,
+        <HVACMode.AUTO: 'auto'>,
+        <HVACMode.OFF: 'off'>,
+      ]),
+      <ClimateEntityCapabilityAttribute.MAX_TEMP: 'max_temp'>: 30.0,
+      <ClimateEntityCapabilityAttribute.MIN_TEMP: 'min_temp'>: 10.0,
+      <ClimateEntityCapabilityAttribute.PRESET_MODES: 'preset_modes'>: list([
+        'Summer',
+        'Winter',
+        'Heating only',
+        'Cooling only',
+        'Off',
+      ]),
+      <ClimateEntityCapabilityAttribute.TARGET_TEMP_STEP: 'target_temp_step'>: 0.5,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'climate',
+    'entity_category': None,
+    'entity_id': 'climate.nimbus',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Nimbus',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:radiator',
+    'original_name': 'Nimbus',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': <ClimateEntityFeature: 401>,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001_1',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[climate][climate.nimbus-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <ClimateEntityStateAttribute.CURRENT_TEMPERATURE: 'current_temperature'>: 21.5,
+      'economy_temp': 18.0,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus',
+      'heat_request': True,
+      <ClimateEntityStateAttribute.HVAC_ACTION: 'hvac_action'>: <HVACAction.HEATING: 'heating'>,
+      <ClimateEntityCapabilityAttribute.HVAC_MODES: 'hvac_modes'>: list([
+        <HVACMode.HEAT: 'heat'>,
+        <HVACMode.COOL: 'cool'>,
+        <HVACMode.AUTO: 'auto'>,
+        <HVACMode.OFF: 'off'>,
+      ]),
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:radiator',
+      <ClimateEntityCapabilityAttribute.MAX_TEMP: 'max_temp'>: 30.0,
+      <ClimateEntityCapabilityAttribute.MIN_TEMP: 'min_temp'>: 10.0,
+      <ClimateEntityStateAttribute.PRESET_MODE: 'preset_mode'>: 'Winter',
+      <ClimateEntityCapabilityAttribute.PRESET_MODES: 'preset_modes'>: list([
+        'Summer',
+        'Winter',
+        'Heating only',
+        'Cooling only',
+        'Off',
+      ]),
+      <EntityStateAttribute.SUPPORTED_FEATURES: 'supported_features'>: <ClimateEntityFeature: 401>,
+      <ClimateEntityCapabilityAttribute.TARGET_TEMP_STEP: 'target_temp_step'>: 0.5,
+      <ClimateEntityStateAttribute.TARGET_TEMPERATURE: 'temperature'>: 21.0,
+      'zone_number': 1,
+    }),
+    'context': <ANY>,
+    'entity_id': 'climate.nimbus',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'heat',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[number][number.nimbus_ariston_net_elec_cost-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <NumberEntityCapabilityAttribute.MAX: 'max'>: 9223372036854775807,
+      <NumberEntityCapabilityAttribute.MIN: 'min'>: 0,
+      <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
+      <NumberEntityCapabilityAttribute.STEP: 'step'>: 0.01,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'number',
+    'entity_category': <EntityCategory.CONFIG: 'config'>,
+    'entity_id': 'number.nimbus_ariston_net_elec_cost',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET elec cost',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:currency-sign',
+    'original_name': 'Ariston NET elec cost',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET elec cost',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[number][number.nimbus_ariston_net_elec_cost-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET elec cost',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:currency-sign',
+      <NumberEntityCapabilityAttribute.MAX: 'max'>: 9223372036854775807,
+      <NumberEntityCapabilityAttribute.MIN: 'min'>: 0,
+      <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
+      <NumberEntityCapabilityAttribute.STEP: 'step'>: 0.01,
+    }),
+    'context': <ANY>,
+    'entity_id': 'number.nimbus_ariston_net_elec_cost',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '0.25',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[number][number.nimbus_ariston_net_gas_cost-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <NumberEntityCapabilityAttribute.MAX: 'max'>: 9223372036854775807,
+      <NumberEntityCapabilityAttribute.MIN: 'min'>: 0,
+      <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
+      <NumberEntityCapabilityAttribute.STEP: 'step'>: 0.01,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'number',
+    'entity_category': <EntityCategory.CONFIG: 'config'>,
+    'entity_id': 'number.nimbus_ariston_net_gas_cost',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET gas cost',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:currency-sign',
+    'original_name': 'Ariston NET gas cost',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET gas cost',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[number][number.nimbus_ariston_net_gas_cost-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET gas cost',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:currency-sign',
+      <NumberEntityCapabilityAttribute.MAX: 'max'>: 9223372036854775807,
+      <NumberEntityCapabilityAttribute.MIN: 'min'>: 0,
+      <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
+      <NumberEntityCapabilityAttribute.STEP: 'step'>: 0.01,
+    }),
+    'context': <ANY>,
+    'entity_id': 'number.nimbus_ariston_net_gas_cost',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '0.1',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[number][number.nimbus_ariston_net_heating_flow_offset_1-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <NumberEntityCapabilityAttribute.MAX: 'max'>: 10.0,
+      <NumberEntityCapabilityAttribute.MIN: 'min'>: -10.0,
+      <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
+      <NumberEntityCapabilityAttribute.STEP: 'step'>: 1.0,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'number',
+    'entity_category': <EntityCategory.CONFIG: 'config'>,
+    'entity_id': 'number.nimbus_ariston_net_heating_flow_offset_1',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET heating flow offset 1',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:progress-wrench',
+    'original_name': 'Ariston NET heating flow offset 1',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET heating flow offset 1-1',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[number][number.nimbus_ariston_net_heating_flow_offset_1-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET heating flow offset 1',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:progress-wrench',
+      <NumberEntityCapabilityAttribute.MAX: 'max'>: 10.0,
+      <NumberEntityCapabilityAttribute.MIN: 'min'>: -10.0,
+      <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
+      <NumberEntityCapabilityAttribute.STEP: 'step'>: 1.0,
+    }),
+    'context': <ANY>,
+    'entity_id': 'number.nimbus_ariston_net_heating_flow_offset_1',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '0.0',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[number][number.nimbus_ariston_net_heating_flow_temperature_1-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <NumberEntityCapabilityAttribute.MAX: 'max'>: 45.0,
+      <NumberEntityCapabilityAttribute.MIN: 'min'>: 20.0,
+      <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
+      <NumberEntityCapabilityAttribute.STEP: 'step'>: 1.0,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'number',
+    'entity_category': <EntityCategory.CONFIG: 'config'>,
+    'entity_id': 'number.nimbus_ariston_net_heating_flow_temperature_1',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET heating flow temperature 1',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:thermometer',
+    'original_name': 'Ariston NET heating flow temperature 1',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET heating flow temperature 1-1',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[number][number.nimbus_ariston_net_heating_flow_temperature_1-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET heating flow temperature 1',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:thermometer',
+      <NumberEntityCapabilityAttribute.MAX: 'max'>: 45.0,
+      <NumberEntityCapabilityAttribute.MIN: 'min'>: 20.0,
+      <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
+      <NumberEntityCapabilityAttribute.STEP: 'step'>: 1.0,
+    }),
+    'context': <ANY>,
+    'entity_id': 'number.nimbus_ariston_net_heating_flow_temperature_1',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '35.0',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[select][select.nimbus_ariston_net_buffer_control_mode-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'Off',
+        'Time program',
+      ]),
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'select',
+    'entity_category': <EntityCategory.CONFIG: 'config'>,
+    'entity_id': 'select.nimbus_ariston_net_buffer_control_mode',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET buffer control mode',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:cup-water',
+    'original_name': 'Ariston NET buffer control mode',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET buffer control mode',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[select][select.nimbus_ariston_net_buffer_control_mode-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET buffer control mode',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cup-water',
+      <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'Off',
+        'Time program',
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'select.nimbus_ariston_net_buffer_control_mode',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'Off',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[select][select.nimbus_ariston_net_currency-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'ARS',
+        'EUR',
+        'BYN',
+        'CNY',
+        'HRK',
+        'CZK',
+        'DKK',
+        'HKD',
+        'HUF',
+        'IRR',
+        'KZT',
+        'CHF',
+        'MOP',
+        'PLZ',
+        'RON',
+        'RUB',
+        'TRY',
+        'UAH',
+        'GBP',
+        'USD',
+      ]),
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'select',
+    'entity_category': <EntityCategory.CONFIG: 'config'>,
+    'entity_id': 'select.nimbus_ariston_net_currency',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET currency',
+    'options': dict({
+    }),
+    'original_device_class': <SensorDeviceClass.MONETARY: 'monetary'>,
+    'original_icon': 'mdi:cash-100',
+    'original_name': 'Ariston NET currency',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET currency',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[select][select.nimbus_ariston_net_currency-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'monetary',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET currency',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash-100',
+      <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'ARS',
+        'EUR',
+        'BYN',
+        'CNY',
+        'HRK',
+        'CZK',
+        'DKK',
+        'HKD',
+        'HUF',
+        'IRR',
+        'KZT',
+        'CHF',
+        'MOP',
+        'PLZ',
+        'RON',
+        'RUB',
+        'TRY',
+        'UAH',
+        'GBP',
+        'USD',
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'select.nimbus_ariston_net_currency',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'EUR',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[select][select.nimbus_ariston_net_gas_energy_unit-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'KWH',
+        'GIGA_JOULE',
+        'THERM',
+        'MEGA_BTU',
+        'SMC',
+        'CUBE_METER',
+      ]),
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'select',
+    'entity_category': <EntityCategory.CONFIG: 'config'>,
+    'entity_id': 'select.nimbus_ariston_net_gas_energy_unit',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET gas energy unit',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:cube-scan',
+    'original_name': 'Ariston NET gas energy unit',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET gas energy unit',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[select][select.nimbus_ariston_net_gas_energy_unit-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET gas energy unit',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cube-scan',
+      <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'KWH',
+        'GIGA_JOULE',
+        'THERM',
+        'MEGA_BTU',
+        'SMC',
+        'CUBE_METER',
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'select.nimbus_ariston_net_gas_energy_unit',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'KWH',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[select][select.nimbus_ariston_net_gas_type-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'NATURAL_GAS',
+        'LPG',
+        'AIR_PROPANED',
+        'GPO',
+        'PROPANE',
+      ]),
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'select',
+    'entity_category': <EntityCategory.CONFIG: 'config'>,
+    'entity_id': 'select.nimbus_ariston_net_gas_type',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET gas type',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:gas-cylinder',
+    'original_name': 'Ariston NET gas type',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET gas type',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[select][select.nimbus_ariston_net_gas_type-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET gas type',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:gas-cylinder',
+      <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'NATURAL_GAS',
+        'LPG',
+        'AIR_PROPANED',
+        'GPO',
+        'PROPANE',
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'select.nimbus_ariston_net_gas_type',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'NATURAL_GAS',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[select][select.nimbus_ariston_net_hybrid_mode-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'Economy',
+        'Green',
+        'Heat pump only',
+      ]),
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'select',
+    'entity_category': <EntityCategory.CONFIG: 'config'>,
+    'entity_id': 'select.nimbus_ariston_net_hybrid_mode',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET hybrid mode',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:cog',
+    'original_name': 'Ariston NET hybrid mode',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET hybrid mode',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[select][select.nimbus_ariston_net_hybrid_mode-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET hybrid mode',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cog',
+      <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'Economy',
+        'Green',
+        'Heat pump only',
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'select.nimbus_ariston_net_hybrid_mode',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'Green',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[select][select.nimbus_ariston_net_plant_mode-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'Summer',
+        'Winter',
+        'Heating only',
+        'Cooling only',
+        'Off',
+      ]),
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'select',
+    'entity_category': None,
+    'entity_id': 'select.nimbus_ariston_net_plant_mode',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET plant mode',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:sun-snowflake-variant',
+    'original_name': 'Ariston NET plant mode',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET plant mode',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[select][select.nimbus_ariston_net_plant_mode-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET plant mode',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:sun-snowflake-variant',
+      <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
+        'Summer',
+        'Winter',
+        'Heating only',
+        'Cooling only',
+        'Off',
+      ]),
+    }),
+    'context': <ANY>,
+    'entity_id': 'select.nimbus_ariston_net_plant_mode',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'Winter',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_central_heating_electricity_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.nimbus_ariston_net_central_heating_electricity_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET central heating electricity consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET central heating electricity consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET central heating electricity consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_central_heating_electricity_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET central heating electricity consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_central_heating_electricity_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_central_heating_gas_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.nimbus_ariston_net_central_heating_gas_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET central heating gas consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET central heating gas consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET central heating gas consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_central_heating_gas_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET central heating gas consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_central_heating_gas_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_central_heating_total_energy_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.nimbus_ariston_net_central_heating_total_energy_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET central heating total energy consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET central heating total energy consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET central heating total energy consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_central_heating_total_energy_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET central heating total energy consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_central_heating_total_energy_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_ch_flow_setpoint_temp-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.nimbus_ariston_net_ch_flow_setpoint_temp',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET CH flow setpoint temp',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 1,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.TEMPERATURE: 'temperature'>,
+    'original_icon': None,
+    'original_name': 'Ariston NET CH flow setpoint temp',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET CH flow setpoint temp',
+    'unit_of_measurement': <UnitOfTemperature.CELSIUS: '°C'>,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_ch_flow_setpoint_temp-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'temperature',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET CH flow setpoint temp',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfTemperature.CELSIUS: '°C'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_ch_flow_setpoint_temp',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '36.0',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_ch_flow_temp-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.nimbus_ariston_net_ch_flow_temp',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET CH flow temp',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 1,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.TEMPERATURE: 'temperature'>,
+    'original_icon': None,
+    'original_name': 'Ariston NET CH flow temp',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET CH flow temp',
+    'unit_of_measurement': <UnitOfTemperature.CELSIUS: '°C'>,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_ch_flow_temp-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'temperature',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET CH flow temp',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfTemperature.CELSIUS: '°C'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_ch_flow_temp',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '35.0',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_ch_return_temp-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.nimbus_ariston_net_ch_return_temp',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET CH return temp',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 1,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.TEMPERATURE: 'temperature'>,
+    'original_icon': None,
+    'original_name': 'Ariston NET CH return temp',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET CH return temp',
+    'unit_of_measurement': <UnitOfTemperature.CELSIUS: '°C'>,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_ch_return_temp-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'temperature',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET CH return temp',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfTemperature.CELSIUS: '°C'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_ch_return_temp',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '30.5',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_dhw_current_temperature-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.nimbus_ariston_net_dhw_current_temperature',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET DHW current temperature',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 1,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.TEMPERATURE: 'temperature'>,
+    'original_icon': 'mdi:thermometer-water',
+    'original_name': 'Ariston NET DHW current temperature',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET DHW current temperature',
+    'unit_of_measurement': <UnitOfTemperature.CELSIUS: '°C'>,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_dhw_current_temperature-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'temperature',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET DHW current temperature',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:thermometer-water',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfTemperature.CELSIUS: '°C'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_dhw_current_temperature',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '47.5',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_dhw_target_temperature-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.nimbus_ariston_net_dhw_target_temperature',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET DHW target temperature',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 1,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.TEMPERATURE: 'temperature'>,
+    'original_icon': 'mdi:thermometer-chevron-up',
+    'original_name': 'Ariston NET DHW target temperature',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET DHW target temperature',
+    'unit_of_measurement': <UnitOfTemperature.CELSIUS: '°C'>,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_dhw_target_temperature-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'temperature',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET DHW target temperature',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:thermometer-chevron-up',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfTemperature.CELSIUS: '°C'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_dhw_target_temperature',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '50.0',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_domestic_hot_water_electricity_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.nimbus_ariston_net_domestic_hot_water_electricity_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water electricity consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water electricity consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water electricity consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_domestic_hot_water_electricity_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET domestic hot water electricity consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_domestic_hot_water_electricity_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_domestic_hot_water_gas_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.nimbus_ariston_net_domestic_hot_water_gas_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water gas consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water gas consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water gas consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_domestic_hot_water_gas_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET domestic hot water gas consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_domestic_hot_water_gas_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_domestic_hot_water_heating_pump_electricity_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.nimbus_ariston_net_domestic_hot_water_heating_pump_electricity_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water heating pump electricity consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water heating pump electricity consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water heating pump electricity consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_domestic_hot_water_heating_pump_electricity_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET domestic hot water heating pump electricity consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_domestic_hot_water_heating_pump_electricity_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_domestic_hot_water_resistor_electricity_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.nimbus_ariston_net_domestic_hot_water_resistor_electricity_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water resistor electricity consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water resistor electricity consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water resistor electricity consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_domestic_hot_water_resistor_electricity_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET domestic hot water resistor electricity consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_domestic_hot_water_resistor_electricity_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_domestic_hot_water_total_energy_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.nimbus_ariston_net_domestic_hot_water_total_energy_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water total energy consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water total energy consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water total energy consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_domestic_hot_water_total_energy_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET domestic hot water total energy consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_domestic_hot_water_total_energy_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'unknown',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_electricity_consumption_for_cooling_last_month-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.nimbus_ariston_net_electricity_consumption_for_cooling_last_month',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET electricity consumption for cooling last month',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET electricity consumption for cooling last month',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET electricity consumption for cooling last month',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_electricity_consumption_for_cooling_last_month-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET electricity consumption for cooling last month',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_electricity_consumption_for_cooling_last_month',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '5',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_electricity_consumption_for_heating_last_month-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.nimbus_ariston_net_electricity_consumption_for_heating_last_month',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET electricity consumption for heating last month',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET electricity consumption for heating last month',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET electricity consumption for heating last month',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_electricity_consumption_for_heating_last_month-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET electricity consumption for heating last month',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_electricity_consumption_for_heating_last_month',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '120',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_electricity_consumption_for_water_last_month-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.nimbus_ariston_net_electricity_consumption_for_water_last_month',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET electricity consumption for water last month',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET electricity consumption for water last month',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET electricity consumption for water last month',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_electricity_consumption_for_water_last_month-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET electricity consumption for water last month',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_electricity_consumption_for_water_last_month',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '40',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_errors_count-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.nimbus_ariston_net_errors_count',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET errors count',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:alert-outline',
+    'original_name': 'Ariston NET errors count',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET errors count',
+    'unit_of_measurement': '',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_errors_count-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'errors': list([
+        dict({
+          'blk': False,
+          'code': '902',
+          'errDex': 'Low water pressure',
+          'fault': 902,
+          'gw': 'F0AD4E000001',
+          'mult': 0,
+          'pri': 1,
+          'res': False,
+          'timestamp': '2026-10-18T10:00:00',
+        }),
+      ]),
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET errors count',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:alert-outline',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: '',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_errors_count',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '1',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_gas_consumption_for_heating_last_month-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.nimbus_ariston_net_gas_consumption_for_heating_last_month',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET gas consumption for heating last month',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET gas consumption for heating last month',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET gas consumption for heating last month',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_gas_consumption_for_heating_last_month-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET gas consumption for heating last month',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_gas_consumption_for_heating_last_month',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '0',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_gas_consumption_for_water_last_month-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.nimbus_ariston_net_gas_consumption_for_water_last_month',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET gas consumption for water last month',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET gas consumption for water last month',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET gas consumption for water last month',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_gas_consumption_for_water_last_month-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET gas consumption for water last month',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_gas_consumption_for_water_last_month',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '0',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_heating_circuit_pressure-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.nimbus_ariston_net_heating_circuit_pressure',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET heating circuit pressure',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.PRESSURE: 'pressure'>,
+    'original_icon': None,
+    'original_name': 'Ariston NET heating circuit pressure',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET heating circuit pressure',
+    'unit_of_measurement': 'bar',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_heating_circuit_pressure-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'pressure',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET heating circuit pressure',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: 'bar',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_heating_circuit_pressure',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '1.6',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_outside_temp-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': None,
+    'entity_id': 'sensor.nimbus_ariston_net_outside_temp',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET Outside temp',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 1,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.TEMPERATURE: 'temperature'>,
+    'original_icon': None,
+    'original_name': 'Ariston NET Outside temp',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET Outside temp',
+    'unit_of_measurement': <UnitOfTemperature.CELSIUS: '°C'>,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_outside_temp-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'temperature',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET Outside temp',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfTemperature.CELSIUS: '°C'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_outside_temp',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '8.5',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_signal_strength-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.nimbus_ariston_net_signal_strength',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET signal strength',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': None,
+    'original_name': 'Ariston NET signal strength',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET signal strength',
+    'unit_of_measurement': '%',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[sensor][sensor.nimbus_ariston_net_signal_strength-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET signal strength',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.MEASUREMENT: 'measurement'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: '%',
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.nimbus_ariston_net_signal_strength',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '80.0',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[switch][switch.nimbus_ariston_net_automatic_thermoregulation-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'switch',
+    'entity_category': None,
+    'entity_id': 'switch.nimbus_ariston_net_automatic_thermoregulation',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET automatic thermoregulation',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:radiator',
+    'original_name': 'Ariston NET automatic thermoregulation',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET automatic thermoregulation',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[switch][switch.nimbus_ariston_net_automatic_thermoregulation-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET automatic thermoregulation',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:radiator',
+    }),
+    'context': <ANY>,
+    'entity_id': 'switch.nimbus_ariston_net_automatic_thermoregulation',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'on',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[switch][switch.nimbus_ariston_net_is_quiet-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'switch',
+    'entity_category': <EntityCategory.CONFIG: 'config'>,
+    'entity_id': 'switch.nimbus_ariston_net_is_quiet',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET is quiet',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:volume-off',
+    'original_name': 'Ariston NET is quiet',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET is quiet',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[switch][switch.nimbus_ariston_net_is_quiet-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET is quiet',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:volume-off',
+    }),
+    'context': <ANY>,
+    'entity_id': 'switch.nimbus_ariston_net_is_quiet',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'off',
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[water_heater][water_heater.nimbus-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <WaterHeaterCapabilityAttribute.MAX_TEMP: 'max_temp'>: 65,
+      <WaterHeaterCapabilityAttribute.MIN_TEMP: 'min_temp'>: 40,
+      <WaterHeaterCapabilityAttribute.OPERATION_LIST: 'operation_list'>: list([
+        'Time based',
+        'Always active',
+      ]),
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'water_heater',
+    'entity_category': None,
+    'entity_id': 'water_heater.nimbus',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Nimbus',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:water-pump',
+    'original_name': 'Nimbus',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': <WaterHeaterEntityFeature: 3>,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-water_heater',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_full_data_entities_match_snapshot[water_heater][water_heater.nimbus-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <WaterHeaterStateAttribute.CURRENT_TEMPERATURE: 'current_temperature'>: 48,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:water-pump',
+      <WaterHeaterCapabilityAttribute.MAX_TEMP: 'max_temp'>: 65,
+      <WaterHeaterCapabilityAttribute.MIN_TEMP: 'min_temp'>: 40,
+      <WaterHeaterCapabilityAttribute.OPERATION_LIST: 'operation_list'>: list([
+        'Time based',
+        'Always active',
+      ]),
+      <WaterHeaterStateAttribute.OPERATION_MODE: 'operation_mode'>: 'Time based',
+      <EntityStateAttribute.SUPPORTED_FEATURES: 'supported_features'>: <WaterHeaterEntityFeature: 3>,
+      <WaterHeaterStateAttribute.TARGET_TEMP_HIGH: 'target_temp_high'>: None,
+      <WaterHeaterStateAttribute.TARGET_TEMP_LOW: 'target_temp_low'>: None,
+      'target_temp_step': 1.0,
+      <WaterHeaterStateAttribute.TARGET_TEMPERATURE: 'temperature'>: 50,
+    }),
+    'context': <ANY>,
+    'entity_id': 'water_heater.nimbus',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'Time based',
+  })
+# ---
