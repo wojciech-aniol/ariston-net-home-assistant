@@ -8,12 +8,14 @@ from unittest.mock import AsyncMock, MagicMock, call
 from ariston import AristonGalevoDevice
 from ariston.const import PlantMode, ZoneMode
 from homeassistant.components.climate import (
+    ATTR_HVAC_ACTION,
     ATTR_HVAC_MODE,
     ATTR_HVAC_MODES,
     ATTR_PRESET_MODE,
     DOMAIN as CLIMATE_DOMAIN,
     SERVICE_SET_HVAC_MODE,
     SERVICE_SET_PRESET_MODE,
+    HVACAction,
     HVACMode,
 )
 from homeassistant.const import ATTR_ENTITY_ID
@@ -223,3 +225,64 @@ async def test_preset_sets_plant_and_zone_mode(
     )
 
     assert calls.mock_calls == expected_calls
+
+
+@pytest.mark.parametrize(
+    ("plant_mode", "zone_mode", "pump_on", "heat_request", "expected_action"),
+    [
+        (PlantMode.WINTER, ZoneMode.MANUAL, True, True, HVACAction.HEATING),
+        (PlantMode.WINTER, ZoneMode.MANUAL, True, False, HVACAction.IDLE),
+        (PlantMode.WINTER, ZoneMode.MANUAL, False, True, HVACAction.IDLE),
+        (PlantMode.WINTER, ZoneMode.OFF, True, True, HVACAction.OFF),
+        (PlantMode.COOLING_ONLY, ZoneMode.MANUAL, True, False, HVACAction.COOLING),
+        (PlantMode.SUMMER, ZoneMode.MANUAL, True, True, HVACAction.OFF),
+    ],
+    ids=["heating", "pump-for-dhw", "pump-off", "zone-off", "cooling", "summer"],
+)
+async def test_hvac_action_follows_zone(
+    hass: HomeAssistant,
+    properties: dict[str, Any],
+    device: AristonGalevoDevice,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+    plant_mode: PlantMode,
+    zone_mode: ZoneMode,
+    pump_on: bool,
+    heat_request: bool,
+    expected_action: HVACAction,
+) -> None:
+    """Test the action is off for an off zone and heats only on a zone request."""
+    set_item(properties, "PlantMode", value=plant_mode.value)
+    set_item(properties, "ZoneMode", value=zone_mode.value, options=[0, 2, 3])
+    set_item(properties, "IsHeatingPumpOn", value=pump_on)
+    set_item(properties, "ZoneHeatRequest", value=heat_request)
+    await hass.config_entries.async_setup(config_entry.entry_id)
+    await hass.async_block_till_done()
+
+    assert hass.states.get(CLIMATE).attributes[ATTR_HVAC_ACTION] == expected_action
+
+
+async def test_missing_zone_mode_options_offer_only_off(
+    hass: HomeAssistant,
+    properties: dict[str, Any],
+    device: AristonGalevoDevice,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+) -> None:
+    """Test the entity works when the cloud sends no zone mode options."""
+    zone_mode = next(item for item in properties["items"] if item["id"] == "ZoneMode")
+    del zone_mode["options"]
+    calls = await setup_and_record_calls(hass, config_entry, device)
+
+    state = hass.states.get(CLIMATE)
+    assert state.state == HVACMode.HEAT
+    assert state.attributes[ATTR_HVAC_MODES] == [HVACMode.OFF]
+
+    await hass.services.async_call(
+        CLIMATE_DOMAIN,
+        SERVICE_SET_PRESET_MODE,
+        {ATTR_ENTITY_ID: CLIMATE, ATTR_PRESET_MODE: "Off"},
+        blocking=True,
+    )
+
+    assert calls.mock_calls == [call.plant_mode(PlantMode.OFF)]

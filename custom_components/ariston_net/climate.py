@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 import logging
 
 from ariston.const import BsbZoneMode, PlantMode, ZoneMode
@@ -144,20 +145,21 @@ class AristonThermostat(AristonEntity, ClimateEntity):
     def hvac_modes(self) -> list[str]:
         """Return the HVAC modes support by the device."""
         supported_modes = []
-        if self.device.is_zone_mode_options_contains_manual(self.zone):
+        if self._zone_mode_offered(self.device.is_zone_mode_options_contains_manual):
             supported_modes.append(HVACMode.HEAT)
             if (
                 self.device.plant_mode_supported
                 and self.device.is_plant_mode_options_contains_cooling
             ):
                 supported_modes.append(HVACMode.COOL)
-        if self.device.is_zone_mode_options_contains_time_program(self.zone):
+        if self._zone_mode_offered(
+            self.device.is_zone_mode_options_contains_time_program
+        ):
             supported_modes.append(HVACMode.AUTO)
         # Some Nimbus zones have no OFF option, but the plant mode can still
         # turn heating off (OFF or SUMMER, see async_set_hvac_mode).
-        if (
-            self.device.plant_mode_supported
-            or self.device.is_zone_mode_options_contains_off(self.zone)
+        if self.device.plant_mode_supported or self._zone_mode_offered(
+            self.device.is_zone_mode_options_contains_off
         ):
             supported_modes.append(HVACMode.OFF)
 
@@ -166,6 +168,9 @@ class AristonThermostat(AristonEntity, ClimateEntity):
     @property
     def hvac_action(self):
         """Return the current running hvac operation."""
+        if self.hvac_mode == HVACMode.OFF:
+            return HVACAction.OFF
+
         if_flame_on = bool(self.device.is_flame_on_value)
         if_heating_pump_on = bool(
             getattr(self.device, "is_heating_pump_on_value", False)
@@ -175,6 +180,11 @@ class AristonThermostat(AristonEntity, ClimateEntity):
 
         curr_hvac_action = HVACAction.OFF
         if self.device.is_plant_in_heat_mode:
+            # The flame or pump may run for hot water only. BSB has no request.
+            get_request = getattr(self.device, "get_zone_heat_request_value", None)
+            heat_request = get_request(self.zone) if get_request else None
+            if heat_request is not None:
+                if_not_idle = if_not_idle and bool(heat_request)
             curr_hvac_action = HVACAction.HEATING if if_not_idle else HVACAction.IDLE
         if self.device.is_plant_in_cool_mode:
             curr_hvac_action = HVACAction.COOLING if if_not_idle else HVACAction.IDLE
@@ -194,7 +204,7 @@ class AristonThermostat(AristonEntity, ClimateEntity):
         """Set new target hvac mode."""
         if self.device.plant_mode_supported:
             plant_modes = self.device.plant_mode_options
-            zone_modes = self.device.get_zone_mode_options(self.zone)
+            zone_modes = self._zone_mode_options
             current_plant_mode = self.device.plant_mode
 
             if hvac_mode == HVACMode.OFF:
@@ -249,6 +259,15 @@ class AristonThermostat(AristonEntity, ClimateEntity):
 
         self.async_write_ha_state()
 
+    @property
+    def _zone_mode_options(self) -> list[int]:
+        """Return the zone mode options, empty when the cloud sends none."""
+        return self.device.get_zone_mode_options(self.zone) or []
+
+    def _zone_mode_offered(self, contains: Callable[[int], bool]) -> bool:
+        """Return if the zone offers a mode, without failing on no options."""
+        return bool(self._zone_mode_options) and contains(self.zone)
+
     @staticmethod
     def _manual_zone_mode(zone_modes: list[int]) -> ZoneMode:
         """Return the manual zone mode the device offers."""
@@ -270,7 +289,7 @@ class AristonThermostat(AristonEntity, ClimateEntity):
 
         # Get current states
         current_plant_in_cool = self.device.is_plant_in_cool_mode
-        zone_modes = self.device.get_zone_mode_options(self.zone)
+        zone_modes = self._zone_mode_options
         zone_is_off = self.device.get_zone_mode(self.zone) == ZoneMode.OFF
 
         # When leaving cooling, set the zone to manual heat before the plant mode
@@ -287,7 +306,7 @@ class AristonThermostat(AristonEntity, ClimateEntity):
 
         # Special handling for OFF mode
         if plant_mode == PlantMode.OFF:
-            if self.device.is_zone_mode_options_contains_off(self.zone):
+            if self._zone_mode_offered(self.device.is_zone_mode_options_contains_off):
                 await self.device.async_set_zone_mode(ZoneMode.OFF, self.zone)
         # The OFF preset turns the zone off, so turn it on again to heat or cool
         elif zone_is_off and plant_mode in [
