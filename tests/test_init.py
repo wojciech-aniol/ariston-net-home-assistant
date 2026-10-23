@@ -3,14 +3,18 @@
 from __future__ import annotations
 
 import copy
-from datetime import date
 import logging
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
 from ariston import AristonBsbDevice, AristonGalevoDevice
 from ariston.ariston_api import ConnectionException
-from ariston.const import ConsumptionTimeInterval, ConsumptionType
+from ariston.const import (
+    ARISTON_API_URL,
+    ARISTON_USER_AGENT,
+    ConsumptionTimeInterval,
+    ConsumptionType,
+)
 from homeassistant.config_entries import SOURCE_REAUTH, ConfigEntryState
 from homeassistant.const import (
     ATTR_DEVICE_ID,
@@ -25,6 +29,8 @@ import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.ariston_net.const import (
+    API_URL_SETTING,
+    API_USER_AGENT,
     BUS_ERRORS_COORDINATOR,
     DOMAIN,
     ENABLE_BUS_ERRORS,
@@ -95,6 +101,41 @@ async def test_setup_entry(
     assert hass.states.get(HEATING_PUMP).state == STATE_ON
     assert hass.states.get(DHW_CURRENT_TEMP).state == "47.5"
     assert error_logs(caplog) == []
+
+
+@pytest.mark.parametrize(
+    ("entry_data", "expected_url", "expected_user_agent"),
+    [
+        ({}, ARISTON_API_URL, ARISTON_USER_AGENT),
+        (
+            {
+                API_URL_SETTING: "https://cloud.example.com/api/v2/",
+                API_USER_AGENT: "TestAgent/1.0",
+            },
+            "https://cloud.example.com/api/v2/",
+            "TestAgent/1.0",
+        ),
+    ],
+    ids=["default", "custom"],
+)
+async def test_setup_connects_with_saved_api_settings(
+    hass: HomeAssistant,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+    entry_data: dict[str, str],
+    expected_url: str,
+    expected_user_agent: str,
+) -> None:
+    """Test setup logs in with the saved API URL and user agent."""
+    hass.config_entries.async_update_entry(
+        config_entry, data=config_entry.data | entry_data
+    )
+
+    await setup_integration(hass, config_entry)
+
+    mock_ariston.async_connect.assert_awaited_once_with(
+        "user@example.com", "test-password", expected_url, expected_user_agent
+    )
 
 
 @pytest.mark.parametrize(
@@ -339,17 +380,20 @@ async def test_create_vacation_service_sets_end_date(
 async def test_create_vacation_service_without_date_ends_holiday(
     hass: HomeAssistant,
     api: MagicMock,
-    device: AristonGalevoDevice,
-    init_integration: MockConfigEntry,
+    properties: dict[str, Any],
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
 ) -> None:
     """Test the vacation service with no date turns holiday off."""
-    await device.async_set_holiday(date(2026, 11, 1))
-    api.async_set_holiday.reset_mock()
+    holiday = next(item for item in properties["items"] if item["id"] == "Holiday")
+    holiday.update(value=True, expiresOn="2026-11-01T00:00:00")
+    await setup_integration(hass, config_entry)
+    assert hass.states.get(HOLIDAY).state == STATE_ON
 
     await hass.services.async_call(
         DOMAIN,
         "create_vacation",
-        {ATTR_DEVICE_ID: device_id(hass, init_integration)},
+        {ATTR_DEVICE_ID: device_id(hass, config_entry)},
         blocking=True,
     )
 
@@ -371,8 +415,7 @@ async def test_services_missing_for_other_systems(
         api, copy.deepcopy(CLOUD_DEVICE) | {"sys": 5}
     )
 
-    with patch("custom_components.ariston_net.PLATFORMS", ["binary_sensor"]):
-        await setup_integration(hass, config_entry)
+    await setup_integration(hass, config_entry)
 
     assert config_entry.state is ConfigEntryState.LOADED
     assert not hass.services.has_service(DOMAIN, "set_item_by_id")
