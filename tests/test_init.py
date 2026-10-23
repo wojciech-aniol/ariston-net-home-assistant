@@ -8,12 +8,11 @@ from unittest.mock import MagicMock
 
 from ariston.ariston_api import ConnectionException
 from ariston.const import ConsumptionTimeInterval, ConsumptionType
-import pytest
-from pytest_homeassistant_custom_component.common import MockConfigEntry
-
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.const import STATE_ON, STATE_UNAVAILABLE, STATE_UNKNOWN
 from homeassistant.core import HomeAssistant
+import pytest
+from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.ariston_net.const import (
     BUS_ERRORS_COORDINATOR,
@@ -211,9 +210,7 @@ async def test_energy_polling_can_be_disabled(
     config_entry: MockConfigEntry,
 ) -> None:
     """Test the energy option skips the energy endpoint and sensors."""
-    hass.config_entries.async_update_entry(
-        config_entry, options={ENABLE_ENERGY: False}
-    )
+    hass.config_entries.async_update_entry(config_entry, options={ENABLE_ENERGY: False})
     api.async_get_consumptions_sequences.return_value = [CH_ENERGY_SEQUENCE]
 
     await setup_integration(hass, config_entry)

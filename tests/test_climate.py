@@ -7,9 +7,6 @@ from unittest.mock import AsyncMock, MagicMock
 
 from ariston import AristonGalevoDevice
 from ariston.const import PlantMode
-import pytest
-from pytest_homeassistant_custom_component.common import MockConfigEntry
-
 from homeassistant.components.climate import (
     ATTR_HVAC_MODE,
     ATTR_HVAC_MODES,
@@ -19,6 +16,8 @@ from homeassistant.components.climate import (
 )
 from homeassistant.const import ATTR_ENTITY_ID
 from homeassistant.core import HomeAssistant
+import pytest
+from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from .conftest import PLANT_MODE_TEXTS
 

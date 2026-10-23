@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 
-from ariston.const import PlantMode, ZoneMode, BsbZoneMode
+from ariston.const import BsbZoneMode, PlantMode, ZoneMode
 from homeassistant.components.climate import (
     ClimateEntity,
     ClimateEntityFeature,
@@ -146,9 +146,11 @@ class AristonThermostat(AristonEntity, ClimateEntity):
         supported_modes = []
         if self.device.is_zone_mode_options_contains_manual(self.zone):
             supported_modes.append(HVACMode.HEAT)
-            if self.device.plant_mode_supported:
-                if self.device.is_plant_mode_options_contains_cooling:
-                    supported_modes.append(HVACMode.COOL)
+            if (
+                self.device.plant_mode_supported
+                and self.device.is_plant_mode_options_contains_cooling
+            ):
+                supported_modes.append(HVACMode.COOL)
         if self.device.is_zone_mode_options_contains_time_program(self.zone):
             supported_modes.append(HVACMode.AUTO)
         # Some Nimbus zones have no OFF option, but the plant mode can still
@@ -165,21 +167,17 @@ class AristonThermostat(AristonEntity, ClimateEntity):
     def hvac_action(self):
         """Return the current running hvac operation."""
         if_flame_on = bool(self.device.is_flame_on_value)
-        if_heating_pump_on = bool(getattr(self.device, 'is_heating_pump_on_value', False))
+        if_heating_pump_on = bool(
+            getattr(self.device, "is_heating_pump_on_value", False)
+        )
 
         if_not_idle = if_flame_on or if_heating_pump_on
 
         curr_hvac_action = HVACAction.OFF
         if self.device.is_plant_in_heat_mode:
-            if if_not_idle:
-                curr_hvac_action = HVACAction.HEATING
-            else:
-                curr_hvac_action = HVACAction.IDLE
+            curr_hvac_action = HVACAction.HEATING if if_not_idle else HVACAction.IDLE
         if self.device.is_plant_in_cool_mode:
-            if if_not_idle:
-                curr_hvac_action = HVACAction.COOLING
-            else:
-                curr_hvac_action = HVACAction.IDLE
+            curr_hvac_action = HVACAction.COOLING if if_not_idle else HVACAction.IDLE
         return curr_hvac_action
 
     @property
@@ -273,19 +271,23 @@ class AristonThermostat(AristonEntity, ClimateEntity):
         current_plant_in_cool = self.device.is_plant_in_cool_mode
         zone_modes = self.device.get_zone_mode_options(self.zone)
 
-        # When switching away from cooling mode, ensure zone is in appropriate state
-        if current_plant_in_cool and plant_mode != PlantMode.COOLING:
-            # Set zone to manual heat mode before changing plant mode
-            if ZoneMode.MANUAL in zone_modes:
-                await self.device.async_set_zone_mode(ZoneMode.MANUAL, self.zone)
+        # When leaving cooling, set the zone to manual heat before the plant mode
+        if (
+            current_plant_in_cool
+            and plant_mode != PlantMode.COOLING
+            and ZoneMode.MANUAL in zone_modes
+        ):
+            await self.device.async_set_zone_mode(ZoneMode.MANUAL, self.zone)
 
         # Set the plant mode
         await self.device.async_set_plant_mode(plant_mode)
 
         # Special handling for OFF mode
-        if plant_mode == PlantMode.OFF:
-            if self.device.is_zone_mode_options_contains_off(self.zone):
-                await self.device.async_set_zone_mode(BsbZoneMode.OFF, self.zone)
+        if (
+            plant_mode == PlantMode.OFF
+            and self.device.is_zone_mode_options_contains_off(self.zone)
+        ):
+            await self.device.async_set_zone_mode(BsbZoneMode.OFF, self.zone)
 
         # Refresh coordinator to get updated device state
         await self.coordinator.async_request_refresh()

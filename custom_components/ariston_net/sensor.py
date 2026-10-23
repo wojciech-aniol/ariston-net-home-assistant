@@ -33,9 +33,7 @@ async def async_setup_entry(
     skipped_energy_descriptions: list[AristonSensorEntityDescription] = []
 
     for description in ARISTON_SENSOR_TYPES:
-        coordinator: DeviceDataUpdateCoordinator = coordinators[
-            description.coordinator
-        ]
+        coordinator: DeviceDataUpdateCoordinator = coordinators[description.coordinator]
         if _is_sensor_available(coordinator, description):
             ariston_sensors.append(
                 AristonSensor(
@@ -96,7 +94,10 @@ class AristonSensor(AristonEntity, SensorEntity):
     def native_value(self):
         """Return value of sensor."""
         # Without a real reset time, statistics count the value again after a restart.
-        if self.entity_description.get_last_reset is not None and self.last_reset is None:
+        if (
+            self.entity_description.get_last_reset is not None
+            and self.last_reset is None
+        ):
             return None
         return self.entity_description.get_native_value(self)
 

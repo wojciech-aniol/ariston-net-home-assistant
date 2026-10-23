@@ -4,11 +4,10 @@ from __future__ import annotations
 
 from unittest.mock import MagicMock
 
-from pytest_homeassistant_custom_component.common import MockConfigEntry
-
 from homeassistant.const import CONF_SCAN_INTERVAL
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResultType
+from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.ariston_net.const import (
     BUS_ERRORS_SCAN_INTERVAL,

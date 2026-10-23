@@ -4,10 +4,9 @@ from __future__ import annotations
 
 import json
 
-from pytest_homeassistant_custom_component.common import MockConfigEntry
-
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.json import JSONEncoder
+from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.ariston_net.diagnostics import (
     async_get_config_entry_diagnostics,

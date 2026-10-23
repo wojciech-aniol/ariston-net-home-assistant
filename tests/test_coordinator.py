@@ -7,9 +7,8 @@ from unittest.mock import AsyncMock
 
 from ariston import AristonGalevoDevice
 from ariston.ariston_api import ConnectionException
-import pytest
-
 from homeassistant.core import HomeAssistant
+import pytest
 
 from custom_components.ariston_net.const import COORDINATOR
 from custom_components.ariston_net.coordinator import DeviceDataUpdateCoordinator

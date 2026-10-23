@@ -4,8 +4,6 @@ from __future__ import annotations
 
 import logging
 
-import voluptuous as vol
-
 from ariston import Ariston, DeviceAttribute, SystemType
 from ariston.const import ARISTON_API_URL, ARISTON_USER_AGENT
 from homeassistant.config_entries import ConfigEntry
@@ -21,6 +19,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
 from homeassistant.helpers import config_validation as cv, device_registry as dr
 from homeassistant.util.unit_system import METRIC_SYSTEM
+import voluptuous as vol
 
 from .const import (
     API_URL_SETTING,
