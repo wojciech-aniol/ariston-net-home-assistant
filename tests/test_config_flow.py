@@ -108,6 +108,23 @@ def schema_defaults(result: dict[str, Any]) -> dict[str, Any]:
     return {str(key): key.default() for key in result["data_schema"].schema}
 
 
+def form_fields(result: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return the fields of a form as the frontend gets them."""
+    return probatio.to_field_list(
+        result["data_schema"], custom_serializer=cv.custom_serializer
+    )
+
+
+def suggested_values(fields: list[dict[str, Any]]) -> dict[str, Any]:
+    """Return the suggested value of each field, with sections nested."""
+    return {
+        field["name"]: suggested_values(field["schema"])
+        if field["type"] == "expandable"
+        else field.get("description", {}).get("suggested_value")
+        for field in fields
+    }
+
+
 async def test_user_step_shows_form(hass: HomeAssistant) -> None:
     """Test the flow starts with the login form."""
     result = await hass.config_entries.flow.async_init(
@@ -192,6 +209,17 @@ async def test_user_step_refused_login_shows_invalid_auth(
     assert result["step_id"] == "user"
     assert result["errors"] == {"base": "invalid_auth"}
     flow_ariston.async_discover.assert_not_called()
+
+
+async def test_user_step_error_keeps_entered_values(
+    hass: HomeAssistant, flow_ariston: MagicMock
+) -> None:
+    """Test the form after a login error keeps the entered values, section too."""
+    flow_ariston.async_connect.return_value = False
+
+    result = await start_user_flow(hass)
+
+    assert suggested_values(form_fields(result)) == USER_INPUT
 
 
 def login_error(cause: Exception) -> ConnectionException:
@@ -467,10 +495,7 @@ async def test_options_flow_shows_minimum_and_unit(
     await hass.config_entries.async_setup(config_entry.entry_id)
     result = await hass.config_entries.options.async_init(config_entry.entry_id)
 
-    fields = probatio.to_field_list(
-        result["data_schema"], custom_serializer=cv.custom_serializer
-    )
-    number = next(field for field in fields if field["name"] == option)
+    number = next(field for field in form_fields(result) if field["name"] == option)
     assert number["selector"]["number"] == {
         "min": minimum,
         "step": 1,
