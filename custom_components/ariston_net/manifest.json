@@ -9,5 +9,5 @@
   "issue_tracker": "https://github.com/wojciech-aniol/ariston-remotethermo-home-assistant-v3/issues",
   "loggers": ["ariston"],
   "requirements": ["ariston==0.19.9"],
-  "version": "0.21.0"
+  "version": "0.21.1"
 }
