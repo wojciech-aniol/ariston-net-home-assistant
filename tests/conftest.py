@@ -8,6 +8,7 @@ from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
 from ariston import AristonGalevoDevice
+from ariston.ariston_api import ConnectionException
 from homeassistant.const import CONF_DEVICE, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
 import pytest
@@ -16,8 +17,10 @@ from pytest_homeassistant_custom_component.syrupy import HomeAssistantSnapshotEx
 from syrupy.assertion import SnapshotAssertion
 
 from custom_components.ariston_net.const import DOMAIN, ENERGY_COORDINATOR
+from custom_components.ariston_net.menu_items import BLOCKED_MENU_IDS
 
 GATEWAY = "F0AD4E000001"
+BLOCKED_IDS = ",".join(str(item_id) for item_id in BLOCKED_MENU_IDS)
 
 CLOUD_DEVICE: dict[str, Any] = {
     "gw": GATEWAY,
@@ -236,8 +239,17 @@ def api(features: dict[str, Any], properties: dict[str, Any]) -> MagicMock:
     api.async_get_features_for_device = AsyncMock(return_value=features)
     api.async_get_properties = AsyncMock(return_value=properties)
     api.async_get_menu_items = AsyncMock(return_value=[])
-    # The integration asks for the extra menu items through this library method.
-    api._async_get = AsyncMock(return_value=[])
+    # The integration sends two menu items requests through _async_get: the
+    # polled one, and one at setup for the blocked IDs (refused like in the cloud).
+    api.menu_items_request = AsyncMock(return_value=[])
+    api.blocked_menu_items_request = AsyncMock(side_effect=ConnectionException(500))
+
+    async def async_get(url: str) -> Any:
+        if f"menuItems={BLOCKED_IDS}" in url:
+            return await api.blocked_menu_items_request(url)
+        return await api.menu_items_request(url)
+
+    api._async_get = AsyncMock(side_effect=async_get)
     api.async_get_bus_errors = AsyncMock(return_value=[])
     api.async_get_consumptions_sequences = AsyncMock(return_value=[])
     api.async_get_consumptions_settings = AsyncMock(return_value={})
@@ -258,7 +270,7 @@ def full_galevo(
     features.update(copy.deepcopy(FULL_FEATURES))
     properties["items"].extend(copy.deepcopy(FULL_ITEMS))
     device.attributes["hpmpSys"] = True
-    api._async_get.return_value = copy.deepcopy(MENU_ITEMS)
+    api.menu_items_request.return_value = copy.deepcopy(MENU_ITEMS)
     api.async_get_bus_errors.return_value = copy.deepcopy(BUS_ERRORS)
     api.async_get_consumptions_sequences.return_value = copy.deepcopy(
         CONSUMPTIONS_SEQUENCES

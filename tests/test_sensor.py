@@ -43,7 +43,7 @@ async def test_sensor_unit_comes_from_device(
     config_entry: MockConfigEntry,
 ) -> None:
     """Test a sensor with a unit getter shows the unit the device sends."""
-    api._async_get.return_value = [{"id": 119, "value": -60, "unit": "dBm"}]
+    api.menu_items_request.return_value = [{"id": 119, "value": -60, "unit": "dBm"}]
 
     await setup_integration(hass, config_entry)
 
