@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 
-import copy
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock
 
-from ariston import AristonBsbDevice, AristonGalevoDevice
+from ariston import AristonGalevoDevice
 from ariston.ariston_api import ConnectionException
 from homeassistant.config_entries import SOURCE_REAUTH
 from homeassistant.const import ATTR_DEVICE_ID, ATTR_TEMPERATURE, STATE_OFF, STATE_ON
@@ -18,7 +17,7 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.ariston_net.const import DOMAIN
 
-from .conftest import CLOUD_DEVICE, GATEWAY, setup_integration, tracebacks
+from .conftest import GATEWAY, setup_integration, tracebacks
 
 HOLIDAY = "binary_sensor.nimbus_ariston_net_holiday_mode"
 WATER_HEATER = "water_heater.nimbus"
@@ -162,23 +161,17 @@ async def test_service_unloaded_entry_raises(
     assert exc_info.value.translation_key == "entry_not_loaded"
 
 
+@pytest.mark.parametrize("device_type", ["bsb"])
 @pytest.mark.parametrize("service", SERVICE_DATA)
 async def test_service_other_system_raises(
     hass: HomeAssistant,
     api: MagicMock,
-    mock_ariston: MagicMock,
-    config_entry: MockConfigEntry,
+    init_integration: MockConfigEntry,
     service: str,
 ) -> None:
     """Test a BSB device is refused, as the services are GALEVO only."""
-    api.async_get_bsb_plant_data = AsyncMock(return_value={})
-    mock_ariston.async_hello.return_value = AristonBsbDevice(
-        api, copy.deepcopy(CLOUD_DEVICE) | {"sys": 5}
-    )
-    await setup_integration(hass, config_entry)
-
     with pytest.raises(ServiceValidationError) as exc_info:
-        await call_service(hass, service, device_id(hass, config_entry))
+        await call_service(hass, service, device_id(hass, init_integration))
 
     assert exc_info.value.translation_key == "not_galevo"
     api.async_set_holiday.assert_not_called()
