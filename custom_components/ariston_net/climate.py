@@ -3,36 +3,81 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+from dataclasses import dataclass
 import logging
 
-from ariston.const import BsbZoneMode, PlantMode, ZoneMode
+from ariston.const import BsbZoneMode, PlantMode, SystemType, ZoneMode
 from homeassistant.components.climate import (
     ClimateEntity,
+    ClimateEntityDescription,
     ClimateEntityFeature,
     HVACAction,
     HVACMode,
 )
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_TEMPERATURE
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
-from .const import ARISTON_CLIMATE_TYPES, DOMAIN, AristonClimateEntityDescription
-from .coordinator import DeviceDataUpdateCoordinator
-from .entity import AristonEntity, is_entity_supported
+from .const import (
+    ATTR_ECONOMY_TEMP,
+    ATTR_HEAT_REQUEST,
+    ATTR_ZONE,
+    EXTRA_STATE_ATTRIBUTE,
+    EXTRA_STATE_DEVICE_METHOD,
+)
+from .coordinator import AristonConfigEntry, DeviceDataUpdateCoordinator
+from .entity import AristonBaseEntityDescription, AristonEntity, is_entity_supported
 
 _LOGGER = logging.getLogger(__name__)
 
 
-async def async_setup_entry(
-    hass: HomeAssistant, entry: ConfigEntry, async_add_entities
+@dataclass(kw_only=True, frozen=True)
+class AristonClimateEntityDescription(
+    ClimateEntityDescription, AristonBaseEntityDescription
 ):
+    """A class that describes climate entities."""
+
+
+ARISTON_CLIMATE_TYPES: list[AristonClimateEntityDescription] = [
+    AristonClimateEntityDescription(
+        key="AristonClimate",
+        extra_states=[
+            {
+                EXTRA_STATE_ATTRIBUTE: ATTR_HEAT_REQUEST,
+                EXTRA_STATE_DEVICE_METHOD: lambda entity: (
+                    entity.device.get_zone_heat_request_value(entity.zone)
+                ),
+            },
+            {
+                EXTRA_STATE_ATTRIBUTE: ATTR_ECONOMY_TEMP,
+                EXTRA_STATE_DEVICE_METHOD: lambda entity: (
+                    entity.device.get_zone_economy_temp_value(entity.zone)
+                ),
+            },
+            {
+                EXTRA_STATE_ATTRIBUTE: ATTR_ZONE,
+                EXTRA_STATE_DEVICE_METHOD: lambda entity: entity.zone,
+            },
+        ],
+        system_types=[SystemType.GALEVO],
+    ),
+    AristonClimateEntityDescription(
+        key="AristonClimate",
+        system_types=[SystemType.BSB],
+    ),
+]
+
+
+async def async_setup_entry(
+    hass: HomeAssistant,
+    entry: AristonConfigEntry,
+    async_add_entities: AddConfigEntryEntitiesCallback,
+) -> None:
     """Set up the Ariston device from config entry."""
     ariston_climates: list[AristonThermostat] = []
 
     for description in ARISTON_CLIMATE_TYPES:
-        coordinator: DeviceDataUpdateCoordinator = hass.data[DOMAIN][entry.unique_id][
-            description.coordinator
-        ]
+        coordinator = entry.runtime_data.get_coordinator(description.coordinator)
         if is_entity_supported(coordinator, description):
             for zone_number in coordinator.device.zone_numbers:
                 ariston_climates.append(
@@ -49,6 +94,8 @@ async def async_setup_entry(
 class AristonThermostat(AristonEntity, ClimateEntity):
     """Ariston Thermostat Device."""
 
+    entity_description: AristonClimateEntityDescription
+
     def __init__(
         self,
         zone: int,
@@ -57,16 +104,12 @@ class AristonThermostat(AristonEntity, ClimateEntity):
     ) -> None:
         """Initialize the thermostat."""
         super().__init__(coordinator, description, zone)
+        self._attr_unique_id = f"{self.device.gateway}_{zone}"
 
     @property
     def name(self) -> str:
         """Return the name of the device."""
         return f"{self.device.name}"
-
-    @property
-    def unique_id(self) -> str:
-        """Return a unique id for the device."""
-        return f"{self.device.gateway}_{self.zone}"
 
     @property
     def icon(self):

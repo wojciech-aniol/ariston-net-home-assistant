@@ -2,25 +2,236 @@
 
 from __future__ import annotations
 
-from homeassistant.components.number import NumberEntity
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.core import HomeAssistant
+from collections.abc import Callable, Coroutine
+from dataclasses import dataclass
+import sys
+from typing import Any
 
-from .const import ARISTON_NUMBER_TYPES, DOMAIN, AristonNumberEntityDescription
-from .coordinator import DeviceDataUpdateCoordinator
-from .entity import AristonEntity, is_entity_supported
+from ariston.const import (
+    ConsumptionProperties,
+    DeviceFeatures,
+    EvoOneDeviceProperties,
+    MedDeviceSettings,
+    NuosSplitProperties,
+    SeDeviceSettings,
+    SlpDeviceSettings,
+    SystemType,
+    ThermostatProperties,
+    WheType,
+)
+from homeassistant.components.number import NumberEntity, NumberEntityDescription
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity import EntityCategory
+from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
+
+from .const import ENERGY_COORDINATOR, NAME
+from .coordinator import AristonConfigEntry, DeviceDataUpdateCoordinator
+from .entity import AristonBaseEntityDescription, AristonEntity, is_entity_supported
+
+
+@dataclass(kw_only=True, frozen=True)
+class AristonNumberEntityDescription(
+    NumberEntityDescription, AristonBaseEntityDescription
+):
+    """A class that describes switch entities."""
+
+    set_native_value: Callable[[Any, float], Coroutine]
+    get_native_value: Callable[[Any], Coroutine]
+    get_native_min_value: Callable[[Any], float] | None = None
+    get_native_max_value: Callable[[Any], float | None] | None = None
+    get_native_step: Callable[[Any], Coroutine] | None = None
+
+
+ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
+    AristonNumberEntityDescription(
+        key=ConsumptionProperties.ELEC_COST,
+        name=f"{NAME} elec cost",
+        icon="mdi:currency-sign",
+        entity_category=EntityCategory.CONFIG,
+        native_min_value=0,
+        native_max_value=sys.maxsize,
+        native_step=0.01,
+        device_features=[DeviceFeatures.HAS_METERING],
+        coordinator=ENERGY_COORDINATOR,
+        get_native_value=lambda entity: entity.device.elect_cost,
+        set_native_value=lambda entity, value: entity.device.async_set_elect_cost(
+            value
+        ),
+        system_types=[SystemType.GALEVO],
+    ),
+    AristonNumberEntityDescription(
+        key=ConsumptionProperties.GAS_COST,
+        name=f"{NAME} gas cost",
+        icon="mdi:currency-sign",
+        entity_category=EntityCategory.CONFIG,
+        native_min_value=0,
+        native_max_value=sys.maxsize,
+        native_step=0.01,
+        device_features=[DeviceFeatures.HAS_METERING],
+        coordinator=ENERGY_COORDINATOR,
+        get_native_value=lambda entity: entity.device.gas_cost,
+        set_native_value=lambda entity, value: entity.device.async_set_gas_cost(value),
+        system_types=[SystemType.GALEVO],
+    ),
+    AristonNumberEntityDescription(
+        key=MedDeviceSettings.MED_MAX_SETPOINT_TEMPERATURE,
+        name=f"{NAME} max setpoint temperature",
+        icon="mdi:thermometer-high",
+        entity_category=EntityCategory.CONFIG,
+        get_native_min_value=lambda entity: (
+            entity.device.water_heater_maximum_setpoint_temperature_minimum
+        ),
+        get_native_max_value=lambda entity: (
+            entity.device.water_heater_maximum_setpoint_temperature_maximum
+        ),
+        native_step=1,
+        get_native_value=lambda entity: (
+            entity.device.water_heater_maximum_setpoint_temperature
+        ),
+        set_native_value=lambda entity, value: (
+            entity.device.async_set_max_setpoint_temp(value)
+        ),
+        system_types=[SystemType.VELIS],
+        whe_types=[
+            WheType.Andris2,
+            WheType.Evo2,
+            WheType.Lux,
+            WheType.Lux2,
+            WheType.Lydos,
+            WheType.LydosHybrid,
+            WheType.NuosSplit,
+        ],
+    ),
+    AristonNumberEntityDescription(
+        key=SlpDeviceSettings.SLP_MIN_SETPOINT_TEMPERATURE,
+        name=f"{NAME} min setpoint temperature",
+        icon="mdi:thermometer-low",
+        entity_category=EntityCategory.CONFIG,
+        get_native_min_value=lambda entity: (
+            entity.device.water_heater_minimum_setpoint_temperature_minimum
+        ),
+        get_native_max_value=lambda entity: (
+            entity.device.water_heater_minimum_setpoint_temperature_maximum
+        ),
+        native_step=1,
+        get_native_value=lambda entity: (
+            entity.device.water_heater_minimum_setpoint_temperature
+        ),
+        set_native_value=lambda entity, value: (
+            entity.device.async_set_min_setpoint_temp(value)
+        ),
+        system_types=[SystemType.VELIS],
+        whe_types=[WheType.NuosSplit],
+    ),
+    AristonNumberEntityDescription(
+        key=NuosSplitProperties.REDUCED_TEMP,
+        name=f"{NAME} reduced temperature",
+        icon="mdi:thermometer-chevron-down",
+        entity_category=EntityCategory.CONFIG,
+        get_native_min_value=lambda entity: (
+            entity.device.water_heater_minimum_temperature
+        ),
+        get_native_max_value=lambda entity: (
+            entity.device.water_heater_maximum_temperature
+        ),
+        native_step=1,
+        get_native_value=lambda entity: entity.device.water_heater_reduced_temperature,
+        set_native_value=lambda entity, value: (
+            entity.device.async_set_water_heater_reduced_temperature(value)
+        ),
+        system_types=[SystemType.VELIS],
+        whe_types=[WheType.NuosSplit],
+    ),
+    AristonNumberEntityDescription(
+        key=ThermostatProperties.HEATING_FLOW_TEMP,
+        name=f"{NAME} heating flow temperature",
+        icon="mdi:thermometer",
+        entity_category=EntityCategory.CONFIG,
+        zone=True,
+        get_native_min_value=lambda entity: entity.device.get_heating_flow_temp_min(
+            entity.zone
+        ),
+        get_native_max_value=lambda entity: entity.device.get_heating_flow_temp_max(
+            entity.zone
+        ),
+        get_native_step=lambda entity: entity.device.get_heating_flow_temp_step(
+            entity.zone
+        ),
+        get_native_value=lambda entity: entity.device.get_heating_flow_temp_value(
+            entity.zone
+        ),
+        set_native_value=lambda entity, value: (
+            entity.device.async_set_heating_flow_temp(value, entity.zone)
+        ),
+        system_types=[SystemType.GALEVO],
+    ),
+    AristonNumberEntityDescription(
+        key=ThermostatProperties.HEATING_FLOW_OFFSET,
+        name=f"{NAME} heating flow offset",
+        icon="mdi:progress-wrench",
+        entity_category=EntityCategory.CONFIG,
+        zone=True,
+        get_native_min_value=lambda entity: entity.device.get_heating_flow_offset_min(
+            entity.zone
+        ),
+        get_native_max_value=lambda entity: entity.device.get_heating_flow_offset_max(
+            entity.zone
+        ),
+        get_native_step=lambda entity: entity.device.get_heating_flow_offset_step(
+            entity.zone
+        ),
+        get_native_value=lambda entity: entity.device.get_heating_flow_offset_value(
+            entity.zone
+        ),
+        set_native_value=lambda entity, value: (
+            entity.device.async_set_heating_flow_offset(value, entity.zone)
+        ),
+        system_types=[SystemType.GALEVO],
+    ),
+    AristonNumberEntityDescription(
+        key=EvoOneDeviceProperties.AV_SHW,
+        name=f"{NAME} requested number of showers",
+        icon="mdi:shower-head",
+        native_min_value=0,
+        get_native_max_value=lambda entity: entity.device.max_req_shower,
+        native_step=1,
+        get_native_value=lambda entity: entity.device.req_shower,
+        set_native_value=lambda entity, value: (
+            entity.device.async_set_water_heater_number_of_showers(int(value))
+        ),
+        whe_types=[WheType.Evo],
+    ),
+    AristonNumberEntityDescription(
+        key=SeDeviceSettings.SE_ANTI_COOLING_TEMPERATURE,
+        name=f"{NAME} anti cooling temperature",
+        icon="mdi:thermometer-alert",
+        entity_category=EntityCategory.CONFIG,
+        get_native_min_value=lambda entity: (
+            entity.device.anti_cooling_temperature_minimum
+        ),
+        get_native_max_value=lambda entity: (
+            entity.device.anti_cooling_temperature_maximum
+        ),
+        native_step=1,
+        get_native_value=lambda entity: entity.device.anti_cooling_temperature_value,
+        set_native_value=lambda entity, value: (
+            entity.device.async_set_cooling_temperature_value(int(value))
+        ),
+        whe_types=[WheType.LydosHybrid],
+    ),
+]
 
 
 async def async_setup_entry(
-    hass: HomeAssistant, entry: ConfigEntry, async_add_entities
+    hass: HomeAssistant,
+    entry: AristonConfigEntry,
+    async_add_entities: AddConfigEntryEntitiesCallback,
 ) -> None:
     """Set up the Ariston numbers from config entry."""
     ariston_numbers: list[AristonNumber] = []
 
     for description in ARISTON_NUMBER_TYPES:
-        coordinator: DeviceDataUpdateCoordinator = hass.data[DOMAIN][entry.unique_id][
-            description.coordinator
-        ]
+        coordinator = entry.runtime_data.get_coordinator(description.coordinator)
         if is_entity_supported(coordinator, description):
             if description.zone:
                 for zone_number in coordinator.device.zone_numbers:
@@ -40,6 +251,8 @@ async def async_setup_entry(
 class AristonNumber(AristonEntity, NumberEntity):
     """Base class for specific ariston numbers."""
 
+    entity_description: AristonNumberEntityDescription
+
     def __init__(
         self,
         coordinator: DeviceDataUpdateCoordinator,
@@ -47,14 +260,9 @@ class AristonNumber(AristonEntity, NumberEntity):
         zone: int = 0,
     ) -> None:
         """Initialize the entity."""
+        # Set before the base class, which builds the unique ID from it.
+        self._attr_name = f"{description.name} {zone}" if zone else description.name
         super().__init__(coordinator, description, zone)
-
-    @property
-    def name(self):
-        """Return the name of the entity."""
-        if self.zone:
-            return f"{self.entity_description.name} {self.zone}"
-        return self.entity_description.name
 
     @property
     def native_value(self):

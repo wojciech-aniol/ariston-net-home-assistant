@@ -12,6 +12,8 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.ariston_net.const import ATTR_HOLIDAY
 
+from .conftest import setup_integration
+
 HOLIDAY = "binary_sensor.nimbus_ariston_net_holiday_mode"
 FLAME = "binary_sensor.nimbus_ariston_net_is_flame_on"
 HEATING_PUMP = "binary_sensor.nimbus_ariston_net_is_heating_pump_on"
@@ -21,12 +23,6 @@ def set_item(properties: dict[str, Any], item_id: str, **values: Any) -> None:
     """Change one item the fake cloud sends."""
     item = next(item for item in properties["items"] if item["id"] == item_id)
     item.update(values)
-
-
-async def setup_integration(hass: HomeAssistant, entry: MockConfigEntry) -> None:
-    """Set up the config entry."""
-    await hass.config_entries.async_setup(entry.entry_id)
-    await hass.async_block_till_done()
 
 
 @pytest.mark.parametrize(

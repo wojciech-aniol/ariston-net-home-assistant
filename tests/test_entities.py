@@ -11,24 +11,16 @@ from homeassistant.helpers import device_registry as dr
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.ariston_net.const import (
-    COORDINATOR,
-    DOMAIN,
-    EXTRA_STATE_ATTRIBUTE,
+from custom_components.ariston_net.const import EXTRA_STATE_ATTRIBUTE
+from custom_components.ariston_net.sensor import (
+    AristonSensor,
     AristonSensorEntityDescription,
 )
-from custom_components.ariston_net.sensor import AristonSensor
 
-from .conftest import GATEWAY
+from .conftest import runtime_data, setup_integration
 
 FLAME = "binary_sensor.nimbus_ariston_net_is_flame_on"
 CH_RETURN_TEMP = "sensor.nimbus_ariston_net_ch_return_temp"
-
-
-async def setup_integration(hass: HomeAssistant, entry: MockConfigEntry) -> None:
-    """Set up the config entry."""
-    await hass.config_entries.async_setup(entry.entry_id)
-    await hass.async_block_till_done()
 
 
 @pytest.mark.parametrize(("has_flame", "expected"), [(True, True), (False, False)])
@@ -114,7 +106,7 @@ async def test_extra_state_without_method_is_skipped(
 
     No description has one today, so the entity is built directly.
     """
-    coordinator = hass.data[DOMAIN][GATEWAY][COORDINATOR]
+    coordinator = runtime_data(hass).coordinator
     description = AristonSensorEntityDescription(
         key="no_method",
         get_native_value=lambda entity: 1,

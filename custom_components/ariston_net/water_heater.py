@@ -2,37 +2,85 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 import logging
 
-from ariston.const import SystemType
+from ariston.const import CustomDeviceFeatures, SystemType, WheType
 from homeassistant.components.water_heater import (
     WaterHeaterEntity,
+    WaterHeaterEntityDescription,
     WaterHeaterEntityFeature,
 )
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_TEMPERATURE
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .const import (
-    ARISTON_WATER_HEATER_TYPES,
-    DOMAIN,
-    AristonWaterHeaterEntityDescription,
+    ATTR_TARGET_TEMP_STEP,
+    EXTRA_STATE_ATTRIBUTE,
+    EXTRA_STATE_DEVICE_METHOD,
 )
-from .coordinator import DeviceDataUpdateCoordinator
-from .entity import AristonEntity, is_entity_supported
+from .coordinator import AristonConfigEntry, DeviceDataUpdateCoordinator
+from .entity import AristonBaseEntityDescription, AristonEntity, is_entity_supported
 
 _LOGGER = logging.getLogger(__name__)
 
 
-async def async_setup_entry(
-    hass: HomeAssistant, entry: ConfigEntry, async_add_entities
+@dataclass(kw_only=True, frozen=True)
+class AristonWaterHeaterEntityDescription(
+    WaterHeaterEntityDescription, AristonBaseEntityDescription
 ):
+    """A class that describes water heater entities."""
+
+
+ARISTON_WATER_HEATER_TYPES: list[AristonWaterHeaterEntityDescription] = [
+    AristonWaterHeaterEntityDescription(
+        key="AristonWaterHeater",
+        extra_states=[
+            {
+                EXTRA_STATE_ATTRIBUTE: ATTR_TARGET_TEMP_STEP,
+                EXTRA_STATE_DEVICE_METHOD: lambda entity: (
+                    entity.device.water_heater_temperature_step
+                ),
+            }
+        ],
+        device_features=[CustomDeviceFeatures.HAS_DHW],
+        system_types=[SystemType.GALEVO, SystemType.BSB],
+    ),
+    AristonWaterHeaterEntityDescription(
+        key="AristonWaterHeater",
+        extra_states=[
+            {
+                EXTRA_STATE_ATTRIBUTE: ATTR_TARGET_TEMP_STEP,
+                EXTRA_STATE_DEVICE_METHOD: lambda entity: (
+                    entity.device.water_heater_temperature_step
+                ),
+            }
+        ],
+        device_features=[CustomDeviceFeatures.HAS_DHW],
+        system_types=[SystemType.VELIS],
+        whe_types=[
+            WheType.Andris2,
+            WheType.Evo2,
+            WheType.Lux,
+            WheType.Lux2,
+            WheType.Lydos,
+            WheType.LydosHybrid,
+            WheType.NuosSplit,
+        ],
+    ),
+]
+
+
+async def async_setup_entry(
+    hass: HomeAssistant,
+    entry: AristonConfigEntry,
+    async_add_entities: AddConfigEntryEntitiesCallback,
+) -> None:
     """Set up the Ariston water heater device from config entry."""
     ariston_water_heaters: list[AristonWaterHeater] = []
     for description in ARISTON_WATER_HEATER_TYPES:
-        coordinator: DeviceDataUpdateCoordinator = hass.data[DOMAIN][entry.unique_id][
-            description.coordinator
-        ]
+        coordinator = entry.runtime_data.get_coordinator(description.coordinator)
 
         if is_entity_supported(coordinator, description):
             ariston_water_heaters.append(AristonWaterHeater(coordinator, description))
@@ -43,6 +91,8 @@ async def async_setup_entry(
 class AristonWaterHeater(AristonEntity, WaterHeaterEntity):
     """Ariston Water Heater Device."""
 
+    entity_description: AristonWaterHeaterEntityDescription
+
     def __init__(
         self,
         coordinator: DeviceDataUpdateCoordinator,
@@ -50,16 +100,12 @@ class AristonWaterHeater(AristonEntity, WaterHeaterEntity):
     ) -> None:
         """Initialize the water heater."""
         super().__init__(coordinator, description)
+        self._attr_unique_id = f"{self.device.gateway}-water_heater"
 
     @property
     def name(self) -> str:
         """Return the name of the device."""
         return self.device.name or ""
-
-    @property
-    def unique_id(self) -> str:
-        """Return a unique id for the device."""
-        return f"{self.device.gateway}-water_heater"
 
     @property
     def icon(self):

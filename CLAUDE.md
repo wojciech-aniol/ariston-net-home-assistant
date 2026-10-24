@@ -20,18 +20,20 @@ Tests and lint pass before every commit.
 
 ## Map
 
-- `__init__.py`: entry setup, the `set_item_by_id` service. `binary_sensor.py` registers the
-  `create_vacation` service.
+- `__init__.py`: entry setup. Coordinators live in `entry.runtime_data` (`AristonData` in
+  `coordinator.py`, typed as `AristonConfigEntry`); a disabled one is None.
 - `coordinator.py`: polling, HTTP 429 backoff. Up to three coordinators per entry: state, bus errors
   and energy (the last two are optional).
-- `entity.py`: base entity, `is_entity_supported`. `const.py`: constants and every entity
-  description. Entity behaviour sits in description lambdas (`get_native_value`, `set_value`, ...).
+- `services.py`: `create_vacation` and `set_item_by_id`, registered once in `async_setup`.
+- `entity.py`: base entity, base description, `is_entity_supported`. `const.py`: constants only.
+- Each platform file holds its description class and list. Entity behaviour sits in description
+  lambdas (`get_native_value`, `set_value`, ...). List order is entity order in snapshots.
 - Library source: `.venv/lib/python3.14/site-packages/ariston/`. Devices: `galevo_device.py`,
   `bsb_device.py`, `velis_*`, `evo_*`, `lux*`, `lydos*`, `nuos_split_device.py`; HTTP and
   `ConnectionException` in `ariston_api.py`.
 
-Save context: `const.py` has 1000+ lines, so grep it. In `README.md` only the part above "About the
-upstream integration" matters. Of `translations/` read only `en.json`.
+Save context: `sensor.py` has 600+ lines of descriptions, so grep it. In `README.md` only the part
+above "About the upstream integration" matters. Of `translations/` read only `en.json`.
 
 ## Hard rules
 

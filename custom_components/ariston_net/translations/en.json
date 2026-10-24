@@ -77,5 +77,16 @@
         }
       }
     }
+  },
+  "exceptions": {
+    "device_not_found": {
+      "message": "No Ariston NET device with ID {device_id}."
+    },
+    "entry_not_loaded": {
+      "message": "The Ariston NET device {device_id} is not loaded."
+    },
+    "not_galevo": {
+      "message": "The Ariston NET device {device_id} does not support this action. Only GALEVO devices do."
+    }
   }
 }

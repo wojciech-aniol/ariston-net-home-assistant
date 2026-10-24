@@ -2,82 +2,121 @@
 
 from __future__ import annotations
 
-from ariston.const import DeviceProperties, SystemType
-from homeassistant.components.binary_sensor import BinarySensorEntity
-from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import ATTR_DEVICE_ID
+from collections.abc import Callable
+from dataclasses import dataclass
+from typing import Any
+
+from ariston.const import (
+    DeviceFeatures,
+    DeviceProperties,
+    EvoLydosDeviceProperties,
+    SystemType,
+    WheType,
+)
+from homeassistant.components.binary_sensor import (
+    BinarySensorEntity,
+    BinarySensorEntityDescription,
+)
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers import config_validation as cv, device_registry as dr
-import voluptuous as vol
+from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
-from .const import (
-    ARISTON_BINARY_SENSOR_TYPES,
-    COORDINATOR,
-    DOMAIN,
-    AristonBinarySensorEntityDescription,
-)
-from .coordinator import DeviceDataUpdateCoordinator
-from .entity import AristonEntity, is_entity_supported
+from .const import ATTR_HOLIDAY, EXTRA_STATE_ATTRIBUTE, EXTRA_STATE_DEVICE_METHOD, NAME
+from .coordinator import AristonConfigEntry, DeviceDataUpdateCoordinator
+from .entity import AristonBaseEntityDescription, AristonEntity, is_entity_supported
 
-SERVICE_CREATE_VACATION = "create_vacation"
-ATTR_END_DATE = "end_date"
 
-CREATE_VACATION_SCHEMA = vol.Schema(
-    {
-        vol.Required(ATTR_DEVICE_ID): cv.string,
-        vol.Optional(ATTR_END_DATE): cv.date,
-    }
-)
+@dataclass(kw_only=True, frozen=True)
+class AristonBinarySensorEntityDescription(
+    BinarySensorEntityDescription, AristonBaseEntityDescription
+):
+    """A class that describes binary sensor entities."""
+
+    get_is_on: Callable[[Any], bool]
+
+
+ARISTON_BINARY_SENSOR_TYPES: list[AristonBinarySensorEntityDescription] = [
+    AristonBinarySensorEntityDescription(
+        key=DeviceProperties.IS_FLAME_ON,
+        name=f"{NAME} is flame on",
+        icon="mdi:fire",
+        get_is_on=lambda entity: entity.device.is_flame_on_value,
+        get_is_supported=lambda device: device.is_flame_on_value is not None,
+        system_types=[SystemType.GALEVO, SystemType.BSB],
+    ),
+    AristonBinarySensorEntityDescription(
+        key=DeviceProperties.IS_HEATING_PUMP_ON,
+        name=f"{NAME} is heating pump on",
+        icon="mdi:heat-pump-outline",
+        get_is_on=lambda entity: entity.device.is_heating_pump_on_value,
+        device_features=[DeviceFeatures.HP_SYS],
+        system_types=[SystemType.GALEVO],
+    ),
+    AristonBinarySensorEntityDescription(
+        key=DeviceProperties.HOLIDAY,
+        name=f"{NAME} holiday mode",
+        icon="mdi:island",
+        extra_states=[
+            {
+                EXTRA_STATE_ATTRIBUTE: ATTR_HOLIDAY,
+                EXTRA_STATE_DEVICE_METHOD: lambda entity: (
+                    entity.device.holiday_expires_on
+                ),
+            }
+        ],
+        get_is_on=lambda entity: entity.device.holiday_mode_value,
+        system_types=[SystemType.GALEVO],
+    ),
+    AristonBinarySensorEntityDescription(
+        key=EvoLydosDeviceProperties.HEAT_REQ,
+        name=f"{NAME} is heating",
+        icon="mdi:fire",
+        get_is_on=lambda entity: entity.device.is_heating,
+        system_types=[SystemType.VELIS],
+        whe_types=[
+            WheType.Lux,
+            WheType.Evo,
+            WheType.Evo2,
+            WheType.Lydos,
+            WheType.LydosHybrid,
+            WheType.Andris2,
+            WheType.Lux2,
+        ],
+    ),
+    AristonBinarySensorEntityDescription(
+        key=EvoLydosDeviceProperties.ANTI_LEG,
+        name=f"{NAME} anti-legionella cycle",
+        icon="mdi:bacteria",
+        get_is_on=lambda entity: entity.device.is_antileg,
+        system_types=[SystemType.VELIS],
+        whe_types=[
+            WheType.Evo2,
+            WheType.Lydos,
+            WheType.LydosHybrid,
+            WheType.Andris2,
+        ],
+    ),
+]
 
 
 async def async_setup_entry(
-    hass: HomeAssistant, entry: ConfigEntry, async_add_entities
+    hass: HomeAssistant,
+    entry: AristonConfigEntry,
+    async_add_entities: AddConfigEntryEntitiesCallback,
 ) -> None:
     """Set up the Ariston binary sensors from config entry."""
     ariston_binary_sensors: list[AristonBinarySensor] = []
     for description in ARISTON_BINARY_SENSOR_TYPES:
-        coordinator: DeviceDataUpdateCoordinator = hass.data[DOMAIN][entry.unique_id][
-            description.coordinator
-        ]
+        coordinator = entry.runtime_data.get_coordinator(description.coordinator)
         if is_entity_supported(coordinator, description):
             ariston_binary_sensors.append(AristonBinarySensor(coordinator, description))
 
     async_add_entities(ariston_binary_sensors)
 
-    if coordinator.device.system_type == SystemType.GALEVO:
-
-        async def async_create_vacation_service(service_call):
-            """Create a vacation on the target device."""
-            device_id = service_call.data.get(ATTR_DEVICE_ID)
-            end_date = service_call.data.get(ATTR_END_DATE)
-
-            device_registry = dr.async_get(hass)
-            device = device_registry.devices[device_id]
-
-            entry = hass.config_entries.async_get_entry(
-                next(iter(device.config_entries))
-            )
-            coordinator: DeviceDataUpdateCoordinator = hass.data[DOMAIN][
-                entry.unique_id
-            ][COORDINATOR]
-            await coordinator.device.async_set_holiday(end_date)
-            for ariston_binary_sensor in ariston_binary_sensors:
-                if (
-                    ariston_binary_sensor.entity_description.key
-                    is DeviceProperties.HOLIDAY
-                ):
-                    ariston_binary_sensor.async_write_ha_state()
-
-        hass.services.async_register(
-            DOMAIN,
-            SERVICE_CREATE_VACATION,
-            async_create_vacation_service,
-            schema=CREATE_VACATION_SCHEMA,
-        )
-
 
 class AristonBinarySensor(AristonEntity, BinarySensorEntity):
     """Base class for specific ariston binary sensors."""
+
+    entity_description: AristonBinarySensorEntityDescription
 
     def __init__(
         self,

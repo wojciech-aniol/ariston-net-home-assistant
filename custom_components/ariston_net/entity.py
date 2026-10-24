@@ -3,18 +3,30 @@
 from __future__ import annotations
 
 from abc import ABC
+from collections.abc import Callable
+from dataclasses import dataclass
+from typing import Any
 
-from ariston.const import WheType
-from homeassistant.helpers.entity import DeviceInfo
+from ariston.const import SystemType, WheType
+from homeassistant.helpers.entity import DeviceInfo, EntityDescription
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import (
-    DOMAIN,
-    EXTRA_STATE_ATTRIBUTE,
-    EXTRA_STATE_DEVICE_METHOD,
-    AristonBaseEntityDescription,
-)
+from .const import COORDINATOR, DOMAIN, EXTRA_STATE_ATTRIBUTE, EXTRA_STATE_DEVICE_METHOD
 from .coordinator import DeviceDataUpdateCoordinator
+
+
+@dataclass(kw_only=True, frozen=True)
+class AristonBaseEntityDescription(EntityDescription):
+    """An abstract class that describes Ariston entites."""
+
+    device_features: list[str] | None = None
+    coordinator: str = COORDINATOR
+    extra_states: list[dict[str, Any]] | None = None
+    system_types: list[SystemType] | None = None
+    whe_types: list[WheType] | None = None
+    zone: bool = False
+    # Checked once at setup with the device; False skips the entity.
+    get_is_supported: Callable[[Any], bool] | None = None
 
 
 def is_entity_supported(
@@ -36,8 +48,10 @@ def is_entity_supported(
     )
 
 
-class AristonEntity(CoordinatorEntity, ABC):
+class AristonEntity(CoordinatorEntity[DeviceDataUpdateCoordinator], ABC):
     """Generic Ariston entity (base class)."""
+
+    entity_description: AristonBaseEntityDescription
 
     def __init__(
         self,
@@ -49,13 +63,16 @@ class AristonEntity(CoordinatorEntity, ABC):
         super().__init__(coordinator)
 
         self.device = coordinator.device
-        self.entity_description: AristonBaseEntityDescription = description
+        self.entity_description = description
         self.zone = zone
-
-    @property
-    def device_info(self) -> DeviceInfo:
-        """Return device specific attributes."""
-        return DeviceInfo(
+        # Not self.name: it needs the platform, which is set only later.
+        name = getattr(self, "_attr_name", description.name)
+        self._attr_unique_id = (
+            f"{self.device.gateway}-{name}-{zone}"
+            if zone
+            else f"{self.device.gateway}-{name}"
+        )
+        self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, self.device.serial_number or "")},
             manufacturer="Ariston",
             name=self.device.name,
@@ -94,12 +111,3 @@ class AristonEntity(CoordinatorEntity, ABC):
             state_attributes[extra_state.get(EXTRA_STATE_ATTRIBUTE)] = state_attribute
 
         return state_attributes
-
-    @property
-    def unique_id(self):
-        """Return the unique id."""
-        return (
-            f"{self.device.gateway}-{self.name}-{self.zone}"
-            if self.zone
-            else f"{self.device.gateway}-{self.name}"
-        )

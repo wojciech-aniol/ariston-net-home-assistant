@@ -16,7 +16,8 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 from pytest_homeassistant_custom_component.syrupy import HomeAssistantSnapshotExtension
 from syrupy.assertion import SnapshotAssertion
 
-from custom_components.ariston_net.const import DOMAIN, ENERGY_COORDINATOR
+from custom_components.ariston_net.const import DOMAIN
+from custom_components.ariston_net.coordinator import AristonData
 from custom_components.ariston_net.menu_items import BLOCKED_MENU_IDS
 
 GATEWAY = "F0AD4E000001"
@@ -196,13 +197,25 @@ ENERGY_ACCOUNT: dict[str, Any] = {
 }
 
 
+async def setup_integration(hass: HomeAssistant, entry: MockConfigEntry) -> None:
+    """Set up the config entry."""
+    await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+
+
+def runtime_data(hass: HomeAssistant) -> AristonData:
+    """Return the runtime data of the fake device's entry."""
+    entry = hass.config_entries.async_entry_for_domain_unique_id(DOMAIN, GATEWAY)
+    return entry.runtime_data
+
+
 async def refresh_energy(hass: HomeAssistant, api: MagicMock) -> None:
     """Send new energy data, so the total energy sensors get a value."""
     api.async_get_consumptions_sequences.return_value = [
         sequence | {"v": [*sequence["v"], sequence["v"][-1] + 1]}
         for sequence in api.async_get_consumptions_sequences.return_value
     ]
-    await hass.data[DOMAIN][GATEWAY][ENERGY_COORDINATOR].async_refresh()
+    await runtime_data(hass).energy_coordinator.async_refresh()
     await hass.async_block_till_done()
 
 
