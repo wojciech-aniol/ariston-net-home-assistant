@@ -19,9 +19,8 @@ from pytest_homeassistant_custom_component.common import (
 from syrupy.assertion import SnapshotAssertion
 
 from custom_components.ariston_net import PLATFORMS
-from custom_components.ariston_net.const import DOMAIN, ENERGY_COORDINATOR
 
-from .conftest import GATEWAY
+from .conftest import refresh_energy
 
 DATA_SETS = ["default", "full"]
 
@@ -41,16 +40,6 @@ async def setup_data_set(
         await hass.async_block_till_done()
     if data_set == "full":
         await refresh_energy(hass, request.getfixturevalue("api"))
-
-
-async def refresh_energy(hass: HomeAssistant, api: MagicMock) -> None:
-    """Send new energy data, so the total energy sensors get a value."""
-    api.async_get_consumptions_sequences.return_value = [
-        sequence | {"v": [*sequence["v"], sequence["v"][-1] + 1]}
-        for sequence in api.async_get_consumptions_sequences.return_value
-    ]
-    await hass.data[DOMAIN][GATEWAY][ENERGY_COORDINATOR].async_refresh()
-    await hass.async_block_till_done()
 
 
 @pytest.mark.parametrize("platform", PLATFORMS)

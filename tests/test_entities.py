@@ -1,13 +1,25 @@
-"""Tests for which entities Ariston NET creates."""
+"""Tests for which entities Ariston NET creates and their shared parts."""
 
 from __future__ import annotations
 
 from typing import Any
 from unittest.mock import MagicMock
 
+from ariston import AristonGalevoDevice
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers import device_registry as dr
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
+
+from custom_components.ariston_net.const import (
+    COORDINATOR,
+    DOMAIN,
+    EXTRA_STATE_ATTRIBUTE,
+    AristonSensorEntityDescription,
+)
+from custom_components.ariston_net.sensor import AristonSensor
+
+from .conftest import GATEWAY
 
 FLAME = "binary_sensor.nimbus_ariston_net_is_flame_on"
 CH_RETURN_TEMP = "sensor.nimbus_ariston_net_ch_return_temp"
@@ -60,3 +72,55 @@ async def test_ch_return_temp_needs_menu_value(
     assert (state is not None) is expected
     if expected:
         assert state.state == "31.5"
+
+
+@pytest.mark.parametrize(
+    ("whe_type", "whe_model_type", "expected_model"),
+    [
+        (None, None, "GALEVO"),
+        (1, None, "GALEVO Evo"),
+        (1, 3, "GALEVO Evo | Model 3"),
+    ],
+    ids=["no-whe-type", "whe-type", "whe-model"],
+)
+async def test_device_model_shows_whe_type(
+    hass: HomeAssistant,
+    device_registry: dr.DeviceRegistry,
+    device: AristonGalevoDevice,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+    whe_type: int | None,
+    whe_model_type: int | None,
+    expected_model: str,
+) -> None:
+    """Test the device model adds the WHE type and model number when known."""
+    if whe_type is not None:
+        device.attributes["wheType"] = whe_type
+    if whe_model_type is not None:
+        device.attributes["wheModelType"] = whe_model_type
+
+    await setup_integration(hass, config_entry)
+
+    (device_entry,) = dr.async_entries_for_config_entry(
+        device_registry, config_entry.entry_id
+    )
+    assert device_entry.model == expected_model
+
+
+async def test_extra_state_without_method_is_skipped(
+    hass: HomeAssistant, init_integration: MockConfigEntry
+) -> None:
+    """Test an extra state with no device method adds no attribute.
+
+    No description has one today, so the entity is built directly.
+    """
+    coordinator = hass.data[DOMAIN][GATEWAY][COORDINATOR]
+    description = AristonSensorEntityDescription(
+        key="no_method",
+        get_native_value=lambda entity: 1,
+        extra_states=[{EXTRA_STATE_ATTRIBUTE: "no_method"}],
+    )
+
+    sensor = AristonSensor(coordinator, description)
+
+    assert sensor.extra_state_attributes == {}
