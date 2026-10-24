@@ -5,6 +5,9 @@ from __future__ import annotations
 from collections.abc import Generator
 import copy
 from datetime import timedelta
+import json
+from pathlib import Path
+import re
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
@@ -17,14 +20,16 @@ from homeassistant.const import (
     CONF_PASSWORD,
     CONF_SCAN_INTERVAL,
     CONF_USERNAME,
+    UnitOfTime,
 )
 from homeassistant.core import HomeAssistant
-from homeassistant.data_entry_flow import FlowResultType, InvalidData
+from homeassistant.data_entry_flow import FlowResultType
 from homeassistant.helpers import config_validation as cv
 import probatio
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
+from custom_components.ariston_net.config_flow import INTERVAL_LIMITS
 from custom_components.ariston_net.const import (
     API_URL_SETTING,
     API_USER_AGENT,
@@ -36,6 +41,8 @@ from custom_components.ariston_net.const import (
 )
 
 from .conftest import CLOUD_DEVICE, GATEWAY, tracebacks
+
+INTEGRATION_DIR = Path(__file__).parents[1] / "custom_components" / DOMAIN
 
 USER_INPUT: dict[str, Any] = {
     CONF_USERNAME: "new@example.com",
@@ -119,7 +126,7 @@ def suggested_values(fields: list[dict[str, Any]]) -> dict[str, Any]:
     """Return the suggested value of each field, with sections nested."""
     return {
         field["name"]: suggested_values(field["schema"])
-        if field["type"] == "expandable"
+        if field.get("type") == "expandable"
         else field.get("description", {}).get("suggested_value")
         for field in fields
     }
@@ -496,87 +503,113 @@ async def test_options_flow_saves_options(
 
 
 @pytest.mark.parametrize(
-    ("option", "minimum"),
+    ("option", "value"),
     [
         (CONF_SCAN_INTERVAL, 60),
+        (CONF_SCAN_INTERVAL, 86400),
         (ENERGY_SCAN_INTERVAL, 15),
+        (ENERGY_SCAN_INTERVAL, 1440),
         (BUS_ERRORS_SCAN_INTERVAL, 60),
+        (BUS_ERRORS_SCAN_INTERVAL, 86400),
     ],
 )
-async def test_options_flow_accepts_minimum(
+async def test_options_flow_accepts_limits(
     hass: HomeAssistant,
     config_entry: MockConfigEntry,
     mock_setup_entry: AsyncMock,
     option: str,
-    minimum: int,
+    value: int,
 ) -> None:
-    """Test each interval option takes its minimum."""
+    """Test each interval option takes its minimum and maximum, saved as int."""
     await hass.config_entries.async_setup(config_entry.entry_id)
     result = await hass.config_entries.options.async_init(config_entry.entry_id)
 
     result = await hass.config_entries.options.async_configure(
-        result["flow_id"], user_input=OPTIONS | {option: minimum}
+        result["flow_id"], user_input=OPTIONS | {option: value}
     )
 
     assert result["type"] is FlowResultType.CREATE_ENTRY
-    assert config_entry.options[option] == minimum
+    assert config_entry.options[option] == value
     assert type(config_entry.options[option]) is int
 
 
 @pytest.mark.parametrize(
-    ("option", "minimum", "unit"),
+    ("option", "minimum", "maximum", "unit"),
     [
-        (CONF_SCAN_INTERVAL, 60, "s"),
-        (ENERGY_SCAN_INTERVAL, 15, "min"),
-        (BUS_ERRORS_SCAN_INTERVAL, 60, "s"),
+        (CONF_SCAN_INTERVAL, 60, 86400, UnitOfTime.SECONDS),
+        (ENERGY_SCAN_INTERVAL, 15, 1440, UnitOfTime.MINUTES),
+        (BUS_ERRORS_SCAN_INTERVAL, 60, 86400, UnitOfTime.SECONDS),
     ],
 )
-async def test_options_flow_shows_minimum_and_unit(
+async def test_options_flow_shows_limits_and_unit(
     hass: HomeAssistant,
     config_entry: MockConfigEntry,
     mock_setup_entry: AsyncMock,
     option: str,
     minimum: int,
+    maximum: int,
     unit: str,
 ) -> None:
-    """Test the form sends each interval field with its minimum and unit."""
+    """Test the form sends each interval field and its texts the limits and unit."""
     await hass.config_entries.async_setup(config_entry.entry_id)
     result = await hass.config_entries.options.async_init(config_entry.entry_id)
 
     number = next(field for field in form_fields(result) if field["name"] == option)
     assert number["selector"]["number"] == {
         "min": minimum,
+        "max": maximum,
         "step": 1,
         "mode": "box",
         "unit_of_measurement": unit,
     }
+    placeholders = result["description_placeholders"]
+    assert placeholders[f"{option}_min"] == str(minimum)
+    assert placeholders[f"{option}_max"] == str(maximum)
+
+
+@pytest.mark.parametrize("path", ["strings.json", "translations/en.json"])
+def test_options_texts_use_sent_placeholders(path: str) -> None:
+    """Test the options texts use only placeholders the form sends."""
+    texts = json.loads((INTEGRATION_DIR / path).read_text())["options"]
+    used = set(re.findall(r"{(\w+)}", json.dumps(texts)))
+
+    assert used
+    assert used <= set(INTERVAL_LIMITS)
 
 
 @pytest.mark.parametrize(
-    ("option", "minimum"),
+    ("option", "value"),
     [
-        (CONF_SCAN_INTERVAL, 60),
-        (ENERGY_SCAN_INTERVAL, 15),
-        (BUS_ERRORS_SCAN_INTERVAL, 60),
+        (CONF_SCAN_INTERVAL, 59),
+        (CONF_SCAN_INTERVAL, 86401),
+        (CONF_SCAN_INTERVAL, 1e15),
+        (CONF_SCAN_INTERVAL, 90.5),
+        (ENERGY_SCAN_INTERVAL, 14),
+        (ENERGY_SCAN_INTERVAL, 1441),
+        (ENERGY_SCAN_INTERVAL, 20.5),
+        (BUS_ERRORS_SCAN_INTERVAL, 59),
+        (BUS_ERRORS_SCAN_INTERVAL, 86401),
+        (BUS_ERRORS_SCAN_INTERVAL, 90.5),
     ],
 )
-async def test_options_flow_refuses_below_minimum(
+async def test_options_flow_refuses_invalid_interval(
     hass: HomeAssistant,
     config_entry: MockConfigEntry,
     mock_setup_entry: AsyncMock,
     option: str,
-    minimum: int,
+    value: float,
 ) -> None:
-    """Test an interval below its minimum shows an error on that field only."""
+    """Test a bad interval shows a translated error on that field and keeps it."""
     await hass.config_entries.async_setup(config_entry.entry_id)
     result = await hass.config_entries.options.async_init(config_entry.entry_id)
 
-    with pytest.raises(InvalidData) as exc_info:
-        await hass.config_entries.options.async_configure(
-            result["flow_id"], user_input=OPTIONS | {option: minimum - 1}
-        )
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], user_input=OPTIONS | {option: value}
+    )
 
-    assert list(exc_info.value.schema_errors) == [option]
+    assert result["type"] is FlowResultType.FORM
+    assert result["errors"] == {option: f"invalid_{option}"}
+    assert suggested_values(form_fields(result))[option] == value
     assert config_entry.options == {}
 
 
@@ -618,15 +651,20 @@ async def test_reauth_of_loaded_entry_reloads_once(
     assert "update listener" not in caplog.text
 
 
-async def test_options_flow_raises_old_interval_to_minimum(
-    hass: HomeAssistant, config_entry: MockConfigEntry, mock_setup_entry: AsyncMock
+@pytest.mark.parametrize(("saved", "offered"), [(30, 60), (10**15, 86400)])
+async def test_options_flow_moves_old_interval_into_limits(
+    hass: HomeAssistant,
+    config_entry: MockConfigEntry,
+    mock_setup_entry: AsyncMock,
+    saved: int,
+    offered: int,
 ) -> None:
-    """Test the form offers the minimum when a saved interval is below it."""
+    """Test the form offers the nearest limit when a saved interval is out of them."""
     hass.config_entries.async_update_entry(
-        config_entry, options=OPTIONS | {CONF_SCAN_INTERVAL: 30}
+        config_entry, options=OPTIONS | {CONF_SCAN_INTERVAL: saved}
     )
     await hass.config_entries.async_setup(config_entry.entry_id)
 
     result = await hass.config_entries.options.async_init(config_entry.entry_id)
 
-    assert schema_defaults(result)[CONF_SCAN_INTERVAL] == 60
+    assert schema_defaults(result)[CONF_SCAN_INTERVAL] == offered

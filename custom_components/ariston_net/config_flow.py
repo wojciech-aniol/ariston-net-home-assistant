@@ -15,6 +15,7 @@ from homeassistant.const import (
     CONF_PASSWORD,
     CONF_SCAN_INTERVAL,
     CONF_USERNAME,
+    UnitOfTime,
 )
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import section
@@ -33,11 +34,8 @@ from .const import (
     ENABLE_BUS_ERRORS,
     ENABLE_ENERGY,
     ENERGY_SCAN_INTERVAL,
-    MIN_BUS_ERRORS_SCAN_INTERVAL_SECONDS,
-    MIN_ENERGY_SCAN_INTERVAL_MINUTES,
-    MIN_SCAN_INTERVAL_SECONDS,
 )
-from .coordinator import interval_option
+from .coordinator import INTERVAL_OPTIONS, interval_option
 from .errors import CLOUD_ERRORS, CloudErrorKind, classify_error, describe_error
 
 _LOGGER = logging.getLogger(__name__)
@@ -66,19 +64,46 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
 )
 
 
-def _interval(minimum: int, unit: str) -> vol.All:
-    """Return the field of an interval option, a whole number from a minimum."""
-    return vol.All(
-        NumberSelector(
-            NumberSelectorConfig(
-                min=minimum,
-                step=1,
-                mode=NumberSelectorMode.BOX,
-                unit_of_measurement=unit,
-            )
-        ),
-        vol.Coerce(int),
+# Limits of each interval, like {"scan_interval_min": "60"}, for the texts.
+INTERVAL_LIMITS: dict[str, str] = {
+    f"{key}_{name}": str(limit)
+    for key, (_, minimum, maximum) in INTERVAL_OPTIONS.items()
+    for name, limit in (("min", minimum), ("max", maximum))
+}
+
+
+class _IntervalSelector(NumberSelector):
+    """Number box that sends its limits to the form but does not check them.
+
+    The options step checks them, so the error can be translated.
+    """
+
+    def __call__(self, data: Any) -> float:
+        """Accept any number."""
+        return vol.Coerce(float)(data)
+
+
+def _interval(key: str, unit: UnitOfTime) -> _IntervalSelector:
+    """Return the field of an interval option."""
+    _, minimum, maximum = INTERVAL_OPTIONS[key]
+    return _IntervalSelector(
+        NumberSelectorConfig(
+            min=minimum,
+            max=maximum,
+            step=1,
+            mode=NumberSelectorMode.BOX,
+            unit_of_measurement=unit,
+        )
     )
+
+
+def _interval_errors(user_input: Mapping[str, Any]) -> dict[str, str]:
+    """Return an error for each interval that is not a whole number within limits."""
+    return {
+        key: f"invalid_{key}"
+        for key, (_, minimum, maximum) in INTERVAL_OPTIONS.items()
+        if not (user_input[key].is_integer() and minimum <= user_input[key] <= maximum)
+    }
 
 
 class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -251,39 +276,47 @@ class AristonOptionsFlow(config_entries.OptionsFlowWithReload):
         self, user_input: dict[str, Any] | None = None
     ) -> config_entries.ConfigFlowResult:
         """Manage the options."""
-        if user_input is not None:
-            return self.async_create_entry(title="", data=user_input)
+        errors: dict[str, str] = {}
+        if user_input is not None and not (errors := _interval_errors(user_input)):
+            return self.async_create_entry(
+                title="",
+                data=user_input
+                | {key: int(user_input[key]) for key in INTERVAL_OPTIONS},
+            )
 
         options = self.config_entry.options
         scan_interval = interval_option(options, CONF_SCAN_INTERVAL)
         energy_scan_interval = interval_option(options, ENERGY_SCAN_INTERVAL)
         bus_errors_scan_interval = interval_option(options, BUS_ERRORS_SCAN_INTERVAL)
 
+        data_schema = vol.Schema(
+            {
+                vol.Optional(
+                    CONF_SCAN_INTERVAL,
+                    default=scan_interval,
+                ): _interval(CONF_SCAN_INTERVAL, UnitOfTime.SECONDS),
+                vol.Optional(
+                    ENABLE_ENERGY,
+                    default=options.get(ENABLE_ENERGY, True),
+                ): bool,
+                vol.Optional(
+                    ENERGY_SCAN_INTERVAL,
+                    default=energy_scan_interval,
+                ): _interval(ENERGY_SCAN_INTERVAL, UnitOfTime.MINUTES),
+                vol.Optional(
+                    ENABLE_BUS_ERRORS,
+                    default=options.get(ENABLE_BUS_ERRORS, True),
+                ): bool,
+                vol.Optional(
+                    BUS_ERRORS_SCAN_INTERVAL,
+                    default=bus_errors_scan_interval,
+                ): _interval(BUS_ERRORS_SCAN_INTERVAL, UnitOfTime.SECONDS),
+            }
+        )
         return self.async_show_form(
             step_id="init",
-            data_schema=vol.Schema(
-                {
-                    vol.Optional(
-                        CONF_SCAN_INTERVAL,
-                        default=scan_interval,
-                    ): _interval(MIN_SCAN_INTERVAL_SECONDS, "s"),
-                    vol.Optional(
-                        ENABLE_ENERGY,
-                        default=options.get(ENABLE_ENERGY, True),
-                    ): bool,
-                    vol.Optional(
-                        ENERGY_SCAN_INTERVAL,
-                        default=energy_scan_interval,
-                    ): _interval(MIN_ENERGY_SCAN_INTERVAL_MINUTES, "min"),
-                    vol.Optional(
-                        ENABLE_BUS_ERRORS,
-                        default=options.get(ENABLE_BUS_ERRORS, True),
-                    ): bool,
-                    vol.Optional(
-                        BUS_ERRORS_SCAN_INTERVAL,
-                        default=bus_errors_scan_interval,
-                    ): _interval(MIN_BUS_ERRORS_SCAN_INTERVAL_SECONDS, "s"),
-                }
-            ),
+            data_schema=self.add_suggested_values_to_schema(data_schema, user_input),
+            errors=errors,
+            description_placeholders=INTERVAL_LIMITS,
             last_step=True,
         )
