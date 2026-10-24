@@ -3,6 +3,7 @@
     "abort": {
       "already_configured": "Device is already configured",
       "reauth_successful": "Re-authentication was successful",
+      "reconfigure_successful": "Reconfiguration was successful",
       "no_devices_found": "This Ariston account has no device.",
       "unique_id_mismatch": "This Ariston account does not have the configured device anymore."
     },
@@ -52,6 +53,18 @@
         },
         "data_description": {
           "password": "The current password of your Ariston NET account."
+        }
+      },
+      "reconfigure": {
+        "title": "API settings",
+        "description": "Change the Ariston cloud API settings. The integration logs in with the saved account to check them.",
+        "data": {
+          "api_url_setting": "Ariston API url",
+          "api_user_agent": "Ariston API user agent"
+        },
+        "data_description": {
+          "api_url_setting": "Address of the Ariston cloud API. Keep the default unless you know it changed.",
+          "api_user_agent": "Name this integration sends to the Ariston cloud. Keep the default unless you know it changed."
         }
       }
     }
