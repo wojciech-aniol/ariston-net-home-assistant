@@ -18,19 +18,13 @@ from custom_components.ariston_net.sensor import (
     AristonSensorEntityDescription,
 )
 
-from .conftest import BUS_ERRORS, refresh_energy, runtime_data
+from .conftest import BUS_ERRORS, refresh_energy, runtime_data, setup_integration
 
 SIGNAL_STRENGTH = "sensor.nimbus_ariston_net_signal_strength"
 DHW_CURRENT_TEMP = "sensor.nimbus_ariston_net_dhw_current_temperature"
 CH_ENERGY = "sensor.nimbus_ariston_net_central_heating_total_energy_consumption"
 CH_GAS = "sensor.nimbus_ariston_net_gas_consumption_for_heating_last_month"
 ERRORS_COUNT = "sensor.nimbus_ariston_net_errors_count"
-
-
-async def setup_integration(hass: HomeAssistant, entry: MockConfigEntry) -> None:
-    """Set up the config entry."""
-    await hass.config_entries.async_setup(entry.entry_id)
-    await hass.async_block_till_done()
 
 
 async def test_sensor_unit_comes_from_device(

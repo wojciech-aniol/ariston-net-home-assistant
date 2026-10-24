@@ -17,16 +17,10 @@ from custom_components.ariston_net.sensor import (
     AristonSensorEntityDescription,
 )
 
-from .conftest import runtime_data
+from .conftest import runtime_data, setup_integration
 
 FLAME = "binary_sensor.nimbus_ariston_net_is_flame_on"
 CH_RETURN_TEMP = "sensor.nimbus_ariston_net_ch_return_temp"
-
-
-async def setup_integration(hass: HomeAssistant, entry: MockConfigEntry) -> None:
-    """Set up the config entry."""
-    await hass.config_entries.async_setup(entry.entry_id)
-    await hass.async_block_till_done()
 
 
 @pytest.mark.parametrize(("has_flame", "expected"), [(True, True), (False, False)])

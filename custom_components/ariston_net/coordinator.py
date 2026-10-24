@@ -25,10 +25,12 @@ MAX_BACKOFF_FACTOR = 8
 class DeviceDataUpdateCoordinator(DataUpdateCoordinator[None]):
     """Manages polling for state changes from the device."""
 
+    config_entry: AristonConfigEntry
+
     def __init__(
         self,
         hass: HomeAssistant,
-        entry: ConfigEntry,
+        entry: AristonConfigEntry,
         device: AristonBaseDevice,
         scan_interval_seconds: int,
         coordinator_name: str,
@@ -82,13 +84,18 @@ class AristonData:
     bus_errors_coordinator: DeviceDataUpdateCoordinator | None = None
     energy_coordinator: DeviceDataUpdateCoordinator | None = None
 
-    def get_coordinator(self, name: str) -> DeviceDataUpdateCoordinator | None:
-        """Return a coordinator by its name, for example a description's one."""
+    @property
+    def coordinators(self) -> dict[str, DeviceDataUpdateCoordinator | None]:
+        """Return every coordinator by its name, None when disabled."""
         return {
             COORDINATOR: self.coordinator,
             BUS_ERRORS_COORDINATOR: self.bus_errors_coordinator,
             ENERGY_COORDINATOR: self.energy_coordinator,
-        }[name]
+        }
+
+    def get_coordinator(self, name: str) -> DeviceDataUpdateCoordinator | None:
+        """Return a coordinator by its name, for example a description's one."""
+        return self.coordinators[name]
 
 
 type AristonConfigEntry = ConfigEntry[AristonData]

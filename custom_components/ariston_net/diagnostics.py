@@ -8,7 +8,6 @@ from homeassistant.components.diagnostics import async_redact_data
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
 
-from .const import BUS_ERRORS_COORDINATOR, COORDINATOR, ENERGY_COORDINATOR
 from .coordinator import AristonConfigEntry
 
 TO_REDACT = {
@@ -53,8 +52,8 @@ async def async_get_config_entry_diagnostics(
                     "last_update_success": coordinator.last_update_success,
                     "update_interval": str(coordinator.update_interval),
                 }
-                for name in (COORDINATOR, BUS_ERRORS_COORDINATOR, ENERGY_COORDINATOR)
-                if (coordinator := data.get_coordinator(name))
+                for name, coordinator in data.coordinators.items()
+                if coordinator
             },
         },
         TO_REDACT,

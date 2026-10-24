@@ -47,15 +47,10 @@ def _get_galevo_coordinator(
     device_entry = dr.async_get(hass).async_get(device_id)
     entry: AristonConfigEntry | None = None
     if device_entry is not None:
-        entry = next(
-            (
-                entry
-                for entry_id in device_entry.config_entries
-                if (entry := hass.config_entries.async_get_entry(entry_id))
-                and entry.domain == DOMAIN
-            ),
-            None,
-        )
+        for domain_entry in hass.config_entries.async_entries(DOMAIN):
+            if domain_entry.entry_id in device_entry.config_entries:
+                entry = domain_entry
+                break
     if entry is None:
         raise ServiceValidationError(
             translation_domain=DOMAIN,
@@ -80,13 +75,16 @@ def _get_galevo_coordinator(
 
 @callback
 def async_setup_services(hass: HomeAssistant) -> None:
-    """Register the services of the integration."""
+    """Register the services of the integration.
+
+    The library keeps each new value, so the services update the entities
+    without a cloud request.
+    """
 
     async def async_create_vacation(call: ServiceCall) -> None:
         """Create a vacation on the target device, or end it without a date."""
         coordinator = _get_galevo_coordinator(hass, call)
         await coordinator.device.async_set_holiday(call.data.get(ATTR_END_DATE))
-        # The library keeps the new value, so no cloud request is needed.
         coordinator.async_update_listeners()
 
     async def async_set_item_by_id(call: ServiceCall) -> None:
@@ -95,6 +93,7 @@ def async_setup_services(hass: HomeAssistant) -> None:
         await coordinator.device.async_set_item_by_id(
             call.data[ATTR_ITEM_ID], call.data[ATTR_VALUE], call.data[ATTR_ZONE]
         )
+        coordinator.async_update_listeners()
 
     hass.services.async_register(
         DOMAIN,

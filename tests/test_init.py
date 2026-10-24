@@ -31,7 +31,7 @@ from custom_components.ariston_net.const import (
     ENABLE_ENERGY,
 )
 
-from .conftest import runtime_data
+from .conftest import runtime_data, setup_integration
 
 CLIMATE = "climate.nimbus"
 WATER_HEATER = "water_heater.nimbus"
@@ -46,12 +46,6 @@ CH_ENERGY_SEQUENCE: dict[str, Any] = {
     "p": ConsumptionTimeInterval.LAST_DAY.value,
     "v": [1.5, 2.5],
 }
-
-
-async def setup_integration(hass: HomeAssistant, entry: MockConfigEntry) -> None:
-    """Set up the config entry."""
-    await hass.config_entries.async_setup(entry.entry_id)
-    await hass.async_block_till_done()
 
 
 def error_logs(caplog: pytest.LogCaptureFixture) -> list[str]:

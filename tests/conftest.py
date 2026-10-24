@@ -197,6 +197,12 @@ ENERGY_ACCOUNT: dict[str, Any] = {
 }
 
 
+async def setup_integration(hass: HomeAssistant, entry: MockConfigEntry) -> None:
+    """Set up the config entry."""
+    await hass.config_entries.async_setup(entry.entry_id)
+    await hass.async_block_till_done()
+
+
 def runtime_data(hass: HomeAssistant) -> AristonData:
     """Return the runtime data of the fake device's entry."""
     entry = hass.config_entries.async_entry_for_domain_unique_id(DOMAIN, GATEWAY)

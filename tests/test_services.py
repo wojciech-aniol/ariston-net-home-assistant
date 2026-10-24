@@ -7,7 +7,7 @@ from typing import Any
 from unittest.mock import AsyncMock, MagicMock
 
 from ariston import AristonBsbDevice, AristonGalevoDevice
-from homeassistant.const import ATTR_DEVICE_ID, STATE_OFF, STATE_ON
+from homeassistant.const import ATTR_DEVICE_ID, ATTR_TEMPERATURE, STATE_OFF, STATE_ON
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ServiceValidationError
 from homeassistant.helpers import device_registry as dr
@@ -16,9 +16,10 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.ariston_net.const import DOMAIN
 
-from .conftest import CLOUD_DEVICE, GATEWAY
+from .conftest import CLOUD_DEVICE, GATEWAY, setup_integration
 
 HOLIDAY = "binary_sensor.nimbus_ariston_net_holiday_mode"
+WATER_HEATER = "water_heater.nimbus"
 
 SERVICE_DATA: dict[str, dict[str, Any]] = {
     "create_vacation": {"end_date": "2026-11-01"},
@@ -30,12 +31,6 @@ def device_id(hass: HomeAssistant, entry: MockConfigEntry) -> str:
     """Return the device registry ID of the entry's device."""
     (device,) = dr.async_entries_for_config_entry(dr.async_get(hass), entry.entry_id)
     return device.id
-
-
-async def setup_integration(hass: HomeAssistant, entry: MockConfigEntry) -> None:
-    """Set up the config entry."""
-    await hass.config_entries.async_setup(entry.entry_id)
-    await hass.async_block_till_done()
 
 
 async def call_service(hass: HomeAssistant, service: str, target: str) -> None:
@@ -59,6 +54,26 @@ async def test_set_item_by_id_service_calls_device(
     await call_service(hass, "set_item_by_id", device_id(hass, init_integration))
 
     device.async_set_item_by_id.assert_awaited_once_with("ZoneComfortTemp", 21.5, 1)
+
+
+async def test_set_item_by_id_service_updates_entities(
+    hass: HomeAssistant, api: MagicMock, init_integration: MockConfigEntry
+) -> None:
+    """Test the set item service shows the new value without a new poll."""
+    await hass.services.async_call(
+        DOMAIN,
+        "set_item_by_id",
+        {
+            ATTR_DEVICE_ID: device_id(hass, init_integration),
+            "item_id": "DhwTemp",
+            "zone": 0,
+            "value": "55",
+        },
+        blocking=True,
+    )
+
+    api.async_set_property.assert_awaited_once()
+    assert hass.states.get(WATER_HEATER).attributes[ATTR_TEMPERATURE] == 55.0
 
 
 async def test_create_vacation_service_sets_end_date(
@@ -161,3 +176,4 @@ async def test_service_other_system_raises(
 
     assert exc_info.value.translation_key == "not_galevo"
     api.async_set_holiday.assert_not_called()
+    api.async_set_property.assert_not_called()
