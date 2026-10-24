@@ -21,7 +21,8 @@ from custom_components.ariston_net.menu_items import add_extra_menu_items
 from .conftest import GATEWAY, MENU_ITEMS
 
 HP_WATER_FLOW_TEMP = "sensor.nimbus_ariston_net_hp_water_flow_temp"
-CH_FLOW_TEMP = "sensor.nimbus_ariston_net_ch_flow_temperature"
+CH_FLOW_MEASURED_TEMP = "sensor.nimbus_ariston_net_ch_flow_measured_temp"
+CH_FLOW_TEMP = "sensor.nimbus_ariston_net_ch_flow_temp"
 SIGNAL_STRENGTH = "sensor.nimbus_ariston_net_signal_strength"
 SIGNAL_ITEM = {"id": 119, "value": 80.0, "unit": "%"}
 
@@ -32,14 +33,37 @@ async def setup_integration(hass: HomeAssistant, entry: MockConfigEntry) -> None
     await hass.async_block_till_done()
 
 
-@pytest.mark.usefixtures("init_full_integration")
-async def test_flow_sensors_show_menu_values(hass: HomeAssistant) -> None:
-    """Test both flow temperature sensors get their menu value and unit."""
-    for entity_id, value in ((HP_WATER_FLOW_TEMP, "27.0"), (CH_FLOW_TEMP, "25.0")):
+async def test_flow_sensors_show_menu_values(
+    hass: HomeAssistant,
+    api: MagicMock,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+    properties: dict[str, Any],
+) -> None:
+    """Test both flow sensors get their menu value and unit without ChFlowTemp."""
+    properties["items"] = [i for i in properties["items"] if i["id"] != "ChFlowTemp"]
+    api._async_get.return_value = copy.deepcopy(MENU_ITEMS)
+
+    await setup_integration(hass, config_entry)
+
+    for entity_id, value in (
+        (HP_WATER_FLOW_TEMP, "27.0"),
+        (CH_FLOW_MEASURED_TEMP, "25.0"),
+    ):
         state = hass.states.get(entity_id)
         assert state is not None
         assert state.state == value
         assert state.attributes["unit_of_measurement"] == "°C"
+
+
+@pytest.mark.usefixtures("init_full_integration")
+async def test_ch_flow_measured_temp_skipped_with_ch_flow_temp(
+    hass: HomeAssistant,
+) -> None:
+    """Test the menu CH flow sensor is skipped when ChFlowTemp has a value."""
+    assert hass.states.get(CH_FLOW_TEMP).state == "35.0"
+    assert hass.states.get(CH_FLOW_MEASURED_TEMP) is None
+    assert hass.states.get(HP_WATER_FLOW_TEMP).state == "27.0"
 
 
 @pytest.mark.usefixtures("init_full_integration")
@@ -73,7 +97,7 @@ async def test_flow_sensors_need_their_menu_value(
     await setup_integration(hass, config_entry)
 
     assert hass.states.get(HP_WATER_FLOW_TEMP) is None
-    assert hass.states.get(CH_FLOW_TEMP) is None
+    assert hass.states.get(CH_FLOW_MEASURED_TEMP) is None
 
 
 async def test_menu_items_without_answer_give_no_sensors(

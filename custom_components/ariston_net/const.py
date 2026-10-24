@@ -302,7 +302,7 @@ ARISTON_SENSOR_TYPES: list[AristonSensorEntityDescription] = [
     ),
     AristonSensorEntityDescription(
         key=str(ExtraMenuItem.CH_FLOW_TEMP),
-        name=f"{NAME} CH flow temperature",
+        name=f"{NAME} CH flow measured temp",
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
         get_native_value=lambda entity: menu_item_value(
@@ -311,8 +311,10 @@ ARISTON_SENSOR_TYPES: list[AristonSensorEntityDescription] = [
         get_native_unit_of_measurement=lambda entity: menu_item_value(
             entity.device, ExtraMenuItem.CH_FLOW_TEMP, PropertyType.UNIT
         ),
+        # Probably the same sensor as "CH flow temp": skip it when that one has a value.
         get_is_supported=lambda device: (
             menu_item_value(device, ExtraMenuItem.CH_FLOW_TEMP) is not None
+            and device.ch_flow_temp_value is None
         ),
         system_types=[SystemType.GALEVO],
     ),

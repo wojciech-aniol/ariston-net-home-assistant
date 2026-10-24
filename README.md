@@ -63,11 +63,12 @@ The commit messages list what was skipped from each pull request and why.
 
 ### New in this fork
 
-- Sensors "Ariston NET HP water flow temp" and "Ariston NET CH flow temperature" (GALEVO): the
-  measured flow temperatures from the cloud menu items 348 and 349. The library does not ask for
-  them, so the integration adds them to its menu items request (still one request per update). A
-  device that never sends them gets no such sensors. Nimbus 120 S-T NET does not send a return
-  temperature in any menu item.
+- Sensors "Ariston NET HP water flow temp" and "Ariston NET CH flow measured temp" (GALEVO): the
+  measured flow temperatures from the cloud menu items 348 and 349, in whole degrees. The library
+  does not ask for them, so the integration adds them to its menu items request (still one request
+  per update). A device that never sends them gets no such sensors, and "CH flow measured temp" is
+  skipped when "CH flow temp" has a value. The cloud gives an owner account no return temperature
+  for Nimbus 120 S-T NET (menu items 1-500, all data items and the web user menu were checked).
 - Select entity "Ariston NET plant mode" (GALEVO): Summer, Winter, Heating only and so on, as
   listed by the cloud. It does the same as the climate preset, for the whole plant.
 - An error from the bus errors endpoint no longer stops the setup.
