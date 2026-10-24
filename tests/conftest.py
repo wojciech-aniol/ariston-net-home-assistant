@@ -15,7 +15,7 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 from pytest_homeassistant_custom_component.syrupy import HomeAssistantSnapshotExtension
 from syrupy.assertion import SnapshotAssertion
 
-from custom_components.ariston_net.const import DOMAIN
+from custom_components.ariston_net.const import DOMAIN, ENERGY_COORDINATOR
 
 GATEWAY = "F0AD4E000001"
 
@@ -191,6 +191,16 @@ ENERGY_ACCOUNT: dict[str, Any] = {
 }
 
 
+async def refresh_energy(hass: HomeAssistant, api: MagicMock) -> None:
+    """Send new energy data, so the total energy sensors get a value."""
+    api.async_get_consumptions_sequences.return_value = [
+        sequence | {"v": [*sequence["v"], sequence["v"][-1] + 1]}
+        for sequence in api.async_get_consumptions_sequences.return_value
+    ]
+    await hass.data[DOMAIN][GATEWAY][ENERGY_COORDINATOR].async_refresh()
+    await hass.async_block_till_done()
+
+
 @pytest.fixture
 def snapshot(snapshot: SnapshotAssertion) -> SnapshotAssertion:
     """Return the snapshot fixture with the Home Assistant extension.
@@ -254,6 +264,22 @@ def full_galevo(
     )
     api.async_get_energy_account.return_value = copy.deepcopy(ENERGY_ACCOUNT)
     return api
+
+
+@pytest.fixture
+def second_zone(features: dict[str, Any], properties: dict[str, Any]) -> int:
+    """Add a second zone with its own values and return its number."""
+    zone = 2
+    features["zones"].append(
+        {"num": zone, "name": "", "roomSens": True, "isHidden": False}
+    )
+    zone_items = [item for item in properties["items"] if item["zone"] == 1]
+    for item in copy.deepcopy(zone_items):
+        item["zone"] = zone
+        if isinstance(item["value"], float):
+            item["value"] += 1
+        properties["items"].append(item)
+    return zone
 
 
 @pytest.fixture
