@@ -9,6 +9,7 @@ from ariston import AristonGalevoDevice
 from ariston.ariston_api import ConnectionException
 from homeassistant.core import HomeAssistant
 import pytest
+from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.ariston_net.const import COORDINATOR
 from custom_components.ariston_net.coordinator import DeviceDataUpdateCoordinator
@@ -17,12 +18,17 @@ SCAN_INTERVAL = timedelta(seconds=180)
 
 
 async def test_rate_limit_backs_off_and_recovers(
-    hass: HomeAssistant, device: AristonGalevoDevice
+    hass: HomeAssistant, config_entry: MockConfigEntry, device: AristonGalevoDevice
 ) -> None:
     """Test 429 doubles the interval up to 8x and a good update restores it."""
     update = AsyncMock(side_effect=ConnectionException(429, "body"))
     coordinator = DeviceDataUpdateCoordinator(
-        hass, device, int(SCAN_INTERVAL.total_seconds()), COORDINATOR, update
+        hass,
+        config_entry,
+        device,
+        int(SCAN_INTERVAL.total_seconds()),
+        COORDINATOR,
+        update,
     )
 
     for factor in (2, 4, 8, 8):
@@ -38,12 +44,17 @@ async def test_rate_limit_backs_off_and_recovers(
 
 
 async def test_rate_limit_backoff_is_kept_on_other_errors(
-    hass: HomeAssistant, device: AristonGalevoDevice
+    hass: HomeAssistant, config_entry: MockConfigEntry, device: AristonGalevoDevice
 ) -> None:
     """Test other errors don't reset the backoff."""
     update = AsyncMock(side_effect=ConnectionException(429, "body"))
     coordinator = DeviceDataUpdateCoordinator(
-        hass, device, int(SCAN_INTERVAL.total_seconds()), COORDINATOR, update
+        hass,
+        config_entry,
+        device,
+        int(SCAN_INTERVAL.total_seconds()),
+        COORDINATOR,
+        update,
     )
     await coordinator.async_refresh()
 
@@ -64,11 +75,15 @@ async def test_rate_limit_backoff_is_kept_on_other_errors(
     ids=["500", "no-args", "invalid-token", "text-429"],
 )
 async def test_other_connection_errors_are_raised(
-    hass: HomeAssistant, device: AristonGalevoDevice, error: ConnectionException
+    hass: HomeAssistant,
+    config_entry: MockConfigEntry,
+    device: AristonGalevoDevice,
+    error: ConnectionException,
 ) -> None:
     """Test errors other than 429 are raised unchanged."""
     coordinator = DeviceDataUpdateCoordinator(
         hass,
+        config_entry,
         device,
         int(SCAN_INTERVAL.total_seconds()),
         COORDINATOR,

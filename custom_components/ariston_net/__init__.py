@@ -108,7 +108,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: AristonConfigEntry) -> b
             CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL_SECONDS
         )
         coordinator = DeviceDataUpdateCoordinator(
-            hass, device, scan_interval_seconds, COORDINATOR, device.async_update_state
+            hass,
+            entry,
+            device,
+            scan_interval_seconds,
+            COORDINATOR,
+            device.async_update_state,
         )
         await coordinator.async_config_entry_first_refresh()
         data = AristonData(coordinator)
@@ -119,6 +124,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: AristonConfigEntry) -> b
             )
             data.bus_errors_coordinator = DeviceDataUpdateCoordinator(
                 hass,
+                entry,
                 device,
                 bus_errors_scan_interval_seconds,
                 BUS_ERRORS_COORDINATOR,
@@ -140,6 +146,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: AristonConfigEntry) -> b
             )
             data.energy_coordinator = DeviceDataUpdateCoordinator(
                 hass,
+                entry,
                 device,
                 energy_interval_minutes * 60,
                 ENERGY_COORDINATOR,
