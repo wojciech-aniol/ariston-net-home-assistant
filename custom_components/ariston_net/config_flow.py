@@ -42,15 +42,22 @@ from .errors import CLOUD_ERRORS, CloudErrorKind, classify_error, describe_error
 
 _LOGGER = logging.getLogger(__name__)
 
+API_DEFAULTS: dict[str, str] = {
+    API_URL_SETTING: ARISTON_API_URL,
+    API_USER_AGENT: ARISTON_USER_AGENT,
+}
+
 STEP_USER_DATA_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_USERNAME): str,
         vol.Required(CONF_PASSWORD): str,
-        vol.Required("advanced"): section(
+        # Optional, so a login alone is enough. No default here: the form
+        # would then show it instead of the field defaults.
+        vol.Optional("advanced"): section(
             vol.Schema(
                 {
-                    vol.Optional(API_URL_SETTING, default=ARISTON_API_URL): str,
-                    vol.Optional(API_USER_AGENT, default=ARISTON_USER_AGENT): str,
+                    vol.Optional(key, default=default): str
+                    for key, default in API_DEFAULTS.items()
                 }
             ),
             {"collapsed": True},
@@ -116,8 +123,9 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             self.cloud_username = user_input[CONF_USERNAME]
             self.cloud_password = user_input[CONF_PASSWORD]
-            self.cloud_api_url = user_input["advanced"][API_URL_SETTING]
-            self.cloud_api_user_agent = user_input["advanced"][API_USER_AGENT]
+            api_settings = API_DEFAULTS | user_input.get("advanced", {})
+            self.cloud_api_url = api_settings[API_URL_SETTING]
+            self.cloud_api_user_agent = api_settings[API_USER_AGENT]
             cloud_devices, error = await self._async_get_devices(
                 self.cloud_username,
                 self.cloud_password,

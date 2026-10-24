@@ -156,11 +156,20 @@ async def test_user_step_one_device_creates_entry(
     mock_setup_entry.assert_awaited_once()
 
 
+@pytest.mark.parametrize(
+    "section",
+    [{"advanced": {}}, {}],
+    ids=["empty-section", "no-section"],
+)
 async def test_user_step_untouched_section_uses_defaults(
-    hass: HomeAssistant, flow_ariston: MagicMock, mock_setup_entry: AsyncMock
+    hass: HomeAssistant,
+    flow_ariston: MagicMock,
+    mock_setup_entry: AsyncMock,
+    section: dict[str, Any],
 ) -> None:
     """Test the default API settings apply when the section is left alone."""
-    result = await start_user_flow(hass, USER_INPUT | {"advanced": {}})
+    login = {key: USER_INPUT[key] for key in (CONF_USERNAME, CONF_PASSWORD)}
+    result = await start_user_flow(hass, login | section)
 
     assert result["data"][API_URL_SETTING] == ARISTON_API_URL
     assert result["data"][API_USER_AGENT] == ARISTON_USER_AGENT
