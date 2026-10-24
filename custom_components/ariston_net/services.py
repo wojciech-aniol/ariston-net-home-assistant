@@ -12,6 +12,7 @@ import voluptuous as vol
 
 from .const import DOMAIN
 from .coordinator import AristonConfigEntry, DeviceDataUpdateCoordinator
+from .errors import CLOUD_ERRORS, action_error
 
 SERVICE_CREATE_VACATION = "create_vacation"
 SERVICE_SET_ITEM_BY_ID = "set_item_by_id"
@@ -84,15 +85,21 @@ def async_setup_services(hass: HomeAssistant) -> None:
     async def async_create_vacation(call: ServiceCall) -> None:
         """Create a vacation on the target device, or end it without a date."""
         coordinator = _get_galevo_coordinator(hass, call)
-        await coordinator.device.async_set_holiday(call.data.get(ATTR_END_DATE))
+        try:
+            await coordinator.device.async_set_holiday(call.data.get(ATTR_END_DATE))
+        except CLOUD_ERRORS as error:
+            raise action_error(hass, coordinator.config_entry, error) from error
         coordinator.async_update_listeners()
 
     async def async_set_item_by_id(call: ServiceCall) -> None:
         """Set a device or zone item on the target device."""
         coordinator = _get_galevo_coordinator(hass, call)
-        await coordinator.device.async_set_item_by_id(
-            call.data[ATTR_ITEM_ID], call.data[ATTR_VALUE], call.data[ATTR_ZONE]
-        )
+        try:
+            await coordinator.device.async_set_item_by_id(
+                call.data[ATTR_ITEM_ID], call.data[ATTR_VALUE], call.data[ATTR_ZONE]
+            )
+        except CLOUD_ERRORS as error:
+            raise action_error(hass, coordinator.config_entry, error) from error
         coordinator.async_update_listeners()
 
     hass.services.async_register(

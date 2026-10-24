@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 from abc import ABC
-from collections.abc import Callable
+from collections.abc import Awaitable, Callable
 from dataclasses import dataclass
-from typing import Any
+from functools import wraps
+from typing import Any, Concatenate
 
 from ariston.const import SystemType, WheType
 from homeassistant.helpers.entity import DeviceInfo, EntityDescription
@@ -13,6 +14,7 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import COORDINATOR, DOMAIN, EXTRA_STATE_ATTRIBUTE, EXTRA_STATE_DEVICE_METHOD
 from .coordinator import DeviceDataUpdateCoordinator
+from .errors import CLOUD_ERRORS, action_error
 
 
 @dataclass(kw_only=True, frozen=True)
@@ -111,3 +113,22 @@ class AristonEntity(CoordinatorEntity[DeviceDataUpdateCoordinator], ABC):
             state_attributes[extra_state.get(EXTRA_STATE_ATTRIBUTE)] = state_attribute
 
         return state_attributes
+
+
+def cloud_action[E: AristonEntity, **P, R](
+    func: Callable[Concatenate[E, P], Awaitable[R]],
+) -> Callable[Concatenate[E, P], Awaitable[R]]:
+    """Show cloud errors of an entity action as HA errors, without a traceback."""
+
+    @wraps(func)
+    async def wrapper(self: E, *args: P.args, **kwargs: P.kwargs) -> R:
+        try:
+            return await func(self, *args, **kwargs)
+        except CLOUD_ERRORS as error:
+            # Earlier writes of the action may have worked, so show them.
+            self.coordinator.async_update_listeners()
+            raise action_error(
+                self.hass, self.coordinator.config_entry, error
+            ) from error
+
+    return wrapper

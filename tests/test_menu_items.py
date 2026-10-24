@@ -195,14 +195,26 @@ async def test_refusal_counts_only_when_library_items_work(
     assert api.menu_items_request.await_count == 6
 
 
+def relogin_error(status: int) -> ConnectionException:
+    """Return the error of a failed new login: an empty one that wraps the status."""
+    error = ConnectionException()
+    error.__cause__ = ConnectionException(status)
+    return error
+
+
 @pytest.mark.parametrize(
-    "error",
+    ("error", "state"),
     [
-        ConnectionException("Invalid token"),
-        ConnectionException("Login failed (password changed?)"),
-        ConnectionException(),
+        (ConnectionException("Invalid token"), ConfigEntryState.SETUP_ERROR),
+        (
+            ConnectionException("Login failed (password changed?)"),
+            ConfigEntryState.SETUP_ERROR,
+        ),
+        (ConnectionException(), ConfigEntryState.SETUP_RETRY),
+        (relogin_error(401), ConfigEntryState.SETUP_ERROR),
+        (ConnectionException(429), ConfigEntryState.SETUP_RETRY),
     ],
-    ids=["invalid-token", "login-failed", "no-status"],
+    ids=["invalid-token", "login-failed", "no-status", "relogin-401", "429"],
 )
 async def test_auth_error_on_extra_items_is_raised(
     hass: HomeAssistant,
@@ -210,6 +222,7 @@ async def test_auth_error_on_extra_items_is_raised(
     mock_ariston: MagicMock,
     config_entry: MockConfigEntry,
     error: ConnectionException,
+    state: ConfigEntryState,
 ) -> None:
     """Test an error without an HTTP status is not taken for a refused list."""
     library_get_menu_items = api.async_get_menu_items
@@ -217,7 +230,7 @@ async def test_auth_error_on_extra_items_is_raised(
 
     await setup_integration(hass, config_entry)
 
-    assert config_entry.state is ConfigEntryState.SETUP_RETRY
+    assert config_entry.state is state
     library_get_menu_items.assert_not_awaited()
 
 

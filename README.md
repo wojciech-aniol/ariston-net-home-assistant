@@ -82,6 +82,8 @@ The commit messages list what was skipped from each pull request and why.
   entities.
 - Total energy sensors stay `unknown` until the cloud energy data changes once. Before that the
   library has no reset time, so statistics would count the same value again after each restart.
+- Clear errors: a refused password starts re-authentication (password only), and cloud errors
+  of an action show a message instead of a traceback. The interval options have minimums.
 - Diagnostics (**Download diagnostics** on the integration page) with the raw cloud data. Login,
   gateway, serial numbers and names are removed.
 - Its own icon (`custom_components/ariston_net/brand`).
@@ -125,7 +127,13 @@ Home Assistant.
 - Default polling: state every 180 s, energy every 60 min, bus errors every 600 s
   (**Configure** in the integration options, where you can also turn off energy and bus errors
   polling). The Ariston cloud throttles accounts (HTTP 429 and 500), so do not poll more often.
+  The options do not take less than 60 s for state and bus errors and 15 min for energy.
   Every other integration that uses the same account adds to the load.
+- Cloud errors: when the cloud refuses the saved password, Home Assistant asks for the new one
+  (under **Settings → Devices & services**; it asks only for the password). Other
+  cloud errors make the entities unavailable until the next good update, and a failed start is
+  tried again later. A change that the cloud does not accept shows an error message with the
+  HTTP status, not a traceback in the log.
 - The climate HVAC mode `off` uses the plant mode `OFF` when the device has it, which also turns
   off domestic hot water. To keep hot water and stop heating, select the plant mode `Summer`
   (select entity or climate preset).

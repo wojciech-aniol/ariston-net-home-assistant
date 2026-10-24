@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+from datetime import timedelta
 import logging
 from typing import Any
 from unittest.mock import MagicMock, patch
 
+import aiohttp
 from ariston.ariston_api import ConnectionException
 from ariston.const import (
     ARISTON_API_URL,
@@ -15,6 +17,7 @@ from ariston.const import (
 )
 from homeassistant.config_entries import SOURCE_REAUTH, ConfigEntryState
 from homeassistant.const import (
+    CONF_SCAN_INTERVAL,
     STATE_ON,
     STATE_UNAVAILABLE,
     STATE_UNKNOWN,
@@ -26,12 +29,14 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 from custom_components.ariston_net.const import (
     API_URL_SETTING,
     API_USER_AGENT,
+    BUS_ERRORS_SCAN_INTERVAL,
     DOMAIN,
     ENABLE_BUS_ERRORS,
     ENABLE_ENERGY,
+    ENERGY_SCAN_INTERVAL,
 )
 
-from .conftest import runtime_data, setup_integration
+from .conftest import runtime_data, setup_integration, tracebacks
 
 CLIMATE = "climate.nimbus"
 WATER_HEATER = "water_heater.nimbus"
@@ -146,6 +151,7 @@ async def test_device_failure_retries_setup(
     api: MagicMock,
     mock_ariston: MagicMock,
     config_entry: MockConfigEntry,
+    caplog: pytest.LogCaptureFixture,
 ) -> None:
     """Test setup is retried when the device state can't be read."""
     api.async_get_properties.side_effect = ConnectionException(500)
@@ -153,6 +159,7 @@ async def test_device_failure_retries_setup(
     await setup_integration(hass, config_entry)
 
     assert config_entry.state is ConfigEntryState.SETUP_RETRY
+    assert tracebacks(caplog) == []
 
 
 async def test_energy_failure_does_not_fail_setup(
@@ -305,16 +312,133 @@ async def test_setup_login_refused_starts_reauth(
     assert [flow["context"]["source"] for flow in flows] == [SOURCE_REAUTH]
 
 
-async def test_setup_no_device_fails_without_retry(
+async def test_setup_no_device_retries_setup(
     hass: HomeAssistant, mock_ariston: MagicMock, config_entry: MockConfigEntry
 ) -> None:
-    """Test setup fails for good when the cloud has no such device."""
+    """Test setup is retried when the cloud does not list the device."""
     mock_ariston.async_hello.return_value = None
 
     await setup_integration(hass, config_entry)
 
-    assert config_entry.state is ConfigEntryState.SETUP_ERROR
+    assert config_entry.state is ConfigEntryState.SETUP_RETRY
     assert not hass.config_entries.flow.async_progress_by_handler(DOMAIN)
+
+
+def login_error(cause: Exception) -> ConnectionException:
+    """Return the error a login raises: an empty one that wraps the cause."""
+    error = ConnectionException()
+    error.__cause__ = cause
+    return error
+
+
+@pytest.mark.parametrize(
+    "error",
+    [
+        login_error(ConnectionException(401)),
+        ConnectionException("Login failed (password changed?)"),
+    ],
+    ids=["login-401", "login-failed"],
+)
+async def test_setup_auth_error_starts_reauth(
+    hass: HomeAssistant,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+    caplog: pytest.LogCaptureFixture,
+    error: ConnectionException,
+) -> None:
+    """Test an auth error at login asks for a new login, without a traceback."""
+    mock_ariston.async_connect.side_effect = error
+
+    await setup_integration(hass, config_entry)
+
+    assert config_entry.state is ConfigEntryState.SETUP_ERROR
+    flows = hass.config_entries.flow.async_progress_by_handler(DOMAIN)
+    assert [flow["context"]["source"] for flow in flows] == [SOURCE_REAUTH]
+    assert tracebacks(caplog) == []
+
+
+@pytest.mark.parametrize(
+    ("method", "error"),
+    [
+        ("async_connect", login_error(ConnectionException(500))),
+        ("async_connect", login_error(ConnectionException(429))),
+        ("async_connect", login_error(aiohttp.ClientConnectionError())),
+        ("async_hello", ConnectionException(502)),
+        ("async_hello", aiohttp.ClientError()),
+        ("async_hello", TimeoutError()),
+    ],
+    ids=[
+        "login-500",
+        "login-429",
+        "login-network",
+        "hello-502",
+        "hello-network",
+        "hello-timeout",
+    ],
+)
+async def test_setup_cloud_error_retries_setup(
+    hass: HomeAssistant,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+    caplog: pytest.LogCaptureFixture,
+    method: str,
+    error: Exception,
+) -> None:
+    """Test other cloud errors retry the setup later, without a traceback."""
+    getattr(mock_ariston, method).side_effect = error
+
+    await setup_integration(hass, config_entry)
+
+    assert config_entry.state is ConfigEntryState.SETUP_RETRY
+    assert not hass.config_entries.flow.async_progress_by_handler(DOMAIN)
+    assert tracebacks(caplog) == []
+
+
+async def test_setup_features_error_retries_setup(
+    hass: HomeAssistant,
+    api: MagicMock,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """Test a failed features request retries the setup, without a traceback."""
+    api.async_get_features_for_device.side_effect = ConnectionException(500)
+
+    await setup_integration(hass, config_entry)
+
+    assert config_entry.state is ConfigEntryState.SETUP_RETRY
+    assert tracebacks(caplog) == []
+
+
+async def test_setup_unexpected_error_is_logged_and_retried(
+    hass: HomeAssistant,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """Test an unexpected error is logged with its traceback and retried."""
+    mock_ariston.async_hello.side_effect = ValueError("bad data")
+
+    await setup_integration(hass, config_entry)
+
+    assert config_entry.state is ConfigEntryState.SETUP_RETRY
+    assert tracebacks(caplog) == ["Unexpected error while setting up Ariston NET"]
+
+
+async def test_setup_auth_error_in_bus_errors_starts_reauth(
+    hass: HomeAssistant,
+    api: MagicMock,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+) -> None:
+    """Test an auth error of an optional coordinator still asks for a new login."""
+    api.async_get_bus_errors.side_effect = ConnectionException("Invalid token")
+
+    await setup_integration(hass, config_entry)
+
+    assert config_entry.state is ConfigEntryState.SETUP_ERROR
+    flows = hass.config_entries.flow.async_progress_by_handler(DOMAIN)
+    assert [flow["context"]["source"] for flow in flows] == [SOURCE_REAUTH]
 
 
 async def test_unload_failure_keeps_entry_data(
@@ -327,3 +451,28 @@ async def test_unload_failure_keeps_entry_data(
         assert not await hass.config_entries.async_unload(init_integration.entry_id)
 
     assert init_integration.runtime_data
+
+
+@pytest.mark.parametrize(
+    ("option", "value", "coordinator", "expected"),
+    [
+        (CONF_SCAN_INTERVAL, 30, "coordinator", timedelta(seconds=60)),
+        (ENERGY_SCAN_INTERVAL, 5, "energy_coordinator", timedelta(minutes=15)),
+        (BUS_ERRORS_SCAN_INTERVAL, 10, "bus_errors_coordinator", timedelta(seconds=60)),
+    ],
+)
+async def test_setup_raises_old_interval_to_minimum(
+    hass: HomeAssistant,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+    option: str,
+    value: int,
+    coordinator: str,
+    expected: timedelta,
+) -> None:
+    """Test an interval saved below the minimum polls at the minimum."""
+    hass.config_entries.async_update_entry(config_entry, options={option: value})
+
+    await setup_integration(hass, config_entry)
+
+    assert getattr(runtime_data(hass), coordinator).update_interval == expected

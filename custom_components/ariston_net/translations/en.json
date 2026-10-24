@@ -2,7 +2,9 @@
   "config": {
     "abort": {
       "already_configured": "Device is already configured",
-      "reauth_successful": "Re-authentication was successful"
+      "reauth_successful": "Re-authentication was successful",
+      "no_devices_found": "This Ariston account has no device.",
+      "unique_id_mismatch": "This Ariston account does not have the configured device anymore."
     },
     "error": {
       "cannot_connect": "Failed to connect",
@@ -22,6 +24,13 @@
         "title": "Select device",
         "data": {
           "select_device": "Device"
+        }
+      },
+      "reauth_confirm": {
+        "title": "Re-authenticate",
+        "description": "The Ariston cloud refused the saved password for {username}. Enter the current password.",
+        "data": {
+          "password": "Password"
         }
       }
     }
@@ -87,6 +96,33 @@
     },
     "not_galevo": {
       "message": "The Ariston NET device {device_id} does not support this action. Only GALEVO devices do."
+    },
+    "auth_failed": {
+      "message": "The Ariston cloud refused the login ({error}). Enter the password again."
+    },
+    "update_failed": {
+      "message": "Could not read data from the Ariston cloud ({error})."
+    },
+    "rate_limited": {
+      "message": "The Ariston cloud got too many requests from this account (HTTP 429). Updates slow down for a while."
+    },
+    "setup_failed": {
+      "message": "Could not connect to the Ariston cloud ({error}). Home Assistant tries again later."
+    },
+    "device_not_in_account": {
+      "message": "The Ariston cloud did not list the device {name} for this account. Home Assistant tries again later."
+    },
+    "action_failed": {
+      "message": "The Ariston cloud did not accept the change ({error}). Try again later."
+    },
+    "action_auth_failed": {
+      "message": "The Ariston cloud refused the login ({error}). Enter the password again, then retry."
+    },
+    "action_rate_limited": {
+      "message": "The Ariston cloud got too many requests from this account ({error}). Try again in a few minutes."
+    },
+    "missing_temperature": {
+      "message": "Set a target temperature."
     }
   }
 }

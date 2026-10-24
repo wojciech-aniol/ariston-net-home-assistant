@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Awaitable, Callable
+from collections.abc import Awaitable, Callable, Mapping
 from dataclasses import dataclass
 from datetime import timedelta
 import logging
@@ -11,15 +11,52 @@ from typing import Any
 from ariston.ariston_api import ConnectionException
 from ariston.base_device import AristonBaseDevice
 from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import CONF_SCAN_INTERVAL
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .const import BUS_ERRORS_COORDINATOR, COORDINATOR, DOMAIN, ENERGY_COORDINATOR
+from .const import (
+    BUS_ERRORS_COORDINATOR,
+    BUS_ERRORS_SCAN_INTERVAL,
+    COORDINATOR,
+    DEFAULT_BUS_ERRORS_SCAN_INTERVAL_SECONDS,
+    DEFAULT_ENERGY_SCAN_INTERVAL_MINUTES,
+    DEFAULT_SCAN_INTERVAL_SECONDS,
+    DOMAIN,
+    ENERGY_COORDINATOR,
+    ENERGY_SCAN_INTERVAL,
+    MIN_BUS_ERRORS_SCAN_INTERVAL_SECONDS,
+    MIN_ENERGY_SCAN_INTERVAL_MINUTES,
+    MIN_SCAN_INTERVAL_SECONDS,
+)
+from .errors import CloudErrorKind, classify_error, describe_error
 
 _LOGGER = logging.getLogger(__name__)
 
-HTTP_TOO_MANY_REQUESTS = 429
 MAX_BACKOFF_FACTOR = 8
+
+# Default and minimum of each interval option.
+INTERVAL_OPTIONS: dict[str, tuple[int, int]] = {
+    CONF_SCAN_INTERVAL: (DEFAULT_SCAN_INTERVAL_SECONDS, MIN_SCAN_INTERVAL_SECONDS),
+    ENERGY_SCAN_INTERVAL: (
+        DEFAULT_ENERGY_SCAN_INTERVAL_MINUTES,
+        MIN_ENERGY_SCAN_INTERVAL_MINUTES,
+    ),
+    BUS_ERRORS_SCAN_INTERVAL: (
+        DEFAULT_BUS_ERRORS_SCAN_INTERVAL_SECONDS,
+        MIN_BUS_ERRORS_SCAN_INTERVAL_SECONDS,
+    ),
+}
+
+
+def interval_option(options: Mapping[str, Any], key: str) -> int:
+    """Return an interval option, at least its minimum.
+
+    Entries saved before the minimums may hold a lower value.
+    """
+    default, minimum = INTERVAL_OPTIONS[key]
+    return max(options.get(key, default), minimum)
 
 
 class DeviceDataUpdateCoordinator(DataUpdateCoordinator[None]):
@@ -55,17 +92,33 @@ class DeviceDataUpdateCoordinator(DataUpdateCoordinator[None]):
         try:
             await self._async_update_state()
         except ConnectionException as error:
-            # The library raises ConnectionException(status, body) on HTTP 429.
-            if not error.args or error.args[0] != HTTP_TOO_MANY_REQUESTS:
-                raise
-            self._backoff_factor = min(self._backoff_factor * 2, MAX_BACKOFF_FACTOR)
-            self.update_interval = self._default_update_interval * self._backoff_factor
-            _LOGGER.warning(
-                "Rate limited (429) by Ariston cloud. Next update of %s in %s",
-                self.name,
-                self.update_interval,
-            )
-            raise UpdateFailed("Rate limited (429) by Ariston cloud") from error
+            kind = classify_error(error)
+            placeholders = {"error": describe_error(error)}
+            if kind is CloudErrorKind.AUTH:
+                raise ConfigEntryAuthFailed(
+                    translation_domain=DOMAIN,
+                    translation_key="auth_failed",
+                    translation_placeholders=placeholders,
+                ) from error
+            if kind is CloudErrorKind.RATE_LIMIT:
+                self._backoff_factor = min(self._backoff_factor * 2, MAX_BACKOFF_FACTOR)
+                self.update_interval = (
+                    self._default_update_interval * self._backoff_factor
+                )
+                _LOGGER.warning(
+                    "Rate limited (429) by Ariston cloud. Next update of %s in %s",
+                    self.name,
+                    self.update_interval,
+                )
+                raise UpdateFailed(
+                    translation_domain=DOMAIN,
+                    translation_key="rate_limited",
+                ) from error
+            raise UpdateFailed(
+                translation_domain=DOMAIN,
+                translation_key="update_failed",
+                translation_placeholders=placeholders,
+            ) from error
 
         if self._backoff_factor > 1:
             self._backoff_factor = 1

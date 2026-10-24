@@ -26,7 +26,12 @@ from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .const import ENERGY_COORDINATOR, NAME
 from .coordinator import AristonConfigEntry, DeviceDataUpdateCoordinator
-from .entity import AristonBaseEntityDescription, AristonEntity, is_entity_supported
+from .entity import (
+    AristonBaseEntityDescription,
+    AristonEntity,
+    cloud_action,
+    is_entity_supported,
+)
 
 
 @dataclass(kw_only=True, frozen=True)
@@ -293,6 +298,7 @@ class AristonNumber(AristonEntity, NumberEntity):
 
         return self.entity_description.native_step
 
+    @cloud_action
     async def async_set_native_value(self, value: float):
         """Update the current value."""
         await self.entity_description.set_native_value(self, value)

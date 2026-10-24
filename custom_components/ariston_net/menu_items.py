@@ -12,9 +12,10 @@ from ariston.ariston_api import AristonAPI, ConnectionException
 from ariston.base_device import AristonBaseDevice
 from ariston.const import ARISTON_MENU_ITEMS, MenuItemNames, PropertyType
 
+from .errors import CloudErrorKind, classify_error, error_status
+
 _LOGGER = logging.getLogger(__name__)
 
-HTTP_TOO_MANY_REQUESTS = 429
 REFUSALS_BEFORE_FALLBACK = 3
 
 # The cloud fails the whole request (HTTP 500) when it holds one of these IDs.
@@ -133,9 +134,12 @@ def add_extra_menu_items(
                 f"{api_url}{ARISTON_MENU_ITEMS}/{gw_id}?menuItems={item_ids}"
             )
         except ConnectionException as error:
-            status = error.args[0] if error.args else None
-            # Auth errors carry text, and 429 is for the coordinator backoff.
-            if not isinstance(status, int) or status == HTTP_TOO_MANY_REQUESTS:
+            status = error_status(error)
+            # Auth errors and 429 are for the coordinator.
+            if status is None or classify_error(error) in (
+                CloudErrorKind.AUTH,
+                CloudErrorKind.RATE_LIMIT,
+            ):
                 raise
             items = await library_get_menu_items(gw_id)
             refused += 1

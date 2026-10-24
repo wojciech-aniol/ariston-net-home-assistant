@@ -5,6 +5,7 @@ from __future__ import annotations
 import logging
 
 from ariston import Ariston, DeviceAttribute, SystemType
+from ariston.ariston_api import ConnectionException
 from ariston.const import ARISTON_API_URL, ARISTON_USER_AGENT
 from homeassistant.const import (
     CONF_DEVICE,
@@ -14,7 +15,11 @@ from homeassistant.const import (
     Platform,
 )
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
+from homeassistant.exceptions import (
+    ConfigEntryAuthFailed,
+    ConfigEntryNotReady,
+    HomeAssistantError,
+)
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.typing import ConfigType
 from homeassistant.util.unit_system import METRIC_SYSTEM
@@ -25,16 +30,19 @@ from .const import (
     BUS_ERRORS_COORDINATOR,
     BUS_ERRORS_SCAN_INTERVAL,
     COORDINATOR,
-    DEFAULT_BUS_ERRORS_SCAN_INTERVAL_SECONDS,
-    DEFAULT_ENERGY_SCAN_INTERVAL_MINUTES,
-    DEFAULT_SCAN_INTERVAL_SECONDS,
     DOMAIN,
     ENABLE_BUS_ERRORS,
     ENABLE_ENERGY,
     ENERGY_COORDINATOR,
     ENERGY_SCAN_INTERVAL,
 )
-from .coordinator import AristonConfigEntry, AristonData, DeviceDataUpdateCoordinator
+from .coordinator import (
+    AristonConfigEntry,
+    AristonData,
+    DeviceDataUpdateCoordinator,
+    interval_option,
+)
+from .errors import CLOUD_ERRORS, CloudErrorKind, classify_error, describe_error
 from .menu_items import add_extra_menu_items, async_find_blocked_menu_items
 from .services import async_setup_services
 
@@ -74,18 +82,24 @@ async def async_setup_entry(hass: HomeAssistant, entry: AristonConfigEntry) -> b
             api_user_agent,
         )
         if not response:
-            _LOGGER.error(
-                "Failed to connect to Ariston with device: %s",
-                entry.data[CONF_DEVICE].get(DeviceAttribute.NAME),
+            raise ConfigEntryAuthFailed(
+                translation_domain=DOMAIN,
+                translation_key="auth_failed",
+                translation_placeholders={"error": "login refused"},
             )
-            raise ConfigEntryAuthFailed
 
         device = await ariston.async_hello(
             entry.data[CONF_DEVICE].get(DeviceAttribute.GW),
             hass.config.units is METRIC_SYSTEM,
         )
         if device is None:
-            return False
+            raise ConfigEntryNotReady(
+                translation_domain=DOMAIN,
+                translation_key="device_not_in_account",
+                translation_placeholders={
+                    "name": entry.data[CONF_DEVICE].get(DeviceAttribute.NAME) or ""
+                },
+            )
 
         if device.system_type is SystemType.GALEVO:
             add_extra_menu_items(
@@ -98,9 +112,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: AristonConfigEntry) -> b
 
         await device.async_get_features()
 
-        scan_interval_seconds = entry.options.get(
-            CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL_SECONDS
-        )
+        scan_interval_seconds = interval_option(entry.options, CONF_SCAN_INTERVAL)
         coordinator = DeviceDataUpdateCoordinator(
             hass,
             entry,
@@ -113,8 +125,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: AristonConfigEntry) -> b
         data = AristonData(coordinator)
 
         if entry.options.get(ENABLE_BUS_ERRORS, True):
-            bus_errors_scan_interval_seconds = entry.options.get(
-                BUS_ERRORS_SCAN_INTERVAL, DEFAULT_BUS_ERRORS_SCAN_INTERVAL_SECONDS
+            bus_errors_scan_interval_seconds = interval_option(
+                entry.options, BUS_ERRORS_SCAN_INTERVAL
             )
             data.bus_errors_coordinator = DeviceDataUpdateCoordinator(
                 hass,
@@ -135,8 +147,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: AristonConfigEntry) -> b
                 )
 
         if device.has_metering and entry.options.get(ENABLE_ENERGY, True):
-            energy_interval_minutes = entry.options.get(
-                ENERGY_SCAN_INTERVAL, DEFAULT_ENERGY_SCAN_INTERVAL_MINUTES
+            energy_interval_minutes = interval_option(
+                entry.options, ENERGY_SCAN_INTERVAL
             )
             data.energy_coordinator = DeviceDataUpdateCoordinator(
                 hass,
@@ -162,20 +174,34 @@ async def async_setup_entry(hass: HomeAssistant, entry: AristonConfigEntry) -> b
 
         entry.runtime_data = data
         await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
-
-        entry.async_on_unload(entry.add_update_listener(update_listener))
-    except ConfigEntryAuthFailed:
+    except (ConfigEntryAuthFailed, ConfigEntryNotReady):
         raise
+    except CLOUD_ERRORS as error:
+        raise _setup_error(error) from error
     except Exception as error:
-        _LOGGER.exception("Failed to set up Ariston NET")
+        _LOGGER.exception("Unexpected error while setting up Ariston NET")
         raise ConfigEntryNotReady from error
 
     return True
 
 
-async def update_listener(hass: HomeAssistant, entry: AristonConfigEntry) -> None:
-    """Update listener."""
-    await hass.config_entries.async_reload(entry.entry_id)
+def _setup_error(error: Exception) -> HomeAssistantError:
+    """Return the setup error for a cloud error: reauth or a retry later."""
+    placeholders = {"error": describe_error(error)}
+    if (
+        isinstance(error, ConnectionException)
+        and classify_error(error) is CloudErrorKind.AUTH
+    ):
+        return ConfigEntryAuthFailed(
+            translation_domain=DOMAIN,
+            translation_key="auth_failed",
+            translation_placeholders=placeholders,
+        )
+    return ConfigEntryNotReady(
+        translation_domain=DOMAIN,
+        translation_key="setup_failed",
+        translation_placeholders=placeholders,
+    )
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: AristonConfigEntry) -> bool:
