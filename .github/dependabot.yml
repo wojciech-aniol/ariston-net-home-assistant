@@ -1,0 +1,16 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    target-branch: "ariston-net"
+    schedule:
+      interval: "monthly"
+
+  - package-ecosystem: "pip"
+    directory: "/"
+    target-branch: "ariston-net"
+    schedule:
+      interval: "monthly"
+    ignore:
+      # Must match manifest.json; changed only on request.
+      - dependency-name: "ariston"
