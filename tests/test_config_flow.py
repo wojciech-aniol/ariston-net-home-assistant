@@ -8,6 +8,9 @@ from datetime import timedelta
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
+import aiohttp
+from ariston.ariston_api import ConnectionException
+from ariston.const import ARISTON_API_URL, ARISTON_USER_AGENT
 from homeassistant.config_entries import SOURCE_USER
 from homeassistant.const import (
     CONF_DEVICE,
@@ -30,7 +33,7 @@ from custom_components.ariston_net.const import (
     ENERGY_SCAN_INTERVAL,
 )
 
-from .conftest import CLOUD_DEVICE, GATEWAY
+from .conftest import CLOUD_DEVICE, GATEWAY, tracebacks
 
 USER_INPUT: dict[str, Any] = {
     CONF_USERNAME: "new@example.com",
@@ -163,29 +166,80 @@ async def test_user_step_refused_login_shows_invalid_auth(
     flow_ariston.async_discover.assert_not_called()
 
 
-async def test_user_step_exception_shows_unknown(
-    hass: HomeAssistant, flow_ariston: MagicMock
+def login_error(cause: Exception) -> ConnectionException:
+    """Return the error a login raises: an empty one that wraps the cause."""
+    error = ConnectionException()
+    error.__cause__ = cause
+    return error
+
+
+@pytest.mark.parametrize(
+    ("method", "error", "key"),
+    [
+        ("async_connect", login_error(ConnectionException(401)), "invalid_auth"),
+        ("async_connect", login_error(ConnectionException(500)), "cannot_connect"),
+        ("async_connect", login_error(aiohttp.ClientError()), "cannot_connect"),
+        ("async_discover", ConnectionException(500), "cannot_connect"),
+        ("async_discover", TimeoutError(), "cannot_connect"),
+        ("async_connect", ValueError(), "unknown"),
+    ],
+    ids=[
+        "login-401",
+        "login-500",
+        "login-network",
+        "discover-500",
+        "discover-timeout",
+        "unexpected",
+    ],
+)
+async def test_user_step_error_shows_error(
+    hass: HomeAssistant,
+    flow_ariston: MagicMock,
+    mock_setup_entry: AsyncMock,
+    method: str,
+    error: Exception,
+    key: str,
 ) -> None:
-    """Test any login exception shows the unknown error."""
-    flow_ariston.async_connect.side_effect = ConnectionError
-
-    result = await start_user_flow(hass)
-
-    assert result["type"] is FlowResultType.FORM
-    assert result["errors"] == {"base": "unknown"}
-
-
-async def test_user_step_no_devices_shows_error(
-    hass: HomeAssistant, flow_ariston: MagicMock
-) -> None:
-    """Test an account with no devices shows the form again with an error."""
-    flow_ariston.async_discover.return_value = []
+    """Test each login error shows its error, and the flow can go on after it."""
+    getattr(flow_ariston, method).side_effect = error
 
     result = await start_user_flow(hass)
 
     assert result["type"] is FlowResultType.FORM
     assert result["step_id"] == "user"
-    assert result["errors"] == {"base": "no device found"}
+    assert result["errors"] == {"base": key}
+
+    getattr(flow_ariston, method).side_effect = None
+    result = await hass.config_entries.flow.async_configure(
+        result["flow_id"], user_input=USER_INPUT
+    )
+
+    assert result["type"] is FlowResultType.CREATE_ENTRY
+
+
+async def test_user_step_unexpected_error_is_logged(
+    hass: HomeAssistant,
+    flow_ariston: MagicMock,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """Test only an unexpected error is logged with a traceback."""
+    flow_ariston.async_connect.side_effect = ValueError
+
+    await start_user_flow(hass)
+
+    assert tracebacks(caplog) == ["Unexpected error while logging in to Ariston"]
+
+
+async def test_user_step_no_devices_aborts(
+    hass: HomeAssistant, flow_ariston: MagicMock
+) -> None:
+    """Test an account with no devices ends the flow."""
+    flow_ariston.async_discover.return_value = []
+
+    result = await start_user_flow(hass)
+
+    assert result["type"] is FlowResultType.ABORT
+    assert result["reason"] == "no_devices_found"
 
 
 async def test_user_step_existing_entry_updated_and_aborts(
@@ -195,34 +249,97 @@ async def test_user_step_existing_entry_updated_and_aborts(
     mock_setup_entry: AsyncMock,
 ) -> None:
     """Test adding a known device again saves the new login and reloads it."""
+    await hass.config_entries.async_setup(config_entry.entry_id)
+
     result = await start_user_flow(hass)
+    await hass.async_block_till_done()
 
     assert result["type"] is FlowResultType.ABORT
-    assert result["reason"] == "reauth_successful"
+    assert result["reason"] == "already_configured"
     assert dict(config_entry.data) == USER_INPUT | {CONF_DEVICE: CLOUD_DEVICE}
     assert len(hass.config_entries.async_entries(DOMAIN)) == 1
-    mock_setup_entry.assert_awaited_once()
+    assert mock_setup_entry.await_count == 2
 
 
-async def test_reauth_flow_saves_new_login(
+async def start_reauth(
+    hass: HomeAssistant, entry: MockConfigEntry, password: str = "new-password"
+) -> dict[str, Any]:
+    """Start the reauth flow and send a password."""
+    result = await entry.start_reauth_flow(hass)
+    return await hass.config_entries.flow.async_configure(
+        result["flow_id"], user_input={CONF_PASSWORD: password}
+    )
+
+
+async def test_reauth_flow_asks_only_for_password(
+    hass: HomeAssistant, config_entry: MockConfigEntry
+) -> None:
+    """Test the reauth form has only the password and names the account."""
+    result = await config_entry.start_reauth_flow(hass)
+
+    assert result["type"] is FlowResultType.FORM
+    assert result["step_id"] == "reauth_confirm"
+    assert list(result["data_schema"].schema) == [CONF_PASSWORD]
+    assert result["description_placeholders"]["username"] == "user@example.com"
+
+
+async def test_reauth_flow_saves_new_password(
     hass: HomeAssistant,
     config_entry: MockConfigEntry,
     flow_ariston: MagicMock,
     mock_setup_entry: AsyncMock,
 ) -> None:
-    """Test the reauth flow asks for the full login form and saves it."""
-    result = await config_entry.start_reauth_flow(hass)
+    """Test reauth logs in with the saved account and saves the new password."""
+    old_data = dict(config_entry.data)
 
-    assert result["type"] is FlowResultType.FORM
-    assert result["step_id"] == "user"
-
-    result = await hass.config_entries.flow.async_configure(
-        result["flow_id"], user_input=USER_INPUT
-    )
+    result = await start_reauth(hass, config_entry)
 
     assert result["type"] is FlowResultType.ABORT
     assert result["reason"] == "reauth_successful"
-    assert config_entry.data[CONF_PASSWORD] == "new-password"
+    assert dict(config_entry.data) == old_data | {CONF_PASSWORD: "new-password"}
+    flow_ariston.async_connect.assert_awaited_once_with(
+        "user@example.com", "new-password", ARISTON_API_URL, ARISTON_USER_AGENT
+    )
+    mock_setup_entry.assert_awaited_once()
+
+
+@pytest.mark.parametrize(
+    ("error", "key"),
+    [
+        (login_error(ConnectionException(401)), "invalid_auth"),
+        (login_error(ConnectionException(500)), "cannot_connect"),
+    ],
+    ids=["login-401", "login-500"],
+)
+async def test_reauth_flow_error_shows_error(
+    hass: HomeAssistant,
+    config_entry: MockConfigEntry,
+    flow_ariston: MagicMock,
+    error: ConnectionException,
+    key: str,
+) -> None:
+    """Test a failed login keeps the reauth form with its error."""
+    flow_ariston.async_connect.side_effect = error
+
+    result = await start_reauth(hass, config_entry)
+
+    assert result["type"] is FlowResultType.FORM
+    assert result["step_id"] == "reauth_confirm"
+    assert result["errors"] == {"base": key}
+    assert config_entry.data[CONF_PASSWORD] == "test-password"
+
+
+async def test_reauth_flow_other_account_aborts(
+    hass: HomeAssistant, config_entry: MockConfigEntry, flow_ariston: MagicMock
+) -> None:
+    """Test reauth aborts when the account does not have the entry's device."""
+    flow_ariston.async_discover.return_value = [copy.deepcopy(OTHER_DEVICE)]
+
+    result = await start_reauth(hass, config_entry)
+
+    assert result["type"] is FlowResultType.ABORT
+    assert result["reason"] == "unique_id_mismatch"
+    assert config_entry.data[CONF_PASSWORD] == "test-password"
 
 
 async def test_options_flow_shows_defaults(

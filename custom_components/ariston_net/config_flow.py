@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 import logging
 from typing import Any
 
 from ariston import Ariston, DeviceAttribute
+from ariston.ariston_api import ConnectionException
 from ariston.const import ARISTON_API_URL, ARISTON_USER_AGENT
 from homeassistant import config_entries
 from homeassistant.const import (
@@ -29,6 +31,7 @@ from .const import (
     ENABLE_ENERGY,
     ENERGY_SCAN_INTERVAL,
 )
+from .errors import CLOUD_ERRORS, CloudErrorKind, classify_error, describe_error
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -55,49 +58,50 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         self.cloud_api_user_agent: str = ARISTON_USER_AGENT
         self.cloud_devices = {}
 
-    async def async_step_reauth(self, user_input=None):
-        """Perform reauth upon an API authentication error."""
-        return await self.async_step_user()
+    async def _async_get_devices(
+        self, username: str, password: str, api_url: str, user_agent: str
+    ) -> tuple[list[dict[str, Any]], str | None]:
+        """Log in and return the devices of the account, or an error key."""
+        ariston = Ariston()
+        try:
+            if not await ariston.async_connect(username, password, api_url, user_agent):
+                return [], "invalid_auth"
+            return await ariston.async_discover(), None
+        except CLOUD_ERRORS as error:
+            if (
+                isinstance(error, ConnectionException)
+                and classify_error(error) is CloudErrorKind.AUTH
+            ):
+                return [], "invalid_auth"
+            _LOGGER.debug("Ariston cloud error: %s", describe_error(error))
+            return [], "cannot_connect"
+        except Exception:
+            _LOGGER.exception("Unexpected error while logging in to Ariston")
+            return [], "unknown"
 
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
     ) -> config_entries.ConfigFlowResult:
         """Handle the initial step."""
-        if user_input is None:
-            return self.async_show_form(
-                step_id="user", data_schema=STEP_USER_DATA_SCHEMA
-            )
-
-        errors = {}
-
-        try:
+        errors: dict[str, str] = {}
+        if user_input is not None:
             self.cloud_username = user_input[CONF_USERNAME]
             self.cloud_password = user_input[CONF_PASSWORD]
             self.cloud_api_url = user_input[API_URL_SETTING]
             self.cloud_api_user_agent = user_input[API_USER_AGENT]
-            ariston = Ariston()
-
-            response = await ariston.async_connect(
+            cloud_devices, error = await self._async_get_devices(
                 self.cloud_username,
                 self.cloud_password,
                 self.cloud_api_url,
                 self.cloud_api_user_agent,
             )
-            if not response:
-                errors["base"] = "invalid_auth"
-                return self.async_show_form(
-                    step_id="user", data_schema=STEP_USER_DATA_SCHEMA, errors=errors
-                )
-        except Exception:  # pylint: disable=broad-except
-            _LOGGER.exception("Unexpected exception")
-            errors["base"] = "unknown"
-        else:
-            cloud_devices = await ariston.async_discover()
-            if len(cloud_devices) == 0:
-                errors["base"] = "no device found"
-            if len(cloud_devices) == 1:
+            if error:
+                errors["base"] = error
+            elif not cloud_devices:
+                return self.async_abort(reason="no_devices_found")
+            elif len(cloud_devices) == 1:
                 return await self.async_create_or_update_entry(cloud_devices[0])
-            if len(cloud_devices) > 1:
+            else:
                 for device in cloud_devices:
                     name = device[DeviceAttribute.NAME]
                     model = device[DeviceAttribute.SN]
@@ -111,33 +115,21 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         )
 
     async def async_create_or_update_entry(self, cloud_device):
-        """Create or update config entry."""
-        existing_entry = await self.async_set_unique_id(
+        """Create the entry, or save the new login in the entry of the device."""
+        data = {
+            CONF_USERNAME: self.cloud_username,
+            CONF_PASSWORD: self.cloud_password,
+            API_URL_SETTING: self.cloud_api_url,
+            API_USER_AGENT: self.cloud_api_user_agent,
+            CONF_DEVICE: cloud_device,
+        }
+        await self.async_set_unique_id(
             cloud_device[DeviceAttribute.GW], raise_on_progress=False
         )
-        if existing_entry:
-            self.hass.config_entries.async_update_entry(
-                existing_entry,
-                data={
-                    CONF_USERNAME: self.cloud_username,
-                    CONF_PASSWORD: self.cloud_password,
-                    API_URL_SETTING: self.cloud_api_url,
-                    API_USER_AGENT: self.cloud_api_user_agent,
-                    CONF_DEVICE: cloud_device,
-                },
-            )
-            await self.hass.config_entries.async_reload(existing_entry.entry_id)
-            return self.async_abort(reason="reauth_successful")
+        self._abort_if_unique_id_configured(updates=data)
 
         return self.async_create_entry(
-            title=cloud_device[DeviceAttribute.NAME],
-            data={
-                CONF_USERNAME: self.cloud_username,
-                CONF_PASSWORD: self.cloud_password,
-                API_URL_SETTING: self.cloud_api_url,
-                API_USER_AGENT: self.cloud_api_user_agent,
-                CONF_DEVICE: cloud_device,
-            },
+            title=cloud_device[DeviceAttribute.NAME], data=data
         )
 
     async def async_step_select(self, user_input=None):
@@ -154,6 +146,44 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         return self.async_show_form(
             step_id="select", data_schema=select_schema, errors=errors
+        )
+
+    async def async_step_reauth(
+        self, entry_data: Mapping[str, Any]
+    ) -> config_entries.ConfigFlowResult:
+        """Ask for a new password after the cloud refused the saved one."""
+        return await self.async_step_reauth_confirm()
+
+    async def async_step_reauth_confirm(
+        self, user_input: dict[str, Any] | None = None
+    ) -> config_entries.ConfigFlowResult:
+        """Check the new password and save it."""
+        entry = self._get_reauth_entry()
+        errors: dict[str, str] = {}
+        if user_input is not None:
+            cloud_devices, error = await self._async_get_devices(
+                entry.data[CONF_USERNAME],
+                user_input[CONF_PASSWORD],
+                entry.data.get(API_URL_SETTING, ARISTON_API_URL),
+                entry.data.get(API_USER_AGENT, ARISTON_USER_AGENT),
+            )
+            if error:
+                errors["base"] = error
+            else:
+                gateway = entry.data[CONF_DEVICE][DeviceAttribute.GW]
+                if all(
+                    device[DeviceAttribute.GW] != gateway for device in cloud_devices
+                ):
+                    return self.async_abort(reason="unique_id_mismatch")
+                return self.async_update_reload_and_abort(
+                    entry, data_updates={CONF_PASSWORD: user_input[CONF_PASSWORD]}
+                )
+
+        return self.async_show_form(
+            step_id="reauth_confirm",
+            data_schema=vol.Schema({vol.Required(CONF_PASSWORD): str}),
+            errors=errors,
+            description_placeholders={"username": entry.data[CONF_USERNAME]},
         )
 
     @staticmethod
