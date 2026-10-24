@@ -8,8 +8,8 @@ from typing import Any
 from unittest.mock import MagicMock
 
 import aiohttp
-from ariston.ariston_api import ConnectionException
-from ariston.const import PlantMode, ZoneMode
+from ariston_net_api.ariston_api import ConnectionException
+from ariston_net_api.const import PlantMode, ZoneMode
 from homeassistant.components.climate import (
     ATTR_HVAC_MODE,
     ATTR_PRESET_MODE,

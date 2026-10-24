@@ -6,9 +6,9 @@ from collections.abc import Mapping
 import logging
 from typing import Any
 
-from ariston import Ariston, DeviceAttribute
-from ariston.ariston_api import ConnectionException
-from ariston.const import ARISTON_API_URL, ARISTON_USER_AGENT
+from ariston_net_api import Ariston, DeviceAttribute
+from ariston_net_api.ariston_api import ConnectionException
+from ariston_net_api.const import ARISTON_API_URL, ARISTON_USER_AGENT
 from homeassistant import config_entries
 from homeassistant.const import (
     CONF_DEVICE,

@@ -8,7 +8,7 @@ from dataclasses import dataclass
 from functools import wraps
 from typing import Any, Concatenate
 
-from ariston.const import SystemType, WheType
+from ariston_net_api.const import SystemType, WheType
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity import EntityDescription
 from homeassistant.helpers.update_coordinator import CoordinatorEntity

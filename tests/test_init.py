@@ -8,8 +8,8 @@ from typing import Any
 from unittest.mock import MagicMock, patch
 
 import aiohttp
-from ariston.ariston_api import ConnectionException
-from ariston.const import (
+from ariston_net_api.ariston_api import ConnectionException
+from ariston_net_api.const import (
     ARISTON_API_URL,
     ARISTON_USER_AGENT,
     ConsumptionTimeInterval,

@@ -12,8 +12,8 @@ from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import aiohttp
-from ariston.ariston_api import ConnectionException
-from ariston.const import ARISTON_API_URL, ARISTON_USER_AGENT
+from ariston_net_api.ariston_api import ConnectionException
+from ariston_net_api.const import ARISTON_API_URL, ARISTON_USER_AGENT
 from homeassistant.config_entries import SOURCE_USER, ConfigEntryState
 from homeassistant.const import (
     CONF_DEVICE,

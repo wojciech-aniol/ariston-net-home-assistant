@@ -8,9 +8,9 @@ import logging
 from typing import Any
 
 import aiohttp
-from ariston.ariston_api import AristonAPI, ConnectionException
-from ariston.base_device import AristonBaseDevice
-from ariston.const import ARISTON_MENU_ITEMS, MenuItemNames, PropertyType
+from ariston_net_api.ariston_api import AristonAPI, ConnectionException
+from ariston_net_api.base_device import AristonBaseDevice
+from ariston_net_api.const import ARISTON_MENU_ITEMS, MenuItemNames, PropertyType
 
 from .errors import CloudErrorKind, classify_error, error_status
 

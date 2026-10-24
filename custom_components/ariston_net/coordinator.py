@@ -8,8 +8,8 @@ from datetime import timedelta
 import logging
 from typing import Any
 
-from ariston.ariston_api import ConnectionException
-from ariston.base_device import AristonBaseDevice
+from ariston_net_api.ariston_api import ConnectionException
+from ariston_net_api.base_device import AristonBaseDevice
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_SCAN_INTERVAL
 from homeassistant.core import HomeAssistant

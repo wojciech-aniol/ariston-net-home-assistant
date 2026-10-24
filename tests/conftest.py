@@ -8,9 +8,9 @@ import logging
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from ariston import AristonGalevoDevice, _get_device
-from ariston.ariston_api import ConnectionException
-from ariston.base_device import AristonBaseDevice
+from ariston_net_api import AristonGalevoDevice, _get_device
+from ariston_net_api.ariston_api import ConnectionException
+from ariston_net_api.base_device import AristonBaseDevice
 from homeassistant.const import CONF_DEVICE, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
 import pytest

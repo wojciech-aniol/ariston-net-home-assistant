@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from ariston import SystemType
+from ariston_net_api import SystemType
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.const import ATTR_DEVICE_ID
 from homeassistant.core import HomeAssistant, ServiceCall, callback

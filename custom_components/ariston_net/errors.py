@@ -5,7 +5,7 @@ from __future__ import annotations
 from enum import StrEnum
 
 import aiohttp
-from ariston.ariston_api import ConnectionException
+from ariston_net_api.ariston_api import ConnectionException
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError

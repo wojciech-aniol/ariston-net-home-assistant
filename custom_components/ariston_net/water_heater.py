@@ -5,7 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 import logging
 
-from ariston.const import CustomDeviceFeatures, SystemType, WheType
+from ariston_net_api.const import CustomDeviceFeatures, SystemType, WheType
 from homeassistant.components.water_heater import (
     WaterHeaterEntity,
     WaterHeaterEntityDescription,
