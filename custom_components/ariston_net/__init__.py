@@ -74,13 +74,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
         api_user_agent = entry.data.get(API_USER_AGENT, ARISTON_USER_AGENT)
 
-        reponse = await ariston.async_connect(
+        response = await ariston.async_connect(
             entry.data[CONF_USERNAME],
             entry.data[CONF_PASSWORD],
             api_url_setting,
             api_user_agent,
         )
-        if not reponse:
+        if not response:
             _LOGGER.error(
                 "Failed to connect to Ariston with device: %s",
                 entry.data[CONF_DEVICE].get(DeviceAttribute.NAME),
@@ -203,7 +203,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     except ConfigEntryAuthFailed:
         raise
     except Exception as error:
-        _LOGGER.exception("")
+        _LOGGER.exception("Failed to set up Ariston NET")
         raise ConfigEntryNotReady from error
 
     return True

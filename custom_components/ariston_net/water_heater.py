@@ -102,11 +102,7 @@ class AristonWaterHeater(AristonEntity, WaterHeaterEntity):
         features = WaterHeaterEntityFeature.TARGET_TEMPERATURE
         if self.device.dhw_mode_changeable:
             features |= WaterHeaterEntityFeature.OPERATION_MODE
-        if (
-            self.device.system_type == SystemType.VELIS
-            and "ON_OFF"
-            in WaterHeaterEntityFeature.__members__  # check entity feature for backward compatibility
-        ):
+        if self.device.system_type == SystemType.VELIS:
             features |= WaterHeaterEntityFeature.ON_OFF
         return features
 

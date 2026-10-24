@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import logging
-
 from homeassistant.components.select import SelectEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -12,13 +10,11 @@ from .const import ARISTON_SELECT_TYPES, DOMAIN, AristonSelectEntityDescription
 from .coordinator import DeviceDataUpdateCoordinator
 from .entity import AristonEntity, is_entity_supported
 
-_LOGGER = logging.getLogger(__name__)
-
 
 async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry, async_add_entities
 ) -> None:
-    """Set up the Ariston binary sensors from config entry."""
+    """Set up the Ariston selects from config entry."""
     ariston_select: list[AristonSelect] = []
 
     for description in ARISTON_SELECT_TYPES:
@@ -37,7 +33,7 @@ async def async_setup_entry(
 
 
 class AristonSelect(AristonEntity, SelectEntity):
-    """Base class for specific ariston binary sensors."""
+    """Base class for specific ariston selects."""
 
     def __init__(
         self,

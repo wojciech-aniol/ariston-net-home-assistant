@@ -17,6 +17,12 @@
           "api_url_setting": "Ariston API url",
           "api_user_agent": "Ariston API user agent"
         }
+      },
+      "select": {
+        "title": "Select device",
+        "data": {
+          "select_device": "Device"
+        }
       }
     }
   },
@@ -24,7 +30,6 @@
     "step": {
       "init": {
         "data": {
-          "extra_energy_features": "Extra energy related entities",
           "scan_interval": "Zone Scan Interval (seconds)",
           "enable_energy": "Poll energy data",
           "energy_scan_interval": "Energy Scan Interval (minutes)",
@@ -32,6 +37,44 @@
           "bus_errors_scan_interval": "Bus Errors Scan Interval (seconds)"
         },
         "title": "Configure Ariston NET"
+      }
+    }
+  },
+  "services": {
+    "create_vacation": {
+      "name": "Create vacation",
+      "description": "Create a vacation on the selected device. If end date is not specified, the vacation is going to be deleted.",
+      "fields": {
+        "device_id": {
+          "name": "Device",
+          "description": "Ariston device on which to create the vacation."
+        },
+        "end_date": {
+          "name": "End date",
+          "description": "Date the vacation ends in the YYYY-mm-dd format."
+        }
+      }
+    },
+    "set_item_by_id": {
+      "name": "Set item by id",
+      "description": "Set an Ariston device or thermostat property.",
+      "fields": {
+        "device_id": {
+          "name": "Device",
+          "description": "Ariston device on which to set item."
+        },
+        "item_id": {
+          "name": "Device or thermostat property",
+          "description": "Ariston device or thermostat property."
+        },
+        "zone": {
+          "name": "Thermostat zone",
+          "description": "Number of the zone. Set 0 if device."
+        },
+        "value": {
+          "name": "Value",
+          "description": "Value of the setting."
+        }
       }
     }
   }

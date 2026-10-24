@@ -2,6 +2,7 @@
 
 from collections.abc import Callable, Coroutine
 from dataclasses import dataclass
+import datetime as dt
 import sys
 from typing import Any, Final
 
@@ -38,18 +39,9 @@ from homeassistant.components.sensor import (
     SensorStateClass,
 )
 from homeassistant.components.switch import SwitchEntityDescription
+from homeassistant.components.water_heater import WaterHeaterEntityDescription
 from homeassistant.const import UnitOfEnergy, UnitOfTemperature, UnitOfTime
 from homeassistant.helpers.entity import EntityCategory, EntityDescription
-
-try:
-    from homeassistant.components.water_heater import WaterHeaterEntityDescription
-except ImportError:
-    # compatibility code for HA < 2025.1
-    from homeassistant.components.water_heater import WaterHeaterEntityEntityDescription
-
-    WaterHeaterEntityDescription = WaterHeaterEntityEntityDescription
-
-import datetime as dt
 
 from .menu_items import ExtraMenuItem, MenuNode, menu_item_value, menu_node_value
 
@@ -105,7 +97,7 @@ class AristonClimateEntityDescription(
 class AristonWaterHeaterEntityDescription(
     WaterHeaterEntityDescription, AristonBaseEntityDescription
 ):
-    """A class that describes climate entities."""
+    """A class that describes water heater entities."""
 
 
 @dataclass(kw_only=True, frozen=True)

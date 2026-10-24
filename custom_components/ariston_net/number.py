@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import logging
-
 from homeassistant.components.number import NumberEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -12,13 +10,11 @@ from .const import ARISTON_NUMBER_TYPES, DOMAIN, AristonNumberEntityDescription
 from .coordinator import DeviceDataUpdateCoordinator
 from .entity import AristonEntity, is_entity_supported
 
-_LOGGER = logging.getLogger(__name__)
-
 
 async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry, async_add_entities
 ) -> None:
-    """Set up the Ariston binary sensors from config entry."""
+    """Set up the Ariston numbers from config entry."""
     ariston_numbers: list[AristonNumber] = []
 
     for description in ARISTON_NUMBER_TYPES:
@@ -42,7 +38,7 @@ async def async_setup_entry(
 
 
 class AristonNumber(AristonEntity, NumberEntity):
-    """Base class for specific ariston binary sensors."""
+    """Base class for specific ariston numbers."""
 
     def __init__(
         self,

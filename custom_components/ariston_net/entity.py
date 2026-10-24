@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from abc import ABC
-import logging
 
 from ariston.const import WheType
 from homeassistant.helpers.entity import DeviceInfo
@@ -16,8 +15,6 @@ from .const import (
     AristonBaseEntityDescription,
 )
 from .coordinator import DeviceDataUpdateCoordinator
-
-_LOGGER = logging.getLogger(__name__)
 
 
 def is_entity_supported(
@@ -77,7 +74,7 @@ class AristonEntity(CoordinatorEntity, ABC):
 
     @property
     def extra_state_attributes(self):
-        """Return the holiday end date."""
+        """Return the extra state attributes."""
         state_attributes = {}
 
         if self.entity_description.extra_states is None:
