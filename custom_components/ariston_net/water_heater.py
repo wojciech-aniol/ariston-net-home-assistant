@@ -13,15 +13,18 @@ from homeassistant.components.water_heater import (
 )
 from homeassistant.const import ATTR_TEMPERATURE
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ServiceValidationError
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .const import (
     ATTR_TARGET_TEMP_STEP,
+    DOMAIN,
     EXTRA_STATE_ATTRIBUTE,
     EXTRA_STATE_DEVICE_METHOD,
 )
 from .coordinator import AristonConfigEntry, DeviceDataUpdateCoordinator
 from .entity import AristonBaseEntityDescription, AristonEntity, is_entity_supported
+from .errors import cloud_action
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -162,10 +165,13 @@ class AristonWaterHeater(AristonEntity, WaterHeaterEntity):
         """Return current operation."""
         return self.device.water_heater_current_mode_text
 
+    @cloud_action
     async def async_set_temperature(self, **kwargs):
         """Set new target temperature."""
         if ATTR_TEMPERATURE not in kwargs:
-            raise ValueError(f"Missing parameter {ATTR_TEMPERATURE}")
+            raise ServiceValidationError(
+                translation_domain=DOMAIN, translation_key="missing_temperature"
+            )
 
         temperature = kwargs[ATTR_TEMPERATURE]
         _LOGGER.debug(
@@ -177,15 +183,18 @@ class AristonWaterHeater(AristonEntity, WaterHeaterEntity):
         await self.device.async_set_water_heater_temperature(temperature)
         self.async_write_ha_state()
 
+    @cloud_action
     async def async_set_operation_mode(self, operation_mode):
         """Set operation mode."""
         await self.device.async_set_water_heater_operation_mode(operation_mode)
         self.async_write_ha_state()
 
+    @cloud_action
     async def async_turn_off(self, **kwargs) -> None:
         """Turn the water heater off."""
         await self.device.async_set_power(False)
 
+    @cloud_action
     async def async_turn_on(self, **kwargs) -> None:
         """Turn the water heater on."""
         await self.device.async_set_power(True)

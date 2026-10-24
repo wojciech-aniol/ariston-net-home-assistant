@@ -26,6 +26,7 @@ from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from .const import NAME
 from .coordinator import AristonConfigEntry, DeviceDataUpdateCoordinator
 from .entity import AristonBaseEntityDescription, AristonEntity, is_entity_supported
+from .errors import cloud_action
 
 
 @dataclass(kw_only=True, frozen=True)
@@ -210,11 +211,13 @@ class AristonSwitch(AristonEntity, SwitchEntity):
         """Return true if switch is on."""
         return self.entity_description.get_is_on(self)
 
+    @cloud_action
     async def async_turn_on(self, **kwargs) -> None:
         """Turn the switch on."""
         await self.entity_description.set_value(self, True)
         self.async_write_ha_state()
 
+    @cloud_action
     async def async_turn_off(self, **kwargs) -> None:
         """Turn the device off."""
         await self.entity_description.set_value(self, False)

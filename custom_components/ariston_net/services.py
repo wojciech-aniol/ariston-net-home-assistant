@@ -12,6 +12,7 @@ import voluptuous as vol
 
 from .const import DOMAIN
 from .coordinator import AristonConfigEntry, DeviceDataUpdateCoordinator
+from .errors import cloud_action
 
 SERVICE_CREATE_VACATION = "create_vacation"
 SERVICE_SET_ITEM_BY_ID = "set_item_by_id"
@@ -81,12 +82,14 @@ def async_setup_services(hass: HomeAssistant) -> None:
     without a cloud request.
     """
 
+    @cloud_action
     async def async_create_vacation(call: ServiceCall) -> None:
         """Create a vacation on the target device, or end it without a date."""
         coordinator = _get_galevo_coordinator(hass, call)
         await coordinator.device.async_set_holiday(call.data.get(ATTR_END_DATE))
         coordinator.async_update_listeners()
 
+    @cloud_action
     async def async_set_item_by_id(call: ServiceCall) -> None:
         """Set a device or zone item on the target device."""
         coordinator = _get_galevo_coordinator(hass, call)

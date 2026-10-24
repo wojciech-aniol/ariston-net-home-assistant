@@ -28,6 +28,7 @@ from homeassistant.const import (
     ATTR_TEMPERATURE,
 )
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ServiceValidationError
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
@@ -766,8 +767,10 @@ async def test_set_temperature_without_temperature_raises(
     """
     entity = hass.data[DATA_COMPONENT].get_entity(CLIMATE)
 
-    with pytest.raises(ValueError, match="Missing parameter temperature"):
+    with pytest.raises(ServiceValidationError) as exc_info:
         await entity.async_set_temperature()
+
+    assert exc_info.value.translation_key == "missing_temperature"
 
 
 async def test_set_temperature_uses_zone_of_entity(

@@ -16,17 +16,20 @@ from homeassistant.components.climate import (
 )
 from homeassistant.const import ATTR_TEMPERATURE
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ServiceValidationError
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .const import (
     ATTR_ECONOMY_TEMP,
     ATTR_HEAT_REQUEST,
     ATTR_ZONE,
+    DOMAIN,
     EXTRA_STATE_ATTRIBUTE,
     EXTRA_STATE_DEVICE_METHOD,
 )
 from .coordinator import AristonConfigEntry, DeviceDataUpdateCoordinator
 from .entity import AristonBaseEntityDescription, AristonEntity, is_entity_supported
+from .errors import cloud_action
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -243,6 +246,7 @@ class AristonThermostat(AristonEntity, ClimateEntity):
         """Return a list of available preset modes."""
         return self.device.plant_mode_opt_texts
 
+    @cloud_action
     async def async_set_hvac_mode(self, hvac_mode):
         """Set new target hvac mode."""
         if self.device.plant_mode_supported:
@@ -318,6 +322,7 @@ class AristonThermostat(AristonEntity, ClimateEntity):
             return ZoneMode.MANUAL_NIGHT
         return ZoneMode.MANUAL
 
+    @cloud_action
     async def async_set_preset_mode(self, preset_mode):
         """Set new target preset mode."""
         _LOGGER.debug(
@@ -366,10 +371,13 @@ class AristonThermostat(AristonEntity, ClimateEntity):
         await self.coordinator.async_request_refresh()
         self.async_write_ha_state()
 
+    @cloud_action
     async def async_set_temperature(self, **kwargs):
         """Set new target temperature."""
         if ATTR_TEMPERATURE not in kwargs:
-            raise ValueError(f"Missing parameter {ATTR_TEMPERATURE}")
+            raise ServiceValidationError(
+                translation_domain=DOMAIN, translation_key="missing_temperature"
+            )
 
         temperature = kwargs[ATTR_TEMPERATURE]
         _LOGGER.debug(

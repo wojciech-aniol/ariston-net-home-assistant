@@ -7,20 +7,25 @@ from typing import Any
 from unittest.mock import AsyncMock, MagicMock
 
 from ariston import AristonBsbDevice, AristonGalevoDevice
+from ariston.ariston_api import ConnectionException
 from homeassistant.const import ATTR_DEVICE_ID, ATTR_TEMPERATURE, STATE_OFF, STATE_ON
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import ServiceValidationError
+from homeassistant.exceptions import HomeAssistantError, ServiceValidationError
 from homeassistant.helpers import device_registry as dr
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.ariston_net.const import DOMAIN
 
-from .conftest import CLOUD_DEVICE, GATEWAY, setup_integration
+from .conftest import CLOUD_DEVICE, GATEWAY, setup_integration, tracebacks
 
 HOLIDAY = "binary_sensor.nimbus_ariston_net_holiday_mode"
 WATER_HEATER = "water_heater.nimbus"
 
+SERVICE_API_METHODS = {
+    "create_vacation": "async_set_holiday",
+    "set_item_by_id": "async_set_property",
+}
 SERVICE_DATA: dict[str, dict[str, Any]] = {
     "create_vacation": {"end_date": "2026-11-01"},
     "set_item_by_id": {"item_id": "ZoneComfortTemp", "zone": 1, "value": "21.5"},
@@ -177,3 +182,22 @@ async def test_service_other_system_raises(
     assert exc_info.value.translation_key == "not_galevo"
     api.async_set_holiday.assert_not_called()
     api.async_set_property.assert_not_called()
+
+
+@pytest.mark.parametrize("service", SERVICE_DATA)
+async def test_service_cloud_error_raises_ha_error(
+    hass: HomeAssistant,
+    init_integration: MockConfigEntry,
+    api: MagicMock,
+    caplog: pytest.LogCaptureFixture,
+    service: str,
+) -> None:
+    """Test a cloud error becomes a translated error, without a traceback."""
+    getattr(api, SERVICE_API_METHODS[service]).side_effect = ConnectionException(500)
+
+    with pytest.raises(HomeAssistantError) as exc_info:
+        await call_service(hass, service, device_id(hass, init_integration))
+
+    assert not isinstance(exc_info.value, ServiceValidationError)
+    assert exc_info.value.translation_key == "action_failed"
+    assert tracebacks(caplog) == []

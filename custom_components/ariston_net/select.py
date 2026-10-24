@@ -24,6 +24,7 @@ from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from .const import ENERGY_COORDINATOR, NAME
 from .coordinator import AristonConfigEntry, DeviceDataUpdateCoordinator
 from .entity import AristonBaseEntityDescription, AristonEntity, is_entity_supported
+from .errors import cloud_action
 
 
 @dataclass(kw_only=True, frozen=True)
@@ -180,6 +181,7 @@ class AristonSelect(AristonEntity, SelectEntity):
         """Return options."""
         return self.entity_description.get_options(self)
 
+    @cloud_action
     async def async_select_option(self, option: str):
         """Change the selected option."""
         await self.entity_description.select_option(self, option)

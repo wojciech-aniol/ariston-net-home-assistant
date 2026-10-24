@@ -102,6 +102,18 @@
     },
     "device_not_in_account": {
       "message": "The Ariston cloud did not list the device {name} for this account. Home Assistant tries again later."
+    },
+    "action_failed": {
+      "message": "The Ariston cloud did not accept the change ({error}). Try again later."
+    },
+    "action_auth_failed": {
+      "message": "The Ariston cloud refused the login ({error}). Enter the password again, then retry."
+    },
+    "action_rate_limited": {
+      "message": "The Ariston cloud got too many requests from this account ({error}). Try again in a few minutes."
+    },
+    "missing_temperature": {
+      "message": "Set a target temperature."
     }
   }
 }
