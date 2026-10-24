@@ -5,8 +5,8 @@ from __future__ import annotations
 from datetime import timedelta
 from unittest.mock import AsyncMock, MagicMock
 
-from ariston import AristonGalevoDevice
-from ariston.ariston_api import ConnectionException
+from ariston_net_api import AristonGalevoDevice
+from ariston_net_api.ariston_api import ConnectionException
 from homeassistant.config_entries import SOURCE_REAUTH
 from homeassistant.const import STATE_UNAVAILABLE
 from homeassistant.core import HomeAssistant

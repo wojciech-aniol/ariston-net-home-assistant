@@ -7,8 +7,8 @@ from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import aiohttp
-from ariston.ariston_api import AristonAPI, ConnectionException
-from ariston.const import ARISTON_API_URL
+from ariston_net_api.ariston_api import AristonAPI, ConnectionException
+from ariston_net_api.const import ARISTON_API_URL
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant
 import pytest

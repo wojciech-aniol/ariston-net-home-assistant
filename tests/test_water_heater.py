@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock
 
-from ariston import AristonGalevoDevice
+from ariston_net_api import AristonGalevoDevice
 from homeassistant.components.water_heater import (
     ATTR_CURRENT_TEMPERATURE,
     ATTR_MAX_TEMP,

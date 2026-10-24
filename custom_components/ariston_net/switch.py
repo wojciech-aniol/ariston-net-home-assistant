@@ -6,7 +6,7 @@ from collections.abc import Callable, Coroutine
 from dataclasses import dataclass
 from typing import Any
 
-from ariston.const import (
+from ariston_net_api.const import (
     DeviceFeatures,
     DeviceProperties,
     EvoDeviceProperties,

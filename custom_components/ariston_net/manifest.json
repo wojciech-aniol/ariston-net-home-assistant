@@ -7,7 +7,7 @@
   "integration_type": "hub",
   "iot_class": "cloud_polling",
   "issue_tracker": "https://github.com/wojciech-aniol/ariston-remotethermo-home-assistant-v3/issues",
-  "loggers": ["ariston"],
-  "requirements": ["ariston==0.19.9"],
+  "loggers": ["ariston_net_api"],
+  "requirements": ["ariston-net-api==0.20.0"],
   "version": "0.21.6"
 }

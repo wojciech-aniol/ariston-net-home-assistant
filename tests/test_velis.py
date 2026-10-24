@@ -5,7 +5,7 @@ from __future__ import annotations
 from typing import Any
 from unittest.mock import MagicMock
 
-from ariston.const import (
+from ariston_net_api.const import (
     EvoPlantMode,
     LuxPlantMode,
     PlantData,
@@ -331,10 +331,6 @@ async def test_water_heater_turn_on_off_skips_same_power(
     api.async_set_velis_power.assert_not_awaited()
 
 
-@pytest.mark.xfail(
-    reason="Library bug: Lux compares the mode number with the LuxPlantMode enum",
-    strict=True,
-)
 @pytest.mark.parametrize("device_type", ["lux"])
 async def test_water_heater_lux_boost_shows_highest_setpoint(
     hass: HomeAssistant,

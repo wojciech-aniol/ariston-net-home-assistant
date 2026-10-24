@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from unittest.mock import ANY, AsyncMock, MagicMock
 
-from ariston import AristonGalevoDevice
-from ariston.const import PlantMode
+from ariston_net_api import AristonGalevoDevice
+from ariston_net_api.const import PlantMode
 from homeassistant.components.climate import ATTR_PRESET_MODE, HVACMode
 from homeassistant.components.select import (
     ATTR_OPTION,

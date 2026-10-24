@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from datetime import UTC, datetime
 from typing import Any
 
-from ariston.const import (
+from ariston_net_api.const import (
     ARISTON_BUS_ERRORS,
     ConsumptionType,
     CustomDeviceFeatures,

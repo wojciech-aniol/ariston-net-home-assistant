@@ -5,8 +5,8 @@ from __future__ import annotations
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock
 
-from ariston import AristonGalevoDevice
-from ariston.ariston_api import ConnectionException
+from ariston_net_api import AristonGalevoDevice
+from ariston_net_api.ariston_api import ConnectionException
 from homeassistant.config_entries import SOURCE_REAUTH
 from homeassistant.const import ATTR_DEVICE_ID, ATTR_TEMPERATURE, STATE_OFF, STATE_ON
 from homeassistant.core import HomeAssistant

@@ -7,7 +7,7 @@ from dataclasses import dataclass
 import sys
 from typing import Any
 
-from ariston.const import (
+from ariston_net_api.const import (
     ConsumptionProperties,
     DeviceFeatures,
     EvoOneDeviceProperties,

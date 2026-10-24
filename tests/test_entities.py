@@ -6,7 +6,7 @@ import importlib
 from typing import Any
 from unittest.mock import MagicMock
 
-from ariston import AristonGalevoDevice
+from ariston_net_api import AristonGalevoDevice
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import device_registry as dr
 import pytest

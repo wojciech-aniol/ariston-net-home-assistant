@@ -6,7 +6,7 @@ from collections.abc import Callable
 from dataclasses import dataclass
 import logging
 
-from ariston.const import BsbZoneMode, PlantMode, SystemType, ZoneMode
+from ariston_net_api.const import BsbZoneMode, PlantMode, SystemType, ZoneMode
 from homeassistant.components.climate import (
     ClimateEntity,
     ClimateEntityDescription,

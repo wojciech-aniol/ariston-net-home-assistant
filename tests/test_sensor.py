@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from unittest.mock import MagicMock
 
-from ariston.ariston_api import ConnectionException
+from ariston_net_api.ariston_api import ConnectionException
 from freezegun.api import FrozenDateTimeFactory
 from homeassistant.components.sensor import ATTR_LAST_RESET
 from homeassistant.config_entries import ConfigEntryState
