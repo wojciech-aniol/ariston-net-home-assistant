@@ -63,6 +63,7 @@ above "About the upstream integration" matters. Of `translations/` read only `en
 - Releases are automatic (`.github/workflows/auto-release.yml`). Each PR merged into
   `ariston-net` that changes `custom_components/` bumps the `manifest.json` version, moves `main`
   and publishes a GitHub release, which HACS picks up. The bump is a patch; the PR label `minor`,
-  `major` or `no-release` changes that. Never bump the version, tag or release by hand.
+  `major` or `no-release` changes that. Never bump the version, tag or release by hand. If a merge
+  got no release by mistake, re-run its "Auto release" run (`gh run rerun <id>`).
 - PR titles become the release notes, so write them for users. To ship several PRs as one
   release, label all but the last `no-release`.

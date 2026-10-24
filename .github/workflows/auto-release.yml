@@ -26,9 +26,26 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
+          MESSAGE: ${{ github.event.head_commit.message }}
         run: |
-          pr=$(gh api "repos/$GH_REPO/commits/$GITHUB_SHA/pulls" \
-            --jq '[.[] | select(.base.ref == "ariston-net" and .merged_at)][0] // empty')
+          # GitHub links a commit to its PR some seconds after the push,
+          # so read the PR number from the merge or squash subject first.
+          subject=${MESSAGE%%$'\n'*}
+          merge_re='^Merge pull request #([0-9]+) '
+          squash_re='\(#([0-9]+)\)$'
+          pr=""
+          if [[ $subject =~ $merge_re || $subject =~ $squash_re ]]; then
+            # On an error gh still prints the error body.
+            pr=$(gh api "repos/$GH_REPO/pulls/${BASH_REMATCH[1]}" \
+              --jq 'select(.merge_commit_sha == env.GITHUB_SHA and .base.ref == "ariston-net" and .merged_at)') \
+              || pr=""
+          fi
+          for attempt in 1 2 3 4 5 6; do
+            [ -n "$pr" ] && break
+            [ "$attempt" = 1 ] || sleep 10
+            pr=$(gh api "repos/$GH_REPO/commits/$GITHUB_SHA/pulls" \
+              --jq '[.[] | select(.base.ref == "ariston-net" and .merged_at)][0] // empty')
+          done
           if [ -z "$pr" ]; then
             echo "No merged PR for $GITHUB_SHA."
             bump="none"
