@@ -6,6 +6,11 @@ on:
     branches-ignore: [ariston-net]
   pull_request:
   workflow_call:
+    inputs:
+      ref:
+        description: Git ref to test, the caller's commit by default.
+        type: string
+        default: ""
 
 permissions:
   contents: read
@@ -15,6 +20,8 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
       - uses: actions/setup-python@v5
         with:
           python-version: "3.14"
@@ -29,6 +36,8 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
       - uses: actions/setup-python@v5
         with:
           python-version: "3.14"

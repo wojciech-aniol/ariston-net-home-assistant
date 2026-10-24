@@ -5,10 +5,11 @@ fustom/ariston-remotethermo-home-assistant-v3. Code in `custom_components/aristo
 `tests/`. It reaches the Ariston cloud only through the `ariston-net-api` library (module
 `ariston_net_api`), our fork of fustom's `ariston` (repo `wojciech-aniol/python-ariston-net-api`,
 version pinned in `manifest.json` and `requirements_test.txt`). Fix library bugs there with a
-test, release, then bump the pin here. Never patch or vendor the library in this repo; fix it in
-its own repo. One approved exception: `menu_items.py` replaces `async_get_menu_items` on the API object, to
-add menu item IDs to the library's own request, and asks the blocked IDs 342-347 once at setup
-(see its docstrings).
+test; its merged PR releases it to PyPI and, within an hour, `bump-library.yml` bumps the pin
+here. Never patch or vendor the library in this repo; fix it in its own repo. One approved
+exception: `menu_items.py` replaces `async_get_menu_items` on the API object, to add menu item
+IDs to the library's own request, and asks the blocked IDs 342-347 once at setup (see its
+docstrings).
 
 ## Commands
 
@@ -55,7 +56,7 @@ above "About the upstream integration" matters. Of `translations/` read only `en
 - Keep config entry data and option keys. A change needs a config entry migration and a test.
 - Keep the keys of `strings.json` and `translations/en.json` the same. `strings.json` may use
   `[%key:...%]` references, `en.json` holds the final English text.
-- Ask the user before a refactor bigger than the plan says or a new `ariston-net-api` version.
+- Ask the user before a refactor bigger than the plan says or a hand bump of `ariston-net-api`.
 - Code, comments, commits and README are in English.
 
 ## Git
@@ -70,3 +71,8 @@ above "About the upstream integration" matters. Of `translations/` read only `en
   got no release by mistake, re-run its "Auto release" run (`gh run rerun <id>`).
 - PR titles become the release notes, so write them for users. To ship several PRs as one
   release, label all but the last `no-release`.
+- `bump-library.yml` runs every hour. When PyPI has a newer `ariston-net-api` than the pin and no
+  open PR pins it yet, it opens a PR that bumps `manifest.json` and `requirements_test.txt`, runs
+  the tests, then merges it and starts "Auto release" (a patch). If the tests fail, the PR stays
+  open for a fix; a newer version closes it. Closing a bot PR skips that version. Scheduled runs
+  use the workflow from `main`.
