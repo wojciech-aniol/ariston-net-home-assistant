@@ -195,6 +195,13 @@ async def test_refusal_counts_only_when_library_items_work(
     assert api.menu_items_request.await_count == 6
 
 
+def relogin_error(status: int) -> ConnectionException:
+    """Return the error of a failed new login: an empty one that wraps the status."""
+    error = ConnectionException()
+    error.__cause__ = ConnectionException(status)
+    return error
+
+
 @pytest.mark.parametrize(
     ("error", "state"),
     [
@@ -204,8 +211,10 @@ async def test_refusal_counts_only_when_library_items_work(
             ConfigEntryState.SETUP_ERROR,
         ),
         (ConnectionException(), ConfigEntryState.SETUP_RETRY),
+        (relogin_error(401), ConfigEntryState.SETUP_ERROR),
+        (ConnectionException(429), ConfigEntryState.SETUP_RETRY),
     ],
-    ids=["invalid-token", "login-failed", "no-status"],
+    ids=["invalid-token", "login-failed", "no-status", "relogin-401", "429"],
 )
 async def test_auth_error_on_extra_items_is_raised(
     hass: HomeAssistant,

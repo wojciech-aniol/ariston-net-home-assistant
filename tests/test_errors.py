@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import importlib
+import inspect
 from typing import Any
 from unittest.mock import MagicMock
 
@@ -32,6 +34,7 @@ from homeassistant.components.water_heater import (
     DOMAIN as WATER_HEATER_DOMAIN,
     SERVICE_SET_OPERATION_MODE,
 )
+from homeassistant.config_entries import SOURCE_REAUTH
 from homeassistant.const import (
     ATTR_ENTITY_ID,
     ATTR_TEMPERATURE,
@@ -42,14 +45,16 @@ from homeassistant.exceptions import HomeAssistantError, ServiceValidationError
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
+from custom_components.ariston_net import PLATFORMS
 from custom_components.ariston_net.const import DOMAIN
+from custom_components.ariston_net.entity import AristonEntity
 from custom_components.ariston_net.errors import (
     CloudErrorKind,
     classify_error,
     describe_error,
 )
 
-from .conftest import tracebacks
+from .conftest import setup_integration, tracebacks
 
 
 def login_error(cause: Exception | None) -> ConnectionException:
@@ -76,6 +81,7 @@ def login_error(cause: Exception | None) -> ConnectionException:
         (ConnectionException(), CloudErrorKind.OTHER),
         (login_error(aiohttp.ClientError()), CloudErrorKind.OTHER),
         (login_error(KeyError("token")), CloudErrorKind.OTHER),
+        (ConnectionException(["unhashable"]), CloudErrorKind.OTHER),
     ],
     ids=[
         "invalid-token",
@@ -92,6 +98,7 @@ def login_error(cause: Exception | None) -> ConnectionException:
         "no-args",
         "login-network",
         "login-no-token",
+        "unhashable",
     ],
 )
 def test_classify_error_returns_kind(
@@ -236,3 +243,79 @@ async def test_entity_action_error_message_has_status(
             {ATTR_ENTITY_ID: "switch.nimbus_ariston_net_automatic_thermoregulation"},
             blocking=True,
         )
+
+
+async def test_entity_action_auth_error_starts_reauth(
+    hass: HomeAssistant, init_full_integration: MockConfigEntry, api: MagicMock
+) -> None:
+    """Test a refused login during an action asks for a new password at once."""
+    api.async_set_property.side_effect = ConnectionException("Invalid token")
+
+    with pytest.raises(HomeAssistantError):
+        await hass.services.async_call(
+            SWITCH_DOMAIN,
+            SERVICE_TURN_OFF,
+            {ATTR_ENTITY_ID: "switch.nimbus_ariston_net_automatic_thermoregulation"},
+            blocking=True,
+        )
+    await hass.async_block_till_done()
+
+    flows = hass.config_entries.flow.async_progress_by_handler(DOMAIN)
+    assert [flow["context"]["source"] for flow in flows] == [SOURCE_REAUTH]
+
+
+async def test_entity_action_error_shows_earlier_writes(
+    hass: HomeAssistant,
+    properties: dict[str, Any],
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+    api: MagicMock,
+) -> None:
+    """Test the writes that worked before a failed one show in the states."""
+    properties["items"][0]["value"] = 0
+    await setup_integration(hass, config_entry)
+    api.async_set_property.side_effect = [None, ConnectionException(500)]
+
+    with pytest.raises(HomeAssistantError):
+        await hass.services.async_call(
+            CLIMATE_DOMAIN,
+            SERVICE_SET_HVAC_MODE,
+            {ATTR_ENTITY_ID: "climate.nimbus", ATTR_HVAC_MODE: HVACMode.HEAT},
+            blocking=True,
+        )
+
+    assert hass.states.get("select.nimbus_ariston_net_plant_mode").state == "Winter"
+
+
+def entity_classes() -> list[type[AristonEntity]]:
+    """Return every entity class of the integration."""
+    for platform in PLATFORMS:
+        importlib.import_module(f"custom_components.ariston_net.{platform}")
+    classes = []
+    pending = [AristonEntity]
+    while pending:
+        cls = pending.pop()
+        classes.append(cls)
+        pending.extend(cls.__subclasses__())
+    return classes
+
+
+HA_HOOKS = {"async_added_to_hass", "async_will_remove_from_hass", "async_update"}
+
+
+@pytest.mark.parametrize(
+    "cls", entity_classes(), ids=lambda cls: f"{cls.__module__}.{cls.__name__}"
+)
+def test_entity_actions_use_cloud_action(cls: type[AristonEntity]) -> None:
+    """Test every action method of an entity has the cloud_action wrapper."""
+    actions = [
+        name
+        for name, member in vars(cls).items()
+        if name.startswith("async_")
+        and name not in HA_HOOKS
+        and inspect.iscoroutinefunction(member)
+    ]
+
+    assert [
+        name for name in actions if not hasattr(vars(cls)[name], "__wrapped__")
+    ] == []

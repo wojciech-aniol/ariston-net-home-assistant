@@ -8,6 +8,7 @@ from unittest.mock import AsyncMock, MagicMock
 
 from ariston import AristonBsbDevice, AristonGalevoDevice
 from ariston.ariston_api import ConnectionException
+from homeassistant.config_entries import SOURCE_REAUTH
 from homeassistant.const import ATTR_DEVICE_ID, ATTR_TEMPERATURE, STATE_OFF, STATE_ON
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError, ServiceValidationError
@@ -201,3 +202,18 @@ async def test_service_cloud_error_raises_ha_error(
     assert not isinstance(exc_info.value, ServiceValidationError)
     assert exc_info.value.translation_key == "action_failed"
     assert tracebacks(caplog) == []
+
+
+async def test_service_auth_error_starts_reauth(
+    hass: HomeAssistant, init_integration: MockConfigEntry, api: MagicMock
+) -> None:
+    """Test a refused login during a service asks for a new password at once."""
+    api.async_set_holiday.side_effect = ConnectionException("Invalid token")
+
+    with pytest.raises(HomeAssistantError) as exc_info:
+        await call_service(hass, "create_vacation", device_id(hass, init_integration))
+    await hass.async_block_till_done()
+
+    assert exc_info.value.translation_key == "action_auth_failed"
+    flows = hass.config_entries.flow.async_progress_by_handler(DOMAIN)
+    assert [flow["context"]["source"] for flow in flows] == [SOURCE_REAUTH]

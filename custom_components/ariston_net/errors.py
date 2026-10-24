@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-from collections.abc import Awaitable, Callable
 from enum import StrEnum
-from functools import wraps
 
 import aiohttp
 from ariston.ariston_api import ConnectionException
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import HomeAssistantError
 
 from .const import DOMAIN
@@ -50,7 +50,7 @@ def error_status(error: ConnectionException) -> int | None:
 def classify_error(error: ConnectionException) -> CloudErrorKind:
     """Return the kind of a library error."""
     reason = _reason(error)
-    if reason in AUTH_ERROR_TEXTS:
+    if isinstance(reason, str) and reason in AUTH_ERROR_TEXTS:
         return CloudErrorKind.AUTH
     status = error_status(error)
     if status is None:
@@ -79,8 +79,10 @@ def describe_error(error: Exception) -> str:
     return str(cause) or type(cause).__name__
 
 
-def action_error(error: Exception) -> HomeAssistantError:
-    """Return the error to show for a failed change on the cloud."""
+def action_error(
+    hass: HomeAssistant, entry: ConfigEntry, error: Exception
+) -> HomeAssistantError:
+    """Return the error to show for a failed change. An auth error starts reauth."""
     kind = (
         classify_error(error)
         if isinstance(error, ConnectionException)
@@ -88,6 +90,7 @@ def action_error(error: Exception) -> HomeAssistantError:
     )
     match kind:
         case CloudErrorKind.AUTH:
+            entry.async_start_reauth(hass)
             key = "action_auth_failed"
         case CloudErrorKind.RATE_LIMIT:
             key = "action_rate_limited"
@@ -98,18 +101,3 @@ def action_error(error: Exception) -> HomeAssistantError:
         translation_key=key,
         translation_placeholders={"error": describe_error(error)},
     )
-
-
-def cloud_action[**P, R](
-    func: Callable[P, Awaitable[R]],
-) -> Callable[P, Awaitable[R]]:
-    """Show cloud errors of an action as HA errors, without a traceback."""
-
-    @wraps(func)
-    async def wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
-        try:
-            return await func(*args, **kwargs)
-        except CLOUD_ERRORS as error:
-            raise action_error(error) from error
-
-    return wrapper
