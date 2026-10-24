@@ -97,6 +97,8 @@ longer stop the setup) and
 
 ## Installation
 
+Requires Home Assistant 2025.10.0 or newer.
+
 ### HACS (custom repository)
 
 [![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=wojciech-aniol&repository=ariston-remotethermo-home-assistant-v3&category=integration)
