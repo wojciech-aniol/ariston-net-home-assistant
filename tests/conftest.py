@@ -150,6 +150,8 @@ FULL_ITEMS: list[dict[str, Any]] = [
 MENU_ITEMS: list[dict[str, Any]] = [
     {"id": 119, "value": 80.0, "unit": "%"},
     {"id": 124, "value": 30.5, "unit": "°C"},
+    {"id": 348, "value": 27.0, "unit": "°C"},
+    {"id": 349, "value": 25.0, "unit": "°C"},
 ]
 
 BUS_ERRORS: list[dict[str, Any]] = [
@@ -234,6 +236,8 @@ def api(features: dict[str, Any], properties: dict[str, Any]) -> MagicMock:
     api.async_get_features_for_device = AsyncMock(return_value=features)
     api.async_get_properties = AsyncMock(return_value=properties)
     api.async_get_menu_items = AsyncMock(return_value=[])
+    # The integration asks for the extra menu items through this library method.
+    api._async_get = AsyncMock(return_value=[])
     api.async_get_bus_errors = AsyncMock(return_value=[])
     api.async_get_consumptions_sequences = AsyncMock(return_value=[])
     api.async_get_consumptions_settings = AsyncMock(return_value={})
@@ -254,7 +258,7 @@ def full_galevo(
     features.update(copy.deepcopy(FULL_FEATURES))
     properties["items"].extend(copy.deepcopy(FULL_ITEMS))
     device.attributes["hpmpSys"] = True
-    api.async_get_menu_items.return_value = copy.deepcopy(MENU_ITEMS)
+    api._async_get.return_value = copy.deepcopy(MENU_ITEMS)
     api.async_get_bus_errors.return_value = copy.deepcopy(BUS_ERRORS)
     api.async_get_consumptions_sequences.return_value = copy.deepcopy(
         CONSUMPTIONS_SEQUENCES

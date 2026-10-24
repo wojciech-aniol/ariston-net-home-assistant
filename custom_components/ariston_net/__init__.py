@@ -37,6 +37,7 @@ from .const import (
     ENERGY_SCAN_INTERVAL,
 )
 from .coordinator import DeviceDataUpdateCoordinator
+from .menu_items import add_extra_menu_items
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -92,6 +93,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         )
         if device is None:
             return False
+
+        if device.system_type is SystemType.GALEVO:
+            add_extra_menu_items(device.api, api_url_setting)
 
         await device.async_get_features()
 
