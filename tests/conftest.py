@@ -277,6 +277,7 @@ def api(features: dict[str, Any], properties: dict[str, Any]) -> MagicMock:
     api.async_get_consumptions_sequences = AsyncMock(return_value=[])
     api.async_get_consumptions_settings = AsyncMock(return_value={})
     api.async_get_energy_account = AsyncMock(return_value={})
+    api.async_set_consumptions_settings = AsyncMock()
     api.async_set_property = AsyncMock()
     api.async_set_holiday = AsyncMock()
     return api
