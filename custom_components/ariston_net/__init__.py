@@ -7,7 +7,6 @@ import logging
 from ariston import Ariston, DeviceAttribute, SystemType
 from ariston.const import ARISTON_API_URL, ARISTON_USER_AGENT
 from homeassistant.const import (
-    ATTR_DEVICE_ID,
     CONF_DEVICE,
     CONF_PASSWORD,
     CONF_SCAN_INTERVAL,
@@ -16,9 +15,9 @@ from homeassistant.const import (
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
-from homeassistant.helpers import config_validation as cv, device_registry as dr
+from homeassistant.helpers import config_validation as cv
+from homeassistant.helpers.typing import ConfigType
 from homeassistant.util.unit_system import METRIC_SYSTEM
-import voluptuous as vol
 
 from .const import (
     API_URL_SETTING,
@@ -37,6 +36,7 @@ from .const import (
 )
 from .coordinator import AristonConfigEntry, AristonData, DeviceDataUpdateCoordinator
 from .menu_items import add_extra_menu_items, async_find_blocked_menu_items
+from .services import async_setup_services
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -50,19 +50,13 @@ PLATFORMS: list[str] = [
     Platform.WATER_HEATER,
 ]
 
-SERVICE_SET_ITEM_BY_ID = "set_item_by_id"
-ATTR_ITEM_ID = "item_id"
-ATTR_ZONE = "zone"
-ATTR_VALUE = "value"
+CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
-SET_ITEM_BY_ID_SCHEMA = vol.Schema(
-    {
-        vol.Required(ATTR_DEVICE_ID): cv.string,
-        vol.Required(ATTR_ITEM_ID): cv.string,
-        vol.Required(ATTR_ZONE): cv.positive_int,
-        vol.Required(ATTR_VALUE): vol.Coerce(float),
-    }
-)
+
+async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
+    """Set up the Ariston services."""
+    async_setup_services(hass)
+    return True
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: AristonConfigEntry) -> bool:
@@ -170,32 +164,6 @@ async def async_setup_entry(hass: HomeAssistant, entry: AristonConfigEntry) -> b
         await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
         entry.async_on_unload(entry.add_update_listener(update_listener))
-
-        if device.system_type == SystemType.GALEVO:
-
-            async def async_set_item_by_id_service(service_call):
-                """Create a vacation on the target device."""
-                device_id = service_call.data.get(ATTR_DEVICE_ID)
-                item_id = service_call.data.get(ATTR_ITEM_ID)
-                zone = service_call.data.get(ATTR_ZONE)
-                value = service_call.data.get(ATTR_VALUE)
-
-                device_registry = dr.async_get(hass)
-                device = device_registry.devices[device_id]
-
-                entry = hass.config_entries.async_get_entry(
-                    next(iter(device.config_entries))
-                )
-                await entry.runtime_data.coordinator.device.async_set_item_by_id(
-                    item_id, value, zone
-                )
-
-            hass.services.async_register(
-                DOMAIN,
-                SERVICE_SET_ITEM_BY_ID,
-                async_set_item_by_id_service,
-                schema=SET_ITEM_BY_ID_SCHEMA,
-            )
     except ConfigEntryAuthFailed:
         raise
     except Exception as error:
