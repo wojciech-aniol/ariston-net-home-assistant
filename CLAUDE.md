@@ -45,8 +45,7 @@ upstream integration" matters. Of `translations/` read only `en.json`.
 - Keep config entry data and option keys. A change needs a config entry migration and a test.
 - Keep the keys of `strings.json` and `translations/en.json` the same. `strings.json` may use
   `[%key:...%]` references, `en.json` holds the final English text.
-- Ask the user before a tag or release, a refactor bigger than the plan says, or a new `ariston`
-  version.
+- Ask the user before a refactor bigger than the plan says or a new `ariston` version.
 - Code, comments, commits and README are in English.
 
 ## Git
@@ -54,3 +53,9 @@ upstream integration" matters. Of `translations/` read only `en.json`.
 - `ariston-net` is the work branch, `main` holds released code. `origin` is the fork, `upstream` is
   fustom: never push there.
 - Commit subject: imperative, no prefix, under 60 characters. The body says why.
+- Releases are automatic (`.github/workflows/auto-release.yml`). Each PR merged into
+  `ariston-net` that changes `custom_components/` bumps the `manifest.json` version, moves `main`
+  and publishes a GitHub release, which HACS picks up. The bump is a patch; the PR label `minor`,
+  `major` or `no-release` changes that. Never bump the version, tag or release by hand.
+- PR titles become the release notes, so write them for users. To ship several PRs as one
+  release, label all but the last `no-release`.
