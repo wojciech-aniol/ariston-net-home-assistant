@@ -1,0 +1,99 @@
+name: Auto release
+
+# Each merged PR into ariston-net that changes custom_components/ gets a release.
+# A patch bump by default; PR labels minor, major or no-release change it.
+on:
+  push:
+    branches: [ariston-net]
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    uses: ./.github/workflows/tests.yml
+
+  plan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      bump: ${{ steps.plan.outputs.bump }}
+    steps:
+      - name: Pick the version bump
+        id: plan
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          pr=$(gh api "repos/$GH_REPO/commits/$GITHUB_SHA/pulls" \
+            --jq '[.[] | select(.base.ref == "ariston-net" and .merged_at)][0] // empty')
+          if [ -z "$pr" ]; then
+            echo "No merged PR for $GITHUB_SHA."
+            bump="none"
+          else
+            number=$(jq -r .number <<<"$pr")
+            labels=$(jq -r '.labels[].name' <<<"$pr")
+            if grep -qx no-release <<<"$labels"; then
+              bump="none"
+            elif ! gh api --paginate "repos/$GH_REPO/pulls/$number/files" \
+              --jq '.[].filename' | grep -q '^custom_components/'; then
+              echo "PR #$number does not change custom_components/."
+              bump="none"
+            elif grep -qx major <<<"$labels"; then
+              bump="major"
+            elif grep -qx minor <<<"$labels"; then
+              bump="minor"
+            else
+              bump="patch"
+            fi
+          fi
+          echo "Bump: $bump"
+          echo "bump=$bump" >> "$GITHUB_OUTPUT"
+
+  release:
+    needs: [tests, plan]
+    if: needs.plan.outputs.bump != 'none'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    concurrency:
+      group: release
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ariston-net
+          fetch-depth: 0
+      - name: Bump the version
+        id: version
+        env:
+          BUMP: ${{ needs.plan.outputs.bump }}
+        run: |
+          manifest=custom_components/ariston_net/manifest.json
+          IFS=. read -r major minor patch < <(jq -r .version "$manifest")
+          case "$BUMP" in
+            major) version="$((major + 1)).0.0" ;;
+            minor) version="$major.$((minor + 1)).0" ;;
+            *) version="$major.$minor.$((patch + 1))" ;;
+          esac
+          sed -i -E "s/(\"version\": \")[^\"]+/\1$version/" "$manifest"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+      - name: Commit, tag and push
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Release v$VERSION"
+          git tag "v$VERSION"
+          git push --atomic origin HEAD:ariston-net HEAD:main "v$VERSION"
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          (cd custom_components/ariston_net && zip -r "$RUNNER_TEMP/ariston_net.zip" .)
+          gh release create "v$VERSION" "$RUNNER_TEMP/ariston_net.zip" \
+            --title "Ariston NET v$VERSION" --generate-notes --verify-tag
