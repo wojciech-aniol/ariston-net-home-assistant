@@ -329,3 +329,23 @@ async def test_water_heater_turn_on_off_skips_same_power(
     await turn(hass, WATER_HEATER_DOMAIN, service, WATER_HEATER)
 
     api.async_set_velis_power.assert_not_awaited()
+
+
+@pytest.mark.xfail(
+    reason="Library bug: Lux compares the mode number with the LuxPlantMode enum",
+    strict=True,
+)
+@pytest.mark.parametrize("device_type", ["lux"])
+async def test_water_heater_lux_boost_shows_highest_setpoint(
+    hass: HomeAssistant,
+    device_data: dict[str, Any],
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+) -> None:
+    """Test a Lux in BOOST shows the highest max setpoint as its target."""
+    device_data["plant_data"]["mode"] = LuxPlantMode.BOOST.value
+    await setup_integration(hass, config_entry)
+
+    state = hass.states.get(WATER_HEATER)
+
+    assert state.attributes[ATTR_TEMPERATURE] == 80.0

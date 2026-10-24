@@ -48,6 +48,14 @@ def device_type() -> str:
         (HVACMode.OFF, BsbZoneMode.MANUAL, BsbZoneMode.OFF),
         (HVACMode.AUTO, BsbZoneMode.MANUAL, BsbZoneMode.TIME_PROGRAM),
         (HVACMode.HEAT, BsbZoneMode.TIME_PROGRAM, BsbZoneMode.MANUAL),
+        pytest.param(
+            HVACMode.HEAT,
+            BsbZoneMode.OFF,
+            BsbZoneMode.MANUAL,
+            marks=pytest.mark.xfail(
+                reason="Library bug: it reads zone mode 0 as UNDEFINED", strict=True
+            ),
+        ),
     ],
 )
 async def test_climate_hvac_mode_sends_bsb_zone_mode(
