@@ -19,7 +19,7 @@ from homeassistant.const import (
     CONF_USERNAME,
 )
 from homeassistant.core import HomeAssistant
-from homeassistant.data_entry_flow import FlowResultType
+from homeassistant.data_entry_flow import FlowResultType, InvalidData
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
@@ -389,3 +389,60 @@ async def test_options_flow_saves_options(
     assert data.coordinator.update_interval == timedelta(seconds=300)
     assert data.energy_coordinator is None
     assert data.bus_errors_coordinator is None
+
+
+@pytest.mark.parametrize(
+    ("option", "minimum"),
+    [
+        (CONF_SCAN_INTERVAL, 60),
+        (ENERGY_SCAN_INTERVAL, 15),
+        (BUS_ERRORS_SCAN_INTERVAL, 60),
+    ],
+)
+async def test_options_flow_accepts_minimum(
+    hass: HomeAssistant,
+    config_entry: MockConfigEntry,
+    mock_setup_entry: AsyncMock,
+    option: str,
+    minimum: int,
+) -> None:
+    """Test each interval option takes its minimum."""
+    await hass.config_entries.async_setup(config_entry.entry_id)
+    result = await hass.config_entries.options.async_init(config_entry.entry_id)
+
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], user_input=OPTIONS | {option: minimum}
+    )
+
+    assert result["type"] is FlowResultType.CREATE_ENTRY
+    assert config_entry.options[option] == minimum
+
+
+@pytest.mark.parametrize(
+    ("option", "minimum", "message"),
+    [
+        (CONF_SCAN_INTERVAL, 60, "Use at least 60 seconds"),
+        (ENERGY_SCAN_INTERVAL, 15, "Use at least 15 minutes"),
+        (BUS_ERRORS_SCAN_INTERVAL, 60, "Use at least 60 seconds"),
+    ],
+)
+async def test_options_flow_refuses_below_minimum(
+    hass: HomeAssistant,
+    config_entry: MockConfigEntry,
+    mock_setup_entry: AsyncMock,
+    option: str,
+    minimum: int,
+    message: str,
+) -> None:
+    """Test an interval below its minimum shows an error on that field only."""
+    await hass.config_entries.async_setup(config_entry.entry_id)
+    result = await hass.config_entries.options.async_init(config_entry.entry_id)
+
+    with pytest.raises(InvalidData) as exc_info:
+        await hass.config_entries.options.async_configure(
+            result["flow_id"], user_input=OPTIONS | {option: minimum - 1}
+        )
+
+    assert list(exc_info.value.schema_errors) == [option]
+    assert exc_info.value.schema_errors[option].startswith(message)
+    assert config_entry.options == {}

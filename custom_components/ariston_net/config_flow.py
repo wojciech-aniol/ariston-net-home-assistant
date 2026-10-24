@@ -30,6 +30,9 @@ from .const import (
     ENABLE_BUS_ERRORS,
     ENABLE_ENERGY,
     ENERGY_SCAN_INTERVAL,
+    MIN_BUS_ERRORS_SCAN_INTERVAL_SECONDS,
+    MIN_ENERGY_SCAN_INTERVAL_MINUTES,
+    MIN_SCAN_INTERVAL_SECONDS,
 )
 from .errors import CLOUD_ERRORS, CloudErrorKind, classify_error, describe_error
 
@@ -43,6 +46,17 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
         vol.Optional(API_USER_AGENT, default=ARISTON_USER_AGENT): str,
     }
 )
+
+
+def _interval(minimum: int, unit: str) -> vol.All:
+    """Return the check of an interval option, a whole number from a minimum."""
+    return vol.All(
+        int,
+        vol.Range(
+            min=minimum,
+            msg=f"Use at least {minimum} {unit}, or the cloud may block the account",
+        ),
+    )
 
 
 class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -217,7 +231,7 @@ class AristonOptionsFlow(config_entries.OptionsFlow):
                     vol.Optional(
                         CONF_SCAN_INTERVAL,
                         default=scan_interval,
-                    ): int,
+                    ): _interval(MIN_SCAN_INTERVAL_SECONDS, "seconds"),
                     vol.Optional(
                         ENABLE_ENERGY,
                         default=options.get(ENABLE_ENERGY, True),
@@ -225,7 +239,7 @@ class AristonOptionsFlow(config_entries.OptionsFlow):
                     vol.Optional(
                         ENERGY_SCAN_INTERVAL,
                         default=energy_scan_interval,
-                    ): int,
+                    ): _interval(MIN_ENERGY_SCAN_INTERVAL_MINUTES, "minutes"),
                     vol.Optional(
                         ENABLE_BUS_ERRORS,
                         default=options.get(ENABLE_BUS_ERRORS, True),
@@ -233,7 +247,7 @@ class AristonOptionsFlow(config_entries.OptionsFlow):
                     vol.Optional(
                         BUS_ERRORS_SCAN_INTERVAL,
                         default=bus_errors_scan_interval,
-                    ): int,
+                    ): _interval(MIN_BUS_ERRORS_SCAN_INTERVAL_SECONDS, "seconds"),
                 }
             ),
             last_step=True,
