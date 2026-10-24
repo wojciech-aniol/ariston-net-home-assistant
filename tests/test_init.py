@@ -459,9 +459,12 @@ async def test_unload_failure_keeps_entry_data(
         (CONF_SCAN_INTERVAL, 30, "coordinator", timedelta(seconds=60)),
         (ENERGY_SCAN_INTERVAL, 5, "energy_coordinator", timedelta(minutes=15)),
         (BUS_ERRORS_SCAN_INTERVAL, 10, "bus_errors_coordinator", timedelta(seconds=60)),
+        (CONF_SCAN_INTERVAL, 10**15, "coordinator", timedelta(days=1)),
+        (ENERGY_SCAN_INTERVAL, 10**15, "energy_coordinator", timedelta(days=1)),
+        (BUS_ERRORS_SCAN_INTERVAL, 10**15, "bus_errors_coordinator", timedelta(days=1)),
     ],
 )
-async def test_setup_raises_old_interval_to_minimum(
+async def test_setup_moves_old_interval_into_limits(
     hass: HomeAssistant,
     mock_ariston: MagicMock,
     config_entry: MockConfigEntry,
@@ -470,7 +473,7 @@ async def test_setup_raises_old_interval_to_minimum(
     coordinator: str,
     expected: timedelta,
 ) -> None:
-    """Test an interval saved below the minimum polls at the minimum."""
+    """Test an interval saved out of its limits polls at the nearest limit."""
     hass.config_entries.async_update_entry(config_entry, options={option: value})
 
     await setup_integration(hass, config_entry)
