@@ -169,6 +169,10 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if entry := await self.async_set_unique_id(
             cloud_device[DeviceAttribute.GW], raise_on_progress=False
         ):
+            # The API settings are folded away, so a default keeps the saved value.
+            for key, default in API_DEFAULTS.items():
+                if data[key] == default:
+                    data[key] = entry.data.get(key, default)
             # Also reloads an entry whose setup failed on the old login.
             return self.async_update_reload_and_abort(
                 entry, data=data, reason="already_configured"

@@ -326,6 +326,45 @@ async def test_user_step_existing_entry_updated_and_aborts(
     assert mock_setup_entry.await_count == 2
 
 
+SAVED_API_SETTINGS: dict[str, Any] = {
+    API_URL_SETTING: "https://saved.example.com/api/v2/",
+    API_USER_AGENT: "SavedAgent/1.0",
+}
+
+
+@pytest.mark.parametrize(
+    ("section", "expected"),
+    [
+        ({}, SAVED_API_SETTINGS),
+        (
+            {API_URL_SETTING: "https://cloud.example.com/api/v2/"},
+            SAVED_API_SETTINGS | {API_URL_SETTING: "https://cloud.example.com/api/v2/"},
+        ),
+    ],
+    ids=["both-default", "url-changed"],
+)
+async def test_user_step_existing_entry_keeps_saved_api_settings(
+    hass: HomeAssistant,
+    config_entry: MockConfigEntry,
+    flow_ariston: MagicMock,
+    mock_setup_entry: AsyncMock,
+    section: dict[str, Any],
+    expected: dict[str, Any],
+) -> None:
+    """Test adding a known device again keeps each saved API setting left default."""
+    hass.config_entries.async_update_entry(
+        config_entry, data=config_entry.data | SAVED_API_SETTINGS
+    )
+    await hass.config_entries.async_setup(config_entry.entry_id)
+
+    result = await start_user_flow(hass, USER_INPUT | {"advanced": section})
+
+    assert result["reason"] == "already_configured"
+    assert dict(config_entry.data) == ENTRY_DATA | expected | {
+        CONF_DEVICE: CLOUD_DEVICE
+    }
+
+
 async def start_reauth(
     hass: HomeAssistant, entry: MockConfigEntry, password: str = "new-password"
 ) -> dict[str, Any]:
