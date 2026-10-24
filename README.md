@@ -69,6 +69,11 @@ The commit messages list what was skipped from each pull request and why.
   per update). A device that never sends them gets no such sensors, and "CH flow measured temp" is
   skipped when "CH flow temp" has a value. The cloud gives an owner account no return temperature
   for Nimbus 120 S-T NET (menu items 1-500, all data items and the web user menu were checked).
+- Sensors "Ariston NET HP water return temp" and "Ariston NET HP evaporator temp" (GALEVO): the
+  heat pump nodes T_13.8.2 and T_13.8.7. The cloud refuses them for an owner account so far, and a
+  refused ID breaks the whole menu items request. So the integration asks for them once, when it
+  starts (one extra request per start, none per update). If the cloud serves them one day, they
+  join the polled request and the sensors appear; until then nothing changes.
 - Select entity "Ariston NET plant mode" (GALEVO): Summer, Winter, Heating only and so on, as
   listed by the cloud. It does the same as the climate preset, for the whole plant.
 - An error from the bus errors endpoint no longer stops the setup.

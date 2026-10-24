@@ -1,4 +1,4 @@
-"""Tests for the extra menu items (HP water flow and CH flow temperature)."""
+"""Tests for the extra menu items (flow, return and evaporator temperatures)."""
 
 from __future__ import annotations
 
@@ -6,6 +6,7 @@ import copy
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
+import aiohttp
 from ariston.ariston_api import AristonAPI, ConnectionException
 from ariston.const import ARISTON_API_URL
 from homeassistant.config_entries import ConfigEntryState
@@ -25,6 +26,10 @@ CH_FLOW_MEASURED_TEMP = "sensor.nimbus_ariston_net_ch_flow_measured_temp"
 CH_FLOW_TEMP = "sensor.nimbus_ariston_net_ch_flow_temp"
 SIGNAL_STRENGTH = "sensor.nimbus_ariston_net_signal_strength"
 SIGNAL_ITEM = {"id": 119, "value": 80.0, "unit": "%"}
+HP_WATER_RETURN_TEMP = "sensor.nimbus_ariston_net_hp_water_return_temp"
+HP_EVAPORATOR_TEMP = "sensor.nimbus_ariston_net_hp_evaporator_temp"
+RETURN_ITEM = {"id": 342, "nodeId": "T_13.8.2", "value": 24.0, "unit": "°C"}
+EVAPORATOR_ITEM = {"id": 347, "nodeId": "T_13.8.7", "value": -2.0, "unit": "°C"}
 
 
 async def setup_integration(hass: HomeAssistant, entry: MockConfigEntry) -> None:
@@ -42,7 +47,7 @@ async def test_flow_sensors_show_menu_values(
 ) -> None:
     """Test both flow sensors get their menu value and unit without ChFlowTemp."""
     properties["items"] = [i for i in properties["items"] if i["id"] != "ChFlowTemp"]
-    api._async_get.return_value = copy.deepcopy(MENU_ITEMS)
+    api.menu_items_request.return_value = copy.deepcopy(MENU_ITEMS)
 
     await setup_integration(hass, config_entry)
 
@@ -69,8 +74,8 @@ async def test_ch_flow_measured_temp_skipped_with_ch_flow_temp(
 @pytest.mark.usefixtures("init_full_integration")
 async def test_menu_items_come_in_one_request(api: MagicMock) -> None:
     """Test the extra items are asked for in the library's menu items request."""
-    api._async_get.assert_awaited_once()
-    url = api._async_get.await_args.args[0]
+    api.menu_items_request.assert_awaited_once()
+    url = api.menu_items_request.await_args.args[0]
     assert f"menuItems/{GATEWAY}?menuItems=" in url
     assert url.endswith("menuItems=124,119,348,349")
 
@@ -92,7 +97,7 @@ async def test_flow_sensors_need_their_menu_value(
     menu_items: list[dict[str, Any]],
 ) -> None:
     """Test the sensors are skipped when the cloud sends no value for them."""
-    api._async_get.return_value = menu_items
+    api.menu_items_request.return_value = menu_items
 
     await setup_integration(hass, config_entry)
 
@@ -107,7 +112,7 @@ async def test_menu_items_without_answer_give_no_sensors(
     config_entry: MockConfigEntry,
 ) -> None:
     """Test an empty cloud answer (HTTP 404) is the same as no menu items."""
-    api._async_get.return_value = None
+    api.menu_items_request.return_value = None
 
     await setup_integration(hass, config_entry)
 
@@ -130,7 +135,7 @@ async def test_refusals_in_a_row_fall_back_to_library_items(
     """Test the longer list is dropped after three refusals in a row."""
     library_get_menu_items = api.async_get_menu_items
     library_get_menu_items.return_value = [SIGNAL_ITEM]
-    api._async_get.side_effect = ConnectionException(500)
+    api.menu_items_request.side_effect = ConnectionException(500)
 
     await setup_integration(hass, config_entry)
 
@@ -141,7 +146,7 @@ async def test_refusals_in_a_row_fall_back_to_library_items(
     for _ in range(3):
         await poll(hass)
 
-    assert api._async_get.await_count == 3
+    assert api.menu_items_request.await_count == 3
     assert library_get_menu_items.await_count == 4
     assert "refused the extra menu items 3 times in a row" in caplog.text
 
@@ -155,7 +160,7 @@ async def test_refusal_between_answers_keeps_extra_items(
     """Test a good answer resets the count of refusals."""
     refused = ConnectionException(500)
     api.async_get_menu_items.return_value = [SIGNAL_ITEM]
-    api._async_get.side_effect = [
+    api.menu_items_request.side_effect = [
         copy.deepcopy(MENU_ITEMS),
         refused,
         refused,
@@ -169,7 +174,7 @@ async def test_refusal_between_answers_keeps_extra_items(
     for _ in range(6):
         await poll(hass)
 
-    assert api._async_get.await_count == 7
+    assert api.menu_items_request.await_count == 7
     assert hass.states.get(HP_WATER_FLOW_TEMP).state == "27.0"
 
 
@@ -181,7 +186,7 @@ async def test_refusal_counts_only_when_library_items_work(
 ) -> None:
     """Test a poll where both lists fail is not a refusal of the longer list."""
     down = ConnectionException(500)
-    api._async_get.side_effect = [copy.deepcopy(MENU_ITEMS), *[down] * 5]
+    api.menu_items_request.side_effect = [copy.deepcopy(MENU_ITEMS), *[down] * 5]
     api.async_get_menu_items.side_effect = [
         down,
         down,
@@ -194,7 +199,7 @@ async def test_refusal_counts_only_when_library_items_work(
     for _ in range(5):
         await poll(hass)
 
-    assert api._async_get.await_count == 6
+    assert api.menu_items_request.await_count == 6
 
 
 @pytest.mark.parametrize(
@@ -215,7 +220,7 @@ async def test_auth_error_on_extra_items_is_raised(
 ) -> None:
     """Test an error without an HTTP status is not taken for a refused list."""
     library_get_menu_items = api.async_get_menu_items
-    api._async_get.side_effect = error
+    api.menu_items_request.side_effect = error
 
     await setup_integration(hass, config_entry)
 
@@ -262,9 +267,104 @@ async def test_rate_limit_on_extra_items_backs_off(
 ) -> None:
     """Test HTTP 429 is left to the coordinator and the library list is not used."""
     library_get_menu_items = api.async_get_menu_items
-    api._async_get.side_effect = ConnectionException(429, "body")
+    api.menu_items_request.side_effect = ConnectionException(429, "body")
 
     await setup_integration(hass, config_entry)
 
     assert config_entry.state is ConfigEntryState.SETUP_RETRY
     library_get_menu_items.assert_not_awaited()
+
+
+@pytest.mark.usefixtures("init_full_integration")
+async def test_blocked_items_are_left_out_while_refused(api: MagicMock) -> None:
+    """Test refused blocked IDs are asked once at setup and not polled."""
+    api.blocked_menu_items_request.assert_awaited_once()
+    url = api.blocked_menu_items_request.await_args.args[0]
+    assert url.endswith(f"menuItems/{GATEWAY}?menuItems=342,343,344,345,346,347")
+    assert api.menu_items_request.await_args.args[0].endswith(
+        "menuItems=124,119,348,349"
+    )
+
+
+async def test_blocked_items_are_read_when_served(
+    hass: HomeAssistant,
+    api: MagicMock,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+) -> None:
+    """Test served return and evaporator items join the polled request and get sensors."""
+    api.blocked_menu_items_request.side_effect = None
+    api.blocked_menu_items_request.return_value = [
+        RETURN_ITEM,
+        {"id": 343, "nodeId": "T_13.8.3", "value": 1.0, "unit": ""},
+        EVAPORATOR_ITEM,
+    ]
+    api.menu_items_request.return_value = [*MENU_ITEMS, RETURN_ITEM, EVAPORATOR_ITEM]
+
+    await setup_integration(hass, config_entry)
+
+    url = api.menu_items_request.await_args.args[0]
+    assert url.endswith("menuItems=124,119,348,349,342,347")
+    for entity_id, value in (
+        (HP_WATER_RETURN_TEMP, "24.0"),
+        (HP_EVAPORATOR_TEMP, "-2.0"),
+    ):
+        state = hass.states.get(entity_id)
+        assert state.state == value
+        assert state.attributes["unit_of_measurement"] == "°C"
+
+
+@pytest.mark.parametrize(
+    "answer",
+    [
+        [{**RETURN_ITEM, "nodeId": "T_13.8.9"}],
+        [{**RETURN_ITEM, "value": None}],
+        None,
+    ],
+    ids=["other-node", "no-value", "empty"],
+)
+async def test_blocked_items_need_their_node_and_value(
+    hass: HomeAssistant,
+    api: MagicMock,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+    answer: list[dict[str, Any]] | None,
+) -> None:
+    """Test a blocked ID joins the polled request only for its node with a value."""
+    api.blocked_menu_items_request.side_effect = None
+    api.blocked_menu_items_request.return_value = answer
+
+    await setup_integration(hass, config_entry)
+
+    assert api.menu_items_request.await_args.args[0].endswith(
+        "menuItems=124,119,348,349"
+    )
+    assert hass.states.get(HP_WATER_RETURN_TEMP) is None
+
+
+@pytest.mark.parametrize(
+    "error",
+    [
+        ConnectionException(429, "body"),
+        ConnectionException("Invalid token"),
+        aiohttp.ClientError(),
+        TimeoutError(),
+    ],
+    ids=["rate-limit", "invalid-token", "network", "timeout"],
+)
+async def test_blocked_items_error_does_not_stop_setup(
+    hass: HomeAssistant,
+    api: MagicMock,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+    error: Exception,
+) -> None:
+    """Test any error of the setup check leaves the blocked IDs out."""
+    api.blocked_menu_items_request.side_effect = error
+
+    await setup_integration(hass, config_entry)
+
+    assert config_entry.state is ConfigEntryState.LOADED
+    assert api.menu_items_request.await_args.args[0].endswith(
+        "menuItems=124,119,348,349"
+    )

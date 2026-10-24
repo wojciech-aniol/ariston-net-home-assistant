@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
-from enum import IntEnum
+from collections.abc import Iterable
+from enum import IntEnum, StrEnum
 import logging
 from typing import Any
 
+import aiohttp
 from ariston.ariston_api import AristonAPI, ConnectionException
 from ariston.base_device import AristonBaseDevice
 from ariston.const import ARISTON_MENU_ITEMS, MenuItemNames, PropertyType
@@ -15,12 +17,23 @@ _LOGGER = logging.getLogger(__name__)
 HTTP_TOO_MANY_REQUESTS = 429
 REFUSALS_BEFORE_FALLBACK = 3
 
+# The cloud fails the whole request (HTTP 500) when it holds one of these IDs.
+# They are the heat pump nodes T_13.8.2 to T_13.8.7, so they are checked only at setup.
+BLOCKED_MENU_IDS = range(342, 348)
+
 
 class ExtraMenuItem(IntEnum):
     """Menu items the library does not ask for."""
 
     HP_WATER_FLOW_TEMP = 348
     CH_FLOW_TEMP = 349
+
+
+class MenuNode(StrEnum):
+    """Menu nodes that the cloud refuses for an owner account so far."""
+
+    HP_RETURN_TEMP = "T_13.8.2"
+    HP_EVAPORATOR_TEMP = "T_13.8.7"
 
 
 def menu_item_value(
@@ -39,13 +52,60 @@ def menu_item_value(
     )
 
 
-def add_extra_menu_items(api: AristonAPI, api_url: str) -> None:
+def menu_node_value(
+    device: AristonBaseDevice,
+    node: str,
+    field: str = PropertyType.VALUE,
+) -> Any:
+    """Return a field of the menu item of a node, or None when the cloud did not send it."""
+    return next(
+        (
+            item.get(field)
+            for item in getattr(device, "menu_items", [])
+            if item.get("nodeId") == node
+        ),
+        None,
+    )
+
+
+async def async_find_blocked_menu_items(
+    api: AristonAPI, api_url: str, gw_id: str
+) -> list[int]:
+    """Return the IDs of the MenuNode items the cloud serves now, for setup only.
+
+    One request, apart from the polled one. While the cloud refuses these IDs,
+    nothing else changes.
+    """
+    if not callable(getattr(api, "_async_get", None)):
+        return []
+    item_ids = ",".join(str(item_id) for item_id in BLOCKED_MENU_IDS)
+    try:
+        items = await api._async_get(
+            f"{api_url}{ARISTON_MENU_ITEMS}/{gw_id}?menuItems={item_ids}"
+        )
+    except (TimeoutError, ConnectionException, aiohttp.ClientError) as error:
+        _LOGGER.debug("The cloud still refuses menu items %s (%s)", item_ids, error)
+        return []
+    found = [
+        item["id"]
+        for item in items or []
+        if item.get("nodeId") in set(MenuNode) and item.get("value") is not None
+    ]
+    if found:
+        _LOGGER.info("The cloud now serves menu items %s, reading them", found)
+    return found
+
+
+def add_extra_menu_items(
+    api: AristonAPI, api_url: str, more_ids: Iterable[int] = ()
+) -> None:
     """Ask for the extra menu items in the library's own menu items request.
 
     The library builds that request from a fixed list. Replacing the method on
-    this API object adds the extra items without a second cloud request. If the
-    cloud refuses the longer list in several polls in a row while the library's
-    list works, it goes back to the library's list until the next reload.
+    this API object adds the extra items (and more_ids) without a second cloud
+    request. If the cloud refuses the longer list in several polls in a row
+    while the library's list works, it goes back to the library's list until
+    the next reload.
     """
     if not callable(getattr(api, "_async_get", None)):
         _LOGGER.warning(
@@ -56,7 +116,11 @@ def add_extra_menu_items(api: AristonAPI, api_url: str) -> None:
 
     library_get_menu_items = api.async_get_menu_items
     item_ids = ",".join(
-        [MenuItemNames.values(), *(str(item.value) for item in ExtraMenuItem)]
+        [
+            MenuItemNames.values(),
+            *(str(item.value) for item in ExtraMenuItem),
+            *(str(item_id) for item_id in more_ids),
+        ]
     )
     refused = 0
 

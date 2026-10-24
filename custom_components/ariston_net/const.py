@@ -51,7 +51,7 @@ except ImportError:
 
 import datetime as dt
 
-from .menu_items import ExtraMenuItem, menu_item_value
+from .menu_items import ExtraMenuItem, MenuNode, menu_item_value, menu_node_value
 
 DOMAIN: Final[str] = "ariston_net"
 NAME: Final[str] = "Ariston NET"
@@ -317,6 +317,28 @@ ARISTON_SENSOR_TYPES: list[AristonSensorEntityDescription] = [
             and device.ch_flow_temp_value is None
         ),
         system_types=[SystemType.GALEVO],
+    ),
+    *(
+        AristonSensorEntityDescription(
+            key=node,
+            name=f"{NAME} {name}",
+            device_class=SensorDeviceClass.TEMPERATURE,
+            state_class=SensorStateClass.MEASUREMENT,
+            get_native_value=lambda entity, node=node: menu_node_value(
+                entity.device, node
+            ),
+            get_native_unit_of_measurement=lambda entity, node=node: menu_node_value(
+                entity.device, node, PropertyType.UNIT
+            ),
+            get_is_supported=lambda device, node=node: (
+                menu_node_value(device, node) is not None
+            ),
+            system_types=[SystemType.GALEVO],
+        )
+        for node, name in (
+            (MenuNode.HP_RETURN_TEMP, "HP water return temp"),
+            (MenuNode.HP_EVAPORATOR_TEMP, "HP evaporator temp"),
+        )
     ),
     AristonSensorEntityDescription(
         key=DeviceProperties.OUTSIDE_TEMP,
