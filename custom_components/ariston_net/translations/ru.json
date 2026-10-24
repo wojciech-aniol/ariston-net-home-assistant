@@ -22,8 +22,8 @@
     "step": {
       "init": {
         "data": {
-          "scan_interval": "Интервал сканирования зоны (секунды).",
-          "energy_scan_interval": "Интервал сканирования энергии (минуты)."
+          "scan_interval": "Интервал сканирования зоны",
+          "energy_scan_interval": "Интервал сканирования энергии"
         },
         "title": "Настроить Ariston NET"
       }

@@ -13,8 +13,15 @@
       "user": {
         "data": {
           "password": "Hasło",
-          "username": "Nazwa użytkownika",
-          "api_url_setting": "Adres URL API Ariston"
+          "username": "Nazwa użytkownika"
+        },
+        "sections": {
+          "advanced": {
+            "name": "Ustawienia API",
+            "data": {
+              "api_url_setting": "Adres URL API Ariston"
+            }
+          }
         }
       }
     }
@@ -23,11 +30,11 @@
     "step": {
       "init": {
         "data": {
-          "scan_interval": "Interwał skanowania strefy (sekundy)",
+          "scan_interval": "Interwał skanowania strefy",
           "enable_energy": "Pobieraj dane o energii",
-          "energy_scan_interval": "Interwał skanowania energii (minuty)",
+          "energy_scan_interval": "Interwał skanowania energii",
           "enable_bus_errors": "Pobieraj błędy magistrali",
-          "bus_errors_scan_interval": "Interwał skanowania błędów magistrali (sekundy)"
+          "bus_errors_scan_interval": "Interwał skanowania błędów magistrali"
         },
         "title": "Konfiguruj Ariston NET"
       }

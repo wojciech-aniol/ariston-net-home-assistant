@@ -22,8 +22,8 @@
     "step": {
       "init": {
         "data": {
-          "scan_interval": "Intervallo scansione dati zone (in secondi)",
-          "energy_scan_interval": "Intervallo scansione dati energetici (in minuti)"
+          "scan_interval": "Intervallo scansione dati zone",
+          "energy_scan_interval": "Intervallo scansione dati energetici"
         },
         "title": "Configura Ariston NET"
       }

@@ -22,9 +22,9 @@
     "step": {
       "init": {
         "data": {
-          "scan_interval": "Intervalo de escaneo de zona (segundos)",
-          "energy_scan_interval": "Intervalo de escaneo de Energia(minutos)",
-          "bus_errors_scan_interval": "Intervalo de escaneo de errores de BUS(segundos)"
+          "scan_interval": "Intervalo de escaneo de zona",
+          "energy_scan_interval": "Intervalo de escaneo de Energia",
+          "bus_errors_scan_interval": "Intervalo de escaneo de errores de BUS"
         },
         "title": "Configurar Ariston NET"
       }
