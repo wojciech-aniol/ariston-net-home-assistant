@@ -249,6 +249,19 @@ def auto_enable_custom_integrations(enable_custom_integrations: None) -> None:
     """Load the integration from custom_components."""
 
 
+@pytest.fixture(autouse=True)
+def no_usage_warnings(caplog: pytest.LogCaptureFixture) -> Generator[None]:
+    """Fail a test when Home Assistant reports a wrong use by the integration."""
+    yield
+    warnings = [
+        record.getMessage()
+        for when in ("setup", "call", "teardown")
+        for record in caplog.get_records(when)
+        if "Detected that custom integration 'ariston_net'" in record.getMessage()
+    ]
+    assert not warnings
+
+
 @pytest.fixture
 def features() -> dict[str, Any]:
     """Return the device features the fake cloud sends."""

@@ -48,8 +48,14 @@ def _get_galevo_coordinator(
     device_entry = dr.async_get(hass).async_get(device_id)
     entry: AristonConfigEntry | None = None
     if device_entry is not None:
+        # Fallback for HA before 2026.8; plan 16 removes it.
+        entry_ids = (
+            {device_entry.config_entry_id}
+            if hasattr(device_entry, "config_entry_id")
+            else device_entry.config_entries
+        )
         for domain_entry in hass.config_entries.async_entries(DOMAIN):
-            if domain_entry.entry_id in device_entry.config_entries:
+            if domain_entry.entry_id in entry_ids:
                 entry = domain_entry
                 break
     if entry is None:

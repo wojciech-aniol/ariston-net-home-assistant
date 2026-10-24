@@ -204,9 +204,17 @@ class AristonWaterHeater(AristonEntity, WaterHeaterEntity):
     @cloud_action
     async def async_turn_off(self, **kwargs) -> None:
         """Turn the water heater off."""
-        await self.device.async_set_power(False)
+        await self._async_set_power(False)
 
     @cloud_action
     async def async_turn_on(self, **kwargs) -> None:
         """Turn the water heater on."""
-        await self.device.async_set_power(True)
+        await self._async_set_power(True)
+
+    async def _async_set_power(self, power: bool) -> None:
+        """Send the power to the device, unless it already has it."""
+        if self.device.water_heater_power_value == power:
+            return
+        await self.device.async_set_power(power)
+        # The VELIS power switch shows the same value.
+        self.coordinator.async_update_listeners()

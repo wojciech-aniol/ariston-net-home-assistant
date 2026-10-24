@@ -7,7 +7,7 @@ create_vacation:
           integration: ariston_net
     end_date:
       selector:
-        text:
+        date:
 set_item_by_id:
   fields:
     device_id:
