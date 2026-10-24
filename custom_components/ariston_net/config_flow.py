@@ -85,7 +85,7 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         self.cloud_password: str = ""
         self.cloud_api_url: str = ARISTON_API_URL
         self.cloud_api_user_agent: str = ARISTON_USER_AGENT
-        self.cloud_devices = {}
+        self.cloud_devices: dict[str, dict[str, Any]] = {}
 
     async def _async_get_devices(
         self, username: str, password: str, api_url: str, user_agent: str
@@ -143,7 +143,9 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             step_id="user", data_schema=STEP_USER_DATA_SCHEMA, errors=errors
         )
 
-    async def async_create_or_update_entry(self, cloud_device):
+    async def async_create_or_update_entry(
+        self, cloud_device: dict[str, Any]
+    ) -> config_entries.ConfigFlowResult:
         """Create the entry, or save the new login in the entry of the device."""
         data = {
             CONF_USERNAME: self.cloud_username,
@@ -164,9 +166,10 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             title=cloud_device[DeviceAttribute.NAME], data=data
         )
 
-    async def async_step_select(self, user_input=None):
+    async def async_step_select(
+        self, user_input: dict[str, Any] | None = None
+    ) -> config_entries.ConfigFlowResult:
         """Multiple device found, select one of them."""
-        errors = {}
         if user_input is not None:
             return await self.async_create_or_update_entry(
                 self.cloud_devices[user_input["select_device"]]
@@ -176,9 +179,7 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             {vol.Required("select_device"): vol.In(list(self.cloud_devices))}
         )
 
-        return self.async_show_form(
-            step_id="select", data_schema=select_schema, errors=errors
-        )
+        return self.async_show_form(step_id="select", data_schema=select_schema)
 
     async def async_step_reauth(
         self, entry_data: Mapping[str, Any]
@@ -220,7 +221,9 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     @staticmethod
     @callback
-    def async_get_options_flow(config_entry):
+    def async_get_options_flow(
+        config_entry: config_entries.ConfigEntry,
+    ) -> AristonOptionsFlow:
         """Get the options flow for this handler."""
         return AristonOptionsFlow()
 
@@ -228,7 +231,9 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 class AristonOptionsFlow(config_entries.OptionsFlowWithReload):
     """Handle Ariston options."""
 
-    async def async_step_init(self, user_input=None):
+    async def async_step_init(
+        self, user_input: dict[str, Any] | None = None
+    ) -> config_entries.ConfigFlowResult:
         """Manage the options."""
         if user_input is not None:
             return self.async_create_entry(title="", data=user_input)
