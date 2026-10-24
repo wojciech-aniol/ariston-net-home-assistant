@@ -13,6 +13,7 @@ from ariston.const import ARISTON_MENU_ITEMS, MenuItemNames, PropertyType
 _LOGGER = logging.getLogger(__name__)
 
 HTTP_TOO_MANY_REQUESTS = 429
+REFUSALS_BEFORE_FALLBACK = 3
 
 
 class ExtraMenuItem(IntEnum):
@@ -43,34 +44,46 @@ def add_extra_menu_items(api: AristonAPI, api_url: str) -> None:
 
     The library builds that request from a fixed list. Replacing the method on
     this API object adds the extra items without a second cloud request. If the
-    cloud refuses the longer list (a model without these items), it goes back to
-    the library's list for good.
+    cloud refuses the longer list in several polls in a row while the library's
+    list works, it goes back to the library's list until the next reload.
     """
+    if not callable(getattr(api, "_async_get", None)):
+        _LOGGER.warning(
+            "This ariston library version has no _async_get, so the extra menu "
+            "items are not read"
+        )
+        return
+
     library_get_menu_items = api.async_get_menu_items
     item_ids = ",".join(
         [MenuItemNames.values(), *(str(item.value) for item in ExtraMenuItem)]
     )
-    use_extra_items = True
+    refused = 0
 
     async def async_get_menu_items(gw_id: str) -> list[dict[str, Any]]:
-        nonlocal use_extra_items
-        if use_extra_items:
-            try:
-                items = await api._async_get(
-                    f"{api_url}{ARISTON_MENU_ITEMS}/{gw_id}?menuItems={item_ids}"
+        nonlocal refused
+        if refused >= REFUSALS_BEFORE_FALLBACK:
+            return await library_get_menu_items(gw_id)
+        try:
+            items = await api._async_get(
+                f"{api_url}{ARISTON_MENU_ITEMS}/{gw_id}?menuItems={item_ids}"
+            )
+        except ConnectionException as error:
+            status = error.args[0] if error.args else None
+            # Auth errors carry text, and 429 is for the coordinator backoff.
+            if not isinstance(status, int) or status == HTTP_TOO_MANY_REQUESTS:
+                raise
+            items = await library_get_menu_items(gw_id)
+            refused += 1
+            if refused == REFUSALS_BEFORE_FALLBACK:
+                _LOGGER.warning(
+                    "The cloud refused the extra menu items %s times in a row "
+                    "(HTTP %s), asking for the library's items only",
+                    refused,
+                    status,
                 )
-            except ConnectionException as error:
-                # Rate limiting is not about the item list: let the coordinator back off.
-                if error.args and error.args[0] == HTTP_TOO_MANY_REQUESTS:
-                    raise
-                use_extra_items = False
-                _LOGGER.debug(
-                    "The cloud refused the extra menu items (%s), asking for the "
-                    "library's items only",
-                    error,
-                )
-            else:
-                return items if items is not None else []
-        return await library_get_menu_items(gw_id)
+            return items
+        refused = 0
+        return items if items is not None else []
 
     api.async_get_menu_items = async_get_menu_items  # type: ignore[method-assign]
