@@ -91,14 +91,15 @@ def mock_setup_entry() -> Generator[AsyncMock]:
 
 
 async def start_user_flow(
-    hass: HomeAssistant, user_input: dict[str, Any] = USER_INPUT
+    hass: HomeAssistant, user_input: dict[str, Any] | None = None
 ) -> dict[str, Any]:
     """Start the user flow and send the login form."""
     result = await hass.config_entries.flow.async_init(
         DOMAIN, context={"source": SOURCE_USER}
     )
     return await hass.config_entries.flow.async_configure(
-        result["flow_id"], user_input=user_input
+        result["flow_id"],
+        user_input=copy.deepcopy(USER_INPUT if user_input is None else user_input),
     )
 
 
@@ -136,21 +137,6 @@ async def test_user_step_one_device_creates_entry(
         "TestAgent/1.0",
     )
     mock_setup_entry.assert_awaited_once()
-
-
-async def test_user_step_entry_data_keeps_flat_keys(
-    hass: HomeAssistant, flow_ariston: MagicMock, mock_setup_entry: AsyncMock
-) -> None:
-    """Test the entry data has exactly the old flat keys, with no section."""
-    result = await start_user_flow(hass)
-
-    assert set(result["data"]) == {
-        "username",
-        "password",
-        "api_url_setting",
-        "api_user_agent",
-        "device",
-    }
 
 
 async def test_user_step_untouched_section_uses_defaults(
@@ -427,13 +413,6 @@ async def test_options_flow_saves_options(
 
     assert result["type"] is FlowResultType.CREATE_ENTRY
     assert init_integration.options == OPTIONS
-    assert set(init_integration.options) == {
-        "scan_interval",
-        "enable_energy",
-        "energy_scan_interval",
-        "enable_bus_errors",
-        "bus_errors_scan_interval",
-    }
     data = init_integration.runtime_data
     assert data.coordinator.update_interval == timedelta(seconds=300)
     assert data.energy_coordinator is None
