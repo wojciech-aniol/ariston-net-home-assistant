@@ -16,7 +16,7 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_TEMPERATURE
 from homeassistant.core import HomeAssistant
 
-from .const import ARISTON_CLIMATE_TYPES, DOMAIN, AristonClimateEntityDescription
+from .const import ARISTON_CLIMATE_TYPES, AristonClimateEntityDescription
 from .coordinator import DeviceDataUpdateCoordinator
 from .entity import AristonEntity, is_entity_supported
 
@@ -30,9 +30,7 @@ async def async_setup_entry(
     ariston_climates: list[AristonThermostat] = []
 
     for description in ARISTON_CLIMATE_TYPES:
-        coordinator: DeviceDataUpdateCoordinator = hass.data[DOMAIN][entry.unique_id][
-            description.coordinator
-        ]
+        coordinator = entry.runtime_data.get_coordinator(description.coordinator)
         if is_entity_supported(coordinator, description):
             for zone_number in coordinator.device.zone_numbers:
                 ariston_climates.append(

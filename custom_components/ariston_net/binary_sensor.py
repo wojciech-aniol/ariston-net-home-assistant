@@ -12,7 +12,6 @@ import voluptuous as vol
 
 from .const import (
     ARISTON_BINARY_SENSOR_TYPES,
-    COORDINATOR,
     DOMAIN,
     AristonBinarySensorEntityDescription,
 )
@@ -36,15 +35,13 @@ async def async_setup_entry(
     """Set up the Ariston binary sensors from config entry."""
     ariston_binary_sensors: list[AristonBinarySensor] = []
     for description in ARISTON_BINARY_SENSOR_TYPES:
-        coordinator: DeviceDataUpdateCoordinator = hass.data[DOMAIN][entry.unique_id][
-            description.coordinator
-        ]
+        coordinator = entry.runtime_data.get_coordinator(description.coordinator)
         if is_entity_supported(coordinator, description):
             ariston_binary_sensors.append(AristonBinarySensor(coordinator, description))
 
     async_add_entities(ariston_binary_sensors)
 
-    if coordinator.device.system_type == SystemType.GALEVO:
+    if entry.runtime_data.coordinator.device.system_type == SystemType.GALEVO:
 
         async def async_create_vacation_service(service_call):
             """Create a vacation on the target device."""
@@ -57,10 +54,7 @@ async def async_setup_entry(
             entry = hass.config_entries.async_get_entry(
                 next(iter(device.config_entries))
             )
-            coordinator: DeviceDataUpdateCoordinator = hass.data[DOMAIN][
-                entry.unique_id
-            ][COORDINATOR]
-            await coordinator.device.async_set_holiday(end_date)
+            await entry.runtime_data.coordinator.device.async_set_holiday(end_date)
             for ariston_binary_sensor in ariston_binary_sensors:
                 if (
                     ariston_binary_sensor.entity_description.key

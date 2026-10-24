@@ -14,14 +14,11 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.ariston_net.const import (
     ATTR_ERRORS,
-    COORDINATOR,
-    DOMAIN,
-    ENERGY_COORDINATOR,
     AristonSensorEntityDescription,
 )
 from custom_components.ariston_net.sensor import AristonSensor
 
-from .conftest import BUS_ERRORS, GATEWAY, refresh_energy
+from .conftest import BUS_ERRORS, refresh_energy, runtime_data
 
 SIGNAL_STRENGTH = "sensor.nimbus_ariston_net_signal_strength"
 DHW_CURRENT_TEMP = "sensor.nimbus_ariston_net_dhw_current_temperature"
@@ -75,7 +72,7 @@ async def test_sensor_without_unit_has_none(
 
     No description has no unit today, so the entity is built directly.
     """
-    coordinator = hass.data[DOMAIN][GATEWAY][COORDINATOR]
+    coordinator = runtime_data(hass).coordinator
     description = AristonSensorEntityDescription(
         key="no_unit", get_native_value=lambda entity: 1
     )
@@ -123,7 +120,7 @@ async def test_energy_sensors_added_once(
     """Test energy sensors added late are not added again on the next refresh."""
     api.async_get_consumptions_sequences.side_effect = ConnectionException(500)
     await setup_integration(hass, config_entry)
-    energy_coordinator = hass.data[DOMAIN][GATEWAY][ENERGY_COORDINATOR]
+    energy_coordinator = runtime_data(hass).energy_coordinator
     api.async_get_consumptions_sequences.side_effect = None
     await energy_coordinator.async_refresh()
     await hass.async_block_till_done()

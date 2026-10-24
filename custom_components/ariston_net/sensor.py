@@ -10,7 +10,6 @@ from homeassistant.core import HomeAssistant, callback
 
 from .const import (
     ARISTON_SENSOR_TYPES,
-    DOMAIN,
     ENERGY_COORDINATOR,
     AristonSensorEntityDescription,
 )
@@ -25,12 +24,12 @@ async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry, async_add_entities
 ) -> None:
     """Set up the Ariston sensors from config entry."""
-    coordinators = hass.data[DOMAIN][entry.unique_id]
+    data = entry.runtime_data
     ariston_sensors: list[AristonSensor] = []
     skipped_energy_descriptions: list[AristonSensorEntityDescription] = []
 
     for description in ARISTON_SENSOR_TYPES:
-        coordinator: DeviceDataUpdateCoordinator = coordinators[description.coordinator]
+        coordinator = data.get_coordinator(description.coordinator)
         if is_entity_supported(coordinator, description):
             ariston_sensors.append(
                 AristonSensor(
@@ -43,7 +42,7 @@ async def async_setup_entry(
 
     async_add_entities(ariston_sensors)
 
-    energy_coordinator = coordinators[ENERGY_COORDINATOR]
+    energy_coordinator = data.energy_coordinator
     if not energy_coordinator or energy_coordinator.last_update_success:
         return
 

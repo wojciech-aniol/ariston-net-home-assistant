@@ -3,15 +3,17 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+from dataclasses import dataclass
 from datetime import timedelta
 import logging
 
 from ariston.ariston_api import ConnectionException
 from ariston.base_device import AristonBaseDevice
+from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
-from .const import DOMAIN
+from .const import BUS_ERRORS_COORDINATOR, COORDINATOR, DOMAIN, ENERGY_COORDINATOR
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -69,3 +71,23 @@ class DeviceDataUpdateCoordinator(DataUpdateCoordinator):
                 self.name,
             )
         return data
+
+
+@dataclass
+class AristonData:
+    """Coordinators of one config entry. A disabled one is None."""
+
+    coordinator: DeviceDataUpdateCoordinator
+    bus_errors_coordinator: DeviceDataUpdateCoordinator | None = None
+    energy_coordinator: DeviceDataUpdateCoordinator | None = None
+
+    def get_coordinator(self, name: str) -> DeviceDataUpdateCoordinator | None:
+        """Return a coordinator by its name, for example a description's one."""
+        return {
+            COORDINATOR: self.coordinator,
+            BUS_ERRORS_COORDINATOR: self.bus_errors_coordinator,
+            ENERGY_COORDINATOR: self.energy_coordinator,
+        }[name]
+
+
+type AristonConfigEntry = ConfigEntry[AristonData]

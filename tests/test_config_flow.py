@@ -23,13 +23,10 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 from custom_components.ariston_net.const import (
     API_URL_SETTING,
     API_USER_AGENT,
-    BUS_ERRORS_COORDINATOR,
     BUS_ERRORS_SCAN_INTERVAL,
-    COORDINATOR,
     DOMAIN,
     ENABLE_BUS_ERRORS,
     ENABLE_ENERGY,
-    ENERGY_COORDINATOR,
     ENERGY_SCAN_INTERVAL,
 )
 
@@ -271,8 +268,7 @@ async def test_options_flow_saves_options(
 
     assert result["type"] is FlowResultType.CREATE_ENTRY
     assert init_integration.options == OPTIONS
-    coordinators = hass.data[DOMAIN][GATEWAY]
-    assert coordinators[COORDINATOR].update_interval == timedelta(seconds=300)
-    # Disabled coordinators are kept as empty placeholders.
-    assert not coordinators[ENERGY_COORDINATOR]
-    assert not coordinators[BUS_ERRORS_COORDINATOR]
+    data = init_integration.runtime_data
+    assert data.coordinator.update_interval == timedelta(seconds=300)
+    assert data.energy_coordinator is None
+    assert data.bus_errors_coordinator is None

@@ -6,7 +6,7 @@ from homeassistant.components.select import SelectEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 
-from .const import ARISTON_SELECT_TYPES, DOMAIN, AristonSelectEntityDescription
+from .const import ARISTON_SELECT_TYPES, AristonSelectEntityDescription
 from .coordinator import DeviceDataUpdateCoordinator
 from .entity import AristonEntity, is_entity_supported
 
@@ -18,9 +18,7 @@ async def async_setup_entry(
     ariston_select: list[AristonSelect] = []
 
     for description in ARISTON_SELECT_TYPES:
-        coordinator: DeviceDataUpdateCoordinator = hass.data[DOMAIN][entry.unique_id][
-            description.coordinator
-        ]
+        coordinator = entry.runtime_data.get_coordinator(description.coordinator)
         if is_entity_supported(coordinator, description):
             ariston_select.append(
                 AristonSelect(

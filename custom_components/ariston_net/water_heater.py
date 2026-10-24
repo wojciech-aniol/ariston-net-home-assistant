@@ -15,7 +15,6 @@ from homeassistant.core import HomeAssistant
 
 from .const import (
     ARISTON_WATER_HEATER_TYPES,
-    DOMAIN,
     AristonWaterHeaterEntityDescription,
 )
 from .coordinator import DeviceDataUpdateCoordinator
@@ -30,9 +29,7 @@ async def async_setup_entry(
     """Set up the Ariston water heater device from config entry."""
     ariston_water_heaters: list[AristonWaterHeater] = []
     for description in ARISTON_WATER_HEATER_TYPES:
-        coordinator: DeviceDataUpdateCoordinator = hass.data[DOMAIN][entry.unique_id][
-            description.coordinator
-        ]
+        coordinator = entry.runtime_data.get_coordinator(description.coordinator)
 
         if is_entity_supported(coordinator, description):
             ariston_water_heaters.append(AristonWaterHeater(coordinator, description))

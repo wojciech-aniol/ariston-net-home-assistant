@@ -5,11 +5,11 @@ from __future__ import annotations
 from typing import Any
 
 from homeassistant.components.diagnostics import async_redact_data
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
 
-from .const import BUS_ERRORS_COORDINATOR, COORDINATOR, DOMAIN, ENERGY_COORDINATOR
+from .const import BUS_ERRORS_COORDINATOR, COORDINATOR, ENERGY_COORDINATOR
+from .coordinator import AristonConfigEntry
 
 TO_REDACT = {
     CONF_PASSWORD,
@@ -26,11 +26,11 @@ TO_REDACT = {
 
 
 async def async_get_config_entry_diagnostics(
-    hass: HomeAssistant, entry: ConfigEntry
+    hass: HomeAssistant, entry: AristonConfigEntry
 ) -> dict[str, Any]:
     """Return the raw cloud data of the device, without personal data."""
-    coordinators = hass.data[DOMAIN][entry.unique_id]
-    device = coordinators[COORDINATOR].device
+    data = entry.runtime_data
+    device = data.coordinator.device
 
     return async_redact_data(
         {
@@ -54,7 +54,7 @@ async def async_get_config_entry_diagnostics(
                     "update_interval": str(coordinator.update_interval),
                 }
                 for name in (COORDINATOR, BUS_ERRORS_COORDINATOR, ENERGY_COORDINATOR)
-                if (coordinator := coordinators.get(name))
+                if (coordinator := data.get_coordinator(name))
             },
         },
         TO_REDACT,

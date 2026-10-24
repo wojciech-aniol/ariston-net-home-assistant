@@ -6,7 +6,7 @@ from homeassistant.components.number import NumberEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 
-from .const import ARISTON_NUMBER_TYPES, DOMAIN, AristonNumberEntityDescription
+from .const import ARISTON_NUMBER_TYPES, AristonNumberEntityDescription
 from .coordinator import DeviceDataUpdateCoordinator
 from .entity import AristonEntity, is_entity_supported
 
@@ -18,9 +18,7 @@ async def async_setup_entry(
     ariston_numbers: list[AristonNumber] = []
 
     for description in ARISTON_NUMBER_TYPES:
-        coordinator: DeviceDataUpdateCoordinator = hass.data[DOMAIN][entry.unique_id][
-            description.coordinator
-        ]
+        coordinator = entry.runtime_data.get_coordinator(description.coordinator)
         if is_entity_supported(coordinator, description):
             if description.zone:
                 for zone_number in coordinator.device.zone_numbers:

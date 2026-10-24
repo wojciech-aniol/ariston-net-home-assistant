@@ -16,10 +16,9 @@ from pytest_homeassistant_custom_component.common import (
     MockConfigEntry,
 )
 
-from custom_components.ariston_net.const import COORDINATOR, DOMAIN
 from custom_components.ariston_net.menu_items import add_extra_menu_items
 
-from .conftest import GATEWAY, MENU_ITEMS
+from .conftest import GATEWAY, MENU_ITEMS, runtime_data
 
 HP_WATER_FLOW_TEMP = "sensor.nimbus_ariston_net_hp_water_flow_temp"
 CH_FLOW_MEASURED_TEMP = "sensor.nimbus_ariston_net_ch_flow_measured_temp"
@@ -122,7 +121,7 @@ async def test_menu_items_without_answer_give_no_sensors(
 
 async def poll(hass: HomeAssistant) -> None:
     """Run one state poll."""
-    await hass.data[DOMAIN][GATEWAY][COORDINATOR].async_refresh()
+    await runtime_data(hass).coordinator.async_refresh()
 
 
 async def test_refusals_in_a_row_fall_back_to_library_items(
