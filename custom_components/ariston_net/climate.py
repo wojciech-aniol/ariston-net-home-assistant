@@ -308,7 +308,8 @@ class AristonThermostat(AristonEntity, ClimateEntity):
         elif hvac_mode == HVACMode.HEAT:
             await self._async_set_zone_mode(BsbZoneMode.MANUAL)
 
-        self.async_write_ha_state()
+        # The plant mode select shows the change too.
+        self.coordinator.async_update_listeners()
 
     async def _async_set_plant_mode(self, plant_mode: PlantMode) -> None:
         """Set the plant mode, unless the device already has it."""
@@ -379,9 +380,9 @@ class AristonThermostat(AristonEntity, ClimateEntity):
         ]:
             await self._async_set_zone_mode(self._manual_zone_mode(zone_modes))
 
-        # Refresh coordinator to get updated device state
-        await self.coordinator.async_request_refresh()
-        self.async_write_ha_state()
+        # The library keeps the new modes, so no refresh. The plant mode select
+        # shows them too.
+        self.coordinator.async_update_listeners()
 
     @cloud_action
     async def async_set_temperature(self, **kwargs):

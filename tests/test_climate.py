@@ -35,6 +35,7 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 from .conftest import PLANT_MODE_TEXTS, set_item
 
 CLIMATE = "climate.nimbus"
+PLANT_MODE_SELECT = "select.nimbus_ariston_net_plant_mode"
 
 
 @pytest.mark.parametrize(
@@ -716,25 +717,58 @@ async def test_preset_sets_modes_from_options(
     assert calls.mock_calls == expected_calls
 
 
-async def test_preset_requests_refresh(
+@pytest.mark.parametrize(
+    ("plant_mode", "zone_mode", "preset", "expected_mode"),
+    [
+        (PlantMode.WINTER, ZoneMode.MANUAL, "Summer", HVACMode.OFF),
+        (PlantMode.OFF, ZoneMode.OFF, "Winter", HVACMode.HEAT),
+        (PlantMode.WINTER, ZoneMode.MANUAL, "Off", HVACMode.OFF),
+    ],
+    ids=["summer", "on-after-off", "off"],
+)
+async def test_preset_shows_new_state_without_refresh(
     hass: HomeAssistant,
+    properties: dict[str, Any],
     api: MagicMock,
-    device: AristonGalevoDevice,
     mock_ariston: MagicMock,
     config_entry: MockConfigEntry,
+    plant_mode: PlantMode,
+    zone_mode: ZoneMode,
+    preset: str,
+    expected_mode: HVACMode,
 ) -> None:
-    """Test a preset reads the device state again from the cloud."""
-    await setup_and_record_calls(hass, config_entry, device)
+    """Test a preset shows the new HVAC mode and preset without a cloud read."""
+    set_item(properties, "PlantMode", value=plant_mode.value)
+    set_item(properties, "ZoneMode", value=zone_mode.value, options=[0, 2, 3])
+    await hass.config_entries.async_setup(config_entry.entry_id)
+    await hass.async_block_till_done()
     api.async_get_properties.reset_mock()
 
     await hass.services.async_call(
         CLIMATE_DOMAIN,
         SERVICE_SET_PRESET_MODE,
-        {ATTR_ENTITY_ID: CLIMATE, ATTR_PRESET_MODE: "Summer"},
+        {ATTR_ENTITY_ID: CLIMATE, ATTR_PRESET_MODE: preset},
         blocking=True,
     )
 
-    api.async_get_properties.assert_awaited_once()
+    state = hass.states.get(CLIMATE)
+    assert (state.state, state.attributes[ATTR_PRESET_MODE]) == (expected_mode, preset)
+    assert hass.states.get(PLANT_MODE_SELECT).state == preset
+    api.async_get_properties.assert_not_awaited()
+
+
+async def test_hvac_mode_updates_plant_mode_select(
+    hass: HomeAssistant, init_integration: MockConfigEntry
+) -> None:
+    """Test an HVAC mode change shows the new plant mode in the select."""
+    await hass.services.async_call(
+        CLIMATE_DOMAIN,
+        SERVICE_SET_HVAC_MODE,
+        {ATTR_ENTITY_ID: CLIMATE, ATTR_HVAC_MODE: HVACMode.OFF},
+        blocking=True,
+    )
+
+    assert hass.states.get(PLANT_MODE_SELECT).state == "Off"
 
 
 async def test_set_temperature_sets_zone_comfort_temp(

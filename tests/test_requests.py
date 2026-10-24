@@ -182,7 +182,7 @@ ACTIONS = [
         SERVICE_SET_PRESET_MODE,
         CLIMATE,
         {ATTR_PRESET_MODE: "Winter"},
-        2,
+        0,
         id="preset-same",
     ),
     pytest.param(
@@ -190,7 +190,7 @@ ACTIONS = [
         SERVICE_SET_PRESET_MODE,
         CLIMATE,
         {ATTR_PRESET_MODE: "Summer"},
-        3,
+        1,
         id="preset-summer",
     ),
     pytest.param(
