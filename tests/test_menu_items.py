@@ -196,11 +196,14 @@ async def test_refusal_counts_only_when_library_items_work(
 
 
 @pytest.mark.parametrize(
-    "error",
+    ("error", "state"),
     [
-        ConnectionException("Invalid token"),
-        ConnectionException("Login failed (password changed?)"),
-        ConnectionException(),
+        (ConnectionException("Invalid token"), ConfigEntryState.SETUP_ERROR),
+        (
+            ConnectionException("Login failed (password changed?)"),
+            ConfigEntryState.SETUP_ERROR,
+        ),
+        (ConnectionException(), ConfigEntryState.SETUP_RETRY),
     ],
     ids=["invalid-token", "login-failed", "no-status"],
 )
@@ -210,6 +213,7 @@ async def test_auth_error_on_extra_items_is_raised(
     mock_ariston: MagicMock,
     config_entry: MockConfigEntry,
     error: ConnectionException,
+    state: ConfigEntryState,
 ) -> None:
     """Test an error without an HTTP status is not taken for a refused list."""
     library_get_menu_items = api.async_get_menu_items
@@ -217,7 +221,7 @@ async def test_auth_error_on_extra_items_is_raised(
 
     await setup_integration(hass, config_entry)
 
-    assert config_entry.state is ConfigEntryState.SETUP_RETRY
+    assert config_entry.state is state
     library_get_menu_items.assert_not_awaited()
 
 

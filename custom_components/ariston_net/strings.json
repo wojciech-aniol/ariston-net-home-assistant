@@ -87,6 +87,15 @@
     },
     "not_galevo": {
       "message": "The Ariston NET device {device_id} does not support this action. Only GALEVO devices do."
+    },
+    "auth_failed": {
+      "message": "The Ariston cloud refused the login ({error}). Enter the password again."
+    },
+    "update_failed": {
+      "message": "Could not read data from the Ariston cloud ({error})."
+    },
+    "rate_limited": {
+      "message": "The Ariston cloud got too many requests from this account (HTTP 429). Updates slow down for a while."
     }
   }
 }

@@ -12,13 +12,14 @@ from ariston.ariston_api import ConnectionException
 from ariston.base_device import AristonBaseDevice
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
 
 from .const import BUS_ERRORS_COORDINATOR, COORDINATOR, DOMAIN, ENERGY_COORDINATOR
+from .errors import CloudErrorKind, classify_error, describe_error
 
 _LOGGER = logging.getLogger(__name__)
 
-HTTP_TOO_MANY_REQUESTS = 429
 MAX_BACKOFF_FACTOR = 8
 
 
@@ -55,17 +56,33 @@ class DeviceDataUpdateCoordinator(DataUpdateCoordinator[None]):
         try:
             await self._async_update_state()
         except ConnectionException as error:
-            # The library raises ConnectionException(status, body) on HTTP 429.
-            if not error.args or error.args[0] != HTTP_TOO_MANY_REQUESTS:
-                raise
-            self._backoff_factor = min(self._backoff_factor * 2, MAX_BACKOFF_FACTOR)
-            self.update_interval = self._default_update_interval * self._backoff_factor
-            _LOGGER.warning(
-                "Rate limited (429) by Ariston cloud. Next update of %s in %s",
-                self.name,
-                self.update_interval,
-            )
-            raise UpdateFailed("Rate limited (429) by Ariston cloud") from error
+            kind = classify_error(error)
+            placeholders = {"error": describe_error(error)}
+            if kind is CloudErrorKind.AUTH:
+                raise ConfigEntryAuthFailed(
+                    translation_domain=DOMAIN,
+                    translation_key="auth_failed",
+                    translation_placeholders=placeholders,
+                ) from error
+            if kind is CloudErrorKind.RATE_LIMIT:
+                self._backoff_factor = min(self._backoff_factor * 2, MAX_BACKOFF_FACTOR)
+                self.update_interval = (
+                    self._default_update_interval * self._backoff_factor
+                )
+                _LOGGER.warning(
+                    "Rate limited (429) by Ariston cloud. Next update of %s in %s",
+                    self.name,
+                    self.update_interval,
+                )
+                raise UpdateFailed(
+                    translation_domain=DOMAIN,
+                    translation_key="rate_limited",
+                ) from error
+            raise UpdateFailed(
+                translation_domain=DOMAIN,
+                translation_key="update_failed",
+                translation_placeholders=placeholders,
+            ) from error
 
         if self._backoff_factor > 1:
             self._backoff_factor = 1
