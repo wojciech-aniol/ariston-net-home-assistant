@@ -115,6 +115,8 @@ Requires Home Assistant 2025.10.0 or newer.
 5. **Settings → Devices & services → Add integration → Ariston NET**. Log in with your Ariston NET
    account.
 
+To change the API URL or user agent later, select **Reconfigure** in the entry menu (⋮).
+
 ### Manual
 
 Copy `custom_components/ariston_net` to `<config>/custom_components/ariston_net` and restart
