@@ -9,7 +9,8 @@ from functools import wraps
 from typing import Any, Concatenate
 
 from ariston.const import SystemType, WheType
-from homeassistant.helpers.entity import DeviceInfo, EntityDescription
+from homeassistant.helpers.device_registry import DeviceInfo
+from homeassistant.helpers.entity import EntityDescription
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import COORDINATOR, DOMAIN, EXTRA_STATE_ATTRIBUTE, EXTRA_STATE_DEVICE_METHOD
