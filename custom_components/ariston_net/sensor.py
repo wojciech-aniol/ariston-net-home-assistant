@@ -556,17 +556,18 @@ async def async_setup_entry(
     async_add_entities(ariston_sensors)
 
     energy_coordinator = data.energy_coordinator
-    if not energy_coordinator or energy_coordinator.last_update_success:
+    if (
+        not energy_coordinator
+        or energy_coordinator.last_update_success
+        or not skipped_energy_descriptions
+    ):
         return
 
     # Energy features are known only after the first good energy update.
     @callback
     def async_add_energy_sensors() -> None:
-        """Add the energy sensors once energy data is available."""
-        if (
-            not energy_coordinator.last_update_success
-            or not skipped_energy_descriptions
-        ):
+        """Add the energy sensors once energy data is available, then stop."""
+        if not energy_coordinator.last_update_success:
             return
         async_add_entities(
             AristonSensor(energy_coordinator, description)
@@ -574,10 +575,16 @@ async def async_setup_entry(
             if is_entity_supported(energy_coordinator, description)
         )
         skipped_energy_descriptions.clear()
+        remove_listener()
 
-    entry.async_on_unload(
-        energy_coordinator.async_add_listener(async_add_energy_sensors)
-    )
+    @callback
+    def async_remove_listener() -> None:
+        """Stop waiting for energy data when the entry unloads."""
+        if skipped_energy_descriptions:
+            remove_listener()
+
+    remove_listener = energy_coordinator.async_add_listener(async_add_energy_sensors)
+    entry.async_on_unload(async_remove_listener)
 
 
 class AristonSensor(AristonEntity, SensorEntity):
