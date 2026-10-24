@@ -3,11 +3,13 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+from dataclasses import dataclass
 import logging
 
-from ariston.const import BsbZoneMode, PlantMode, ZoneMode
+from ariston.const import BsbZoneMode, PlantMode, SystemType, ZoneMode
 from homeassistant.components.climate import (
     ClimateEntity,
+    ClimateEntityDescription,
     ClimateEntityFeature,
     HVACAction,
     HVACMode,
@@ -16,11 +18,54 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_TEMPERATURE
 from homeassistant.core import HomeAssistant
 
-from .const import ARISTON_CLIMATE_TYPES, AristonClimateEntityDescription
+from .const import (
+    ATTR_ECONOMY_TEMP,
+    ATTR_HEAT_REQUEST,
+    ATTR_ZONE,
+    EXTRA_STATE_ATTRIBUTE,
+    EXTRA_STATE_DEVICE_METHOD,
+)
 from .coordinator import DeviceDataUpdateCoordinator
-from .entity import AristonEntity, is_entity_supported
+from .entity import AristonBaseEntityDescription, AristonEntity, is_entity_supported
 
 _LOGGER = logging.getLogger(__name__)
+
+
+@dataclass(kw_only=True, frozen=True)
+class AristonClimateEntityDescription(
+    ClimateEntityDescription, AristonBaseEntityDescription
+):
+    """A class that describes climate entities."""
+
+
+ARISTON_CLIMATE_TYPES: list[AristonClimateEntityDescription] = [
+    AristonClimateEntityDescription(
+        key="AristonClimate",
+        extra_states=[
+            {
+                EXTRA_STATE_ATTRIBUTE: ATTR_HEAT_REQUEST,
+                EXTRA_STATE_DEVICE_METHOD: lambda entity: (
+                    entity.device.get_zone_heat_request_value(entity.zone)
+                ),
+            },
+            {
+                EXTRA_STATE_ATTRIBUTE: ATTR_ECONOMY_TEMP,
+                EXTRA_STATE_DEVICE_METHOD: lambda entity: (
+                    entity.device.get_zone_economy_temp_value(entity.zone)
+                ),
+            },
+            {
+                EXTRA_STATE_ATTRIBUTE: ATTR_ZONE,
+                EXTRA_STATE_DEVICE_METHOD: lambda entity: entity.zone,
+            },
+        ],
+        system_types=[SystemType.GALEVO],
+    ),
+    AristonClimateEntityDescription(
+        key="AristonClimate",
+        system_types=[SystemType.BSB],
+    ),
+]
 
 
 async def async_setup_entry(

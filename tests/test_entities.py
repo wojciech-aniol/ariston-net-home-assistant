@@ -11,11 +11,11 @@ from homeassistant.helpers import device_registry as dr
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.ariston_net.const import (
-    EXTRA_STATE_ATTRIBUTE,
+from custom_components.ariston_net.const import EXTRA_STATE_ATTRIBUTE
+from custom_components.ariston_net.sensor import (
+    AristonSensor,
     AristonSensorEntityDescription,
 )
-from custom_components.ariston_net.sensor import AristonSensor
 
 from .conftest import runtime_data
 

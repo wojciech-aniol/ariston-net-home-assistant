@@ -12,11 +12,11 @@ from homeassistant.core import HomeAssistant
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.ariston_net.const import (
-    ATTR_ERRORS,
+from custom_components.ariston_net.const import ATTR_ERRORS
+from custom_components.ariston_net.sensor import (
+    AristonSensor,
     AristonSensorEntityDescription,
 )
-from custom_components.ariston_net.sensor import AristonSensor
 
 from .conftest import BUS_ERRORS, refresh_energy, runtime_data
 

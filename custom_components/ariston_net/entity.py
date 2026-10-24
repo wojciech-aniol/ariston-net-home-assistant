@@ -3,18 +3,30 @@
 from __future__ import annotations
 
 from abc import ABC
+from collections.abc import Callable
+from dataclasses import dataclass
+from typing import Any
 
-from ariston.const import WheType
-from homeassistant.helpers.entity import DeviceInfo
+from ariston.const import SystemType, WheType
+from homeassistant.helpers.entity import DeviceInfo, EntityDescription
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
-from .const import (
-    DOMAIN,
-    EXTRA_STATE_ATTRIBUTE,
-    EXTRA_STATE_DEVICE_METHOD,
-    AristonBaseEntityDescription,
-)
+from .const import COORDINATOR, DOMAIN, EXTRA_STATE_ATTRIBUTE, EXTRA_STATE_DEVICE_METHOD
 from .coordinator import DeviceDataUpdateCoordinator
+
+
+@dataclass(kw_only=True, frozen=True)
+class AristonBaseEntityDescription(EntityDescription):
+    """An abstract class that describes Ariston entites."""
+
+    device_features: list[str] | None = None
+    coordinator: str = COORDINATOR
+    extra_states: list[dict[str, Any]] | None = None
+    system_types: list[SystemType] | None = None
+    whe_types: list[WheType] | None = None
+    zone: bool = False
+    # Checked once at setup with the device; False skips the entity.
+    get_is_supported: Callable[[Any], bool] | None = None
 
 
 def is_entity_supported(
