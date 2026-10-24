@@ -24,6 +24,8 @@ from .const import ATTR_HOLIDAY, EXTRA_STATE_ATTRIBUTE, EXTRA_STATE_DEVICE_METHO
 from .coordinator import AristonConfigEntry, DeviceDataUpdateCoordinator
 from .entity import AristonBaseEntityDescription, AristonEntity, is_entity_supported
 
+PARALLEL_UPDATES = 0
+
 
 @dataclass(kw_only=True, frozen=True)
 class AristonBinarySensorEntityDescription(

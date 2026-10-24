@@ -51,6 +51,9 @@ from .menu_items import ExtraMenuItem, MenuNode, menu_item_value, menu_node_valu
 UNKNOWN_RESET = datetime.fromtimestamp(0, UTC)
 
 
+PARALLEL_UPDATES = 0
+
+
 @dataclass(kw_only=True, frozen=True)
 class AristonSensorEntityDescription(
     SensorEntityDescription, AristonBaseEntityDescription

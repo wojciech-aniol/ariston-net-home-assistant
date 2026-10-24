@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import importlib
 from typing import Any
 from unittest.mock import MagicMock
 
@@ -116,3 +117,22 @@ async def test_extra_state_without_method_is_skipped(
     sensor = AristonSensor(coordinator, description)
 
     assert sensor.extra_state_attributes == {}
+
+
+@pytest.mark.parametrize(
+    ("platform", "expected"),
+    [
+        ("binary_sensor", 0),
+        ("sensor", 0),
+        ("climate", 1),
+        ("number", 1),
+        ("select", 1),
+        ("switch", 1),
+        ("water_heater", 1),
+    ],
+)
+def test_platform_parallel_updates(platform: str, expected: int) -> None:
+    """Test read-only platforms run in parallel and writes go one at a time."""
+    module = importlib.import_module(f"custom_components.ariston_net.{platform}")
+
+    assert expected == module.PARALLEL_UPDATES

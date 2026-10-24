@@ -32,6 +32,9 @@ from .entity import (
     is_entity_supported,
 )
 
+# Send writes to the cloud one at a time.
+PARALLEL_UPDATES = 1
+
 
 @dataclass(kw_only=True, frozen=True)
 class AristonSwitchEntityDescription(

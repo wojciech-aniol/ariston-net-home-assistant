@@ -33,6 +33,10 @@ from .entity import (
 _LOGGER = logging.getLogger(__name__)
 
 
+# Send writes to the cloud one at a time.
+PARALLEL_UPDATES = 1
+
+
 @dataclass(kw_only=True, frozen=True)
 class AristonWaterHeaterEntityDescription(
     WaterHeaterEntityDescription, AristonBaseEntityDescription
