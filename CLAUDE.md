@@ -22,8 +22,10 @@ Tests and lint pass before every commit.
 
 - `__init__.py`: entry setup. Coordinators live in `entry.runtime_data` (`AristonData` in
   `coordinator.py`, typed as `AristonConfigEntry`); a disabled one is None.
-- `coordinator.py`: polling, HTTP 429 backoff. Up to three coordinators per entry: state, bus errors
-  and energy (the last two are optional).
+- `coordinator.py`: polling, HTTP 429 backoff, auth errors start reauth. Up to three coordinators
+  per entry: state, bus errors and energy (the last two are optional).
+- `errors.py`: sorts library errors (auth, 429, 5xx, other) and `cloud_action`, the decorator that
+  turns cloud errors of entity actions and services into translated `HomeAssistantError`s.
 - `services.py`: `create_vacation` and `set_item_by_id`, registered once in `async_setup`.
 - `entity.py`: base entity, base description, `is_entity_supported`. `const.py`: constants only.
 - Each platform file holds its description class and list. Entity behaviour sits in description
