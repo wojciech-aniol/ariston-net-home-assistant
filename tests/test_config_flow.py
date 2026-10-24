@@ -20,6 +20,8 @@ from homeassistant.const import (
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResultType, InvalidData
+from homeassistant.helpers import config_validation as cv
+import probatio
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
@@ -425,6 +427,13 @@ async def test_options_flow_saves_options(
 
     assert result["type"] is FlowResultType.CREATE_ENTRY
     assert init_integration.options == OPTIONS
+    assert set(init_integration.options) == {
+        "scan_interval",
+        "enable_energy",
+        "energy_scan_interval",
+        "enable_bus_errors",
+        "bus_errors_scan_interval",
+    }
     data = init_integration.runtime_data
     assert data.coordinator.update_interval == timedelta(seconds=300)
     assert data.energy_coordinator is None
@@ -456,14 +465,47 @@ async def test_options_flow_accepts_minimum(
 
     assert result["type"] is FlowResultType.CREATE_ENTRY
     assert config_entry.options[option] == minimum
+    assert type(config_entry.options[option]) is int
 
 
 @pytest.mark.parametrize(
-    ("option", "minimum", "message"),
+    ("option", "minimum", "unit"),
     [
-        (CONF_SCAN_INTERVAL, 60, "Use at least 60 seconds"),
-        (ENERGY_SCAN_INTERVAL, 15, "Use at least 15 minutes"),
-        (BUS_ERRORS_SCAN_INTERVAL, 60, "Use at least 60 seconds"),
+        (CONF_SCAN_INTERVAL, 60, "s"),
+        (ENERGY_SCAN_INTERVAL, 15, "min"),
+        (BUS_ERRORS_SCAN_INTERVAL, 60, "s"),
+    ],
+)
+async def test_options_flow_shows_minimum_and_unit(
+    hass: HomeAssistant,
+    config_entry: MockConfigEntry,
+    mock_setup_entry: AsyncMock,
+    option: str,
+    minimum: int,
+    unit: str,
+) -> None:
+    """Test the form sends each interval field with its minimum and unit."""
+    await hass.config_entries.async_setup(config_entry.entry_id)
+    result = await hass.config_entries.options.async_init(config_entry.entry_id)
+
+    fields = probatio.to_field_list(
+        result["data_schema"], custom_serializer=cv.custom_serializer
+    )
+    number = next(field for field in fields if field["name"] == option)
+    assert number["selector"]["number"] == {
+        "min": minimum,
+        "step": 1,
+        "mode": "box",
+        "unit_of_measurement": unit,
+    }
+
+
+@pytest.mark.parametrize(
+    ("option", "minimum"),
+    [
+        (CONF_SCAN_INTERVAL, 60),
+        (ENERGY_SCAN_INTERVAL, 15),
+        (BUS_ERRORS_SCAN_INTERVAL, 60),
     ],
 )
 async def test_options_flow_refuses_below_minimum(
@@ -472,7 +514,6 @@ async def test_options_flow_refuses_below_minimum(
     mock_setup_entry: AsyncMock,
     option: str,
     minimum: int,
-    message: str,
 ) -> None:
     """Test an interval below its minimum shows an error on that field only."""
     await hass.config_entries.async_setup(config_entry.entry_id)
@@ -484,7 +525,6 @@ async def test_options_flow_refuses_below_minimum(
         )
 
     assert list(exc_info.value.schema_errors) == [option]
-    assert exc_info.value.schema_errors[option].startswith(message)
     assert config_entry.options == {}
 
 

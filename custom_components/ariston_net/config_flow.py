@@ -18,6 +18,11 @@ from homeassistant.const import (
 )
 from homeassistant.core import callback
 from homeassistant.data_entry_flow import section
+from homeassistant.helpers.selector import (
+    NumberSelector,
+    NumberSelectorConfig,
+    NumberSelectorMode,
+)
 import voluptuous as vol
 
 from .const import (
@@ -55,13 +60,17 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
 
 
 def _interval(minimum: int, unit: str) -> vol.All:
-    """Return the check of an interval option, a whole number from a minimum."""
+    """Return the field of an interval option, a whole number from a minimum."""
     return vol.All(
-        int,
-        vol.Range(
-            min=minimum,
-            msg=f"Use at least {minimum} {unit}, or the cloud may block the account",
+        NumberSelector(
+            NumberSelectorConfig(
+                min=minimum,
+                step=1,
+                mode=NumberSelectorMode.BOX,
+                unit_of_measurement=unit,
+            )
         ),
+        vol.Coerce(int),
     )
 
 
@@ -236,7 +245,7 @@ class AristonOptionsFlow(config_entries.OptionsFlowWithReload):
                     vol.Optional(
                         CONF_SCAN_INTERVAL,
                         default=scan_interval,
-                    ): _interval(MIN_SCAN_INTERVAL_SECONDS, "seconds"),
+                    ): _interval(MIN_SCAN_INTERVAL_SECONDS, "s"),
                     vol.Optional(
                         ENABLE_ENERGY,
                         default=options.get(ENABLE_ENERGY, True),
@@ -244,7 +253,7 @@ class AristonOptionsFlow(config_entries.OptionsFlowWithReload):
                     vol.Optional(
                         ENERGY_SCAN_INTERVAL,
                         default=energy_scan_interval,
-                    ): _interval(MIN_ENERGY_SCAN_INTERVAL_MINUTES, "minutes"),
+                    ): _interval(MIN_ENERGY_SCAN_INTERVAL_MINUTES, "min"),
                     vol.Optional(
                         ENABLE_BUS_ERRORS,
                         default=options.get(ENABLE_BUS_ERRORS, True),
@@ -252,7 +261,7 @@ class AristonOptionsFlow(config_entries.OptionsFlowWithReload):
                     vol.Optional(
                         BUS_ERRORS_SCAN_INTERVAL,
                         default=bus_errors_scan_interval,
-                    ): _interval(MIN_BUS_ERRORS_SCAN_INTERVAL_SECONDS, "seconds"),
+                    ): _interval(MIN_BUS_ERRORS_SCAN_INTERVAL_SECONDS, "s"),
                 }
             ),
             last_step=True,
