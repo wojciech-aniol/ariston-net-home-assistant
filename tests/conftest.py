@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Generator
 import copy
+import logging
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
@@ -217,6 +218,15 @@ async def refresh_energy(hass: HomeAssistant, api: MagicMock) -> None:
     ]
     await runtime_data(hass).energy_coordinator.async_refresh()
     await hass.async_block_till_done()
+
+
+def tracebacks(caplog: pytest.LogCaptureFixture) -> list[str]:
+    """Return the messages logged with a traceback, apart from debug ones."""
+    return [
+        record.getMessage()
+        for record in caplog.records
+        if record.exc_info and record.levelno > logging.DEBUG
+    ]
 
 
 @pytest.fixture
