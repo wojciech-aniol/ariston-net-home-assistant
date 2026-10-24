@@ -38,6 +38,15 @@ from .conftest import CLOUD_DEVICE, GATEWAY, tracebacks
 USER_INPUT: dict[str, Any] = {
     CONF_USERNAME: "new@example.com",
     CONF_PASSWORD: "new-password",
+    "advanced": {
+        API_URL_SETTING: "https://cloud.example.com/api/v2/",
+        API_USER_AGENT: "TestAgent/1.0",
+    },
+}
+
+ENTRY_DATA: dict[str, Any] = {
+    CONF_USERNAME: "new@example.com",
+    CONF_PASSWORD: "new-password",
     API_URL_SETTING: "https://cloud.example.com/api/v2/",
     API_USER_AGENT: "TestAgent/1.0",
 }
@@ -79,13 +88,15 @@ def mock_setup_entry() -> Generator[AsyncMock]:
         yield setup_entry
 
 
-async def start_user_flow(hass: HomeAssistant) -> dict[str, Any]:
+async def start_user_flow(
+    hass: HomeAssistant, user_input: dict[str, Any] = USER_INPUT
+) -> dict[str, Any]:
     """Start the user flow and send the login form."""
     result = await hass.config_entries.flow.async_init(
         DOMAIN, context={"source": SOURCE_USER}
     )
     return await hass.config_entries.flow.async_configure(
-        result["flow_id"], user_input=USER_INPUT
+        result["flow_id"], user_input=user_input
     )
 
 
@@ -103,6 +114,7 @@ async def test_user_step_shows_form(hass: HomeAssistant) -> None:
     assert result["type"] is FlowResultType.FORM
     assert result["step_id"] == "user"
     assert not result["errors"]
+    assert result["data_schema"].schema["advanced"].options["collapsed"]
 
 
 async def test_user_step_one_device_creates_entry(
@@ -114,7 +126,7 @@ async def test_user_step_one_device_creates_entry(
     assert result["type"] is FlowResultType.CREATE_ENTRY
     assert result["title"] == "Nimbus"
     assert result["result"].unique_id == GATEWAY
-    assert result["data"] == USER_INPUT | {CONF_DEVICE: CLOUD_DEVICE}
+    assert result["data"] == ENTRY_DATA | {CONF_DEVICE: CLOUD_DEVICE}
     flow_ariston.async_connect.assert_awaited_once_with(
         "new@example.com",
         "new-password",
@@ -122,6 +134,34 @@ async def test_user_step_one_device_creates_entry(
         "TestAgent/1.0",
     )
     mock_setup_entry.assert_awaited_once()
+
+
+async def test_user_step_entry_data_keeps_flat_keys(
+    hass: HomeAssistant, flow_ariston: MagicMock, mock_setup_entry: AsyncMock
+) -> None:
+    """Test the entry data has exactly the old flat keys, with no section."""
+    result = await start_user_flow(hass)
+
+    assert set(result["data"]) == {
+        "username",
+        "password",
+        "api_url_setting",
+        "api_user_agent",
+        "device",
+    }
+
+
+async def test_user_step_untouched_section_uses_defaults(
+    hass: HomeAssistant, flow_ariston: MagicMock, mock_setup_entry: AsyncMock
+) -> None:
+    """Test the default API settings apply when the section is left alone."""
+    result = await start_user_flow(hass, USER_INPUT | {"advanced": {}})
+
+    assert result["data"][API_URL_SETTING] == ARISTON_API_URL
+    assert result["data"][API_USER_AGENT] == ARISTON_USER_AGENT
+    flow_ariston.async_connect.assert_awaited_once_with(
+        "new@example.com", "new-password", ARISTON_API_URL, ARISTON_USER_AGENT
+    )
 
 
 async def test_user_step_many_devices_creates_selected_entry(
@@ -256,7 +296,7 @@ async def test_user_step_existing_entry_updated_and_aborts(
 
     assert result["type"] is FlowResultType.ABORT
     assert result["reason"] == "already_configured"
-    assert dict(config_entry.data) == USER_INPUT | {CONF_DEVICE: CLOUD_DEVICE}
+    assert dict(config_entry.data) == ENTRY_DATA | {CONF_DEVICE: CLOUD_DEVICE}
     assert len(hass.config_entries.async_entries(DOMAIN)) == 1
     assert mock_setup_entry.await_count == 2
 

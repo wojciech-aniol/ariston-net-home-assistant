@@ -17,6 +17,7 @@ from homeassistant.const import (
     CONF_USERNAME,
 )
 from homeassistant.core import callback
+from homeassistant.data_entry_flow import section
 import voluptuous as vol
 
 from .const import (
@@ -40,8 +41,15 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_USERNAME): str,
         vol.Required(CONF_PASSWORD): str,
-        vol.Optional(API_URL_SETTING, default=ARISTON_API_URL): str,
-        vol.Optional(API_USER_AGENT, default=ARISTON_USER_AGENT): str,
+        vol.Required("advanced"): section(
+            vol.Schema(
+                {
+                    vol.Optional(API_URL_SETTING, default=ARISTON_API_URL): str,
+                    vol.Optional(API_USER_AGENT, default=ARISTON_USER_AGENT): str,
+                }
+            ),
+            {"collapsed": True},
+        ),
     }
 )
 
@@ -99,8 +107,8 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             self.cloud_username = user_input[CONF_USERNAME]
             self.cloud_password = user_input[CONF_PASSWORD]
-            self.cloud_api_url = user_input[API_URL_SETTING]
-            self.cloud_api_user_agent = user_input[API_USER_AGENT]
+            self.cloud_api_url = user_input["advanced"][API_URL_SETTING]
+            self.cloud_api_user_agent = user_input["advanced"][API_USER_AGENT]
             cloud_devices, error = await self._async_get_devices(
                 self.cloud_username,
                 self.cloud_password,
