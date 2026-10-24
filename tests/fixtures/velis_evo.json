@@ -1,0 +1,20 @@
+{
+  "features": {
+    "hasMetering": true
+  },
+  "plant_data": {
+    "mode": 1,
+    "on": true,
+    "temp": 52.0,
+    "state": true,
+    "eco": false,
+    "avShw": 3,
+    "reqShw": 2,
+    "maxReqShw": 4,
+    "rmTm": "01:30:00"
+  },
+  "plant_settings": {},
+  "consumptions_sequences": [
+    {"k": 21, "p": 1, "v": [21.25, 21.5]}
+  ]
+}

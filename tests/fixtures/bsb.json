@@ -1,0 +1,29 @@
+{
+  "features": {
+    "hasMetering": true,
+    "dhwModeChangeable": true
+  },
+  "plant_data": {
+    "flame": true,
+    "outTemp": 7.5,
+    "dhwTemp": 48.5,
+    "dhwMode": {"value": 1},
+    "dhwComfTemp": {"value": 50.0, "min": 35.0, "max": 65.0, "step": 0.5},
+    "dhwReduTemp": {"value": 40.0, "min": 10.0, "max": 50.0, "step": 0.5},
+    "zones": {
+      "1": {
+        "mode": {"value": 3, "allowedOptions": [0, 1, 3]},
+        "chComfTemp": {"value": 21.0, "min": 15.0, "max": 24.0, "step": 0.5},
+        "chRedTemp": {"value": 17.0, "min": 10.0, "max": 18.0, "step": 0.5},
+        "roomTemp": 20.5,
+        "coolingOn": false
+      }
+    }
+  },
+  "consumptions_sequences": [
+    {"k": 1, "p": 1, "v": [1.25, 1.5]},
+    {"k": 2, "p": 1, "v": [2.25, 2.5]},
+    {"k": 7, "p": 1, "v": [7.25, 7.5]},
+    {"k": 10, "p": 1, "v": [10.25, 10.5]}
+  ]
+}

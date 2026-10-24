@@ -1,0 +1,27 @@
+{
+  "features": {
+    "hasMetering": true
+  },
+  "plant_data": {
+    "mode": 1,
+    "on": true,
+    "temp": 48.0,
+    "reqTemp": 55.0,
+    "procReqTemp": 55.0,
+    "heatReq": true,
+    "antiLeg": false,
+    "eco": false,
+    "pwrOpt": false,
+    "avShw": 2,
+    "rmTm": "00:45:00"
+  },
+  "plant_settings": {
+    "MedAntilegionellaOnOff": true,
+    "MedMaxSetpointTemperature": 70.0,
+    "MedMaxSetpointTemperatureMin": 40.0,
+    "MedMaxSetpointTemperatureMax": 80.0
+  },
+  "consumptions_sequences": [
+    {"k": 21, "p": 1, "v": [21.25, 21.5]}
+  ]
+}
