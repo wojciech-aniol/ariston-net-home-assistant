@@ -10,6 +10,7 @@
     "error": {
       "cannot_connect": "Failed to connect",
       "invalid_auth": "Invalid authentication",
+      "invalid_api_settings": "The Ariston cloud did not accept these settings with the saved login. Check the URL and the user agent.",
       "unknown": "Unexpected error"
     },
     "step": {
@@ -63,8 +64,8 @@
           "api_user_agent": "Ariston API user agent"
         },
         "data_description": {
-          "api_url_setting": "Address of the Ariston cloud API. Keep the default unless you know it changed.",
-          "api_user_agent": "Name this integration sends to the Ariston cloud. Keep the default unless you know it changed."
+          "api_url_setting": "Address of the Ariston cloud API. Default: {api_url_setting}",
+          "api_user_agent": "Name this integration sends to the Ariston cloud. Default: {api_user_agent}"
         }
       }
     }

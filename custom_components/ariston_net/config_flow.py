@@ -110,6 +110,18 @@ def _interval_errors(user_input: Mapping[str, Any]) -> dict[str, str]:
     }
 
 
+def _clean_api_settings(settings: Mapping[str, str]) -> dict[str, str]:
+    """Strip the API settings and end the URL with "/".
+
+    The library adds paths to the URL with no "/" between them.
+    """
+    url = settings[API_URL_SETTING].strip()
+    return {
+        API_URL_SETTING: url if url.endswith("/") else f"{url}/",
+        API_USER_AGENT: settings[API_USER_AGENT].strip(),
+    }
+
+
 def _has_entry_device(
     entry: config_entries.ConfigEntry, cloud_devices: list[dict[str, Any]]
 ) -> bool:
@@ -160,7 +172,9 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             self.cloud_username = user_input[CONF_USERNAME]
             self.cloud_password = user_input[CONF_PASSWORD]
-            api_settings = API_DEFAULTS | user_input.get("advanced", {})
+            api_settings = _clean_api_settings(
+                API_DEFAULTS | user_input.get("advanced", {})
+            )
             self.cloud_api_url = api_settings[API_URL_SETTING]
             self.cloud_api_user_agent = api_settings[API_USER_AGENT]
             cloud_devices, error = await self._async_get_devices(
@@ -276,14 +290,20 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         entry = self._get_reconfigure_entry()
         errors: dict[str, str] = {}
         if user_input is not None:
+            user_input = _clean_api_settings(user_input)
             cloud_devices, error = await self._async_get_devices(
                 entry.data[CONF_USERNAME],
                 entry.data[CONF_PASSWORD],
                 user_input[API_URL_SETTING],
                 user_input[API_USER_AGENT],
             )
+            # The login is the saved one, so these errors point at the settings.
             if error:
-                errors["base"] = error
+                errors["base"] = (
+                    "invalid_api_settings" if error == "invalid_auth" else error
+                )
+            elif not cloud_devices:
+                errors["base"] = "invalid_api_settings"
             elif not _has_entry_device(entry, cloud_devices):
                 return self.async_abort(reason="unique_id_mismatch")
             else:
@@ -302,6 +322,7 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 },
             ),
             errors=errors,
+            description_placeholders=API_DEFAULTS,
         )
 
     @staticmethod
