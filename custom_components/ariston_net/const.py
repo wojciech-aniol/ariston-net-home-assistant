@@ -97,7 +97,7 @@ class AristonClimateEntityDescription(
 class AristonWaterHeaterEntityDescription(
     WaterHeaterEntityDescription, AristonBaseEntityDescription
 ):
-    """A class that describes climate entities."""
+    """A class that describes water heater entities."""
 
 
 @dataclass(kw_only=True, frozen=True)

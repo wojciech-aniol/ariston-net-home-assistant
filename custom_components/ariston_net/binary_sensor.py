@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import logging
-
 from ariston.const import DeviceProperties, SystemType
 from homeassistant.components.binary_sensor import BinarySensorEntity
 from homeassistant.config_entries import ConfigEntry
@@ -20,8 +18,6 @@ from .const import (
 )
 from .coordinator import DeviceDataUpdateCoordinator
 from .entity import AristonEntity, is_entity_supported
-
-_LOGGER = logging.getLogger(__name__)
 
 SERVICE_CREATE_VACATION = "create_vacation"
 ATTR_END_DATE = "end_date"

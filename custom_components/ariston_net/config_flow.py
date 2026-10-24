@@ -77,13 +77,13 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             self.cloud_api_user_agent = user_input[API_USER_AGENT]
             ariston = Ariston()
 
-            reponse = await ariston.async_connect(
+            response = await ariston.async_connect(
                 self.cloud_username,
                 self.cloud_password,
                 self.cloud_api_url,
                 self.cloud_api_user_agent,
             )
-            if not reponse:
+            if not response:
                 errors["base"] = "invalid_auth"
                 return self.async_show_form(
                     step_id="user", data_schema=STEP_USER_DATA_SCHEMA, errors=errors

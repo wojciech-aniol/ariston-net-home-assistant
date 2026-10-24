@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
-import logging
 
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.config_entries import ConfigEntry
@@ -17,8 +16,6 @@ from .const import (
 )
 from .coordinator import DeviceDataUpdateCoordinator
 from .entity import AristonEntity, is_entity_supported
-
-_LOGGER = logging.getLogger(__name__)
 
 # The library uses this reset time until the energy data changes once.
 UNKNOWN_RESET = datetime.fromtimestamp(0, UTC)
@@ -34,7 +31,7 @@ async def async_setup_entry(
 
     for description in ARISTON_SENSOR_TYPES:
         coordinator: DeviceDataUpdateCoordinator = coordinators[description.coordinator]
-        if _is_sensor_available(coordinator, description):
+        if is_entity_supported(coordinator, description):
             ariston_sensors.append(
                 AristonSensor(
                     coordinator,
@@ -62,21 +59,13 @@ async def async_setup_entry(
         async_add_entities(
             AristonSensor(energy_coordinator, description)
             for description in skipped_energy_descriptions
-            if _is_sensor_available(energy_coordinator, description)
+            if is_entity_supported(energy_coordinator, description)
         )
         skipped_energy_descriptions.clear()
 
     entry.async_on_unload(
         energy_coordinator.async_add_listener(async_add_energy_sensors)
     )
-
-
-def _is_sensor_available(
-    coordinator: DeviceDataUpdateCoordinator,
-    description: AristonSensorEntityDescription,
-) -> bool:
-    """Return True if the device supports the sensor."""
-    return is_entity_supported(coordinator, description)
 
 
 class AristonSensor(AristonEntity, SensorEntity):
@@ -103,7 +92,7 @@ class AristonSensor(AristonEntity, SensorEntity):
 
     @property
     def native_unit_of_measurement(self):
-        """Return the nateive unit of measurement."""
+        """Return the native unit of measurement."""
         if self.entity_description.get_native_unit_of_measurement is not None:
             return self.entity_description.get_native_unit_of_measurement(self)
 

@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import logging
-
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
@@ -11,8 +9,6 @@ from homeassistant.core import HomeAssistant
 from .const import ARISTON_SWITCH_TYPES, DOMAIN, AristonSwitchEntityDescription
 from .coordinator import DeviceDataUpdateCoordinator
 from .entity import AristonEntity, is_entity_supported
-
-_LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(
