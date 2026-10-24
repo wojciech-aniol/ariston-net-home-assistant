@@ -17,11 +17,11 @@ from homeassistant.components.binary_sensor import (
     BinarySensorEntity,
     BinarySensorEntityDescription,
 )
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .const import ATTR_HOLIDAY, EXTRA_STATE_ATTRIBUTE, EXTRA_STATE_DEVICE_METHOD, NAME
-from .coordinator import DeviceDataUpdateCoordinator
+from .coordinator import AristonConfigEntry, DeviceDataUpdateCoordinator
 from .entity import AristonBaseEntityDescription, AristonEntity, is_entity_supported
 
 
@@ -99,7 +99,9 @@ ARISTON_BINARY_SENSOR_TYPES: list[AristonBinarySensorEntityDescription] = [
 
 
 async def async_setup_entry(
-    hass: HomeAssistant, entry: ConfigEntry, async_add_entities
+    hass: HomeAssistant,
+    entry: AristonConfigEntry,
+    async_add_entities: AddConfigEntryEntitiesCallback,
 ) -> None:
     """Set up the Ariston binary sensors from config entry."""
     ariston_binary_sensors: list[AristonBinarySensor] = []
@@ -113,6 +115,8 @@ async def async_setup_entry(
 
 class AristonBinarySensor(AristonEntity, BinarySensorEntity):
     """Base class for specific ariston binary sensors."""
+
+    entity_description: AristonBinarySensorEntityDescription
 
     def __init__(
         self,

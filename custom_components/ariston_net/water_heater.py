@@ -11,16 +11,16 @@ from homeassistant.components.water_heater import (
     WaterHeaterEntityDescription,
     WaterHeaterEntityFeature,
 )
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_TEMPERATURE
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .const import (
     ATTR_TARGET_TEMP_STEP,
     EXTRA_STATE_ATTRIBUTE,
     EXTRA_STATE_DEVICE_METHOD,
 )
-from .coordinator import DeviceDataUpdateCoordinator
+from .coordinator import AristonConfigEntry, DeviceDataUpdateCoordinator
 from .entity import AristonBaseEntityDescription, AristonEntity, is_entity_supported
 
 _LOGGER = logging.getLogger(__name__)
@@ -73,8 +73,10 @@ ARISTON_WATER_HEATER_TYPES: list[AristonWaterHeaterEntityDescription] = [
 
 
 async def async_setup_entry(
-    hass: HomeAssistant, entry: ConfigEntry, async_add_entities
-):
+    hass: HomeAssistant,
+    entry: AristonConfigEntry,
+    async_add_entities: AddConfigEntryEntitiesCallback,
+) -> None:
     """Set up the Ariston water heater device from config entry."""
     ariston_water_heaters: list[AristonWaterHeater] = []
     for description in ARISTON_WATER_HEATER_TYPES:
@@ -89,6 +91,8 @@ async def async_setup_entry(
 class AristonWaterHeater(AristonEntity, WaterHeaterEntity):
     """Ariston Water Heater Device."""
 
+    entity_description: AristonWaterHeaterEntityDescription
+
     def __init__(
         self,
         coordinator: DeviceDataUpdateCoordinator,
@@ -96,16 +100,12 @@ class AristonWaterHeater(AristonEntity, WaterHeaterEntity):
     ) -> None:
         """Initialize the water heater."""
         super().__init__(coordinator, description)
+        self._attr_unique_id = f"{self.device.gateway}-water_heater"
 
     @property
     def name(self) -> str:
         """Return the name of the device."""
         return self.device.name or ""
-
-    @property
-    def unique_id(self) -> str:
-        """Return a unique id for the device."""
-        return f"{self.device.gateway}-water_heater"
 
     @property
     def icon(self):

@@ -48,8 +48,10 @@ def is_entity_supported(
     )
 
 
-class AristonEntity(CoordinatorEntity, ABC):
+class AristonEntity(CoordinatorEntity[DeviceDataUpdateCoordinator], ABC):
     """Generic Ariston entity (base class)."""
+
+    entity_description: AristonBaseEntityDescription
 
     def __init__(
         self,
@@ -61,13 +63,14 @@ class AristonEntity(CoordinatorEntity, ABC):
         super().__init__(coordinator)
 
         self.device = coordinator.device
-        self.entity_description: AristonBaseEntityDescription = description
+        self.entity_description = description
         self.zone = zone
-
-    @property
-    def device_info(self) -> DeviceInfo:
-        """Return device specific attributes."""
-        return DeviceInfo(
+        self._attr_unique_id = (
+            f"{self.device.gateway}-{self.name}-{zone}"
+            if zone
+            else f"{self.device.gateway}-{self.name}"
+        )
+        self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, self.device.serial_number or "")},
             manufacturer="Ariston",
             name=self.device.name,
@@ -106,12 +109,3 @@ class AristonEntity(CoordinatorEntity, ABC):
             state_attributes[extra_state.get(EXTRA_STATE_ATTRIBUTE)] = state_attribute
 
         return state_attributes
-
-    @property
-    def unique_id(self):
-        """Return the unique id."""
-        return (
-            f"{self.device.gateway}-{self.name}-{self.zone}"
-            if self.zone
-            else f"{self.device.gateway}-{self.name}"
-        )

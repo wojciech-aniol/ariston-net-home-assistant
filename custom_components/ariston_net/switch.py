@@ -19,12 +19,12 @@ from ariston.const import (
     WheType,
 )
 from homeassistant.components.switch import SwitchEntity, SwitchEntityDescription
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
+from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .const import NAME
-from .coordinator import DeviceDataUpdateCoordinator
+from .coordinator import AristonConfigEntry, DeviceDataUpdateCoordinator
 from .entity import AristonBaseEntityDescription, AristonEntity, is_entity_supported
 
 
@@ -173,7 +173,9 @@ ARISTON_SWITCH_TYPES: list[AristonSwitchEntityDescription] = [
 
 
 async def async_setup_entry(
-    hass: HomeAssistant, entry: ConfigEntry, async_add_entities
+    hass: HomeAssistant,
+    entry: AristonConfigEntry,
+    async_add_entities: AddConfigEntryEntitiesCallback,
 ) -> None:
     """Set up the Ariston switches from config entry."""
     ariston_switches: list[AristonSwitch] = []
@@ -192,6 +194,8 @@ async def async_setup_entry(
 
 class AristonSwitch(AristonEntity, SwitchEntity):
     """Base class for specific ariston switches."""
+
+    entity_description: AristonSwitchEntityDescription
 
     def __init__(
         self,

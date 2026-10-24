@@ -14,9 +14,9 @@ from homeassistant.components.climate import (
     HVACAction,
     HVACMode,
 )
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import ATTR_TEMPERATURE
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .const import (
     ATTR_ECONOMY_TEMP,
@@ -25,7 +25,7 @@ from .const import (
     EXTRA_STATE_ATTRIBUTE,
     EXTRA_STATE_DEVICE_METHOD,
 )
-from .coordinator import DeviceDataUpdateCoordinator
+from .coordinator import AristonConfigEntry, DeviceDataUpdateCoordinator
 from .entity import AristonBaseEntityDescription, AristonEntity, is_entity_supported
 
 _LOGGER = logging.getLogger(__name__)
@@ -69,8 +69,10 @@ ARISTON_CLIMATE_TYPES: list[AristonClimateEntityDescription] = [
 
 
 async def async_setup_entry(
-    hass: HomeAssistant, entry: ConfigEntry, async_add_entities
-):
+    hass: HomeAssistant,
+    entry: AristonConfigEntry,
+    async_add_entities: AddConfigEntryEntitiesCallback,
+) -> None:
     """Set up the Ariston device from config entry."""
     ariston_climates: list[AristonThermostat] = []
 
@@ -92,6 +94,8 @@ async def async_setup_entry(
 class AristonThermostat(AristonEntity, ClimateEntity):
     """Ariston Thermostat Device."""
 
+    entity_description: AristonClimateEntityDescription
+
     def __init__(
         self,
         zone: int,
@@ -100,16 +104,12 @@ class AristonThermostat(AristonEntity, ClimateEntity):
     ) -> None:
         """Initialize the thermostat."""
         super().__init__(coordinator, description, zone)
+        self._attr_unique_id = f"{self.device.gateway}_{zone}"
 
     @property
     def name(self) -> str:
         """Return the name of the device."""
         return f"{self.device.name}"
-
-    @property
-    def unique_id(self) -> str:
-        """Return a unique id for the device."""
-        return f"{self.device.gateway}_{self.zone}"
 
     @property
     def icon(self):

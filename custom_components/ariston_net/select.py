@@ -17,12 +17,12 @@ from ariston.const import (
 )
 from homeassistant.components.select import SelectEntity, SelectEntityDescription
 from homeassistant.components.sensor import SensorDeviceClass
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
+from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .const import ENERGY_COORDINATOR, NAME
-from .coordinator import DeviceDataUpdateCoordinator
+from .coordinator import AristonConfigEntry, DeviceDataUpdateCoordinator
 from .entity import AristonBaseEntityDescription, AristonEntity, is_entity_supported
 
 
@@ -137,7 +137,9 @@ ARISTON_SELECT_TYPES: list[AristonSelectEntityDescription] = [
 
 
 async def async_setup_entry(
-    hass: HomeAssistant, entry: ConfigEntry, async_add_entities
+    hass: HomeAssistant,
+    entry: AristonConfigEntry,
+    async_add_entities: AddConfigEntryEntitiesCallback,
 ) -> None:
     """Set up the Ariston selects from config entry."""
     ariston_select: list[AristonSelect] = []
@@ -157,6 +159,8 @@ async def async_setup_entry(
 
 class AristonSelect(AristonEntity, SelectEntity):
     """Base class for specific ariston selects."""
+
+    entity_description: AristonSelectEntityDescription
 
     def __init__(
         self,

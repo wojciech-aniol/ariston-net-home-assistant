@@ -30,10 +30,10 @@ from homeassistant.components.sensor import (
     SensorEntityDescription,
     SensorStateClass,
 )
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import UnitOfEnergy, UnitOfTemperature, UnitOfTime
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity import EntityCategory
+from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .const import (
     ATTR_ERRORS,
@@ -43,7 +43,7 @@ from .const import (
     EXTRA_STATE_DEVICE_METHOD,
     NAME,
 )
-from .coordinator import DeviceDataUpdateCoordinator
+from .coordinator import AristonConfigEntry, DeviceDataUpdateCoordinator
 from .entity import AristonBaseEntityDescription, AristonEntity, is_entity_supported
 from .menu_items import ExtraMenuItem, MenuNode, menu_item_value, menu_node_value
 
@@ -529,7 +529,9 @@ ARISTON_SENSOR_TYPES: list[AristonSensorEntityDescription] = [
 
 
 async def async_setup_entry(
-    hass: HomeAssistant, entry: ConfigEntry, async_add_entities
+    hass: HomeAssistant,
+    entry: AristonConfigEntry,
+    async_add_entities: AddConfigEntryEntitiesCallback,
 ) -> None:
     """Set up the Ariston sensors from config entry."""
     data = entry.runtime_data
@@ -577,6 +579,8 @@ async def async_setup_entry(
 
 class AristonSensor(AristonEntity, SensorEntity):
     """Base class for specific ariston sensors."""
+
+    entity_description: AristonSensorEntityDescription
 
     def __init__(
         self,

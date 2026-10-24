@@ -20,12 +20,12 @@ from ariston.const import (
     WheType,
 )
 from homeassistant.components.number import NumberEntity, NumberEntityDescription
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
+from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .const import ENERGY_COORDINATOR, NAME
-from .coordinator import DeviceDataUpdateCoordinator
+from .coordinator import AristonConfigEntry, DeviceDataUpdateCoordinator
 from .entity import AristonBaseEntityDescription, AristonEntity, is_entity_supported
 
 
@@ -223,7 +223,9 @@ ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
 
 
 async def async_setup_entry(
-    hass: HomeAssistant, entry: ConfigEntry, async_add_entities
+    hass: HomeAssistant,
+    entry: AristonConfigEntry,
+    async_add_entities: AddConfigEntryEntitiesCallback,
 ) -> None:
     """Set up the Ariston numbers from config entry."""
     ariston_numbers: list[AristonNumber] = []
@@ -248,6 +250,8 @@ async def async_setup_entry(
 
 class AristonNumber(AristonEntity, NumberEntity):
     """Base class for specific ariston numbers."""
+
+    entity_description: AristonNumberEntityDescription
 
     def __init__(
         self,
