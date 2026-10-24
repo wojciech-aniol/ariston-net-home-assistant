@@ -5,6 +5,9 @@ from __future__ import annotations
 from collections.abc import Generator
 import copy
 from datetime import timedelta
+import json
+from pathlib import Path
+import re
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
@@ -17,12 +20,16 @@ from homeassistant.const import (
     CONF_PASSWORD,
     CONF_SCAN_INTERVAL,
     CONF_USERNAME,
+    UnitOfTime,
 )
 from homeassistant.core import HomeAssistant
-from homeassistant.data_entry_flow import FlowResultType, InvalidData
+from homeassistant.data_entry_flow import FlowResultType
+from homeassistant.helpers import config_validation as cv
+import probatio
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
+from custom_components.ariston_net.config_flow import INTERVAL_LIMITS
 from custom_components.ariston_net.const import (
     API_URL_SETTING,
     API_USER_AGENT,
@@ -35,7 +42,18 @@ from custom_components.ariston_net.const import (
 
 from .conftest import CLOUD_DEVICE, GATEWAY, tracebacks
 
+INTEGRATION_DIR = Path(__file__).parents[1] / "custom_components" / DOMAIN
+
 USER_INPUT: dict[str, Any] = {
+    CONF_USERNAME: "new@example.com",
+    CONF_PASSWORD: "new-password",
+    "advanced": {
+        API_URL_SETTING: "https://cloud.example.com/api/v2/",
+        API_USER_AGENT: "TestAgent/1.0",
+    },
+}
+
+ENTRY_DATA: dict[str, Any] = {
     CONF_USERNAME: "new@example.com",
     CONF_PASSWORD: "new-password",
     API_URL_SETTING: "https://cloud.example.com/api/v2/",
@@ -79,19 +97,39 @@ def mock_setup_entry() -> Generator[AsyncMock]:
         yield setup_entry
 
 
-async def start_user_flow(hass: HomeAssistant) -> dict[str, Any]:
+async def start_user_flow(
+    hass: HomeAssistant, user_input: dict[str, Any] | None = None
+) -> dict[str, Any]:
     """Start the user flow and send the login form."""
     result = await hass.config_entries.flow.async_init(
         DOMAIN, context={"source": SOURCE_USER}
     )
     return await hass.config_entries.flow.async_configure(
-        result["flow_id"], user_input=USER_INPUT
+        result["flow_id"],
+        user_input=copy.deepcopy(USER_INPUT if user_input is None else user_input),
     )
 
 
 def schema_defaults(result: dict[str, Any]) -> dict[str, Any]:
     """Return the default value of each field in a form."""
     return {str(key): key.default() for key in result["data_schema"].schema}
+
+
+def form_fields(result: dict[str, Any]) -> list[dict[str, Any]]:
+    """Return the fields of a form as the frontend gets them."""
+    return probatio.to_field_list(
+        result["data_schema"], custom_serializer=cv.custom_serializer
+    )
+
+
+def suggested_values(fields: list[dict[str, Any]]) -> dict[str, Any]:
+    """Return the suggested value of each field, with sections nested."""
+    return {
+        field["name"]: suggested_values(field["schema"])
+        if field.get("type") == "expandable"
+        else field.get("description", {}).get("suggested_value")
+        for field in fields
+    }
 
 
 async def test_user_step_shows_form(hass: HomeAssistant) -> None:
@@ -103,6 +141,7 @@ async def test_user_step_shows_form(hass: HomeAssistant) -> None:
     assert result["type"] is FlowResultType.FORM
     assert result["step_id"] == "user"
     assert not result["errors"]
+    assert result["data_schema"].schema["advanced"].options["collapsed"]
 
 
 async def test_user_step_one_device_creates_entry(
@@ -114,7 +153,7 @@ async def test_user_step_one_device_creates_entry(
     assert result["type"] is FlowResultType.CREATE_ENTRY
     assert result["title"] == "Nimbus"
     assert result["result"].unique_id == GATEWAY
-    assert result["data"] == USER_INPUT | {CONF_DEVICE: CLOUD_DEVICE}
+    assert result["data"] == ENTRY_DATA | {CONF_DEVICE: CLOUD_DEVICE}
     flow_ariston.async_connect.assert_awaited_once_with(
         "new@example.com",
         "new-password",
@@ -122,6 +161,28 @@ async def test_user_step_one_device_creates_entry(
         "TestAgent/1.0",
     )
     mock_setup_entry.assert_awaited_once()
+
+
+@pytest.mark.parametrize(
+    "section",
+    [{"advanced": {}}, {}],
+    ids=["empty-section", "no-section"],
+)
+async def test_user_step_untouched_section_uses_defaults(
+    hass: HomeAssistant,
+    flow_ariston: MagicMock,
+    mock_setup_entry: AsyncMock,
+    section: dict[str, Any],
+) -> None:
+    """Test the default API settings apply when the section is left alone."""
+    login = {key: USER_INPUT[key] for key in (CONF_USERNAME, CONF_PASSWORD)}
+    result = await start_user_flow(hass, login | section)
+
+    assert result["data"][API_URL_SETTING] == ARISTON_API_URL
+    assert result["data"][API_USER_AGENT] == ARISTON_USER_AGENT
+    flow_ariston.async_connect.assert_awaited_once_with(
+        "new@example.com", "new-password", ARISTON_API_URL, ARISTON_USER_AGENT
+    )
 
 
 async def test_user_step_many_devices_creates_selected_entry(
@@ -164,6 +225,17 @@ async def test_user_step_refused_login_shows_invalid_auth(
     assert result["step_id"] == "user"
     assert result["errors"] == {"base": "invalid_auth"}
     flow_ariston.async_discover.assert_not_called()
+
+
+async def test_user_step_error_keeps_entered_values(
+    hass: HomeAssistant, flow_ariston: MagicMock
+) -> None:
+    """Test the form after a login error keeps the entered values, section too."""
+    flow_ariston.async_connect.return_value = False
+
+    result = await start_user_flow(hass)
+
+    assert suggested_values(form_fields(result)) == USER_INPUT
 
 
 def login_error(cause: Exception) -> ConnectionException:
@@ -256,9 +328,48 @@ async def test_user_step_existing_entry_updated_and_aborts(
 
     assert result["type"] is FlowResultType.ABORT
     assert result["reason"] == "already_configured"
-    assert dict(config_entry.data) == USER_INPUT | {CONF_DEVICE: CLOUD_DEVICE}
+    assert dict(config_entry.data) == ENTRY_DATA | {CONF_DEVICE: CLOUD_DEVICE}
     assert len(hass.config_entries.async_entries(DOMAIN)) == 1
     assert mock_setup_entry.await_count == 2
+
+
+SAVED_API_SETTINGS: dict[str, Any] = {
+    API_URL_SETTING: "https://saved.example.com/api/v2/",
+    API_USER_AGENT: "SavedAgent/1.0",
+}
+
+
+@pytest.mark.parametrize(
+    ("section", "expected"),
+    [
+        ({}, SAVED_API_SETTINGS),
+        (
+            {API_URL_SETTING: "https://cloud.example.com/api/v2/"},
+            SAVED_API_SETTINGS | {API_URL_SETTING: "https://cloud.example.com/api/v2/"},
+        ),
+    ],
+    ids=["both-default", "url-changed"],
+)
+async def test_user_step_existing_entry_keeps_saved_api_settings(
+    hass: HomeAssistant,
+    config_entry: MockConfigEntry,
+    flow_ariston: MagicMock,
+    mock_setup_entry: AsyncMock,
+    section: dict[str, Any],
+    expected: dict[str, Any],
+) -> None:
+    """Test adding a known device again keeps each saved API setting left default."""
+    hass.config_entries.async_update_entry(
+        config_entry, data=config_entry.data | SAVED_API_SETTINGS
+    )
+    await hass.config_entries.async_setup(config_entry.entry_id)
+
+    result = await start_user_flow(hass, USER_INPUT | {"advanced": section})
+
+    assert result["reason"] == "already_configured"
+    assert dict(config_entry.data) == ENTRY_DATA | expected | {
+        CONF_DEVICE: CLOUD_DEVICE
+    }
 
 
 async def start_reauth(
@@ -392,59 +503,113 @@ async def test_options_flow_saves_options(
 
 
 @pytest.mark.parametrize(
-    ("option", "minimum"),
+    ("option", "value"),
     [
         (CONF_SCAN_INTERVAL, 60),
+        (CONF_SCAN_INTERVAL, 86400),
         (ENERGY_SCAN_INTERVAL, 15),
+        (ENERGY_SCAN_INTERVAL, 1440),
         (BUS_ERRORS_SCAN_INTERVAL, 60),
+        (BUS_ERRORS_SCAN_INTERVAL, 86400),
     ],
 )
-async def test_options_flow_accepts_minimum(
+async def test_options_flow_accepts_limits(
     hass: HomeAssistant,
     config_entry: MockConfigEntry,
     mock_setup_entry: AsyncMock,
     option: str,
-    minimum: int,
+    value: int,
 ) -> None:
-    """Test each interval option takes its minimum."""
+    """Test each interval option takes its minimum and maximum, saved as int."""
     await hass.config_entries.async_setup(config_entry.entry_id)
     result = await hass.config_entries.options.async_init(config_entry.entry_id)
 
     result = await hass.config_entries.options.async_configure(
-        result["flow_id"], user_input=OPTIONS | {option: minimum}
+        result["flow_id"], user_input=OPTIONS | {option: value}
     )
 
     assert result["type"] is FlowResultType.CREATE_ENTRY
-    assert config_entry.options[option] == minimum
+    assert config_entry.options[option] == value
+    assert type(config_entry.options[option]) is int
 
 
 @pytest.mark.parametrize(
-    ("option", "minimum", "message"),
+    ("option", "minimum", "maximum", "unit"),
     [
-        (CONF_SCAN_INTERVAL, 60, "Use at least 60 seconds"),
-        (ENERGY_SCAN_INTERVAL, 15, "Use at least 15 minutes"),
-        (BUS_ERRORS_SCAN_INTERVAL, 60, "Use at least 60 seconds"),
+        (CONF_SCAN_INTERVAL, 60, 86400, UnitOfTime.SECONDS),
+        (ENERGY_SCAN_INTERVAL, 15, 1440, UnitOfTime.MINUTES),
+        (BUS_ERRORS_SCAN_INTERVAL, 60, 86400, UnitOfTime.SECONDS),
     ],
 )
-async def test_options_flow_refuses_below_minimum(
+async def test_options_flow_shows_limits_and_unit(
     hass: HomeAssistant,
     config_entry: MockConfigEntry,
     mock_setup_entry: AsyncMock,
     option: str,
     minimum: int,
-    message: str,
+    maximum: int,
+    unit: str,
 ) -> None:
-    """Test an interval below its minimum shows an error on that field only."""
+    """Test the form sends each interval field and its texts the limits and unit."""
     await hass.config_entries.async_setup(config_entry.entry_id)
     result = await hass.config_entries.options.async_init(config_entry.entry_id)
 
-    with pytest.raises(InvalidData) as exc_info:
-        await hass.config_entries.options.async_configure(
-            result["flow_id"], user_input=OPTIONS | {option: minimum - 1}
-        )
+    number = next(field for field in form_fields(result) if field["name"] == option)
+    assert number["selector"]["number"] == {
+        "min": minimum,
+        "max": maximum,
+        "step": 1,
+        "mode": "box",
+        "unit_of_measurement": unit,
+    }
+    placeholders = result["description_placeholders"]
+    assert placeholders[f"{option}_min"] == str(minimum)
+    assert placeholders[f"{option}_max"] == str(maximum)
 
-    assert list(exc_info.value.schema_errors) == [option]
-    assert exc_info.value.schema_errors[option].startswith(message)
+
+@pytest.mark.parametrize("path", ["strings.json", "translations/en.json"])
+def test_options_texts_use_sent_placeholders(path: str) -> None:
+    """Test the options texts use only placeholders the form sends."""
+    texts = json.loads((INTEGRATION_DIR / path).read_text())["options"]
+    used = set(re.findall(r"{(\w+)}", json.dumps(texts)))
+
+    assert used
+    assert used <= set(INTERVAL_LIMITS)
+
+
+@pytest.mark.parametrize(
+    ("option", "value"),
+    [
+        (CONF_SCAN_INTERVAL, 59),
+        (CONF_SCAN_INTERVAL, 86401),
+        (CONF_SCAN_INTERVAL, 1e15),
+        (CONF_SCAN_INTERVAL, 90.5),
+        (ENERGY_SCAN_INTERVAL, 14),
+        (ENERGY_SCAN_INTERVAL, 1441),
+        (ENERGY_SCAN_INTERVAL, 20.5),
+        (BUS_ERRORS_SCAN_INTERVAL, 59),
+        (BUS_ERRORS_SCAN_INTERVAL, 86401),
+        (BUS_ERRORS_SCAN_INTERVAL, 90.5),
+    ],
+)
+async def test_options_flow_refuses_invalid_interval(
+    hass: HomeAssistant,
+    config_entry: MockConfigEntry,
+    mock_setup_entry: AsyncMock,
+    option: str,
+    value: float,
+) -> None:
+    """Test a bad interval shows a translated error on that field and keeps it."""
+    await hass.config_entries.async_setup(config_entry.entry_id)
+    result = await hass.config_entries.options.async_init(config_entry.entry_id)
+
+    result = await hass.config_entries.options.async_configure(
+        result["flow_id"], user_input=OPTIONS | {option: value}
+    )
+
+    assert result["type"] is FlowResultType.FORM
+    assert result["errors"] == {option: f"invalid_{option}"}
+    assert suggested_values(form_fields(result))[option] == value
     assert config_entry.options == {}
 
 
@@ -486,15 +651,20 @@ async def test_reauth_of_loaded_entry_reloads_once(
     assert "update listener" not in caplog.text
 
 
-async def test_options_flow_raises_old_interval_to_minimum(
-    hass: HomeAssistant, config_entry: MockConfigEntry, mock_setup_entry: AsyncMock
+@pytest.mark.parametrize(("saved", "offered"), [(30, 60), (10**15, 86400)])
+async def test_options_flow_moves_old_interval_into_limits(
+    hass: HomeAssistant,
+    config_entry: MockConfigEntry,
+    mock_setup_entry: AsyncMock,
+    saved: int,
+    offered: int,
 ) -> None:
-    """Test the form offers the minimum when a saved interval is below it."""
+    """Test the form offers the nearest limit when a saved interval is out of them."""
     hass.config_entries.async_update_entry(
-        config_entry, options=OPTIONS | {CONF_SCAN_INTERVAL: 30}
+        config_entry, options=OPTIONS | {CONF_SCAN_INTERVAL: saved}
     )
     await hass.config_entries.async_setup(config_entry.entry_id)
 
     result = await hass.config_entries.options.async_init(config_entry.entry_id)
 
-    assert schema_defaults(result)[CONF_SCAN_INTERVAL] == 60
+    assert schema_defaults(result)[CONF_SCAN_INTERVAL] == offered

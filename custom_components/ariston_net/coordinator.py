@@ -26,6 +26,9 @@ from .const import (
     DOMAIN,
     ENERGY_COORDINATOR,
     ENERGY_SCAN_INTERVAL,
+    MAX_BUS_ERRORS_SCAN_INTERVAL_SECONDS,
+    MAX_ENERGY_SCAN_INTERVAL_MINUTES,
+    MAX_SCAN_INTERVAL_SECONDS,
     MIN_BUS_ERRORS_SCAN_INTERVAL_SECONDS,
     MIN_ENERGY_SCAN_INTERVAL_MINUTES,
     MIN_SCAN_INTERVAL_SECONDS,
@@ -36,27 +39,33 @@ _LOGGER = logging.getLogger(__name__)
 
 MAX_BACKOFF_FACTOR = 8
 
-# Default and minimum of each interval option.
-INTERVAL_OPTIONS: dict[str, tuple[int, int]] = {
-    CONF_SCAN_INTERVAL: (DEFAULT_SCAN_INTERVAL_SECONDS, MIN_SCAN_INTERVAL_SECONDS),
+# Default, minimum and maximum of each interval option.
+INTERVAL_OPTIONS: dict[str, tuple[int, int, int]] = {
+    CONF_SCAN_INTERVAL: (
+        DEFAULT_SCAN_INTERVAL_SECONDS,
+        MIN_SCAN_INTERVAL_SECONDS,
+        MAX_SCAN_INTERVAL_SECONDS,
+    ),
     ENERGY_SCAN_INTERVAL: (
         DEFAULT_ENERGY_SCAN_INTERVAL_MINUTES,
         MIN_ENERGY_SCAN_INTERVAL_MINUTES,
+        MAX_ENERGY_SCAN_INTERVAL_MINUTES,
     ),
     BUS_ERRORS_SCAN_INTERVAL: (
         DEFAULT_BUS_ERRORS_SCAN_INTERVAL_SECONDS,
         MIN_BUS_ERRORS_SCAN_INTERVAL_SECONDS,
+        MAX_BUS_ERRORS_SCAN_INTERVAL_SECONDS,
     ),
 }
 
 
 def interval_option(options: Mapping[str, Any], key: str) -> int:
-    """Return an interval option, at least its minimum.
+    """Return an interval option, within its limits.
 
-    Entries saved before the minimums may hold a lower value.
+    Entries saved before the limits may hold a value out of them.
     """
-    default, minimum = INTERVAL_OPTIONS[key]
-    return max(options.get(key, default), minimum)
+    default, minimum, maximum = INTERVAL_OPTIONS[key]
+    return min(max(options.get(key, default), minimum), maximum)
 
 
 class DeviceDataUpdateCoordinator(DataUpdateCoordinator[None]):

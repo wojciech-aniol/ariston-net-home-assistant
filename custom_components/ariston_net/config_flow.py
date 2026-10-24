@@ -15,8 +15,15 @@ from homeassistant.const import (
     CONF_PASSWORD,
     CONF_SCAN_INTERVAL,
     CONF_USERNAME,
+    UnitOfTime,
 )
 from homeassistant.core import callback
+from homeassistant.data_entry_flow import section
+from homeassistant.helpers.selector import (
+    NumberSelector,
+    NumberSelectorConfig,
+    NumberSelectorMode,
+)
 import voluptuous as vol
 
 from .const import (
@@ -27,34 +34,76 @@ from .const import (
     ENABLE_BUS_ERRORS,
     ENABLE_ENERGY,
     ENERGY_SCAN_INTERVAL,
-    MIN_BUS_ERRORS_SCAN_INTERVAL_SECONDS,
-    MIN_ENERGY_SCAN_INTERVAL_MINUTES,
-    MIN_SCAN_INTERVAL_SECONDS,
 )
-from .coordinator import interval_option
+from .coordinator import INTERVAL_OPTIONS, interval_option
 from .errors import CLOUD_ERRORS, CloudErrorKind, classify_error, describe_error
 
 _LOGGER = logging.getLogger(__name__)
+
+API_DEFAULTS: dict[str, str] = {
+    API_URL_SETTING: ARISTON_API_URL,
+    API_USER_AGENT: ARISTON_USER_AGENT,
+}
 
 STEP_USER_DATA_SCHEMA = vol.Schema(
     {
         vol.Required(CONF_USERNAME): str,
         vol.Required(CONF_PASSWORD): str,
-        vol.Optional(API_URL_SETTING, default=ARISTON_API_URL): str,
-        vol.Optional(API_USER_AGENT, default=ARISTON_USER_AGENT): str,
+        # Optional, so a login alone is enough. No default here: the form
+        # would then show it instead of the field defaults.
+        vol.Optional("advanced"): section(
+            vol.Schema(
+                {
+                    vol.Optional(key, default=default): str
+                    for key, default in API_DEFAULTS.items()
+                }
+            ),
+            {"collapsed": True},
+        ),
     }
 )
 
 
-def _interval(minimum: int, unit: str) -> vol.All:
-    """Return the check of an interval option, a whole number from a minimum."""
-    return vol.All(
-        int,
-        vol.Range(
+# Limits of each interval, like {"scan_interval_min": "60"}, for the texts.
+INTERVAL_LIMITS: dict[str, str] = {
+    f"{key}_{name}": str(limit)
+    for key, (_, minimum, maximum) in INTERVAL_OPTIONS.items()
+    for name, limit in (("min", minimum), ("max", maximum))
+}
+
+
+class _IntervalSelector(NumberSelector):
+    """Number box that sends its limits to the form but does not check them.
+
+    The options step checks them, so the error can be translated.
+    """
+
+    def __call__(self, data: Any) -> float:
+        """Accept any number."""
+        return vol.Coerce(float)(data)
+
+
+def _interval(key: str, unit: UnitOfTime) -> _IntervalSelector:
+    """Return the field of an interval option."""
+    _, minimum, maximum = INTERVAL_OPTIONS[key]
+    return _IntervalSelector(
+        NumberSelectorConfig(
             min=minimum,
-            msg=f"Use at least {minimum} {unit}, or the cloud may block the account",
-        ),
+            max=maximum,
+            step=1,
+            mode=NumberSelectorMode.BOX,
+            unit_of_measurement=unit,
+        )
     )
+
+
+def _interval_errors(user_input: Mapping[str, Any]) -> dict[str, str]:
+    """Return an error for each interval that is not a whole number within limits."""
+    return {
+        key: f"invalid_{key}"
+        for key, (_, minimum, maximum) in INTERVAL_OPTIONS.items()
+        if not (user_input[key].is_integer() and minimum <= user_input[key] <= maximum)
+    }
 
 
 class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -68,7 +117,7 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         self.cloud_password: str = ""
         self.cloud_api_url: str = ARISTON_API_URL
         self.cloud_api_user_agent: str = ARISTON_USER_AGENT
-        self.cloud_devices = {}
+        self.cloud_devices: dict[str, dict[str, Any]] = {}
 
     async def _async_get_devices(
         self, username: str, password: str, api_url: str, user_agent: str
@@ -99,8 +148,9 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             self.cloud_username = user_input[CONF_USERNAME]
             self.cloud_password = user_input[CONF_PASSWORD]
-            self.cloud_api_url = user_input[API_URL_SETTING]
-            self.cloud_api_user_agent = user_input[API_USER_AGENT]
+            api_settings = API_DEFAULTS | user_input.get("advanced", {})
+            self.cloud_api_url = api_settings[API_URL_SETTING]
+            self.cloud_api_user_agent = api_settings[API_USER_AGENT]
             cloud_devices, error = await self._async_get_devices(
                 self.cloud_username,
                 self.cloud_password,
@@ -123,10 +173,16 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                 return await self.async_step_select()
 
         return self.async_show_form(
-            step_id="user", data_schema=STEP_USER_DATA_SCHEMA, errors=errors
+            step_id="user",
+            data_schema=self.add_suggested_values_to_schema(
+                STEP_USER_DATA_SCHEMA, user_input
+            ),
+            errors=errors,
         )
 
-    async def async_create_or_update_entry(self, cloud_device):
+    async def async_create_or_update_entry(
+        self, cloud_device: dict[str, Any]
+    ) -> config_entries.ConfigFlowResult:
         """Create the entry, or save the new login in the entry of the device."""
         data = {
             CONF_USERNAME: self.cloud_username,
@@ -138,6 +194,10 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if entry := await self.async_set_unique_id(
             cloud_device[DeviceAttribute.GW], raise_on_progress=False
         ):
+            # The API settings are folded away, so a default keeps the saved value.
+            for key, default in API_DEFAULTS.items():
+                if data[key] == default:
+                    data[key] = entry.data.get(key, default)
             # Also reloads an entry whose setup failed on the old login.
             return self.async_update_reload_and_abort(
                 entry, data=data, reason="already_configured"
@@ -147,9 +207,10 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             title=cloud_device[DeviceAttribute.NAME], data=data
         )
 
-    async def async_step_select(self, user_input=None):
+    async def async_step_select(
+        self, user_input: dict[str, Any] | None = None
+    ) -> config_entries.ConfigFlowResult:
         """Multiple device found, select one of them."""
-        errors = {}
         if user_input is not None:
             return await self.async_create_or_update_entry(
                 self.cloud_devices[user_input["select_device"]]
@@ -159,9 +220,7 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             {vol.Required("select_device"): vol.In(list(self.cloud_devices))}
         )
 
-        return self.async_show_form(
-            step_id="select", data_schema=select_schema, errors=errors
-        )
+        return self.async_show_form(step_id="select", data_schema=select_schema)
 
     async def async_step_reauth(
         self, entry_data: Mapping[str, Any]
@@ -203,7 +262,9 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
     @staticmethod
     @callback
-    def async_get_options_flow(config_entry):
+    def async_get_options_flow(
+        config_entry: config_entries.ConfigEntry,
+    ) -> AristonOptionsFlow:
         """Get the options flow for this handler."""
         return AristonOptionsFlow()
 
@@ -211,41 +272,51 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 class AristonOptionsFlow(config_entries.OptionsFlowWithReload):
     """Handle Ariston options."""
 
-    async def async_step_init(self, user_input=None):
+    async def async_step_init(
+        self, user_input: dict[str, Any] | None = None
+    ) -> config_entries.ConfigFlowResult:
         """Manage the options."""
-        if user_input is not None:
-            return self.async_create_entry(title="", data=user_input)
+        errors: dict[str, str] = {}
+        if user_input is not None and not (errors := _interval_errors(user_input)):
+            return self.async_create_entry(
+                title="",
+                data=user_input
+                | {key: int(user_input[key]) for key in INTERVAL_OPTIONS},
+            )
 
         options = self.config_entry.options
         scan_interval = interval_option(options, CONF_SCAN_INTERVAL)
         energy_scan_interval = interval_option(options, ENERGY_SCAN_INTERVAL)
         bus_errors_scan_interval = interval_option(options, BUS_ERRORS_SCAN_INTERVAL)
 
+        data_schema = vol.Schema(
+            {
+                vol.Optional(
+                    CONF_SCAN_INTERVAL,
+                    default=scan_interval,
+                ): _interval(CONF_SCAN_INTERVAL, UnitOfTime.SECONDS),
+                vol.Optional(
+                    ENABLE_ENERGY,
+                    default=options.get(ENABLE_ENERGY, True),
+                ): bool,
+                vol.Optional(
+                    ENERGY_SCAN_INTERVAL,
+                    default=energy_scan_interval,
+                ): _interval(ENERGY_SCAN_INTERVAL, UnitOfTime.MINUTES),
+                vol.Optional(
+                    ENABLE_BUS_ERRORS,
+                    default=options.get(ENABLE_BUS_ERRORS, True),
+                ): bool,
+                vol.Optional(
+                    BUS_ERRORS_SCAN_INTERVAL,
+                    default=bus_errors_scan_interval,
+                ): _interval(BUS_ERRORS_SCAN_INTERVAL, UnitOfTime.SECONDS),
+            }
+        )
         return self.async_show_form(
             step_id="init",
-            data_schema=vol.Schema(
-                {
-                    vol.Optional(
-                        CONF_SCAN_INTERVAL,
-                        default=scan_interval,
-                    ): _interval(MIN_SCAN_INTERVAL_SECONDS, "seconds"),
-                    vol.Optional(
-                        ENABLE_ENERGY,
-                        default=options.get(ENABLE_ENERGY, True),
-                    ): bool,
-                    vol.Optional(
-                        ENERGY_SCAN_INTERVAL,
-                        default=energy_scan_interval,
-                    ): _interval(MIN_ENERGY_SCAN_INTERVAL_MINUTES, "minutes"),
-                    vol.Optional(
-                        ENABLE_BUS_ERRORS,
-                        default=options.get(ENABLE_BUS_ERRORS, True),
-                    ): bool,
-                    vol.Optional(
-                        BUS_ERRORS_SCAN_INTERVAL,
-                        default=bus_errors_scan_interval,
-                    ): _interval(MIN_BUS_ERRORS_SCAN_INTERVAL_SECONDS, "seconds"),
-                }
-            ),
+            data_schema=self.add_suggested_values_to_schema(data_schema, user_input),
+            errors=errors,
+            description_placeholders=INTERVAL_LIMITS,
             last_step=True,
         )

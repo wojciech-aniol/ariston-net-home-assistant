@@ -13,8 +13,15 @@
       "user": {
         "data": {
           "password": "Contrasenya",
-          "username": "Nom d'usuari",
-          "api_url_setting": "URL de l'API d'Ariston"
+          "username": "Nom d'usuari"
+        },
+        "sections": {
+          "advanced": {
+            "name": "Configuració de l'API",
+            "data": {
+              "api_url_setting": "URL de l'API d'Ariston"
+            }
+          }
         }
       }
     }
@@ -23,9 +30,9 @@
     "step": {
       "init": {
         "data": {
-          "scan_interval": "Interval d'exploració de zones (segons)",
-          "energy_scan_interval": "Interval d'exploració d'energia (minuts)",
-          "bus_errors_scan_interval": "Interval d'exploració d'errors de bus (segons)"
+          "scan_interval": "Interval d'exploració de zones",
+          "energy_scan_interval": "Interval d'exploració d'energia",
+          "bus_errors_scan_interval": "Interval d'exploració d'errors de bus"
         },
         "title": "Configura l'Ariston NET"
       }
