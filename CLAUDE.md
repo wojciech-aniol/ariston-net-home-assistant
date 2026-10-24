@@ -4,6 +4,8 @@ Home Assistant custom integration, domain `ariston_net`. Fork of
 fustom/ariston-remotethermo-home-assistant-v3. Code in `custom_components/ariston_net/`, tests in
 `tests/`. It reaches the Ariston cloud only through the `ariston` library (PyPI, version pinned in
 `manifest.json` and `requirements_test.txt`). Never patch, fork or vendor the library.
+One approved exception: `menu_items.py` replaces `async_get_menu_items` on the API object, to
+add menu item IDs to the library's own request (see its docstring).
 
 ## Commands
 

@@ -351,6 +351,16 @@
           'unit': '°C',
           'value': 30.5,
         }),
+        dict({
+          'id': 348,
+          'unit': '°C',
+          'value': 27.0,
+        }),
+        dict({
+          'id': 349,
+          'unit': '°C',
+          'value': 25.0,
+        }),
       ]),
       'system_type': 'GALEVO',
       'whe_model_type': 0,

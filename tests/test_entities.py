@@ -52,7 +52,7 @@ async def test_ch_return_temp_needs_menu_value(
     expected: bool,
 ) -> None:
     """Test the CH return temperature is skipped without a menu value."""
-    api.async_get_menu_items.return_value = menu_items
+    api._async_get.return_value = menu_items
 
     await setup_integration(hass, config_entry)
 

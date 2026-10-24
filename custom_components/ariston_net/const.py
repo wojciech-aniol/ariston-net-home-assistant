@@ -20,6 +20,7 @@ from ariston.const import (
     MenuItemNames,
     NuosSplitProperties,
     PlantMode,
+    PropertyType,
     SeDeviceSettings,
     SlpDeviceSettings,
     SystemType,
@@ -49,6 +50,8 @@ except ImportError:
     WaterHeaterEntityDescription = WaterHeaterEntityEntityDescription
 
 import datetime as dt
+
+from .menu_items import ExtraMenuItem, menu_item_value
 
 DOMAIN: Final[str] = "ariston_net"
 NAME: Final[str] = "Ariston NET"
@@ -279,6 +282,38 @@ ARISTON_SENSOR_TYPES: list[AristonSensorEntityDescription] = [
         get_native_value=lambda entity: entity.device.ch_return_temp_value,
         get_native_unit_of_measurement=lambda entity: entity.device.ch_return_temp_unit,
         get_is_supported=lambda device: device.ch_return_temp_value is not None,
+        system_types=[SystemType.GALEVO],
+    ),
+    AristonSensorEntityDescription(
+        key=str(ExtraMenuItem.HP_WATER_FLOW_TEMP),
+        name=f"{NAME} HP water flow temp",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        get_native_value=lambda entity: menu_item_value(
+            entity.device, ExtraMenuItem.HP_WATER_FLOW_TEMP
+        ),
+        get_native_unit_of_measurement=lambda entity: menu_item_value(
+            entity.device, ExtraMenuItem.HP_WATER_FLOW_TEMP, PropertyType.UNIT
+        ),
+        get_is_supported=lambda device: (
+            menu_item_value(device, ExtraMenuItem.HP_WATER_FLOW_TEMP) is not None
+        ),
+        system_types=[SystemType.GALEVO],
+    ),
+    AristonSensorEntityDescription(
+        key=str(ExtraMenuItem.CH_FLOW_TEMP),
+        name=f"{NAME} CH flow temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        get_native_value=lambda entity: menu_item_value(
+            entity.device, ExtraMenuItem.CH_FLOW_TEMP
+        ),
+        get_native_unit_of_measurement=lambda entity: menu_item_value(
+            entity.device, ExtraMenuItem.CH_FLOW_TEMP, PropertyType.UNIT
+        ),
+        get_is_supported=lambda device: (
+            menu_item_value(device, ExtraMenuItem.CH_FLOW_TEMP) is not None
+        ),
         system_types=[SystemType.GALEVO],
     ),
     AristonSensorEntityDescription(
