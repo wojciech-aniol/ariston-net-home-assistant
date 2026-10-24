@@ -65,10 +65,12 @@ class AristonEntity(CoordinatorEntity[DeviceDataUpdateCoordinator], ABC):
         self.device = coordinator.device
         self.entity_description = description
         self.zone = zone
+        # Not self.name: it needs the platform, which is set only later.
+        name = getattr(self, "_attr_name", description.name)
         self._attr_unique_id = (
-            f"{self.device.gateway}-{self.name}-{zone}"
+            f"{self.device.gateway}-{name}-{zone}"
             if zone
-            else f"{self.device.gateway}-{self.name}"
+            else f"{self.device.gateway}-{name}"
         )
         self._attr_device_info = DeviceInfo(
             identifiers={(DOMAIN, self.device.serial_number or "")},

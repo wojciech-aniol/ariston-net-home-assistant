@@ -260,14 +260,9 @@ class AristonNumber(AristonEntity, NumberEntity):
         zone: int = 0,
     ) -> None:
         """Initialize the entity."""
+        # Set before the base class, which builds the unique ID from it.
+        self._attr_name = f"{description.name} {zone}" if zone else description.name
         super().__init__(coordinator, description, zone)
-
-    @property
-    def name(self):
-        """Return the name of the entity."""
-        if self.zone:
-            return f"{self.entity_description.name} {self.zone}"
-        return self.entity_description.name
 
     @property
     def native_value(self):
