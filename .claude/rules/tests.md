@@ -9,7 +9,9 @@ paths:
   `hass.states`, call services with `hass.services.async_call(..., blocking=True)`. Build entities by
   hand only when no service or state can reach the code.
 - Fake only the cloud API (`api` fixture). Keep the real library device, so library logic runs too.
-  Change what the cloud sends with the `features` and `properties` fixtures before setup.
+  Change what the cloud sends with the `features` and `properties` fixtures before setup. For
+  another device type, parametrize `device_type` and change `device_data` in place before setup:
+  the `api` fixture holds its dicts, so a dict put in their place does not reach it.
 - Check what goes to the cloud on `api` (for example `api.async_set_property`). To check only the
   mapping from a service to a library call, replace that device method with `AsyncMock` (see
   `tests/test_select.py`).

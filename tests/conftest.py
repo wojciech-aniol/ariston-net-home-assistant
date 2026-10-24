@@ -38,9 +38,11 @@ CLOUD_DEVICE: dict[str, Any] = {
 
 GALEVO = "galevo"
 
-# Other device types: the cloud device and the file in tests/fixtures/ with what
-# the cloud sends for it. All VELIS types share one name, so entity IDs match.
-DEVICE_TYPES: dict[str, tuple[dict[str, Any], str]] = {
+# Each device type: what it adds to the cloud device, and the file in
+# tests/fixtures/ with what the cloud sends for it. GALEVO data is FEATURES and
+# PROPERTIES below. All VELIS types share one name, so entity IDs match.
+DEVICE_TYPES: dict[str, tuple[dict[str, Any], str | None]] = {
+    GALEVO: ({}, None),
     "bsb": ({"sys": 5, "name": "Boiler"}, "bsb"),
     "evo": ({"sys": 4, "wheType": 1, "name": "Velis"}, "velis_evo"),
     "evo2": ({"sys": 4, "wheType": 6, "name": "Velis"}, "velis_med"),
@@ -227,24 +229,6 @@ def set_item(properties: dict[str, Any], item_id: str, **values: Any) -> None:
     item.update(values)
 
 
-def make_device(
-    api: MagicMock, cloud_device: dict[str, Any], data: dict[str, Any]
-) -> AristonBaseDevice | None:
-    """Return the device the library builds for a cloud device, on the fake cloud.
-
-    data holds what the cloud sends: features, plant_data, plant_settings and
-    consumptions_sequences. Each one is optional.
-    """
-    api.async_get_features_for_device.return_value = data.get("features", {})
-    api.async_get_bsb_plant_data.return_value = data.get("plant_data", {})
-    api.async_get_velis_plant_data.return_value = data.get("plant_data", {})
-    api.async_get_velis_plant_settings.return_value = data.get("plant_settings", {})
-    api.async_get_consumptions_sequences.return_value = data.get(
-        "consumptions_sequences", []
-    )
-    return _get_device([cloud_device], api, cloud_device["gw"])
-
-
 def runtime_data(hass: HomeAssistant) -> AristonData:
     """Return the runtime data of the fake device's entry."""
     entry = hass.config_entries.async_entry_for_domain_unique_id(DOMAIN, GATEWAY)
@@ -298,9 +282,28 @@ def no_usage_warnings(caplog: pytest.LogCaptureFixture) -> Generator[None]:
 
 
 @pytest.fixture
-def features() -> dict[str, Any]:
+def device_type() -> str:
+    """Return the type of the fake device. Parametrize it to test another type."""
+    return GALEVO
+
+
+@pytest.fixture
+def device_data(device_type: str) -> dict[str, Any]:
+    """Return what the fake cloud sends for the device type.
+
+    Keys: features, plant_data, plant_settings and consumptions_sequences. Only
+    features is always there.
+    """
+    file = DEVICE_TYPES[device_type][1]
+    if file is None:
+        return {"features": copy.deepcopy(FEATURES)}
+    return load_json_object_fixture(f"{file}.json")
+
+
+@pytest.fixture
+def features(device_data: dict[str, Any]) -> dict[str, Any]:
     """Return the device features the fake cloud sends."""
-    return copy.deepcopy(FEATURES)
+    return device_data["features"]
 
 
 @pytest.fixture
@@ -310,8 +313,13 @@ def properties() -> dict[str, Any]:
 
 
 @pytest.fixture
-def api(features: dict[str, Any], properties: dict[str, Any]) -> MagicMock:
+def api(
+    device_data: dict[str, Any],
+    features: dict[str, Any],
+    properties: dict[str, Any],
+) -> MagicMock:
     """Return a fake Ariston cloud API."""
+    plant_data = device_data.get("plant_data", {})
     api = MagicMock()
     api.async_get_features_for_device = AsyncMock(return_value=features)
     api.async_get_properties = AsyncMock(return_value=properties)
@@ -328,15 +336,19 @@ def api(features: dict[str, Any], properties: dict[str, Any]) -> MagicMock:
 
     api._async_get = AsyncMock(side_effect=async_get)
     api.async_get_bus_errors = AsyncMock(return_value=[])
-    api.async_get_consumptions_sequences = AsyncMock(return_value=[])
+    api.async_get_consumptions_sequences = AsyncMock(
+        return_value=device_data.get("consumptions_sequences", [])
+    )
     api.async_get_consumptions_settings = AsyncMock(return_value={})
     api.async_get_energy_account = AsyncMock(return_value={})
     api.async_set_consumptions_settings = AsyncMock()
     api.async_set_property = AsyncMock()
     api.async_set_holiday = AsyncMock()
-    api.async_get_bsb_plant_data = AsyncMock(return_value={})
-    api.async_get_velis_plant_data = AsyncMock(return_value={})
-    api.async_get_velis_plant_settings = AsyncMock(return_value={})
+    api.async_get_bsb_plant_data = AsyncMock(return_value=plant_data)
+    api.async_get_velis_plant_data = AsyncMock(return_value=plant_data)
+    api.async_get_velis_plant_settings = AsyncMock(
+        return_value=device_data.get("plant_settings", {})
+    )
     api.async_set_bsb_mode = AsyncMock()
     api.async_set_bsb_temperature = AsyncMock()
     api.async_set_bsb_zone_mode = AsyncMock()
@@ -391,40 +403,22 @@ def second_zone(features: dict[str, Any], properties: dict[str, Any]) -> int:
 
 
 @pytest.fixture
-def device_type() -> str:
-    """Return the type of the fake device. Parametrize it to test another type."""
-    return GALEVO
-
-
-@pytest.fixture
 def cloud_device(device_type: str) -> dict[str, Any]:
     """Return the device the fake cloud lists in the account."""
-    if device_type == GALEVO:
-        return copy.deepcopy(CLOUD_DEVICE)
     return CLOUD_DEVICE | DEVICE_TYPES[device_type][0]
 
 
 @pytest.fixture
-def device_data(device_type: str) -> dict[str, Any]:
-    """Return the data the fake cloud sends for a device type other than GALEVO."""
-    return load_json_object_fixture(f"{DEVICE_TYPES[device_type][1]}.json")
+def device(api: MagicMock, cloud_device: dict[str, Any]) -> AristonBaseDevice:
+    """Return the device the library builds for the cloud device, on the fake cloud."""
+    # A copy, so changes to the device do not reach the config entry data.
+    device = _get_device([copy.deepcopy(cloud_device)], api, GATEWAY)
+    assert device is not None, f"The library has no device for {cloud_device}"
+    return device
 
 
 @pytest.fixture
-def device(
-    request: pytest.FixtureRequest,
-    api: MagicMock,
-    device_type: str,
-    cloud_device: dict[str, Any],
-) -> AristonBaseDevice | None:
-    """Return the fake device, which talks to the fake cloud."""
-    if device_type == GALEVO:
-        return AristonGalevoDevice(api, cloud_device)
-    return make_device(api, cloud_device, request.getfixturevalue("device_data"))
-
-
-@pytest.fixture
-def mock_ariston(device: AristonBaseDevice | None) -> Generator[MagicMock]:
+def mock_ariston(device: AristonBaseDevice) -> Generator[MagicMock]:
     """Patch the Ariston client used by the integration."""
     with patch("custom_components.ariston_net.Ariston", autospec=True) as ariston:
         client = ariston.return_value

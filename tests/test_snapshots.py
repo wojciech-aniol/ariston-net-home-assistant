@@ -20,7 +20,7 @@ from syrupy.assertion import SnapshotAssertion
 
 from custom_components.ariston_net import PLATFORMS
 
-from .conftest import refresh_energy
+from .conftest import DEVICE_TYPES, GALEVO, refresh_energy, runtime_data
 
 DATA_SETS = ["default", "full"]
 
@@ -52,21 +52,25 @@ DEVICE_TYPE_PLATFORMS: dict[str, tuple[Platform, ...]] = {
 }
 
 
-async def setup_data_set(
+async def setup_platforms(
     hass: HomeAssistant,
     request: pytest.FixtureRequest,
     entry: MockConfigEntry,
-    data_set: str,
     platforms: list[Platform],
+    data_set: str = "default",
 ) -> None:
-    """Set up the entry with one data set and only the given platforms."""
+    """Set up the entry with only the given platforms, and energy values if any."""
     if data_set == "full":
         request.getfixturevalue("full_galevo")
     with patch("custom_components.ariston_net.PLATFORMS", platforms):
         await hass.config_entries.async_setup(entry.entry_id)
         await hass.async_block_till_done()
-    if data_set == "full":
-        await refresh_energy(hass, request.getfixturevalue("api"))
+    api: MagicMock = request.getfixturevalue("api")
+    if (
+        runtime_data(hass).energy_coordinator is not None
+        and api.async_get_consumptions_sequences.return_value
+    ):
+        await refresh_energy(hass, api)
 
 
 @pytest.mark.parametrize("platform", PLATFORMS)
@@ -84,7 +88,7 @@ async def test_entities_match_snapshot(
 ) -> None:
     """Test the entities of each data set stay the same."""
     freezer.move_to("2026-10-18 12:00:00+00:00")
-    await setup_data_set(hass, request, config_entry, data_set, [platform])
+    await setup_platforms(hass, request, config_entry, [platform], data_set)
 
     await snapshot_platform(hass, entity_registry, snapshot, config_entry.entry_id)
 
@@ -100,39 +104,28 @@ async def test_device_matches_snapshot(
     data_set: str,
 ) -> None:
     """Test the device, with its identifiers, stays the same."""
-    await setup_data_set(hass, request, config_entry, data_set, [Platform.SENSOR])
+    await setup_platforms(hass, request, config_entry, [Platform.SENSOR], data_set)
 
     devices = dr.async_entries_for_config_entry(device_registry, config_entry.entry_id)
     assert devices == snapshot
 
 
-async def setup_device_type(
-    hass: HomeAssistant,
-    api: MagicMock,
-    entry: MockConfigEntry,
-    platforms: list[Platform],
-) -> None:
-    """Set up the entry with only the given platforms, with energy values."""
-    with patch("custom_components.ariston_net.PLATFORMS", platforms):
-        await hass.config_entries.async_setup(entry.entry_id)
-        await hass.async_block_till_done()
-    await refresh_energy(hass, api)
+def test_device_type_platforms_list_every_device_type() -> None:
+    """Test each device type other than GALEVO has its platforms listed."""
+    assert set(DEVICE_TYPE_PLATFORMS) == set(DEVICE_TYPES) - {GALEVO}
 
 
 @pytest.mark.parametrize("device_type", DEVICE_TYPE_PLATFORMS)
 async def test_device_type_has_entities_on_its_platforms(
     hass: HomeAssistant,
+    request: pytest.FixtureRequest,
     entity_registry: er.EntityRegistry,
-    api: MagicMock,
     mock_ariston: MagicMock,
     config_entry: MockConfigEntry,
     device_type: str,
 ) -> None:
-    """Test each device type has entities on its platforms only.
-
-    So the snapshots below hold every entity of the type.
-    """
-    await setup_device_type(hass, api, config_entry, PLATFORMS)
+    """Test each device type has entities only on the platforms snapshotted below."""
+    await setup_platforms(hass, request, config_entry, PLATFORMS)
 
     entries = er.async_entries_for_config_entry(entity_registry, config_entry.entry_id)
     assert {entry.domain for entry in entries} == set(
@@ -150,17 +143,17 @@ async def test_device_type_has_entities_on_its_platforms(
 )
 async def test_device_type_entities_match_snapshot(
     hass: HomeAssistant,
+    request: pytest.FixtureRequest,
     entity_registry: er.EntityRegistry,
     snapshot: SnapshotAssertion,
     freezer: FrozenDateTimeFactory,
-    api: MagicMock,
     mock_ariston: MagicMock,
     config_entry: MockConfigEntry,
     platform: Platform,
 ) -> None:
     """Test the entities of each device type stay the same."""
     freezer.move_to("2026-10-18 12:00:00+00:00")
-    await setup_device_type(hass, api, config_entry, [platform])
+    await setup_platforms(hass, request, config_entry, [platform])
 
     await snapshot_platform(hass, entity_registry, snapshot, config_entry.entry_id)
 
@@ -168,14 +161,14 @@ async def test_device_type_entities_match_snapshot(
 @pytest.mark.parametrize("device_type", DEVICE_TYPE_PLATFORMS)
 async def test_device_type_device_matches_snapshot(
     hass: HomeAssistant,
+    request: pytest.FixtureRequest,
     device_registry: dr.DeviceRegistry,
     snapshot: SnapshotAssertion,
-    api: MagicMock,
     mock_ariston: MagicMock,
     config_entry: MockConfigEntry,
 ) -> None:
     """Test the device of each device type, with its model, stays the same."""
-    await setup_device_type(hass, api, config_entry, [Platform.SENSOR])
+    await setup_platforms(hass, request, config_entry, [Platform.SENSOR])
 
     devices = dr.async_entries_for_config_entry(device_registry, config_entry.entry_id)
     assert devices == snapshot
