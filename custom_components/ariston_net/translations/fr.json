@@ -1,6 +1,6 @@
 {
   "config": {
-    "avort": {
+    "abort": {
       "already_configured": "L'appareil est déjà configuré",
       "reauth_successful": "La réauthentification a réussi"
     },
@@ -22,8 +22,7 @@
   "options": {
     "step": {
       "init": {
-        "données": {
-          "extra_energy_features": "Entités supplémentaires liées à l'énergie",
+        "data": {
           "scan_interval": "Intervalle de scan de zone (secondes)",
           "energy_scan_interval": "Intervalle d'analyse énergétique (minutes)",
           "bus_errors_scan_interval": "Intervalle d'analyse des erreurs de bus (secondes)"
