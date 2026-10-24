@@ -1,6 +1,7 @@
 """Snapshot tests of the entities and the device of each device type.
 
-GALEVO has two data sets. The other types have one with every entity they can have.
+GALEVO has two data sets, with one zone. The other types have one with every
+entity they can have, and BSB has two zones.
 """
 
 from __future__ import annotations

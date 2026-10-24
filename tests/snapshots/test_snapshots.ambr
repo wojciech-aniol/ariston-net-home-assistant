@@ -472,6 +472,186 @@
     'state': '2',
   })
 # ---
+# name: test_device_type_entities_match_snapshot[andris2-sensor][sensor.velis_ariston_net_central_heating_electricity_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_electricity_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET central heating electricity consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET central heating electricity consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET central heating electricity consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[andris2-sensor][sensor.velis_ariston_net_central_heating_electricity_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET central heating electricity consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_electricity_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '21.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[andris2-sensor][sensor.velis_ariston_net_central_heating_gas_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_gas_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET central heating gas consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET central heating gas consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET central heating gas consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[andris2-sensor][sensor.velis_ariston_net_central_heating_gas_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET central heating gas consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_gas_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '8.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[andris2-sensor][sensor.velis_ariston_net_central_heating_total_energy_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_total_energy_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET central heating total energy consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET central heating total energy consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET central heating total energy consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[andris2-sensor][sensor.velis_ariston_net_central_heating_total_energy_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET central heating total energy consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_total_energy_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '2.5',
+  })
+# ---
 # name: test_device_type_entities_match_snapshot[andris2-sensor][sensor.velis_ariston_net_domestic_hot_water_electricity_consumption-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
@@ -530,6 +710,246 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '22.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[andris2-sensor][sensor.velis_ariston_net_domestic_hot_water_gas_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_gas_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water gas consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water gas consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water gas consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[andris2-sensor][sensor.velis_ariston_net_domestic_hot_water_gas_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET domestic hot water gas consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_gas_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '11.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[andris2-sensor][sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water heating pump electricity consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water heating pump electricity consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water heating pump electricity consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[andris2-sensor][sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET domestic hot water heating pump electricity consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '9.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[andris2-sensor][sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water resistor electricity consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water resistor electricity consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water resistor electricity consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[andris2-sensor][sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET domestic hot water resistor electricity consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '10.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[andris2-sensor][sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water total energy consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water total energy consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water total energy consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[andris2-sensor][sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET domestic hot water total energy consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '3.5',
   })
 # ---
 # name: test_device_type_entities_match_snapshot[andris2-sensor][sensor.velis_ariston_net_errors_count-entry]
@@ -995,6 +1415,138 @@
     'state': 'heat',
   })
 # ---
+# name: test_device_type_entities_match_snapshot[bsb-climate][climate.boiler_2-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <ClimateEntityCapabilityAttribute.HVAC_MODES: 'hvac_modes'>: list([
+        <HVACMode.HEAT: 'heat'>,
+        <HVACMode.AUTO: 'auto'>,
+        <HVACMode.OFF: 'off'>,
+      ]),
+      <ClimateEntityCapabilityAttribute.MAX_TEMP: 'max_temp'>: 24.0,
+      <ClimateEntityCapabilityAttribute.MIN_TEMP: 'min_temp'>: 15.0,
+      <ClimateEntityCapabilityAttribute.TARGET_TEMP_STEP: 'target_temp_step'>: 0.5,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'climate',
+    'entity_category': None,
+    'entity_id': 'climate.boiler_2',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Boiler',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': 'mdi:radiator',
+    'original_name': 'Boiler',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': <ClimateEntityFeature: 385>,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001_2',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[bsb-climate][climate.boiler_2-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <ClimateEntityStateAttribute.CURRENT_TEMPERATURE: 'current_temperature'>: 19.5,
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Boiler',
+      <ClimateEntityStateAttribute.HVAC_ACTION: 'hvac_action'>: <HVACAction.HEATING: 'heating'>,
+      <ClimateEntityCapabilityAttribute.HVAC_MODES: 'hvac_modes'>: list([
+        <HVACMode.HEAT: 'heat'>,
+        <HVACMode.AUTO: 'auto'>,
+        <HVACMode.OFF: 'off'>,
+      ]),
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:radiator',
+      <ClimateEntityCapabilityAttribute.MAX_TEMP: 'max_temp'>: 24.0,
+      <ClimateEntityCapabilityAttribute.MIN_TEMP: 'min_temp'>: 15.0,
+      <EntityStateAttribute.SUPPORTED_FEATURES: 'supported_features'>: <ClimateEntityFeature: 385>,
+      <ClimateEntityCapabilityAttribute.TARGET_TEMP_STEP: 'target_temp_step'>: 0.5,
+      <ClimateEntityStateAttribute.TARGET_TEMPERATURE: 'temperature'>: 20.0,
+    }),
+    'context': <ANY>,
+    'entity_id': 'climate.boiler_2',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'auto',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[bsb-sensor][sensor.boiler_ariston_net_central_heating_electricity_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.boiler_ariston_net_central_heating_electricity_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET central heating electricity consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET central heating electricity consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET central heating electricity consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[bsb-sensor][sensor.boiler_ariston_net_central_heating_electricity_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Boiler Ariston NET central heating electricity consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.boiler_ariston_net_central_heating_electricity_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '21.5',
+  })
+# ---
 # name: test_device_type_entities_match_snapshot[bsb-sensor][sensor.boiler_ariston_net_central_heating_gas_consumption-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
@@ -1233,6 +1785,66 @@
     'state': '50.0',
   })
 # ---
+# name: test_device_type_entities_match_snapshot[bsb-sensor][sensor.boiler_ariston_net_domestic_hot_water_electricity_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.boiler_ariston_net_domestic_hot_water_electricity_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water electricity consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water electricity consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water electricity consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[bsb-sensor][sensor.boiler_ariston_net_domestic_hot_water_electricity_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Boiler Ariston NET domestic hot water electricity consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.boiler_ariston_net_domestic_hot_water_electricity_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '22.5',
+  })
+# ---
 # name: test_device_type_entities_match_snapshot[bsb-sensor][sensor.boiler_ariston_net_domestic_hot_water_gas_consumption-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
@@ -1291,6 +1903,126 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '11.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[bsb-sensor][sensor.boiler_ariston_net_domestic_hot_water_heating_pump_electricity_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.boiler_ariston_net_domestic_hot_water_heating_pump_electricity_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water heating pump electricity consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water heating pump electricity consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water heating pump electricity consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[bsb-sensor][sensor.boiler_ariston_net_domestic_hot_water_heating_pump_electricity_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Boiler Ariston NET domestic hot water heating pump electricity consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.boiler_ariston_net_domestic_hot_water_heating_pump_electricity_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '9.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[bsb-sensor][sensor.boiler_ariston_net_domestic_hot_water_resistor_electricity_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.boiler_ariston_net_domestic_hot_water_resistor_electricity_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water resistor electricity consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water resistor electricity consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water resistor electricity consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[bsb-sensor][sensor.boiler_ariston_net_domestic_hot_water_resistor_electricity_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Boiler Ariston NET domestic hot water resistor electricity consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.boiler_ariston_net_domestic_hot_water_resistor_electricity_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '10.5',
   })
 # ---
 # name: test_device_type_entities_match_snapshot[bsb-sensor][sensor.boiler_ariston_net_domestic_hot_water_total_energy_consumption-entry]
@@ -1767,6 +2499,186 @@
     'state': '3',
   })
 # ---
+# name: test_device_type_entities_match_snapshot[evo-sensor][sensor.velis_ariston_net_central_heating_electricity_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_electricity_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET central heating electricity consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET central heating electricity consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET central heating electricity consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo-sensor][sensor.velis_ariston_net_central_heating_electricity_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET central heating electricity consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_electricity_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '21.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo-sensor][sensor.velis_ariston_net_central_heating_gas_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_gas_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET central heating gas consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET central heating gas consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET central heating gas consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo-sensor][sensor.velis_ariston_net_central_heating_gas_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET central heating gas consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_gas_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '8.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo-sensor][sensor.velis_ariston_net_central_heating_total_energy_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_total_energy_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET central heating total energy consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET central heating total energy consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET central heating total energy consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo-sensor][sensor.velis_ariston_net_central_heating_total_energy_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET central heating total energy consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_total_energy_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '2.5',
+  })
+# ---
 # name: test_device_type_entities_match_snapshot[evo-sensor][sensor.velis_ariston_net_current_temperature-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
@@ -1884,6 +2796,246 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '22.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo-sensor][sensor.velis_ariston_net_domestic_hot_water_gas_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_gas_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water gas consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water gas consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water gas consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo-sensor][sensor.velis_ariston_net_domestic_hot_water_gas_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET domestic hot water gas consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_gas_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '11.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo-sensor][sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water heating pump electricity consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water heating pump electricity consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water heating pump electricity consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo-sensor][sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET domestic hot water heating pump electricity consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '9.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo-sensor][sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water resistor electricity consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water resistor electricity consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water resistor electricity consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo-sensor][sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET domestic hot water resistor electricity consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '10.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo-sensor][sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water total energy consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water total energy consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water total energy consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo-sensor][sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET domestic hot water total energy consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '3.5',
   })
 # ---
 # name: test_device_type_entities_match_snapshot[evo-sensor][sensor.velis_ariston_net_errors_count-entry]
@@ -2317,6 +3469,186 @@
     'state': '2',
   })
 # ---
+# name: test_device_type_entities_match_snapshot[evo2-sensor][sensor.velis_ariston_net_central_heating_electricity_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_electricity_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET central heating electricity consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET central heating electricity consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET central heating electricity consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo2-sensor][sensor.velis_ariston_net_central_heating_electricity_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET central heating electricity consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_electricity_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '21.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo2-sensor][sensor.velis_ariston_net_central_heating_gas_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_gas_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET central heating gas consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET central heating gas consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET central heating gas consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo2-sensor][sensor.velis_ariston_net_central_heating_gas_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET central heating gas consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_gas_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '8.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo2-sensor][sensor.velis_ariston_net_central_heating_total_energy_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_total_energy_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET central heating total energy consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET central heating total energy consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET central heating total energy consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo2-sensor][sensor.velis_ariston_net_central_heating_total_energy_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET central heating total energy consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_total_energy_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '2.5',
+  })
+# ---
 # name: test_device_type_entities_match_snapshot[evo2-sensor][sensor.velis_ariston_net_domestic_hot_water_electricity_consumption-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
@@ -2375,6 +3707,246 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '22.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo2-sensor][sensor.velis_ariston_net_domestic_hot_water_gas_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_gas_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water gas consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water gas consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water gas consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo2-sensor][sensor.velis_ariston_net_domestic_hot_water_gas_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET domestic hot water gas consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_gas_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '11.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo2-sensor][sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water heating pump electricity consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water heating pump electricity consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water heating pump electricity consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo2-sensor][sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET domestic hot water heating pump electricity consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '9.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo2-sensor][sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water resistor electricity consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water resistor electricity consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water resistor electricity consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo2-sensor][sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET domestic hot water resistor electricity consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '10.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo2-sensor][sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water total energy consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water total energy consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water total energy consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[evo2-sensor][sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET domestic hot water total energy consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '3.5',
   })
 # ---
 # name: test_device_type_entities_match_snapshot[evo2-sensor][sensor.velis_ariston_net_errors_count-entry]
@@ -2938,6 +4510,186 @@
     'state': '2',
   })
 # ---
+# name: test_device_type_entities_match_snapshot[lux-sensor][sensor.velis_ariston_net_central_heating_electricity_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_electricity_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET central heating electricity consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET central heating electricity consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET central heating electricity consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux-sensor][sensor.velis_ariston_net_central_heating_electricity_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET central heating electricity consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_electricity_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '21.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux-sensor][sensor.velis_ariston_net_central_heating_gas_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_gas_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET central heating gas consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET central heating gas consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET central heating gas consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux-sensor][sensor.velis_ariston_net_central_heating_gas_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET central heating gas consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_gas_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '8.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux-sensor][sensor.velis_ariston_net_central_heating_total_energy_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_total_energy_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET central heating total energy consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET central heating total energy consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET central heating total energy consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux-sensor][sensor.velis_ariston_net_central_heating_total_energy_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET central heating total energy consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_total_energy_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '2.5',
+  })
+# ---
 # name: test_device_type_entities_match_snapshot[lux-sensor][sensor.velis_ariston_net_domestic_hot_water_electricity_consumption-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
@@ -2996,6 +4748,246 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '22.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux-sensor][sensor.velis_ariston_net_domestic_hot_water_gas_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_gas_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water gas consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water gas consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water gas consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux-sensor][sensor.velis_ariston_net_domestic_hot_water_gas_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET domestic hot water gas consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_gas_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '11.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux-sensor][sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water heating pump electricity consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water heating pump electricity consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water heating pump electricity consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux-sensor][sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET domestic hot water heating pump electricity consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '9.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux-sensor][sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water resistor electricity consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water resistor electricity consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water resistor electricity consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux-sensor][sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET domestic hot water resistor electricity consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '10.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux-sensor][sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water total energy consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water total energy consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water total energy consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux-sensor][sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET domestic hot water total energy consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '3.5',
   })
 # ---
 # name: test_device_type_entities_match_snapshot[lux-sensor][sensor.velis_ariston_net_errors_count-entry]
@@ -3561,6 +5553,186 @@
     'state': '2',
   })
 # ---
+# name: test_device_type_entities_match_snapshot[lux2-sensor][sensor.velis_ariston_net_central_heating_electricity_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_electricity_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET central heating electricity consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET central heating electricity consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET central heating electricity consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux2-sensor][sensor.velis_ariston_net_central_heating_electricity_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET central heating electricity consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_electricity_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '21.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux2-sensor][sensor.velis_ariston_net_central_heating_gas_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_gas_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET central heating gas consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET central heating gas consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET central heating gas consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux2-sensor][sensor.velis_ariston_net_central_heating_gas_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET central heating gas consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_gas_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '8.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux2-sensor][sensor.velis_ariston_net_central_heating_total_energy_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_total_energy_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET central heating total energy consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET central heating total energy consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET central heating total energy consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux2-sensor][sensor.velis_ariston_net_central_heating_total_energy_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET central heating total energy consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_central_heating_total_energy_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '2.5',
+  })
+# ---
 # name: test_device_type_entities_match_snapshot[lux2-sensor][sensor.velis_ariston_net_domestic_hot_water_electricity_consumption-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
@@ -3619,6 +5791,246 @@
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '22.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux2-sensor][sensor.velis_ariston_net_domestic_hot_water_gas_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_gas_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water gas consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water gas consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water gas consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux2-sensor][sensor.velis_ariston_net_domestic_hot_water_gas_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET domestic hot water gas consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_gas_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '11.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux2-sensor][sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water heating pump electricity consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water heating pump electricity consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water heating pump electricity consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux2-sensor][sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET domestic hot water heating pump electricity consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '9.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux2-sensor][sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water resistor electricity consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water resistor electricity consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water resistor electricity consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux2-sensor][sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET domestic hot water resistor electricity consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '10.5',
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux2-sensor][sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': dict({
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+    }),
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption',
+    'has_entity_name': False,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Ariston NET domestic hot water total energy consumption',
+    'options': dict({
+      'sensor': dict({
+        'suggested_display_precision': 2,
+      }),
+    }),
+    'original_device_class': <SensorDeviceClass.ENERGY: 'energy'>,
+    'original_icon': 'mdi:cash',
+    'original_name': 'Ariston NET domestic hot water total energy consumption',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': None,
+    'unique_id': 'F0AD4E000001-Ariston NET domestic hot water total energy consumption',
+    'unit_of_measurement': <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+  })
+# ---
+# name: test_device_type_entities_match_snapshot[lux2-sensor][sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'energy',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET domestic hot water total energy consumption',
+      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash',
+      <SensorEntityStateAttribute.LAST_RESET: 'last_reset'>: '2026-10-18T11:00:00+00:00',
+      <SensorEntityCapabilityAttribute.STATE_CLASS: 'state_class'>: <SensorStateClass.TOTAL: 'total'>,
+      <EntityStateAttribute.UNIT_OF_MEASUREMENT: 'unit_of_measurement'>: <UnitOfEnergy.KILO_WATT_HOUR: 'kWh'>,
+    }),
+    'context': <ANY>,
+    'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': '3.5',
   })
 # ---
 # name: test_device_type_entities_match_snapshot[lux2-sensor][sensor.velis_ariston_net_errors_count-entry]
