@@ -5,7 +5,10 @@
 This is a fork of [fustom/ariston-remotethermo-home-assistant-v3](https://github.com/fustom/ariston-remotethermo-home-assistant-v3),
 based on upstream v0.19.9. The integration and the [`ariston`](https://pypi.org/project/ariston/)
 library ([fustom/python-ariston-api](https://github.com/fustom/python-ariston-api)) are the work of
-[@fustom](https://github.com/fustom). This fork uses the library version 0.19.9 without changes.
+[@fustom](https://github.com/fustom). This fork uses
+[`ariston-net-api`](https://pypi.org/project/ariston-net-api/)
+([wojciech-aniol/python-ariston-net-api](https://github.com/wojciech-aniol/python-ariston-net-api)),
+a fork of `ariston` 0.19.9 that fixes turning on a BSB zone that is off and the Lux BOOST mode.
 
 > [!WARNING]
 > **This fork is completely vibe-coded.** An AI coding assistant

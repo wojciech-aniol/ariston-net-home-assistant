@@ -2,9 +2,11 @@
 
 Home Assistant custom integration, domain `ariston_net`. Fork of
 fustom/ariston-remotethermo-home-assistant-v3. Code in `custom_components/ariston_net/`, tests in
-`tests/`. It reaches the Ariston cloud only through the `ariston` library (PyPI, version pinned in
-`manifest.json` and `requirements_test.txt`). Never patch, fork or vendor the library.
-One approved exception: `menu_items.py` replaces `async_get_menu_items` on the API object, to
+`tests/`. It reaches the Ariston cloud only through the `ariston-net-api` library (module
+`ariston_net_api`), our fork of fustom's `ariston` (repo `wojciech-aniol/python-ariston-net-api`,
+version pinned in `manifest.json` and `requirements_test.txt`). Fix library bugs there with a
+test, release, then bump the pin here. Never patch or vendor the library in this repo; fix it in
+its own repo. One approved exception: `menu_items.py` replaces `async_get_menu_items` on the API object, to
 add menu item IDs to the library's own request, and asks the blocked IDs 342-347 once at setup
 (see its docstrings).
 
@@ -33,7 +35,7 @@ Tests and lint pass before every commit.
   lambdas (`get_native_value`, `set_value`, ...). List order is entity order in snapshots.
 - `tests/test_requests.py` counts cloud requests of setup, each poll and each action. A change
   that changes a count updates it there and says why in the PR.
-- Library source: `.venv/lib/python3.14/site-packages/ariston/`. Devices: `galevo_device.py`,
+- Library source: `.venv/lib/python3.14/site-packages/ariston_net_api/`. Devices: `galevo_device.py`,
   `bsb_device.py`, `velis_*`, `evo_*`, `lux*`, `lydos*`, `nuos_split_device.py`; HTTP and
   `ConnectionException` in `ariston_api.py`.
 
@@ -53,7 +55,7 @@ above "About the upstream integration" matters. Of `translations/` read only `en
 - Keep config entry data and option keys. A change needs a config entry migration and a test.
 - Keep the keys of `strings.json` and `translations/en.json` the same. `strings.json` may use
   `[%key:...%]` references, `en.json` holds the final English text.
-- Ask the user before a refactor bigger than the plan says or a new `ariston` version.
+- Ask the user before a refactor bigger than the plan says or a new `ariston-net-api` version.
 - Code, comments, commits and README are in English.
 
 ## Git
