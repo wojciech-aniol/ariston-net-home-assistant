@@ -32,7 +32,7 @@ from homeassistant.exceptions import ServiceValidationError
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from .conftest import PLANT_MODE_TEXTS
+from .conftest import PLANT_MODE_TEXTS, set_item
 
 CLIMATE = "climate.nimbus"
 
@@ -72,12 +72,6 @@ async def test_hvac_mode_off_uses_plant_mode(
     )
 
     device.async_set_plant_mode.assert_awaited_once_with(expected_plant_mode)
-
-
-def set_item(properties: dict[str, Any], item_id: str, **values: Any) -> None:
-    """Change one item the fake cloud sends."""
-    item = next(item for item in properties["items"] if item["id"] == item_id)
-    item.update(values)
 
 
 async def setup_and_record_calls(
@@ -171,7 +165,9 @@ async def test_hvac_mode_from_off_matches_device_options(
     set_item(
         properties, "PlantMode", value=PlantMode.OFF.value, options=plant_mode_options
     )
-    set_item(properties, "ZoneMode", options=zone_mode_options)
+    set_item(
+        properties, "ZoneMode", value=ZoneMode.OFF.value, options=zone_mode_options
+    )
     calls = await setup_and_record_calls(hass, config_entry, device)
 
     await hass.services.async_call(
@@ -352,9 +348,13 @@ CURRENT_PLANT_MODES = [
 def hvac_mode_calls(
     current: PlantMode, hvac_mode: HVACMode, manual_night: bool
 ) -> list:
-    """Return the plant and zone mode calls expected for an HVAC mode."""
+    """Return the plant and zone mode calls expected for an HVAC mode.
+
+    The zone starts off, and a mode the device already has is not set again.
+    """
     expected = []
-    if (plant_mode := HVAC_MODE_PLANT_MODES[hvac_mode][current]) is not None:
+    plant_mode = HVAC_MODE_PLANT_MODES[hvac_mode][current]
+    if plant_mode not in (None, current):
         expected.append(call.plant_mode(plant_mode))
     manual = ZoneMode.MANUAL_NIGHT if manual_night else ZoneMode.MANUAL
     zone_mode = {
@@ -389,7 +389,9 @@ async def test_hvac_mode_sets_plant_and_zone_mode(
         optTexts=ALL_PLANT_MODE_TEXTS,
     )
     zone_mode_options = [0, 1, 2, 3] if manual_night else [0, 2, 3]
-    set_item(properties, "ZoneMode", options=zone_mode_options)
+    set_item(
+        properties, "ZoneMode", value=ZoneMode.OFF.value, options=zone_mode_options
+    )
     calls = await setup_and_record_calls(hass, config_entry, device)
 
     await hass.services.async_call(
@@ -420,10 +422,8 @@ async def test_hvac_mode_cool_sets_cooling_without_cooling_option(
         blocking=True,
     )
 
-    assert calls.mock_calls == [
-        call.plant_mode(PlantMode.COOLING),
-        call.zone_mode(ZoneMode.MANUAL, 1),
-    ]
+    # The zone is already manual.
+    assert calls.mock_calls == [call.plant_mode(PlantMode.COOLING)]
 
 
 @pytest.mark.parametrize(
@@ -664,16 +664,13 @@ async def test_icon_shows_heat_mode(
             "Winter",
             [call.plant_mode(PlantMode.WINTER)],
         ),
-        # Today only Cooling counts as staying in cooling, so the zone is set too.
+        # Both modes are already set, so nothing is sent.
         (
             PlantMode.COOLING_ONLY,
             ZoneMode.MANUAL,
             [0, 2, 3],
             "Cooling only",
-            [
-                call.zone_mode(ZoneMode.MANUAL, 1),
-                call.plant_mode(PlantMode.COOLING_ONLY),
-            ],
+            [],
         ),
         (
             PlantMode.WINTER,

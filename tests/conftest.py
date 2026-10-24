@@ -204,6 +204,12 @@ async def setup_integration(hass: HomeAssistant, entry: MockConfigEntry) -> None
     await hass.async_block_till_done()
 
 
+def set_item(properties: dict[str, Any], item_id: str, **values: Any) -> None:
+    """Change one item the fake cloud sends."""
+    item = next(item for item in properties["items"] if item["id"] == item_id)
+    item.update(values)
+
+
 def runtime_data(hass: HomeAssistant) -> AristonData:
     """Return the runtime data of the fake device's entry."""
     entry = hass.config_entries.async_entry_for_domain_unique_id(DOMAIN, GATEWAY)

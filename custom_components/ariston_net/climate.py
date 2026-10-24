@@ -264,9 +264,9 @@ class AristonThermostat(AristonEntity, ClimateEntity):
 
             if hvac_mode == HVACMode.OFF:
                 if self.device.is_plant_mode_options_contains_off:
-                    await self.device.async_set_plant_mode(PlantMode.OFF)
+                    await self._async_set_plant_mode(PlantMode.OFF)
                 else:
-                    await self.device.async_set_plant_mode(PlantMode.SUMMER)
+                    await self._async_set_plant_mode(PlantMode.SUMMER)
             elif hvac_mode == HVACMode.AUTO:
                 if current_plant_mode in [
                     PlantMode.WINTER,
@@ -277,42 +277,48 @@ class AristonThermostat(AristonEntity, ClimateEntity):
                     pass
                 elif current_plant_mode == PlantMode.SUMMER:
                     # DHW is working, so use Winter where CH and DHW are active
-                    await self.device.async_set_plant_mode(PlantMode.WINTER)
+                    await self._async_set_plant_mode(PlantMode.WINTER)
                 # hvac is OFF, so use heating only, if not supported then winter
                 elif PlantMode.HEATING_ONLY.value in plant_modes:
-                    await self.device.async_set_plant_mode(PlantMode.HEATING_ONLY)
+                    await self._async_set_plant_mode(PlantMode.HEATING_ONLY)
                 else:
-                    await self.device.async_set_plant_mode(PlantMode.WINTER)
-                await self.device.async_set_zone_mode(ZoneMode.TIME_PROGRAM, self.zone)
+                    await self._async_set_plant_mode(PlantMode.WINTER)
+                await self._async_set_zone_mode(ZoneMode.TIME_PROGRAM)
             elif hvac_mode == HVACMode.HEAT:
                 if current_plant_mode in [PlantMode.WINTER, PlantMode.HEATING_ONLY]:
                     # if already heating, change CH mode
                     pass
                 elif current_plant_mode in [PlantMode.SUMMER, PlantMode.COOLING]:
                     # DHW is working, so use Winter and change mode
-                    await self.device.async_set_plant_mode(PlantMode.WINTER)
+                    await self._async_set_plant_mode(PlantMode.WINTER)
                 # hvac is OFF, so use heating only, if not supported then winter
                 elif PlantMode.HEATING_ONLY.value in plant_modes:
-                    await self.device.async_set_plant_mode(PlantMode.HEATING_ONLY)
+                    await self._async_set_plant_mode(PlantMode.HEATING_ONLY)
                 else:
-                    await self.device.async_set_plant_mode(PlantMode.WINTER)
-                await self.device.async_set_zone_mode(
-                    self._manual_zone_mode(zone_modes), self.zone
-                )
+                    await self._async_set_plant_mode(PlantMode.WINTER)
+                await self._async_set_zone_mode(self._manual_zone_mode(zone_modes))
             elif hvac_mode == HVACMode.COOL:
-                await self.device.async_set_plant_mode(PlantMode.COOLING)
-                await self.device.async_set_zone_mode(
-                    self._manual_zone_mode(zone_modes), self.zone
-                )
+                await self._async_set_plant_mode(PlantMode.COOLING)
+                await self._async_set_zone_mode(self._manual_zone_mode(zone_modes))
         # Plant mode is not supported (BSB device)
         elif hvac_mode == HVACMode.OFF:
-            await self.device.async_set_zone_mode(BsbZoneMode.OFF, self.zone)
+            await self._async_set_zone_mode(BsbZoneMode.OFF)
         elif hvac_mode == HVACMode.AUTO:
-            await self.device.async_set_zone_mode(BsbZoneMode.TIME_PROGRAM, self.zone)
+            await self._async_set_zone_mode(BsbZoneMode.TIME_PROGRAM)
         elif hvac_mode == HVACMode.HEAT:
-            await self.device.async_set_zone_mode(BsbZoneMode.MANUAL, self.zone)
+            await self._async_set_zone_mode(BsbZoneMode.MANUAL)
 
         self.async_write_ha_state()
+
+    async def _async_set_plant_mode(self, plant_mode: PlantMode) -> None:
+        """Set the plant mode, unless the device already has it."""
+        if self.device.plant_mode != plant_mode:
+            await self.device.async_set_plant_mode(plant_mode)
+
+    async def _async_set_zone_mode(self, zone_mode: ZoneMode | BsbZoneMode) -> None:
+        """Set the zone mode, unless the zone already has it."""
+        if self.device.get_zone_mode(self.zone) != zone_mode:
+            await self.device.async_set_zone_mode(zone_mode, self.zone)
 
     @property
     def _zone_mode_options(self) -> list[int]:
@@ -354,16 +360,16 @@ class AristonThermostat(AristonEntity, ClimateEntity):
             and plant_mode != PlantMode.COOLING
             and ZoneMode.MANUAL.value in zone_modes
         ):
-            await self.device.async_set_zone_mode(ZoneMode.MANUAL, self.zone)
+            await self._async_set_zone_mode(ZoneMode.MANUAL)
             zone_is_off = False
 
         # Set the plant mode
-        await self.device.async_set_plant_mode(plant_mode)
+        await self._async_set_plant_mode(plant_mode)
 
         # Special handling for OFF mode
         if plant_mode == PlantMode.OFF:
             if self._zone_mode_offered(self.device.is_zone_mode_options_contains_off):
-                await self.device.async_set_zone_mode(ZoneMode.OFF, self.zone)
+                await self._async_set_zone_mode(ZoneMode.OFF)
         # The OFF preset turns the zone off, so turn it on again to heat or cool
         elif zone_is_off and plant_mode in [
             PlantMode.WINTER,
@@ -371,9 +377,7 @@ class AristonThermostat(AristonEntity, ClimateEntity):
             PlantMode.COOLING,
             PlantMode.COOLING_ONLY,
         ]:
-            await self.device.async_set_zone_mode(
-                self._manual_zone_mode(zone_modes), self.zone
-            )
+            await self._async_set_zone_mode(self._manual_zone_mode(zone_modes))
 
         # Refresh coordinator to get updated device state
         await self.coordinator.async_request_refresh()
@@ -394,5 +398,7 @@ class AristonThermostat(AristonEntity, ClimateEntity):
             self.name,
         )
 
+        if temperature == self.device.get_comfort_temp_value(self.zone):
+            return
         await self.device.async_set_comfort_temp(temperature, self.zone)
         self.async_write_ha_state()

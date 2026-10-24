@@ -158,7 +158,7 @@ ACTIONS = [
         SERVICE_SET_HVAC_MODE,
         CLIMATE,
         {ATTR_HVAC_MODE: HVACMode.HEAT},
-        1,
+        0,
         id="hvac-mode-same",
     ),
     pytest.param(
@@ -182,7 +182,7 @@ ACTIONS = [
         SERVICE_SET_PRESET_MODE,
         CLIMATE,
         {ATTR_PRESET_MODE: "Winter"},
-        3,
+        2,
         id="preset-same",
     ),
     pytest.param(
@@ -198,7 +198,7 @@ ACTIONS = [
         SERVICE_SET_TEMPERATURE,
         CLIMATE,
         {ATTR_TEMPERATURE: 22.0},
-        1,
+        0,
         id="climate-temperature-same",
     ),
     pytest.param(
@@ -214,7 +214,7 @@ ACTIONS = [
         SERVICE_SELECT_OPTION,
         PLANT_MODE,
         {ATTR_OPTION: CURRENT},
-        1,
+        0,
         id="plant-mode-same",
     ),
     pytest.param(
@@ -230,7 +230,7 @@ ACTIONS = [
         SERVICE_SELECT_OPTION,
         CURRENCY,
         {ATTR_OPTION: CURRENT},
-        1,
+        0,
         id="currency-same",
     ),
     pytest.param(
@@ -242,7 +242,7 @@ ACTIONS = [
         id="currency-new",
     ),
     pytest.param(
-        SWITCH_DOMAIN, SERVICE_TURN_ON, THERMOREGULATION, {}, 1, id="switch-same"
+        SWITCH_DOMAIN, SERVICE_TURN_ON, THERMOREGULATION, {}, 0, id="switch-same"
     ),
     pytest.param(
         SWITCH_DOMAIN, SERVICE_TURN_OFF, THERMOREGULATION, {}, 1, id="switch-off"
@@ -252,7 +252,7 @@ ACTIONS = [
         SERVICE_SET_VALUE,
         FLOW_TEMP,
         {ATTR_VALUE: CURRENT},
-        1,
+        0,
         id="flow-temp-same",
     ),
     pytest.param(
@@ -268,7 +268,7 @@ ACTIONS = [
         SERVICE_SET_VALUE,
         ELEC_COST,
         {ATTR_VALUE: CURRENT},
-        1,
+        0,
         id="elec-cost-same",
     ),
     pytest.param(
@@ -284,7 +284,7 @@ ACTIONS = [
         SERVICE_SET_TEMPERATURE,
         WATER_HEATER,
         {ATTR_TEMPERATURE: 50},
-        1,
+        0,
         id="dhw-temperature-same",
     ),
     pytest.param(
@@ -300,7 +300,7 @@ ACTIONS = [
         SERVICE_SET_OPERATION_MODE,
         WATER_HEATER,
         {ATTR_OPERATION_MODE: CURRENT},
-        1,
+        0,
         id="dhw-mode-same",
     ),
     pytest.param(
