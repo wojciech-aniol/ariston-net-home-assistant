@@ -28,9 +28,11 @@ from homeassistant.components.water_heater import (
     DOMAIN as WATER_HEATER_DOMAIN,
     SERVICE_SET_OPERATION_MODE,
     SERVICE_SET_TEMPERATURE,
+    WaterHeaterEntityFeature,
 )
 from homeassistant.const import (
     ATTR_ENTITY_ID,
+    ATTR_SUPPORTED_FEATURES,
     ATTR_TEMPERATURE,
     SERVICE_TURN_OFF,
     SERVICE_TURN_ON,
@@ -297,3 +299,33 @@ async def test_water_heater_turn_on_off_updates_power_switch(
 
     expected_state = STATE_ON if value else STATE_OFF
     assert hass.states.get("switch.velis_ariston_net_power").state == expected_state
+
+
+@pytest.mark.parametrize("device_type", MED_TYPES)
+async def test_water_heater_supports_on_off(
+    hass: HomeAssistant, init_integration: MockConfigEntry
+) -> None:
+    """Test a VELIS water heater offers on and off."""
+    state = hass.states.get(WATER_HEATER)
+
+    assert state.attributes[ATTR_SUPPORTED_FEATURES] & WaterHeaterEntityFeature.ON_OFF
+
+
+@TURN_ON_OFF
+@pytest.mark.parametrize("device_type", MED_TYPES)
+async def test_water_heater_turn_on_off_skips_same_power(
+    hass: HomeAssistant,
+    api: MagicMock,
+    device_data: dict[str, Any],
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+    service: str,
+    value: bool,
+) -> None:
+    """Test on and off send nothing when the device already has that power."""
+    device_data["plant_data"]["on"] = value
+    await setup_integration(hass, config_entry)
+
+    await turn(hass, WATER_HEATER_DOMAIN, service, WATER_HEATER)
+
+    api.async_set_velis_power.assert_not_awaited()
