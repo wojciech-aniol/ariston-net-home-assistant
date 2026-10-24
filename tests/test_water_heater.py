@@ -6,7 +6,13 @@ from typing import Any
 from unittest.mock import AsyncMock, MagicMock
 
 from ariston import AristonGalevoDevice
-from ariston.const import VelisBaseDeviceProperties
+from ariston.const import (
+    DeviceAttribute,
+    SystemType,
+    VelisBaseDeviceProperties,
+    VelisDeviceAttribute,
+    WheType,
+)
 from ariston.lydos_device import AristonLydosDevice
 from homeassistant.components.water_heater import (
     ATTR_CURRENT_TEMPERATURE,
@@ -143,10 +149,26 @@ async def test_water_heater_set_operation_mode_calls_device(
 def velis_water_heater(api: MagicMock, power: bool) -> AristonWaterHeater:
     """Return a VELIS water heater built by hand: no fake cloud sets one up."""
     api.async_set_velis_power = AsyncMock()
-    device = AristonLydosDevice(api, CLOUD_DEVICE)
+    attributes = {
+        **CLOUD_DEVICE,
+        DeviceAttribute.SYS: SystemType.VELIS.value,
+        VelisDeviceAttribute.WHE_TYPE: WheType.Lydos.value,
+    }
+    device = AristonLydosDevice(api, attributes)
     device.data[VelisBaseDeviceProperties.ON] = power
-    coordinator = MagicMock(device=device)
-    return AristonWaterHeater(coordinator, ARISTON_WATER_HEATER_TYPES[1])
+    description = next(
+        description
+        for description in ARISTON_WATER_HEATER_TYPES
+        if SystemType.VELIS in description.system_types
+    )
+    return AristonWaterHeater(MagicMock(device=device), description)
+
+
+async def test_water_heater_velis_supports_on_off(api: MagicMock) -> None:
+    """Test a VELIS water heater offers on and off."""
+    entity = velis_water_heater(api, True)
+
+    assert entity.supported_features & WaterHeaterEntityFeature.ON_OFF
 
 
 @pytest.mark.parametrize("power", [True, False], ids=["on", "off"])

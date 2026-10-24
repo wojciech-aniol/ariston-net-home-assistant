@@ -251,11 +251,11 @@ def auto_enable_custom_integrations(enable_custom_integrations: None) -> None:
 
 @pytest.fixture(autouse=True)
 def no_usage_warnings(caplog: pytest.LogCaptureFixture) -> Generator[None]:
-    """Fail a test when Home Assistant warns about how the integration uses it."""
+    """Fail a test when Home Assistant reports a wrong use by the integration."""
     yield
     warnings = [
         record.getMessage()
-        for when in ("setup", "call")
+        for when in ("setup", "call", "teardown")
         for record in caplog.get_records(when)
         if "Detected that custom integration 'ariston_net'" in record.getMessage()
     ]
