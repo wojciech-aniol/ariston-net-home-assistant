@@ -11,7 +11,7 @@ from unittest.mock import AsyncMock, MagicMock, patch
 import aiohttp
 from ariston.ariston_api import ConnectionException
 from ariston.const import ARISTON_API_URL, ARISTON_USER_AGENT
-from homeassistant.config_entries import SOURCE_USER
+from homeassistant.config_entries import SOURCE_USER, ConfigEntryState
 from homeassistant.const import (
     CONF_DEVICE,
     CONF_PASSWORD,
@@ -446,3 +446,55 @@ async def test_options_flow_refuses_below_minimum(
     assert list(exc_info.value.schema_errors) == [option]
     assert exc_info.value.schema_errors[option].startswith(message)
     assert config_entry.options == {}
+
+
+async def test_user_step_reloads_entry_that_failed_on_old_login(
+    hass: HomeAssistant,
+    config_entry: MockConfigEntry,
+    mock_ariston: MagicMock,
+    flow_ariston: MagicMock,
+) -> None:
+    """Test adding the device again with a new login sets up the failed entry."""
+    mock_ariston.async_connect.return_value = False
+    await hass.config_entries.async_setup(config_entry.entry_id)
+    assert config_entry.state is ConfigEntryState.SETUP_ERROR
+
+    mock_ariston.async_connect.return_value = True
+    result = await start_user_flow(hass)
+    await hass.async_block_till_done()
+
+    assert result["reason"] == "already_configured"
+    assert config_entry.state is ConfigEntryState.LOADED
+
+
+async def test_reauth_of_loaded_entry_reloads_once(
+    hass: HomeAssistant,
+    init_integration: MockConfigEntry,
+    mock_ariston: MagicMock,
+    flow_ariston: MagicMock,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """Test reauth of a loaded entry reloads it once, with no usage warning."""
+    mock_ariston.async_connect.reset_mock()
+
+    result = await start_reauth(hass, init_integration)
+    await hass.async_block_till_done()
+
+    assert result["reason"] == "reauth_successful"
+    assert init_integration.state is ConfigEntryState.LOADED
+    mock_ariston.async_connect.assert_awaited_once()
+    assert "update listener" not in caplog.text
+
+
+async def test_options_flow_raises_old_interval_to_minimum(
+    hass: HomeAssistant, config_entry: MockConfigEntry, mock_setup_entry: AsyncMock
+) -> None:
+    """Test the form offers the minimum when a saved interval is below it."""
+    hass.config_entries.async_update_entry(
+        config_entry, options=OPTIONS | {CONF_SCAN_INTERVAL: 30}
+    )
+    await hass.config_entries.async_setup(config_entry.entry_id)
+
+    result = await hass.config_entries.options.async_init(config_entry.entry_id)
+
+    assert schema_defaults(result)[CONF_SCAN_INTERVAL] == 60

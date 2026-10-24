@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import timedelta
 import logging
 from typing import Any
 from unittest.mock import MagicMock, patch
@@ -16,6 +17,7 @@ from ariston.const import (
 )
 from homeassistant.config_entries import SOURCE_REAUTH, ConfigEntryState
 from homeassistant.const import (
+    CONF_SCAN_INTERVAL,
     STATE_ON,
     STATE_UNAVAILABLE,
     STATE_UNKNOWN,
@@ -27,9 +29,11 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 from custom_components.ariston_net.const import (
     API_URL_SETTING,
     API_USER_AGENT,
+    BUS_ERRORS_SCAN_INTERVAL,
     DOMAIN,
     ENABLE_BUS_ERRORS,
     ENABLE_ENERGY,
+    ENERGY_SCAN_INTERVAL,
 )
 
 from .conftest import runtime_data, setup_integration, tracebacks
@@ -447,3 +451,28 @@ async def test_unload_failure_keeps_entry_data(
         assert not await hass.config_entries.async_unload(init_integration.entry_id)
 
     assert init_integration.runtime_data
+
+
+@pytest.mark.parametrize(
+    ("option", "value", "coordinator", "expected"),
+    [
+        (CONF_SCAN_INTERVAL, 30, "coordinator", timedelta(seconds=60)),
+        (ENERGY_SCAN_INTERVAL, 5, "energy_coordinator", timedelta(minutes=15)),
+        (BUS_ERRORS_SCAN_INTERVAL, 10, "bus_errors_coordinator", timedelta(seconds=60)),
+    ],
+)
+async def test_setup_raises_old_interval_to_minimum(
+    hass: HomeAssistant,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+    option: str,
+    value: int,
+    coordinator: str,
+    expected: timedelta,
+) -> None:
+    """Test an interval saved below the minimum polls at the minimum."""
+    hass.config_entries.async_update_entry(config_entry, options={option: value})
+
+    await setup_integration(hass, config_entry)
+
+    assert getattr(runtime_data(hass), coordinator).update_interval == expected

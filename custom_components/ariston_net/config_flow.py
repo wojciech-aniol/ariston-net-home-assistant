@@ -23,9 +23,6 @@ from .const import (
     API_URL_SETTING,
     API_USER_AGENT,
     BUS_ERRORS_SCAN_INTERVAL,
-    DEFAULT_BUS_ERRORS_SCAN_INTERVAL_SECONDS,
-    DEFAULT_ENERGY_SCAN_INTERVAL_MINUTES,
-    DEFAULT_SCAN_INTERVAL_SECONDS,
     DOMAIN,
     ENABLE_BUS_ERRORS,
     ENABLE_ENERGY,
@@ -34,6 +31,7 @@ from .const import (
     MIN_ENERGY_SCAN_INTERVAL_MINUTES,
     MIN_SCAN_INTERVAL_SECONDS,
 )
+from .coordinator import interval_option
 from .errors import CLOUD_ERRORS, CloudErrorKind, classify_error, describe_error
 
 _LOGGER = logging.getLogger(__name__)
@@ -137,10 +135,13 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             API_USER_AGENT: self.cloud_api_user_agent,
             CONF_DEVICE: cloud_device,
         }
-        await self.async_set_unique_id(
+        if entry := await self.async_set_unique_id(
             cloud_device[DeviceAttribute.GW], raise_on_progress=False
-        )
-        self._abort_if_unique_id_configured(updates=data)
+        ):
+            # Also reloads an entry whose setup failed on the old login.
+            return self.async_update_reload_and_abort(
+                entry, data=data, reason="already_configured"
+            )
 
         return self.async_create_entry(
             title=cloud_device[DeviceAttribute.NAME], data=data
@@ -207,7 +208,7 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         return AristonOptionsFlow()
 
 
-class AristonOptionsFlow(config_entries.OptionsFlow):
+class AristonOptionsFlow(config_entries.OptionsFlowWithReload):
     """Handle Ariston options."""
 
     async def async_step_init(self, user_input=None):
@@ -216,13 +217,9 @@ class AristonOptionsFlow(config_entries.OptionsFlow):
             return self.async_create_entry(title="", data=user_input)
 
         options = self.config_entry.options
-        scan_interval = options.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL_SECONDS)
-        energy_scan_interval = options.get(
-            ENERGY_SCAN_INTERVAL, DEFAULT_ENERGY_SCAN_INTERVAL_MINUTES
-        )
-        bus_errors_scan_interval = options.get(
-            BUS_ERRORS_SCAN_INTERVAL, DEFAULT_BUS_ERRORS_SCAN_INTERVAL_SECONDS
-        )
+        scan_interval = interval_option(options, CONF_SCAN_INTERVAL)
+        energy_scan_interval = interval_option(options, ENERGY_SCAN_INTERVAL)
+        bus_errors_scan_interval = interval_option(options, BUS_ERRORS_SCAN_INTERVAL)
 
         return self.async_show_form(
             step_id="init",
