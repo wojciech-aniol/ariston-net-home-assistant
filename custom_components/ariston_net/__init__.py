@@ -4,7 +4,9 @@ from __future__ import annotations
 
 import logging
 
+import aiohttp
 from ariston import Ariston, DeviceAttribute, SystemType
+from ariston.ariston_api import ConnectionException
 from ariston.const import ARISTON_API_URL, ARISTON_USER_AGENT
 from homeassistant.const import (
     CONF_DEVICE,
@@ -14,7 +16,11 @@ from homeassistant.const import (
     Platform,
 )
 from homeassistant.core import HomeAssistant
-from homeassistant.exceptions import ConfigEntryAuthFailed, ConfigEntryNotReady
+from homeassistant.exceptions import (
+    ConfigEntryAuthFailed,
+    ConfigEntryNotReady,
+    HomeAssistantError,
+)
 from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.typing import ConfigType
 from homeassistant.util.unit_system import METRIC_SYSTEM
@@ -35,6 +41,7 @@ from .const import (
     ENERGY_SCAN_INTERVAL,
 )
 from .coordinator import AristonConfigEntry, AristonData, DeviceDataUpdateCoordinator
+from .errors import CloudErrorKind, classify_error, describe_error
 from .menu_items import add_extra_menu_items, async_find_blocked_menu_items
 from .services import async_setup_services
 
@@ -74,18 +81,24 @@ async def async_setup_entry(hass: HomeAssistant, entry: AristonConfigEntry) -> b
             api_user_agent,
         )
         if not response:
-            _LOGGER.error(
-                "Failed to connect to Ariston with device: %s",
-                entry.data[CONF_DEVICE].get(DeviceAttribute.NAME),
+            raise ConfigEntryAuthFailed(
+                translation_domain=DOMAIN,
+                translation_key="auth_failed",
+                translation_placeholders={"error": "login refused"},
             )
-            raise ConfigEntryAuthFailed
 
         device = await ariston.async_hello(
             entry.data[CONF_DEVICE].get(DeviceAttribute.GW),
             hass.config.units is METRIC_SYSTEM,
         )
         if device is None:
-            return False
+            raise ConfigEntryNotReady(
+                translation_domain=DOMAIN,
+                translation_key="device_not_in_account",
+                translation_placeholders={
+                    "name": entry.data[CONF_DEVICE].get(DeviceAttribute.NAME) or ""
+                },
+            )
 
         if device.system_type is SystemType.GALEVO:
             add_extra_menu_items(
@@ -164,13 +177,37 @@ async def async_setup_entry(hass: HomeAssistant, entry: AristonConfigEntry) -> b
         await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
 
         entry.async_on_unload(entry.add_update_listener(update_listener))
-    except ConfigEntryAuthFailed:
+    except (ConfigEntryAuthFailed, ConfigEntryNotReady):
         raise
+    except ConnectionException as error:
+        raise _setup_error(error) from error
+    except (aiohttp.ClientError, TimeoutError) as error:
+        raise ConfigEntryNotReady(
+            translation_domain=DOMAIN,
+            translation_key="setup_failed",
+            translation_placeholders={"error": describe_error(error)},
+        ) from error
     except Exception as error:
-        _LOGGER.exception("Failed to set up Ariston NET")
+        _LOGGER.exception("Unexpected error while setting up Ariston NET")
         raise ConfigEntryNotReady from error
 
     return True
+
+
+def _setup_error(error: ConnectionException) -> HomeAssistantError:
+    """Return the setup error for a cloud error: reauth or a retry later."""
+    placeholders = {"error": describe_error(error)}
+    if classify_error(error) is CloudErrorKind.AUTH:
+        return ConfigEntryAuthFailed(
+            translation_domain=DOMAIN,
+            translation_key="auth_failed",
+            translation_placeholders=placeholders,
+        )
+    return ConfigEntryNotReady(
+        translation_domain=DOMAIN,
+        translation_key="setup_failed",
+        translation_placeholders=placeholders,
+    )
 
 
 async def update_listener(hass: HomeAssistant, entry: AristonConfigEntry) -> None:

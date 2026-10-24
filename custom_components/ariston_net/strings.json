@@ -96,6 +96,12 @@
     },
     "rate_limited": {
       "message": "The Ariston cloud got too many requests from this account (HTTP 429). Updates slow down for a while."
+    },
+    "setup_failed": {
+      "message": "Could not connect to the Ariston cloud ({error}). Home Assistant tries again later."
+    },
+    "device_not_in_account": {
+      "message": "The Ariston cloud did not list the device {name} for this account. Home Assistant tries again later."
     }
   }
 }
