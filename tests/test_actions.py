@@ -22,6 +22,8 @@ from homeassistant.core import HomeAssistant
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
+from .conftest import set_item
+
 
 @pytest.fixture
 async def init_two_zones(
@@ -55,13 +57,14 @@ async def call_and_check(
 
 
 @pytest.mark.parametrize(
-    ("entity_id", "method"),
+    ("entity_id", "item_id", "method"),
     [
         (
             "switch.nimbus_ariston_net_automatic_thermoregulation",
+            "AutomaticThermoregulation",
             "async_set_automatic_thermoregulation",
         ),
-        ("switch.nimbus_ariston_net_is_quiet", "async_set_is_quiet"),
+        ("switch.nimbus_ariston_net_is_quiet", "IsQuite", "async_set_is_quiet"),
     ],
 )
 @pytest.mark.parametrize(
@@ -71,12 +74,16 @@ async def test_switch_calls_library(
     hass: HomeAssistant,
     init_two_zones: MockConfigEntry,
     device: AristonGalevoDevice,
+    properties: dict[str, Any],
     entity_id: str,
+    item_id: str,
     method: str,
     service: str,
     value: bool,
 ) -> None:
     """Test turning a switch on or off calls its library method."""
+    # The device holds the fake cloud's data, so start from the other value.
+    set_item(properties, item_id, value=not value)
     await call_and_check(
         hass,
         device,

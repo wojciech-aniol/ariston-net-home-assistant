@@ -31,6 +31,8 @@ Tests and lint pass before every commit.
   decorator every entity action needs (a test checks it). `const.py`: constants only.
 - Each platform file holds its description class and list. Entity behaviour sits in description
   lambdas (`get_native_value`, `set_value`, ...). List order is entity order in snapshots.
+- `tests/test_requests.py` counts cloud requests of setup, each poll and each action. A change
+  that changes a count updates it there and says why in the PR.
 - Library source: `.venv/lib/python3.14/site-packages/ariston/`. Devices: `galevo_device.py`,
   `bsb_device.py`, `velis_*`, `evo_*`, `lux*`, `lydos*`, `nuos_split_device.py`; HTTP and
   `ConnectionException` in `ariston_api.py`.

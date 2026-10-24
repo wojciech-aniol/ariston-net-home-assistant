@@ -84,6 +84,8 @@ The commit messages list what was skipped from each pull request and why.
   library has no reset time, so statistics would count the same value again after each restart.
 - Clear errors: a refused password starts re-authentication (password only), and cloud errors
   of an action show a message instead of a traceback. The interval options have minimums.
+- Fewer cloud requests: an action that sets the value the device already has sends nothing, a
+  preset change no longer reads the whole state again, and actions reach the cloud one at a time.
 - Diagnostics (**Download diagnostics** on the integration page) with the raw cloud data. Login,
   gateway, serial numbers and names are removed.
 - Its own icon (`custom_components/ariston_net/brand`).

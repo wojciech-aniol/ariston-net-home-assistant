@@ -9,6 +9,7 @@ from unittest.mock import MagicMock
 
 import aiohttp
 from ariston.ariston_api import ConnectionException
+from ariston.const import PlantMode, ZoneMode
 from homeassistant.components.climate import (
     ATTR_HVAC_MODE,
     ATTR_PRESET_MODE,
@@ -54,7 +55,7 @@ from custom_components.ariston_net.errors import (
     describe_error,
 )
 
-from .conftest import setup_integration, tracebacks
+from .conftest import set_item, setup_integration, tracebacks
 
 
 def login_error(cause: Exception | None) -> ConnectionException:
@@ -272,7 +273,8 @@ async def test_entity_action_error_shows_earlier_writes(
     api: MagicMock,
 ) -> None:
     """Test the writes that worked before a failed one show in the states."""
-    properties["items"][0]["value"] = 0
+    set_item(properties, "PlantMode", value=PlantMode.SUMMER.value)
+    set_item(properties, "ZoneMode", value=ZoneMode.TIME_PROGRAM.value)
     await setup_integration(hass, config_entry)
     api.async_set_property.side_effect = [None, ConnectionException(500)]
 

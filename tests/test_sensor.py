@@ -7,12 +7,14 @@ from unittest.mock import MagicMock
 from ariston.ariston_api import ConnectionException
 from freezegun.api import FrozenDateTimeFactory
 from homeassistant.components.sensor import ATTR_LAST_RESET
+from homeassistant.config_entries import ConfigEntryState
 from homeassistant.const import ATTR_UNIT_OF_MEASUREMENT, STATE_UNKNOWN
 from homeassistant.core import HomeAssistant
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.ariston_net.const import ATTR_ERRORS
+from custom_components.ariston_net.coordinator import DeviceDataUpdateCoordinator
 from custom_components.ariston_net.sensor import (
     AristonSensor,
     AristonSensorEntityDescription,
@@ -104,27 +106,79 @@ async def test_total_energy_last_reset_after_data_changes(
     assert state.attributes[ATTR_LAST_RESET] == "2026-10-18T11:00:00+00:00"
 
 
-async def test_energy_sensors_added_once(
+@pytest.fixture
+async def energy_late(
     hass: HomeAssistant,
     api: MagicMock,
     mock_ariston: MagicMock,
     full_galevo: MagicMock,
     config_entry: MockConfigEntry,
-) -> None:
-    """Test energy sensors added late are not added again on the next refresh."""
+) -> DeviceDataUpdateCoordinator:
+    """Set the entry up while the energy data fails, and return its coordinator."""
     api.async_get_consumptions_sequences.side_effect = ConnectionException(500)
     await setup_integration(hass, config_entry)
-    energy_coordinator = runtime_data(hass).energy_coordinator
     api.async_get_consumptions_sequences.side_effect = None
-    await energy_coordinator.async_refresh()
+    return runtime_data(hass).energy_coordinator
+
+
+def listener_names(coordinator: DeviceDataUpdateCoordinator) -> list[str]:
+    """Return the names of the coordinator's listener callbacks."""
+    return [listener.__name__ for listener, _ in coordinator._listeners.values()]
+
+
+async def test_energy_sensors_added_once(
+    hass: HomeAssistant, energy_late: DeviceDataUpdateCoordinator
+) -> None:
+    """Test energy sensors added late are not added again on the next refresh."""
+    await energy_late.async_refresh()
     await hass.async_block_till_done()
     sensors = hass.states.async_entity_ids("sensor")
     assert CH_ENERGY in sensors
 
-    await energy_coordinator.async_refresh()
+    await energy_late.async_refresh()
     await hass.async_block_till_done()
 
     assert hass.states.async_entity_ids("sensor") == sensors
+
+
+async def test_energy_sensors_listener_removed_after_adding(
+    hass: HomeAssistant, energy_late: DeviceDataUpdateCoordinator
+) -> None:
+    """Test the late energy sensor listener goes away once the sensors are added."""
+    assert "async_add_energy_sensors" in listener_names(energy_late)
+
+    await energy_late.async_refresh()
+    await hass.async_block_till_done()
+
+    assert CH_ENERGY in hass.states.async_entity_ids("sensor")
+    assert "async_add_energy_sensors" not in listener_names(energy_late)
+
+
+async def test_energy_sensors_wait_while_energy_fails(
+    hass: HomeAssistant, energy_late: DeviceDataUpdateCoordinator
+) -> None:
+    """Test an update without energy data adds no sensor and keeps waiting."""
+    energy_late.async_update_listeners()
+    await hass.async_block_till_done()
+
+    assert CH_ENERGY not in hass.states.async_entity_ids("sensor")
+    assert "async_add_energy_sensors" in listener_names(energy_late)
+
+
+@pytest.mark.parametrize("energy_arrived", [False, True], ids=["waiting", "added"])
+async def test_energy_late_entry_unloads(
+    hass: HomeAssistant,
+    config_entry: MockConfigEntry,
+    energy_late: DeviceDataUpdateCoordinator,
+    energy_arrived: bool,
+) -> None:
+    """Test the entry unloads whether or not the late energy sensors were added."""
+    if energy_arrived:
+        await energy_late.async_refresh()
+        await hass.async_block_till_done()
+
+    assert await hass.config_entries.async_unload(config_entry.entry_id)
+    assert config_entry.state is ConfigEntryState.NOT_LOADED
 
 
 async def test_errors_count_lists_bus_errors(

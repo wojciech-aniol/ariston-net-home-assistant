@@ -33,6 +33,10 @@ from .entity import (
 _LOGGER = logging.getLogger(__name__)
 
 
+# Send writes to the cloud one at a time.
+PARALLEL_UPDATES = 1
+
+
 @dataclass(kw_only=True, frozen=True)
 class AristonWaterHeaterEntityDescription(
     WaterHeaterEntityDescription, AristonBaseEntityDescription
@@ -184,12 +188,16 @@ class AristonWaterHeater(AristonEntity, WaterHeaterEntity):
             self.name,
         )
 
+        if temperature == self.target_temperature:
+            return
         await self.device.async_set_water_heater_temperature(temperature)
         self.async_write_ha_state()
 
     @cloud_action
     async def async_set_operation_mode(self, operation_mode):
         """Set operation mode."""
+        if operation_mode == self.current_operation:
+            return
         await self.device.async_set_water_heater_operation_mode(operation_mode)
         self.async_write_ha_state()
 

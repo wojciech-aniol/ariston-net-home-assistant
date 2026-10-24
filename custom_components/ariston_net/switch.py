@@ -32,6 +32,9 @@ from .entity import (
     is_entity_supported,
 )
 
+# Send writes to the cloud one at a time.
+PARALLEL_UPDATES = 1
+
 
 @dataclass(kw_only=True, frozen=True)
 class AristonSwitchEntityDescription(
@@ -218,11 +221,16 @@ class AristonSwitch(AristonEntity, SwitchEntity):
     @cloud_action
     async def async_turn_on(self, **kwargs) -> None:
         """Turn the switch on."""
-        await self.entity_description.set_value(self, True)
-        self.async_write_ha_state()
+        await self._async_set(True)
 
     @cloud_action
     async def async_turn_off(self, **kwargs) -> None:
         """Turn the device off."""
-        await self.entity_description.set_value(self, False)
+        await self._async_set(False)
+
+    async def _async_set(self, is_on: bool) -> None:
+        """Turn the switch on or off, unless it already is."""
+        if self.is_on == is_on:
+            return
+        await self.entity_description.set_value(self, is_on)
         self.async_write_ha_state()

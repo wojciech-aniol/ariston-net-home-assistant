@@ -30,6 +30,9 @@ from .entity import (
     is_entity_supported,
 )
 
+# Send writes to the cloud one at a time.
+PARALLEL_UPDATES = 1
+
 
 @dataclass(kw_only=True, frozen=True)
 class AristonSelectEntityDescription(
@@ -188,5 +191,7 @@ class AristonSelect(AristonEntity, SelectEntity):
     @cloud_action
     async def async_select_option(self, option: str):
         """Change the selected option."""
+        if option == self.current_option:
+            return
         await self.entity_description.select_option(self, option)
         self.async_write_ha_state()
