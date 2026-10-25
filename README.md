@@ -32,7 +32,7 @@ upstream support, but they are not tested here.
 
 - Domain `ariston_net` instead of `ariston`. Config entries of the `ariston` domain are not
   migrated: set up the integration again.
-- Entity names start with "Ariston NET", so entity IDs change (see [Good to know](#good-to-know)).
+- Entity names and IDs differ from upstream (see [Good to know](#good-to-know)).
 - Services are `ariston_net.create_vacation` and `ariston_net.set_item_by_id`.
 - Entities the device never reports are not created: the flame sensor needs a flame value, the
   CH return temperature needs its menu value.
@@ -129,10 +129,9 @@ Home Assistant.
   English), and Home Assistant puts the device name in front: "Dom Heat pump" for a device named
   "Dom". Climate and water heater entities use only the device name (`climate.dom`,
   `water_heater.dom`). Sensors still start with "Ariston NET".
-- Entity IDs never change once made. Older installs keep IDs like
-  `binary_sensor.dom_ariston_net_is_heating_pump_on`; new installs get shorter ones made from the
-  name in the Home Assistant language, like `binary_sensor.dom_heat_pump` or
-  `binary_sensor.dom_pompa_ciepla`.
+- Entity IDs never change once made, so existing entities keep theirs. New installs get shorter
+  ones made from the new names, like `binary_sensor.dom_heat_pump` (on Home Assistant 2026.10 in
+  its language, like `binary_sensor.dom_pompa_ciepla`).
 - Default polling: state every 180 s, energy every 60 min, bus errors every 600 s
   (**Configure** in the integration options, where you can also turn off energy and bus errors
   polling). The Ariston cloud throttles accounts (HTTP 429 and 500), so do not poll more often.
