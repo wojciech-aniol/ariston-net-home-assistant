@@ -83,43 +83,16 @@
         "default": "mdi:shower-head"
       },
       "heating_gas_last_month": {
-        "default": "mdi:cash"
-      },
-      "heating_electricity_last_month": {
-        "default": "mdi:cash"
-      },
-      "cooling_electricity_last_month": {
-        "default": "mdi:cash"
+        "default": "mdi:meter-gas"
       },
       "dhw_gas_last_month": {
-        "default": "mdi:cash"
-      },
-      "dhw_electricity_last_month": {
-        "default": "mdi:cash"
-      },
-      "heating_energy": {
-        "default": "mdi:cash"
-      },
-      "dhw_energy": {
-        "default": "mdi:cash"
+        "default": "mdi:meter-gas"
       },
       "heating_gas": {
-        "default": "mdi:cash"
-      },
-      "dhw_heat_pump_electricity": {
-        "default": "mdi:cash"
-      },
-      "dhw_resistor_electricity": {
-        "default": "mdi:cash"
+        "default": "mdi:meter-gas"
       },
       "dhw_gas": {
-        "default": "mdi:cash"
-      },
-      "heating_electricity": {
-        "default": "mdi:cash"
-      },
-      "dhw_electricity": {
-        "default": "mdi:cash"
+        "default": "mdi:meter-gas"
       },
       "remaining_time": {
         "default": "mdi:timer"

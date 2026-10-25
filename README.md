@@ -135,8 +135,8 @@ Home Assistant.
 - Entity IDs never change once made, so existing entities keep theirs. New installs get shorter
   ones made from the new names, like `binary_sensor.dom_heat_pump` (on Home Assistant 2026.10 in
   its language, like `binary_sensor.dom_pompa_ciepla`).
-- Total energy sensors are main sensors, not diagnostic ones. New installs create the signal
-  strength sensor disabled; enable it in the entity settings if you need it.
+- Energy sensors are main sensors, not diagnostic ones. New installs create the signal strength
+  sensor disabled; enable it in the entity settings if you need it.
 - Default polling: state every 180 s, energy every 60 min, bus errors every 600 s
   (**Configure** in the integration options, where you can also turn off energy and bus errors
   polling). The Ariston cloud throttles accounts (HTTP 429 and 500), so do not poll more often.
