@@ -82,8 +82,8 @@
         },
         "data_description": {
           "scan_interval": "How often to read the device state, in seconds. Use at least {scan_interval_min}: the Ariston cloud blocks accounts that poll too often.",
-          "enable_energy": "Read energy use from the cloud. Turn off to send fewer requests.",
-          "energy_scan_interval": "How often to read energy use, in minutes. Use at least {energy_scan_interval_min}: the Ariston cloud blocks accounts that poll too often.",
+          "enable_energy": "Read energy use and heat produced from the cloud. Turn off to send fewer requests.",
+          "energy_scan_interval": "How often to read energy use and heat produced, in minutes. Use at least {energy_scan_interval_min}: the Ariston cloud blocks accounts that poll too often.",
           "enable_bus_errors": "Read the error list of the device from the cloud. Turn off to send fewer requests.",
           "bus_errors_scan_interval": "How often to read the error list, in seconds. Use at least {bus_errors_scan_interval_min}: the Ariston cloud blocks accounts that poll too often."
         },
@@ -238,6 +238,36 @@
       },
       "dhw_electricity": {
         "name": "Hot water electricity"
+      },
+      "heating_produced_today": {
+        "name": "Heating energy produced today"
+      },
+      "dhw_produced_today": {
+        "name": "Hot water energy produced today"
+      },
+      "cooling_produced_today": {
+        "name": "Cooling energy produced today"
+      },
+      "heating_produced_this_month": {
+        "name": "Heating energy produced this month"
+      },
+      "dhw_produced_this_month": {
+        "name": "Hot water energy produced this month"
+      },
+      "cooling_produced_this_month": {
+        "name": "Cooling energy produced this month"
+      },
+      "heating_cop_yesterday": {
+        "name": "Heating COP yesterday"
+      },
+      "dhw_cop_yesterday": {
+        "name": "Hot water COP yesterday"
+      },
+      "heating_cop_this_month": {
+        "name": "Heating COP this month"
+      },
+      "dhw_cop_this_month": {
+        "name": "Hot water COP this month"
       },
       "remaining_time": {
         "name": "Remaining time"

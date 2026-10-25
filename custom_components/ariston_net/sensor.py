@@ -18,6 +18,9 @@ from ariston_net_api.const import (
     EvoLydosDeviceProperties,
     EvoOneDeviceProperties,
     MenuItemNames,
+    MeteringPeriod,
+    MeteringSeries,
+    MeteringTab,
     PropertyType,
     SlpDeviceSettings,
     SystemType,
@@ -38,6 +41,7 @@ from homeassistant.const import (
 )
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
+from homeassistant.util import dt as dt_util
 
 from .const import (
     ATTR_ERRORS,
@@ -45,6 +49,7 @@ from .const import (
     ENERGY_COORDINATOR,
     EXTRA_STATE_ATTRIBUTE,
     EXTRA_STATE_DEVICE_METHOD,
+    METERING_COORDINATOR,
     NAME,
 )
 from .coordinator import AristonConfigEntry, DeviceDataUpdateCoordinator
@@ -66,7 +71,112 @@ class AristonSensorEntityDescription(
 
     get_native_unit_of_measurement: Callable[[Any], str] | None = None
     get_last_reset: Callable[[Any], datetime] | None = None
+    get_available: Callable[[Any], bool] | None = None
     get_native_value: Callable[[Any], Any]
+
+
+METERING_SERIES_FEATURES: dict[MeteringSeries, list[str]] = {
+    MeteringSeries.HEATING: [DeviceFeatures.HAS_METERING],
+    MeteringSeries.DHW: [DeviceFeatures.HAS_METERING, CustomDeviceFeatures.HAS_DHW],
+    MeteringSeries.COOLING: [DeviceFeatures.HAS_METERING],
+}
+
+
+def _has_metering_rows(
+    device: Any, series: MeteringSeries, period: MeteringPeriod, *tabs: MeteringTab
+) -> bool:
+    """Return True if the device has the metering rows of a sensor."""
+    # The cloud sends cooling rows also for devices that cannot cool.
+    if series is MeteringSeries.COOLING and not (
+        device.plant_mode_options is not None
+        and device.is_plant_mode_options_contains_cooling
+    ):
+        return False
+    return all(
+        device.get_metering_total(tab, series, period) is not None for tab in tabs
+    )
+
+
+def _is_metering_on(entity: Any) -> bool:
+    """Return False while the web app shows metering as off."""
+    return not entity.device.is_metering_intensive_logs_active
+
+
+def _metering_day_start(entity: Any) -> datetime:
+    """Return the start of the local day of the last good update."""
+    # Not now: data fetched before midnight is still the old day.
+    updated = dt_util.as_local(entity.coordinator.last_update_success_time)
+    return dt_util.start_of_local_day(updated)
+
+
+def _metering_month_start(entity: Any) -> datetime:
+    """Return the start of the local month of the last good update."""
+    updated = dt_util.as_local(entity.coordinator.last_update_success_time)
+    return dt_util.start_of_local_day(updated.date().replace(day=1))
+
+
+def _cop(device: Any, series: MeteringSeries, period: MeteringPeriod) -> float | None:
+    """Return the energy produced per kWh of electricity used."""
+    produced = device.get_metering_total(MeteringTab.PRODUCED_ENERGY, series, period)
+    used = device.get_metering_total(MeteringTab.CONSUMED_ELECTRICITY, series, period)
+    if produced is None or not used:
+        return None
+    return produced / used
+
+
+def _produced_energy_description(
+    key: str,
+    name: str,
+    series: MeteringSeries,
+    period: MeteringPeriod,
+    get_last_reset: Callable[[Any], datetime],
+) -> AristonSensorEntityDescription:
+    """Describe a sensor of the energy produced in a period."""
+    return AristonSensorEntityDescription(
+        key=key,
+        name=name,
+        translation_key=key,
+        state_class=SensorStateClass.TOTAL,
+        device_class=SensorDeviceClass.ENERGY,
+        native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
+        suggested_display_precision=1,
+        device_features=METERING_SERIES_FEATURES[series],
+        system_types=[SystemType.GALEVO],
+        coordinator=METERING_COORDINATOR,
+        get_is_supported=lambda device: _has_metering_rows(
+            device, series, period, MeteringTab.PRODUCED_ENERGY
+        ),
+        get_available=_is_metering_on,
+        get_native_value=lambda entity: entity.device.get_metering_total(
+            MeteringTab.PRODUCED_ENERGY, series, period
+        ),
+        get_last_reset=get_last_reset,
+    )
+
+
+def _cop_description(
+    key: str, name: str, series: MeteringSeries, period: MeteringPeriod
+) -> AristonSensorEntityDescription:
+    """Describe a sensor of the COP in a period."""
+    return AristonSensorEntityDescription(
+        key=key,
+        name=name,
+        translation_key=key,
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=1,
+        device_features=METERING_SERIES_FEATURES[series],
+        system_types=[SystemType.GALEVO],
+        coordinator=METERING_COORDINATOR,
+        get_is_supported=lambda device: _has_metering_rows(
+            device,
+            series,
+            period,
+            MeteringTab.PRODUCED_ENERGY,
+            MeteringTab.CONSUMED_ELECTRICITY,
+        ),
+        get_available=_is_metering_on,
+        get_native_value=lambda entity: _cop(entity.device, series, period),
+    )
 
 
 ARISTON_SENSOR_TYPES: list[AristonSensorEntityDescription] = [
@@ -441,6 +551,72 @@ ARISTON_SENSOR_TYPES: list[AristonSensorEntityDescription] = [
             entity.device.consumption_sequence_last_changed_utc
         ),
     ),
+    _produced_energy_description(
+        "heating_produced_today",
+        f"{NAME} heating energy produced today",
+        MeteringSeries.HEATING,
+        MeteringPeriod.CURRENT_DAY,
+        _metering_day_start,
+    ),
+    _produced_energy_description(
+        "dhw_produced_today",
+        f"{NAME} DHW energy produced today",
+        MeteringSeries.DHW,
+        MeteringPeriod.CURRENT_DAY,
+        _metering_day_start,
+    ),
+    _produced_energy_description(
+        "cooling_produced_today",
+        f"{NAME} cooling energy produced today",
+        MeteringSeries.COOLING,
+        MeteringPeriod.CURRENT_DAY,
+        _metering_day_start,
+    ),
+    _produced_energy_description(
+        "heating_produced_this_month",
+        f"{NAME} heating energy produced this month",
+        MeteringSeries.HEATING,
+        MeteringPeriod.CURRENT_MONTH,
+        _metering_month_start,
+    ),
+    _produced_energy_description(
+        "dhw_produced_this_month",
+        f"{NAME} DHW energy produced this month",
+        MeteringSeries.DHW,
+        MeteringPeriod.CURRENT_MONTH,
+        _metering_month_start,
+    ),
+    _produced_energy_description(
+        "cooling_produced_this_month",
+        f"{NAME} cooling energy produced this month",
+        MeteringSeries.COOLING,
+        MeteringPeriod.CURRENT_MONTH,
+        _metering_month_start,
+    ),
+    _cop_description(
+        "heating_cop_yesterday",
+        f"{NAME} heating COP yesterday",
+        MeteringSeries.HEATING,
+        MeteringPeriod.PREVIOUS_DAY,
+    ),
+    _cop_description(
+        "dhw_cop_yesterday",
+        f"{NAME} DHW COP yesterday",
+        MeteringSeries.DHW,
+        MeteringPeriod.PREVIOUS_DAY,
+    ),
+    _cop_description(
+        "heating_cop_this_month",
+        f"{NAME} heating COP this month",
+        MeteringSeries.HEATING,
+        MeteringPeriod.CURRENT_MONTH,
+    ),
+    _cop_description(
+        "dhw_cop_this_month",
+        f"{NAME} DHW COP this month",
+        MeteringSeries.DHW,
+        MeteringPeriod.CURRENT_MONTH,
+    ),
     AristonSensorEntityDescription(
         key=EvoDeviceProperties.RM_TM,
         name=f"{NAME} remaining time",
@@ -548,7 +724,10 @@ async def async_setup_entry(
     """Set up the Ariston sensors from config entry."""
     data = entry.runtime_data
     ariston_sensors: list[AristonSensor] = []
-    skipped_energy_descriptions: list[AristonSensorEntityDescription] = []
+    skipped_descriptions: dict[str, list[AristonSensorEntityDescription]] = {
+        ENERGY_COORDINATOR: [],
+        METERING_COORDINATOR: [],
+    }
 
     for description in ARISTON_SENSOR_TYPES:
         coordinator = data.get_coordinator(description.coordinator)
@@ -559,40 +738,49 @@ async def async_setup_entry(
                     description,
                 )
             )
-        elif description.coordinator == ENERGY_COORDINATOR:
-            skipped_energy_descriptions.append(description)
+        elif description.coordinator in skipped_descriptions:
+            skipped_descriptions[description.coordinator].append(description)
 
     async_add_entities(ariston_sensors)
 
-    energy_coordinator = data.energy_coordinator
-    if (
-        not energy_coordinator
-        or energy_coordinator.last_update_success
-        or not skipped_energy_descriptions
-    ):
+    for name, descriptions in skipped_descriptions.items():
+        _async_add_sensors_later(
+            entry, data.get_coordinator(name), descriptions, async_add_entities
+        )
+
+
+@callback
+def _async_add_sensors_later(
+    entry: AristonConfigEntry,
+    coordinator: DeviceDataUpdateCoordinator | None,
+    descriptions: list[AristonSensorEntityDescription],
+    async_add_entities: AddConfigEntryEntitiesCallback,
+) -> None:
+    """Add the skipped sensors of a coordinator after its first good update."""
+    if not coordinator or coordinator.last_update_success or not descriptions:
         return
 
-    # Energy features are known only after the first good energy update.
+    # Some features are known only after the first good update.
     @callback
-    def async_add_energy_sensors() -> None:
-        """Add the energy sensors once energy data is available, then stop."""
-        if not energy_coordinator.last_update_success:
+    def async_add_late_sensors() -> None:
+        """Add the sensors once the coordinator has data, then stop."""
+        if not coordinator.last_update_success:
             return
         async_add_entities(
-            AristonSensor(energy_coordinator, description)
-            for description in skipped_energy_descriptions
-            if is_entity_supported(energy_coordinator, description)
+            AristonSensor(coordinator, description)
+            for description in descriptions
+            if is_entity_supported(coordinator, description)
         )
-        skipped_energy_descriptions.clear()
+        descriptions.clear()
         remove_listener()
 
     @callback
     def async_remove_listener() -> None:
-        """Stop waiting for energy data when the entry unloads."""
-        if skipped_energy_descriptions:
+        """Stop waiting for data when the entry unloads."""
+        if descriptions:
             remove_listener()
 
-    remove_listener = energy_coordinator.async_add_listener(async_add_energy_sensors)
+    remove_listener = coordinator.async_add_listener(async_add_late_sensors)
     entry.async_on_unload(async_remove_listener)
 
 
@@ -608,6 +796,14 @@ class AristonSensor(AristonEntity, SensorEntity):
     ) -> None:
         """Initialize the entity."""
         super().__init__(coordinator, description)
+
+    @property
+    def available(self) -> bool:
+        """Return True if the coordinator works and the sensor has data."""
+        return super().available and (
+            self.entity_description.get_available is None
+            or self.entity_description.get_available(self)
+        )
 
     @property
     def native_value(self):

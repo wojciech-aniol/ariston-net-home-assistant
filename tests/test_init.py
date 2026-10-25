@@ -36,7 +36,13 @@ from custom_components.ariston_net.const import (
     ENERGY_SCAN_INTERVAL,
 )
 
-from .conftest import runtime_data, setup_integration, tracebacks
+from .conftest import (
+    GALEVO,
+    METERING_SENSORS,
+    runtime_data,
+    setup_integration,
+    tracebacks,
+)
 
 CLIMATE = "climate.nimbus"
 WATER_HEATER = "water_heater.nimbus"
@@ -267,6 +273,84 @@ async def test_energy_polling_can_be_disabled(
     assert hass.states.get(ERRORS_COUNT) is not None
 
 
+async def test_metering_failure_leaves_out_only_metering_sensors(
+    hass: HomeAssistant,
+    api: MagicMock,
+    mock_ariston: MagicMock,
+    full_galevo: MagicMock,
+    config_entry: MockConfigEntry,
+    caplog: pytest.LogCaptureFixture,
+) -> None:
+    """Test a failing heat produced refresh keeps every other entity."""
+    api.async_get_metering_data.side_effect = ConnectionException(500)
+    await setup_integration(hass, config_entry)
+    assert config_entry.state is ConfigEntryState.LOADED
+    assert "Could not fetch Ariston heat produced data" in caplog.text
+    entity_ids = set(hass.states.async_entity_ids())
+
+    api.async_get_metering_data.side_effect = None
+    await runtime_data(hass).metering_coordinator.async_refresh()
+    await hass.async_block_till_done()
+
+    assert set(hass.states.async_entity_ids()) - entity_ids == set(METERING_SENSORS)
+
+
+@pytest.mark.parametrize(
+    "error",
+    [
+        ConnectionException("Web login failed"),
+        ConnectionException(401),
+        ConnectionException(403),
+    ],
+    ids=["login-failed", "401", "403"],
+)
+async def test_metering_error_does_not_start_reauth(
+    hass: HomeAssistant,
+    api: MagicMock,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+    error: ConnectionException,
+) -> None:
+    """Test a heat produced error never asks for a new login."""
+    api.async_get_metering_data.side_effect = error
+
+    await setup_integration(hass, config_entry)
+    await runtime_data(hass).metering_coordinator.async_refresh()
+    await hass.async_block_till_done()
+
+    assert config_entry.state is ConfigEntryState.LOADED
+    assert not hass.config_entries.flow.async_progress_by_handler(DOMAIN)
+
+
+@pytest.mark.parametrize(
+    ("device_type", "options", "has_metering"),
+    [
+        (GALEVO, {ENABLE_ENERGY: False}, True),
+        (GALEVO, {}, False),
+        ("bsb", {}, True),
+    ],
+    ids=["energy-off", "no-metering", "bsb"],
+)
+async def test_metering_needs_galevo_metering_and_energy_option(
+    hass: HomeAssistant,
+    api: MagicMock,
+    features: dict[str, Any],
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+    options: dict[str, Any],
+    has_metering: bool,
+) -> None:
+    """Test heat produced is fetched only for GALEVO metering with energy on."""
+    hass.config_entries.async_update_entry(config_entry, options=options)
+    features["hasMetering"] = has_metering
+
+    await setup_integration(hass, config_entry)
+
+    assert config_entry.state is ConfigEntryState.LOADED
+    assert runtime_data(hass).metering_coordinator is None
+    api.async_get_metering_data.assert_not_called()
+
+
 async def test_bus_errors_polling_can_be_disabled(
     hass: HomeAssistant,
     api: MagicMock,
@@ -458,9 +542,11 @@ async def test_unload_failure_keeps_entry_data(
     [
         (CONF_SCAN_INTERVAL, 30, "coordinator", timedelta(seconds=60)),
         (ENERGY_SCAN_INTERVAL, 5, "energy_coordinator", timedelta(minutes=15)),
+        (ENERGY_SCAN_INTERVAL, 5, "metering_coordinator", timedelta(minutes=15)),
         (BUS_ERRORS_SCAN_INTERVAL, 10, "bus_errors_coordinator", timedelta(seconds=60)),
         (CONF_SCAN_INTERVAL, 10**15, "coordinator", timedelta(days=1)),
         (ENERGY_SCAN_INTERVAL, 10**15, "energy_coordinator", timedelta(days=1)),
+        (ENERGY_SCAN_INTERVAL, 10**15, "metering_coordinator", timedelta(days=1)),
         (BUS_ERRORS_SCAN_INTERVAL, 10**15, "bus_errors_coordinator", timedelta(days=1)),
     ],
 )

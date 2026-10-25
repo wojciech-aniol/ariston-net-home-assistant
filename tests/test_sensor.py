@@ -2,13 +2,18 @@
 
 from __future__ import annotations
 
+from typing import Any
 from unittest.mock import MagicMock
 
 from ariston_net_api.ariston_api import ConnectionException
 from freezegun.api import FrozenDateTimeFactory
 from homeassistant.components.sensor import ATTR_LAST_RESET
 from homeassistant.config_entries import ConfigEntryState
-from homeassistant.const import ATTR_UNIT_OF_MEASUREMENT, STATE_UNKNOWN
+from homeassistant.const import (
+    ATTR_UNIT_OF_MEASUREMENT,
+    STATE_UNAVAILABLE,
+    STATE_UNKNOWN,
+)
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import entity_registry as er
 import pytest
@@ -21,13 +26,29 @@ from custom_components.ariston_net.sensor import (
     AristonSensorEntityDescription,
 )
 
-from .conftest import BUS_ERRORS, refresh_energy, runtime_data, setup_integration
+from .conftest import (
+    BUS_ERRORS,
+    METERING_BINS,
+    METERING_SENSORS,
+    metering_data,
+    refresh_energy,
+    runtime_data,
+    set_item,
+    setup_integration,
+)
 
 SIGNAL_STRENGTH = "sensor.nimbus_signal_strength"
 DHW_CURRENT_TEMP = "sensor.nimbus_hot_water_temperature"
 CH_ENERGY = "sensor.nimbus_heating_energy"
 CH_GAS = "sensor.nimbus_heating_gas_last_month"
 ERRORS_COUNT = "sensor.nimbus_bus_errors"
+HEATING_TODAY = "sensor.nimbus_heating_energy_produced_today"
+HEATING_THIS_MONTH = "sensor.nimbus_heating_energy_produced_this_month"
+COOLING_TODAY = "sensor.nimbus_cooling_energy_produced_today"
+COOLING_THIS_MONTH = "sensor.nimbus_cooling_energy_produced_this_month"
+HEATING_COP_YESTERDAY = "sensor.nimbus_heating_cop_yesterday"
+DHW_COP_THIS_MONTH = "sensor.nimbus_hot_water_cop_this_month"
+HEATING_USED_YESTERDAY = ("ConsumedElectricity", "Heating", "PreviousDay")
 
 
 @pytest.mark.usefixtures("entity_registry_enabled_by_default")
@@ -159,13 +180,13 @@ async def test_energy_sensors_listener_removed_after_adding(
     hass: HomeAssistant, energy_late: DeviceDataUpdateCoordinator
 ) -> None:
     """Test the late energy sensor listener goes away once the sensors are added."""
-    assert "async_add_energy_sensors" in listener_names(energy_late)
+    assert "async_add_late_sensors" in listener_names(energy_late)
 
     await energy_late.async_refresh()
     await hass.async_block_till_done()
 
     assert CH_ENERGY in hass.states.async_entity_ids("sensor")
-    assert "async_add_energy_sensors" not in listener_names(energy_late)
+    assert "async_add_late_sensors" not in listener_names(energy_late)
 
 
 async def test_energy_sensors_wait_while_energy_fails(
@@ -176,7 +197,7 @@ async def test_energy_sensors_wait_while_energy_fails(
     await hass.async_block_till_done()
 
     assert CH_ENERGY not in hass.states.async_entity_ids("sensor")
-    assert "async_add_energy_sensors" in listener_names(energy_late)
+    assert "async_add_late_sensors" in listener_names(energy_late)
 
 
 @pytest.mark.parametrize("energy_arrived", [False, True], ids=["waiting", "added"])
@@ -203,3 +224,132 @@ async def test_errors_count_lists_bus_errors(
 
     assert state.state == "1"
     assert state.attributes[ATTR_ERRORS] == BUS_ERRORS
+
+
+async def refresh_metering(hass: HomeAssistant) -> None:
+    """Fetch the metering data again."""
+    await runtime_data(hass).metering_coordinator.async_refresh()
+    await hass.async_block_till_done()
+
+
+@pytest.mark.parametrize(
+    ("entity_id", "expected"),
+    [
+        (HEATING_TODAY, "3.5"),
+        (HEATING_THIS_MONTH, "62.5"),
+        (COOLING_THIS_MONTH, "4.0"),
+        (HEATING_COP_YESTERDAY, "4.0"),
+        (DHW_COP_THIS_MONTH, "3.5"),
+    ],
+)
+async def test_metering_sensor_shows_metering_totals(
+    hass: HomeAssistant,
+    init_full_integration: MockConfigEntry,
+    entity_id: str,
+    expected: str,
+) -> None:
+    """Test a heat produced or COP sensor shows the sums of its bins."""
+    assert hass.states.get(entity_id).state == expected
+
+
+@pytest.mark.parametrize(
+    ("now", "entity_id", "expected"),
+    [
+        ("2026-10-26 06:30:00+00:00", HEATING_TODAY, "2026-10-25T00:00:00-07:00"),
+        # The month began in summer time.
+        ("2026-11-15 12:00:00+00:00", HEATING_THIS_MONTH, "2026-11-01T00:00:00-07:00"),
+    ],
+)
+async def test_produced_energy_resets_at_local_period_start(
+    hass: HomeAssistant,
+    freezer: FrozenDateTimeFactory,
+    init_full_integration: MockConfigEntry,
+    now: str,
+    entity_id: str,
+    expected: str,
+) -> None:
+    """Test heat produced resets at the start of the local day or month."""
+    freezer.move_to(now)
+
+    await refresh_metering(hass)
+
+    assert hass.states.get(entity_id).attributes[ATTR_LAST_RESET] == expected
+
+
+async def test_produced_energy_keeps_reset_of_update_day(
+    hass: HomeAssistant,
+    freezer: FrozenDateTimeFactory,
+    init_full_integration: MockConfigEntry,
+) -> None:
+    """Test data fetched before midnight keeps its day after midnight."""
+    freezer.move_to("2026-10-26 06:30:00+00:00")
+    await refresh_metering(hass)
+    freezer.move_to("2026-10-26 07:30:00+00:00")
+
+    runtime_data(hass).metering_coordinator.async_update_listeners()
+    await hass.async_block_till_done()
+
+    state = hass.states.get(HEATING_TODAY)
+    assert state.attributes[ATTR_LAST_RESET] == "2026-10-25T00:00:00-07:00"
+
+
+@pytest.mark.parametrize(
+    "bins",
+    [
+        METERING_BINS | {HEATING_USED_YESTERDAY: [0.0, 0.0]},
+        {
+            key: bins
+            for key, bins in METERING_BINS.items()
+            if key != HEATING_USED_YESTERDAY
+        },
+    ],
+    ids=["zero", "missing"],
+)
+async def test_cop_unknown_without_electricity_used(
+    hass: HomeAssistant,
+    api: MagicMock,
+    init_full_integration: MockConfigEntry,
+    bins: dict[tuple[str, str, str], list[float]],
+) -> None:
+    """Test a COP has no value when no electricity use is known."""
+    api.async_get_metering_data.return_value = metering_data(bins)
+
+    await refresh_metering(hass)
+
+    assert hass.states.get(HEATING_COP_YESTERDAY).state == STATE_UNKNOWN
+
+
+@pytest.mark.parametrize("options", [[0, 1, 2, 5], None], ids=["no-cooling", "unknown"])
+async def test_cooling_sensors_need_a_cooling_mode(
+    hass: HomeAssistant,
+    properties: dict[str, Any],
+    mock_ariston: MagicMock,
+    full_galevo: MagicMock,
+    config_entry: MockConfigEntry,
+    options: list[int] | None,
+) -> None:
+    """Test cooling sensors are skipped when the plant modes have no cooling."""
+    set_item(properties, "PlantMode", options=options)
+
+    await setup_integration(hass, config_entry)
+
+    assert hass.states.get(COOLING_TODAY) is None
+    assert hass.states.get(COOLING_THIS_MONTH) is None
+    assert hass.states.get(HEATING_TODAY) is not None
+
+
+async def test_metering_sensors_unavailable_while_metering_is_off(
+    hass: HomeAssistant,
+    api: MagicMock,
+    init_full_integration: MockConfigEntry,
+) -> None:
+    """Test the sensors are unavailable while the web app shows metering as off."""
+    api.async_get_metering_data.return_value = metering_data(
+        METERING_BINS, intensive_logs=True
+    )
+
+    await refresh_metering(hass)
+
+    assert {hass.states.get(entity_id).state for entity_id in METERING_SENSORS} == {
+        STATE_UNAVAILABLE
+    }

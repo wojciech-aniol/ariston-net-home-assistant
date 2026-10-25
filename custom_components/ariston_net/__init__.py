@@ -4,7 +4,12 @@ from __future__ import annotations
 
 import logging
 
-from ariston_net_api import Ariston, DeviceAttribute, SystemType
+from ariston_net_api import (
+    Ariston,
+    AristonGalevoDevice,
+    DeviceAttribute,
+    SystemType,
+)
 from ariston_net_api.ariston_api import ConnectionException
 from ariston_net_api.const import ARISTON_API_URL, ARISTON_USER_AGENT
 from homeassistant.const import (
@@ -35,6 +40,7 @@ from .const import (
     ENABLE_ENERGY,
     ENERGY_COORDINATOR,
     ENERGY_SCAN_INTERVAL,
+    METERING_COORDINATOR,
 )
 from .coordinator import (
     AristonConfigEntry,
@@ -171,6 +177,25 @@ async def async_setup_entry(hass: HomeAssistant, entry: AristonConfigEntry) -> b
                     "energy sensors for now: %s",
                     error,
                 )
+
+            if isinstance(device, AristonGalevoDevice):
+                # Heat produced comes from the web app, as often as the energy data.
+                data.metering_coordinator = DeviceDataUpdateCoordinator(
+                    hass,
+                    entry,
+                    device,
+                    energy_interval_minutes * 60,
+                    METERING_COORDINATOR,
+                    device.async_update_metering,
+                )
+                try:
+                    await data.metering_coordinator.async_config_entry_first_refresh()
+                except ConfigEntryNotReady as error:
+                    _LOGGER.warning(
+                        "Could not fetch Ariston heat produced data, continuing "
+                        "without heat produced sensors for now: %s",
+                        error,
+                    )
 
         entry.runtime_data = data
         await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)

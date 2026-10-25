@@ -14,7 +14,10 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_SCAN_INTERVAL
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from homeassistant.helpers.update_coordinator import (
+    TimestampDataUpdateCoordinator,
+    UpdateFailed,
+)
 
 from .const import (
     BUS_ERRORS_COORDINATOR,
@@ -29,6 +32,7 @@ from .const import (
     MAX_BUS_ERRORS_SCAN_INTERVAL_SECONDS,
     MAX_ENERGY_SCAN_INTERVAL_MINUTES,
     MAX_SCAN_INTERVAL_SECONDS,
+    METERING_COORDINATOR,
     MIN_BUS_ERRORS_SCAN_INTERVAL_SECONDS,
     MIN_ENERGY_SCAN_INTERVAL_MINUTES,
     MIN_SCAN_INTERVAL_SECONDS,
@@ -68,7 +72,7 @@ def interval_option(options: Mapping[str, Any], key: str) -> int:
     return min(max(options.get(key, default), minimum), maximum)
 
 
-class DeviceDataUpdateCoordinator(DataUpdateCoordinator[None]):
+class DeviceDataUpdateCoordinator(TimestampDataUpdateCoordinator[None]):
     """Manages polling for state changes from the device."""
 
     config_entry: AristonConfigEntry
@@ -145,6 +149,7 @@ class AristonData:
     coordinator: DeviceDataUpdateCoordinator
     bus_errors_coordinator: DeviceDataUpdateCoordinator | None = None
     energy_coordinator: DeviceDataUpdateCoordinator | None = None
+    metering_coordinator: DeviceDataUpdateCoordinator | None = None
 
     @property
     def coordinators(self) -> dict[str, DeviceDataUpdateCoordinator | None]:
@@ -153,6 +158,7 @@ class AristonData:
             COORDINATOR: self.coordinator,
             BUS_ERRORS_COORDINATOR: self.bus_errors_coordinator,
             ENERGY_COORDINATOR: self.energy_coordinator,
+            METERING_COORDINATOR: self.metering_coordinator,
         }
 
     def get_coordinator(self, name: str) -> DeviceDataUpdateCoordinator | None:

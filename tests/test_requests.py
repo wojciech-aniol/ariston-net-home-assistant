@@ -45,6 +45,7 @@ from custom_components.ariston_net.const import (
     BUS_ERRORS_COORDINATOR,
     COORDINATOR,
     ENERGY_COORDINATOR,
+    METERING_COORDINATOR,
 )
 
 from .conftest import runtime_data
@@ -94,6 +95,7 @@ async def test_setup_requests(
         "async_get_consumptions_sequences": 1,
         "async_get_consumptions_settings": 1,
         "async_get_energy_account": 1,
+        "async_get_metering_data": 1,
     }
 
 
@@ -110,6 +112,7 @@ async def test_setup_requests(
                 "async_get_energy_account": 1,
             },
         ),
+        (METERING_COORDINATOR, {"async_get_metering_data": 1}),
     ],
 )
 async def test_poll_requests(
