@@ -268,7 +268,7 @@ class AristonNumber(AristonEntity, NumberEntity):
         zone: int = 0,
     ) -> None:
         """Initialize the entity."""
-        if zone:
+        if description.zone:
             self._attr_translation_placeholders = {"zone": str(zone)}
         super().__init__(
             coordinator,

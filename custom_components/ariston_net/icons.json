@@ -21,7 +21,8 @@
       "thermostat": {
         "default": "mdi:radiator",
         "state": {
-          "off": "mdi:radiator-off"
+          "off": "mdi:radiator-off",
+          "cool": "mdi:snowflake"
         }
       }
     },

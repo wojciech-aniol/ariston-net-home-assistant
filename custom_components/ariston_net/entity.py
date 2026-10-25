@@ -70,7 +70,7 @@ class AristonEntity(CoordinatorEntity[DeviceDataUpdateCoordinator], ABC):
         self.device = coordinator.device
         self.entity_description = description
         self.zone = zone
-        # Unique IDs keep the old names. Shown names come from translation_key.
+        # Unique IDs keep the old names, so never change description.name.
         name = unique_id_name or description.name
         self._attr_unique_id = (
             f"{self.device.gateway}-{name}-{zone}"
