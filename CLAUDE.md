@@ -25,8 +25,9 @@ Tests and lint pass before every commit.
 
 - `__init__.py`: entry setup. Coordinators live in `entry.runtime_data` (`AristonData` in
   `coordinator.py`, typed as `AristonConfigEntry`); a disabled one is None.
-- `coordinator.py`: polling, HTTP 429 backoff, auth errors start reauth. Up to three coordinators
-  per entry: state, bus errors and energy (the last two are optional).
+- `coordinator.py`: polling, HTTP 429 backoff, auth errors start reauth. Up to four coordinators
+  per entry: state, bus errors, energy and metering (heat produced from the web app, GALEVO
+  only); all but state are optional. Metering errors never start reauth.
 - `errors.py`: sorts library errors (auth, 429, 5xx, other); `action_error` turns one into a
   translated `HomeAssistantError` and starts reauth on an auth error.
 - `services.py`: `create_vacation` and `set_item_by_id`, registered once in `async_setup`.
