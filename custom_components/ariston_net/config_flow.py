@@ -63,6 +63,10 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
     }
 )
 
+STEP_RECONFIGURE_DATA_SCHEMA = vol.Schema(
+    {vol.Required(key): str for key in API_DEFAULTS}
+)
+
 
 # Limits of each interval, like {"scan_interval_min": "60"}, for the texts.
 INTERVAL_LIMITS: dict[str, str] = {
@@ -104,6 +108,26 @@ def _interval_errors(user_input: Mapping[str, Any]) -> dict[str, str]:
         for key, (_, minimum, maximum) in INTERVAL_OPTIONS.items()
         if not (user_input[key].is_integer() and minimum <= user_input[key] <= maximum)
     }
+
+
+def _clean_api_settings(settings: Mapping[str, str]) -> dict[str, str]:
+    """Strip the API settings and end the URL with "/".
+
+    The library adds paths to the URL with no "/" between them.
+    """
+    url = settings[API_URL_SETTING].strip()
+    return {
+        API_URL_SETTING: url if url.endswith("/") else f"{url}/",
+        API_USER_AGENT: settings[API_USER_AGENT].strip(),
+    }
+
+
+def _has_entry_device(
+    entry: config_entries.ConfigEntry, cloud_devices: list[dict[str, Any]]
+) -> bool:
+    """Return whether the account still has the device of the entry."""
+    gateway = entry.data[CONF_DEVICE][DeviceAttribute.GW]
+    return any(device[DeviceAttribute.GW] == gateway for device in cloud_devices)
 
 
 class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
@@ -148,7 +172,9 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
         if user_input is not None:
             self.cloud_username = user_input[CONF_USERNAME]
             self.cloud_password = user_input[CONF_PASSWORD]
-            api_settings = API_DEFAULTS | user_input.get("advanced", {})
+            api_settings = _clean_api_settings(
+                API_DEFAULTS | user_input.get("advanced", {})
+            )
             self.cloud_api_url = api_settings[API_URL_SETTING]
             self.cloud_api_user_agent = api_settings[API_USER_AGENT]
             cloud_devices, error = await self._async_get_devices(
@@ -243,12 +269,9 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             )
             if error:
                 errors["base"] = error
+            elif not _has_entry_device(entry, cloud_devices):
+                return self.async_abort(reason="unique_id_mismatch")
             else:
-                gateway = entry.data[CONF_DEVICE][DeviceAttribute.GW]
-                if all(
-                    device[DeviceAttribute.GW] != gateway for device in cloud_devices
-                ):
-                    return self.async_abort(reason="unique_id_mismatch")
                 return self.async_update_reload_and_abort(
                     entry, data_updates={CONF_PASSWORD: user_input[CONF_PASSWORD]}
                 )
@@ -258,6 +281,48 @@ class AristonConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             data_schema=vol.Schema({vol.Required(CONF_PASSWORD): str}),
             errors=errors,
             description_placeholders={"username": entry.data[CONF_USERNAME]},
+        )
+
+    async def async_step_reconfigure(
+        self, user_input: dict[str, Any] | None = None
+    ) -> config_entries.ConfigFlowResult:
+        """Change the API settings and check them with the saved login."""
+        entry = self._get_reconfigure_entry()
+        errors: dict[str, str] = {}
+        if user_input is not None:
+            user_input = _clean_api_settings(user_input)
+            cloud_devices, error = await self._async_get_devices(
+                entry.data[CONF_USERNAME],
+                entry.data[CONF_PASSWORD],
+                user_input[API_URL_SETTING],
+                user_input[API_USER_AGENT],
+            )
+            # The login is the saved one, so these errors point at the settings.
+            if error:
+                errors["base"] = (
+                    "invalid_api_settings" if error == "invalid_auth" else error
+                )
+            elif not cloud_devices:
+                errors["base"] = "invalid_api_settings"
+            elif not _has_entry_device(entry, cloud_devices):
+                return self.async_abort(reason="unique_id_mismatch")
+            else:
+                return self.async_update_reload_and_abort(
+                    entry, data_updates=user_input
+                )
+
+        return self.async_show_form(
+            step_id="reconfigure",
+            data_schema=self.add_suggested_values_to_schema(
+                STEP_RECONFIGURE_DATA_SCHEMA,
+                user_input
+                or {
+                    key: entry.data.get(key, default)
+                    for key, default in API_DEFAULTS.items()
+                },
+            ),
+            errors=errors,
+            description_placeholders=API_DEFAULTS,
         )
 
     @staticmethod

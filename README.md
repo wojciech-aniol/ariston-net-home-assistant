@@ -139,6 +139,9 @@ Home Assistant.
   cloud errors make the entities unavailable until the next good update, and a failed start is
   tried again later. A change that the cloud does not accept shows an error message with the
   HTTP status, not a traceback in the log.
+- API settings: to change the API URL or user agent, select **Reconfigure** in the entry menu
+  (⋮). It logs in with the saved account to check them. Each device has its own entry, so change
+  every entry of the account.
 - The climate HVAC mode `off` uses the plant mode `OFF` when the device has it, which also turns
   off domestic hot water. To keep hot water and stop heating, select the plant mode `Summer`
   (select entity or climate preset).

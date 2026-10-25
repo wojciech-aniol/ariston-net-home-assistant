@@ -42,16 +42,30 @@
         "data_description": {
           "password": "The current password of your Ariston NET account."
         }
+      },
+      "reconfigure": {
+        "title": "[%key:component::ariston_net::config::step::user::sections::advanced::name%]",
+        "description": "Change the Ariston cloud API settings. The integration logs in with the saved account to check them.",
+        "data": {
+          "api_url_setting": "[%key:component::ariston_net::config::step::user::sections::advanced::data::api_url_setting%]",
+          "api_user_agent": "[%key:component::ariston_net::config::step::user::sections::advanced::data::api_user_agent%]"
+        },
+        "data_description": {
+          "api_url_setting": "Address of the Ariston cloud API. Default: {api_url_setting}",
+          "api_user_agent": "Name this integration sends to the Ariston cloud. Default: {api_user_agent}"
+        }
       }
     },
     "error": {
       "cannot_connect": "[%key:common::config_flow::error::cannot_connect%]",
       "invalid_auth": "[%key:common::config_flow::error::invalid_auth%]",
+      "invalid_api_settings": "The Ariston cloud did not accept these settings with the saved login. Check the URL and the user agent.",
       "unknown": "[%key:common::config_flow::error::unknown%]"
     },
     "abort": {
       "already_configured": "[%key:common::config_flow::abort::already_configured_device%]",
       "reauth_successful": "[%key:common::config_flow::abort::reauth_successful%]",
+      "reconfigure_successful": "[%key:common::config_flow::abort::reconfigure_successful%]",
       "no_devices_found": "This Ariston account has no device.",
       "unique_id_mismatch": "This Ariston account does not have the configured device anymore."
     }

@@ -60,6 +60,17 @@ ENTRY_DATA: dict[str, Any] = {
     API_USER_AGENT: "TestAgent/1.0",
 }
 
+RECONFIGURE_INPUT: dict[str, Any] = {
+    API_URL_SETTING: "https://new.example.com/api/v2/",
+    API_USER_AGENT: "NewAgent/2.0",
+}
+
+# RECONFIGURE_INPUT as typed with spaces and no "/" at the end.
+UNCLEAN_API_SETTINGS: dict[str, Any] = {
+    API_URL_SETTING: " https://new.example.com/api/v2 ",
+    API_USER_AGENT: " NewAgent/2.0 ",
+}
+
 OTHER_DEVICE: dict[str, Any] = {
     "gw": "F0AD4E000002",
     "sys": 3,
@@ -183,6 +194,17 @@ async def test_user_step_untouched_section_uses_defaults(
     flow_ariston.async_connect.assert_awaited_once_with(
         "new@example.com", "new-password", ARISTON_API_URL, ARISTON_USER_AGENT
     )
+
+
+async def test_user_step_cleans_api_settings(
+    hass: HomeAssistant, flow_ariston: MagicMock, mock_setup_entry: AsyncMock
+) -> None:
+    """Test the API settings are saved without spaces and with the URL ending in "/"."""
+    result = await start_user_flow(
+        hass, USER_INPUT | {"advanced": UNCLEAN_API_SETTINGS}
+    )
+
+    assert {key: result["data"][key] for key in RECONFIGURE_INPUT} == RECONFIGURE_INPUT
 
 
 async def test_user_step_many_devices_creates_selected_entry(
@@ -451,6 +473,167 @@ async def test_reauth_flow_other_account_aborts(
     assert result["type"] is FlowResultType.ABORT
     assert result["reason"] == "unique_id_mismatch"
     assert config_entry.data[CONF_PASSWORD] == "test-password"
+
+
+async def start_reconfigure(
+    hass: HomeAssistant,
+    entry: MockConfigEntry,
+    user_input: dict[str, Any] = RECONFIGURE_INPUT,
+) -> dict[str, Any]:
+    """Start the reconfigure flow and send new API settings."""
+    result = await entry.start_reconfigure_flow(hass)
+    return await hass.config_entries.flow.async_configure(
+        result["flow_id"], user_input=dict(user_input)
+    )
+
+
+@pytest.mark.parametrize(
+    ("saved", "shown"),
+    [
+        ({}, {API_URL_SETTING: ARISTON_API_URL, API_USER_AGENT: ARISTON_USER_AGENT}),
+        (
+            {API_URL_SETTING: SAVED_API_SETTINGS[API_URL_SETTING]},
+            SAVED_API_SETTINGS | {API_USER_AGENT: ARISTON_USER_AGENT},
+        ),
+        (SAVED_API_SETTINGS, SAVED_API_SETTINGS),
+    ],
+    ids=["old-entry", "url-only", "saved"],
+)
+async def test_reconfigure_flow_shows_saved_api_settings(
+    hass: HomeAssistant,
+    config_entry: MockConfigEntry,
+    saved: dict[str, Any],
+    shown: dict[str, Any],
+) -> None:
+    """Test the reconfigure form shows the saved API settings, or the defaults."""
+    hass.config_entries.async_update_entry(config_entry, data=config_entry.data | saved)
+
+    result = await config_entry.start_reconfigure_flow(hass)
+
+    assert result["type"] is FlowResultType.FORM
+    assert result["step_id"] == "reconfigure"
+    assert suggested_values(form_fields(result)) == shown
+
+
+async def test_reconfigure_flow_saves_api_settings(
+    hass: HomeAssistant,
+    config_entry: MockConfigEntry,
+    flow_ariston: MagicMock,
+    mock_setup_entry: AsyncMock,
+) -> None:
+    """Test reconfigure checks the new API settings with the saved login and saves them."""
+    old_data = dict(config_entry.data)
+
+    result = await start_reconfigure(hass, config_entry)
+
+    assert result["type"] is FlowResultType.ABORT
+    assert result["reason"] == "reconfigure_successful"
+    assert dict(config_entry.data) == old_data | RECONFIGURE_INPUT
+    flow_ariston.async_connect.assert_awaited_once_with(
+        "user@example.com", "test-password", *RECONFIGURE_INPUT.values()
+    )
+
+
+async def test_reconfigure_flow_cleans_api_settings(
+    hass: HomeAssistant,
+    config_entry: MockConfigEntry,
+    flow_ariston: MagicMock,
+    mock_setup_entry: AsyncMock,
+) -> None:
+    """Test reconfigure saves the settings without spaces and with the URL ending in "/"."""
+    await start_reconfigure(hass, config_entry, UNCLEAN_API_SETTINGS)
+
+    assert {key: config_entry.data[key] for key in RECONFIGURE_INPUT} == (
+        RECONFIGURE_INPUT
+    )
+
+
+async def test_reconfigure_of_loaded_entry_reloads_once(
+    hass: HomeAssistant,
+    init_integration: MockConfigEntry,
+    mock_ariston: MagicMock,
+    flow_ariston: MagicMock,
+) -> None:
+    """Test reconfigure of a loaded entry reloads it once with the new settings."""
+    mock_ariston.async_connect.reset_mock()
+
+    await start_reconfigure(hass, init_integration)
+    await hass.async_block_till_done()
+
+    assert init_integration.state is ConfigEntryState.LOADED
+    mock_ariston.async_connect.assert_awaited_once_with(
+        "user@example.com", "test-password", *RECONFIGURE_INPUT.values()
+    )
+
+
+@pytest.mark.parametrize(
+    ("login", "key"),
+    [
+        (False, "invalid_api_settings"),
+        (login_error(ConnectionException(401)), "invalid_api_settings"),
+        (login_error(ConnectionException(500)), "cannot_connect"),
+    ],
+    ids=["login-refused", "login-401", "login-500"],
+)
+async def test_reconfigure_flow_error_shows_error(
+    hass: HomeAssistant,
+    config_entry: MockConfigEntry,
+    flow_ariston: MagicMock,
+    login: bool | ConnectionException,
+    key: str,
+) -> None:
+    """Test a failed login keeps the reconfigure form with its error and values."""
+    old_data = dict(config_entry.data)
+    flow_ariston.async_connect.side_effect = [login]
+
+    result = await start_reconfigure(hass, config_entry)
+
+    assert result["type"] is FlowResultType.FORM
+    assert result["step_id"] == "reconfigure"
+    assert result["errors"] == {"base": key}
+    assert suggested_values(form_fields(result)) == RECONFIGURE_INPUT
+    assert dict(config_entry.data) == old_data
+
+
+async def test_reconfigure_flow_no_device_shows_error(
+    hass: HomeAssistant, config_entry: MockConfigEntry, flow_ariston: MagicMock
+) -> None:
+    """Test reconfigure blames the settings when the cloud lists no device."""
+    old_data = dict(config_entry.data)
+    flow_ariston.async_discover.return_value = []
+
+    result = await start_reconfigure(hass, config_entry)
+
+    assert result["type"] is FlowResultType.FORM
+    assert result["errors"] == {"base": "invalid_api_settings"}
+    assert dict(config_entry.data) == old_data
+
+
+@pytest.mark.parametrize("path", ["strings.json", "translations/en.json"])
+async def test_reconfigure_texts_use_sent_placeholders(
+    hass: HomeAssistant, config_entry: MockConfigEntry, path: str
+) -> None:
+    """Test the reconfigure texts use only placeholders the form sends."""
+    result = await config_entry.start_reconfigure_flow(hass)
+    config = json.loads((INTEGRATION_DIR / path).read_text())["config"]
+    used = set(re.findall(r"{(\w+)}", json.dumps(config["step"]["reconfigure"])))
+
+    assert used
+    assert used <= set(result["description_placeholders"])
+
+
+async def test_reconfigure_flow_other_account_aborts(
+    hass: HomeAssistant, config_entry: MockConfigEntry, flow_ariston: MagicMock
+) -> None:
+    """Test reconfigure aborts when the account does not have the entry's device."""
+    old_data = dict(config_entry.data)
+    flow_ariston.async_discover.return_value = [copy.deepcopy(OTHER_DEVICE)]
+
+    result = await start_reconfigure(hass, config_entry)
+
+    assert result["type"] is FlowResultType.ABORT
+    assert result["reason"] == "unique_id_mismatch"
+    assert dict(config_entry.data) == old_data
 
 
 async def test_options_flow_shows_defaults(

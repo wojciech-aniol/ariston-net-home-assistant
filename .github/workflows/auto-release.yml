@@ -83,7 +83,7 @@ jobs:
     concurrency:
       group: release
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ariston-net
           fetch-depth: 0
