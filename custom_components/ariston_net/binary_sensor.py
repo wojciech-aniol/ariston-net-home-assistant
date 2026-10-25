@@ -53,6 +53,15 @@ ARISTON_BINARY_SENSOR_TYPES: list[AristonBinarySensorEntityDescription] = [
         device_features=[DeviceFeatures.HP_SYS],
         system_types=[SystemType.GALEVO],
     ),
+    # BSB has no hpSys feature; gas boilers may send no hpOn.
+    AristonBinarySensorEntityDescription(
+        key=DeviceProperties.IS_HEATING_PUMP_ON,
+        name=f"{NAME} is heating pump on",
+        translation_key="is_heating_pump_on",
+        get_is_on=lambda entity: entity.device.is_heating_pump_on_value,
+        get_is_supported=lambda device: device.is_heating_pump_on_value is not None,
+        system_types=[SystemType.BSB],
+    ),
     AristonBinarySensorEntityDescription(
         key=DeviceProperties.HOLIDAY,
         name=f"{NAME} holiday mode",
