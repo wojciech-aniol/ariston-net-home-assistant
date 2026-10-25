@@ -12,5 +12,5 @@ updates:
     schedule:
       interval: "monthly"
     ignore:
-      # Must match manifest.json; changed only on request.
-      - dependency-name: "ariston"
+      # bump-library.yml bumps it in manifest.json too.
+      - dependency-name: "ariston-net-api"

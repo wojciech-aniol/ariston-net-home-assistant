@@ -1,0 +1,115 @@
+name: Bump library
+
+# Opens a PR that pins the newest ariston-net-api from PyPI.
+# When the tests pass, it merges the PR and starts auto-release.yml.
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bump-library
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      pr: ${{ steps.pr.outputs.pr }}
+      sha: ${{ steps.pr.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ariston-net
+      - name: Find a newer version
+        id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          latest=$(curl -fsS https://pypi.org/pypi/ariston-net-api/json | jq -r .info.version)
+          pin=$(jq -r '.requirements[] | capture("^ariston-net-api==(?<v>.+)$").v' \
+            custom_components/ariston_net/manifest.json)
+          if [ "$(printf '%s\n' "$pin" "$latest" | sort -V | tail -n 1)" = "$pin" ]; then
+            echo "The pin $pin is up to date (PyPI has $latest)."
+            exit 0
+          fi
+          # A closed PR for this version means a person said no.
+          if [ -n "$(gh pr list --head "bump-ariston-net-api-$latest" --state all --json number --jq '.[]')" ]; then
+            echo "A PR for $latest already exists."
+            exit 0
+          fi
+          pattern="^\+.*ariston-net-api==${latest//./\\.}([^0-9.]|$)"
+          for number in $(gh pr list --base ariston-net --json number --jq '.[].number'); do
+            if gh pr diff "$number" | grep -qE "$pattern"; then
+              echo "PR #$number already pins $latest."
+              exit 0
+            fi
+          done
+          echo "version=$latest" >> "$GITHUB_OUTPUT"
+      - name: Open the PR
+        id: pr
+        if: steps.check.outputs.version
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          VERSION: ${{ steps.check.outputs.version }}
+          OWNER: ${{ github.repository_owner }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          branch="bump-ariston-net-api-$VERSION"
+          sed -i -E "s/ariston-net-api==[0-9.]+/ariston-net-api==$VERSION/" \
+            custom_components/ariston_net/manifest.json requirements_test.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git commit -am "Bump ariston-net-api to $VERSION"
+          git push --force origin "$branch"
+          body="[ariston-net-api $VERSION](https://github.com/$OWNER/python-ariston-net-api/releases/tag/$VERSION) is on PyPI.
+          This run tests it and merges this PR if the tests pass: $RUN_URL
+          If they fail, the PR stays open for a fix."
+          url=$(gh pr create --base ariston-net --head "$branch" --assignee "$OWNER" \
+            --title "Update the ariston-net-api library to $VERSION" --body "$body")
+          number=${url##*/}
+          gh pr list --base ariston-net --json number,headRefName --jq ".[]
+            | select(.number != $number and (.headRefName | startswith(\"bump-ariston-net-api-\")))
+            | \"\(.number) \(.headRefName)\"" |
+            while read -r old old_branch; do
+              gh pr close "$old" --comment "Replaced by #$number."
+              gh api -X DELETE "repos/$GH_REPO/git/refs/heads/$old_branch"
+            done
+          echo "pr=$number" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  tests:
+    needs: bump
+    if: needs.bump.outputs.pr
+    uses: ./.github/workflows/tests.yml
+    with:
+      ref: ${{ needs.bump.outputs.sha }}
+
+  merge:
+    needs: [bump, tests]
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Merge and release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          PR: ${{ needs.bump.outputs.pr }}
+          SHA: ${{ needs.bump.outputs.sha }}
+        run: |
+          branch=$(gh pr view "$PR" --json headRefName --jq .headRefName)
+          gh pr merge "$PR" --merge --match-head-commit "$SHA"
+          gh api -X DELETE "repos/$GH_REPO/git/refs/heads/$branch"
+          # A merge made with this token does not start auto-release.yml, so start it here.
+          gh workflow run auto-release.yml --ref ariston-net

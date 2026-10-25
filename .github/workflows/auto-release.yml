@@ -5,6 +5,8 @@ name: Auto release
 on:
   push:
     branches: [ariston-net]
+  # bump-library.yml starts it, as its merge does not start a push run.
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -28,6 +30,9 @@ jobs:
           GH_REPO: ${{ github.repository }}
           MESSAGE: ${{ github.event.head_commit.message }}
         run: |
+          if [ -z "$MESSAGE" ]; then
+            MESSAGE=$(gh api "repos/$GH_REPO/commits/$GITHUB_SHA" --jq .commit.message)
+          fi
           # GitHub links a commit to its PR some seconds after the push,
           # so read the PR number from the merge or squash subject first.
           subject=${MESSAGE%%$'\n'*}
