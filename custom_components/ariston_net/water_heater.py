@@ -117,11 +117,6 @@ class AristonWaterHeater(AristonEntity, WaterHeaterEntity):
         self._attr_unique_id = f"{self.device.gateway}-water_heater"
 
     @property
-    def icon(self):
-        """Return the icon to use in the frontend."""
-        return "mdi:water-pump"
-
-    @property
     def current_temperature(self):
         """Return the temperature."""
         return self.device.water_heater_current_temperature

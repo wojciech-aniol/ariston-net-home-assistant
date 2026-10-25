@@ -121,13 +121,6 @@ class AristonThermostat(AristonEntity, ClimateEntity):
         self._attr_unique_id = f"{self.device.gateway}_{zone}"
 
     @property
-    def icon(self):
-        """Return the icon of the thermostat device."""
-        if self.device.is_plant_in_heat_mode:
-            return "mdi:radiator"
-        return "mdi:radiator-off"
-
-    @property
     def temperature_unit(self) -> str:
         """Return the temperature units for the device."""
         return self.device.get_measured_temp_unit(self.zone)

@@ -15,6 +15,7 @@ from homeassistant.helpers import device_registry as dr, entity_registry as er
 from homeassistant.helpers.entity import EntityDescription
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
+import yaml
 
 from custom_components.ariston_net.const import DOMAIN, EXTRA_STATE_ATTRIBUTE
 from custom_components.ariston_net.sensor import (
@@ -250,3 +251,21 @@ async def test_entity_name_follows_ha_language(
 
     state = hass.states.get("select.nimbus_tryb_instalacji")
     assert state.attributes[ATTR_FRIENDLY_NAME] == "Nimbus Tryb instalacji"
+
+
+@pytest.mark.parametrize("platform", [*NAMED_PLATFORMS, "climate", "water_heater"])
+def test_translation_keys_have_icons(platform: str) -> None:
+    """Test each translation key of a platform has an icon, and no icon is unused."""
+    icons = json.loads((INTEGRATION_DIR / "icons.json").read_text())["entity"]
+
+    assert set(icons[platform]) == {
+        description.translation_key for description in descriptions(platform)
+    }
+
+
+def test_services_have_icons() -> None:
+    """Test each service has an icon, and no icon is unused."""
+    icons = json.loads((INTEGRATION_DIR / "icons.json").read_text())["services"]
+    services = yaml.safe_load((INTEGRATION_DIR / "services.yaml").read_text())
+
+    assert set(icons) == set(services)
