@@ -52,6 +52,7 @@ class AristonClimateEntityDescription(
 ARISTON_CLIMATE_TYPES: list[AristonClimateEntityDescription] = [
     AristonClimateEntityDescription(
         key="AristonClimate",
+        translation_key="thermostat",
         extra_states=[
             {
                 EXTRA_STATE_ATTRIBUTE: ATTR_HEAT_REQUEST,
@@ -74,6 +75,7 @@ ARISTON_CLIMATE_TYPES: list[AristonClimateEntityDescription] = [
     ),
     AristonClimateEntityDescription(
         key="AristonClimate",
+        translation_key="thermostat",
         system_types=[SystemType.BSB],
     ),
 ]
@@ -105,6 +107,7 @@ async def async_setup_entry(
 class AristonThermostat(AristonEntity, ClimateEntity):
     """Ariston Thermostat Device."""
 
+    _attr_name = None
     entity_description: AristonClimateEntityDescription
 
     def __init__(
@@ -116,11 +119,6 @@ class AristonThermostat(AristonEntity, ClimateEntity):
         """Initialize the thermostat."""
         super().__init__(coordinator, description, zone)
         self._attr_unique_id = f"{self.device.gateway}_{zone}"
-
-    @property
-    def name(self) -> str:
-        """Return the name of the device."""
-        return f"{self.device.name}"
 
     @property
     def icon(self):
@@ -343,7 +341,7 @@ class AristonThermostat(AristonEntity, ClimateEntity):
         _LOGGER.debug(
             "Setting preset mode to %s for %s",
             preset_mode,
-            self.name,
+            self.entity_id,
         )
 
         # Don't assume index maps to enum value directly
@@ -396,7 +394,7 @@ class AristonThermostat(AristonEntity, ClimateEntity):
         _LOGGER.debug(
             "Setting temperature to %s for %s",
             temperature,
-            self.name,
+            self.entity_id,
         )
 
         if temperature == self.device.get_comfort_temp_value(self.zone):

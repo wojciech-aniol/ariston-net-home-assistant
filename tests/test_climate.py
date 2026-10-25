@@ -35,7 +35,7 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 from .conftest import PLANT_MODE_TEXTS, set_item
 
 CLIMATE = "climate.nimbus"
-PLANT_MODE_SELECT = "select.nimbus_ariston_net_plant_mode"
+PLANT_MODE_SELECT = "select.nimbus_plant_mode"
 
 
 @pytest.mark.parametrize(

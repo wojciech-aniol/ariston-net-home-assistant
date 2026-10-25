@@ -14,9 +14,9 @@ from custom_components.ariston_net.const import ATTR_HOLIDAY
 
 from .conftest import set_item, setup_integration
 
-HOLIDAY = "binary_sensor.nimbus_ariston_net_holiday_mode"
-FLAME = "binary_sensor.nimbus_ariston_net_is_flame_on"
-HEATING_PUMP = "binary_sensor.nimbus_ariston_net_is_heating_pump_on"
+HOLIDAY = "binary_sensor.nimbus_holiday_mode"
+FLAME = "binary_sensor.nimbus_flame"
+HEATING_PUMP = "binary_sensor.nimbus_heat_pump"
 
 
 @pytest.mark.parametrize(

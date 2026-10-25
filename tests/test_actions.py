@@ -60,11 +60,11 @@ async def call_and_check(
     ("entity_id", "item_id", "method"),
     [
         (
-            "switch.nimbus_ariston_net_automatic_thermoregulation",
+            "switch.nimbus_automatic_thermoregulation",
             "AutomaticThermoregulation",
             "async_set_automatic_thermoregulation",
         ),
-        ("switch.nimbus_ariston_net_is_quiet", "IsQuite", "async_set_is_quiet"),
+        ("switch.nimbus_quiet_mode", "IsQuite", "async_set_is_quiet"),
     ],
 )
 @pytest.mark.parametrize(
@@ -98,28 +98,28 @@ async def test_switch_calls_library(
 @pytest.mark.parametrize(
     ("entity_id", "value", "method", "expected_args"),
     [
-        ("number.nimbus_ariston_net_elec_cost", 0.3, "async_set_elect_cost", (0.3,)),
-        ("number.nimbus_ariston_net_gas_cost", 0.12, "async_set_gas_cost", (0.12,)),
+        ("number.nimbus_electricity_cost", 0.3, "async_set_elect_cost", (0.3,)),
+        ("number.nimbus_gas_cost", 0.12, "async_set_gas_cost", (0.12,)),
         (
-            "number.nimbus_ariston_net_heating_flow_temperature_1",
+            "number.nimbus_zone_1_heating_flow_temperature",
             40,
             "async_set_heating_flow_temp",
             (40.0, 1),
         ),
         (
-            "number.nimbus_ariston_net_heating_flow_temperature_2",
+            "number.nimbus_zone_2_heating_flow_temperature",
             41,
             "async_set_heating_flow_temp",
             (41.0, 2),
         ),
         (
-            "number.nimbus_ariston_net_heating_flow_offset_1",
+            "number.nimbus_zone_1_heating_flow_offset",
             -2,
             "async_set_heating_flow_offset",
             (-2.0, 1),
         ),
         (
-            "number.nimbus_ariston_net_heating_flow_offset_2",
+            "number.nimbus_zone_2_heating_flow_offset",
             3,
             "async_set_heating_flow_offset",
             (3.0, 2),
@@ -150,10 +150,10 @@ async def test_number_calls_library(
 @pytest.mark.parametrize(
     ("entity_id", "expected_value"),
     [
-        ("number.nimbus_ariston_net_heating_flow_temperature_1", "38.0"),
-        ("number.nimbus_ariston_net_heating_flow_temperature_2", "39.0"),
-        ("number.nimbus_ariston_net_heating_flow_offset_1", "0.0"),
-        ("number.nimbus_ariston_net_heating_flow_offset_2", "1.0"),
+        ("number.nimbus_zone_1_heating_flow_temperature", "38.0"),
+        ("number.nimbus_zone_2_heating_flow_temperature", "39.0"),
+        ("number.nimbus_zone_1_heating_flow_offset", "0.0"),
+        ("number.nimbus_zone_2_heating_flow_offset", "1.0"),
     ],
 )
 async def test_zone_number_shows_its_zone(
@@ -169,20 +169,20 @@ async def test_zone_number_shows_its_zone(
 @pytest.mark.parametrize(
     ("entity_id", "option", "method"),
     [
-        ("select.nimbus_ariston_net_currency", "CHF", "async_set_currency"),
-        ("select.nimbus_ariston_net_gas_type", "LPG", "async_set_gas_type"),
+        ("select.nimbus_currency", "CHF", "async_set_currency"),
+        ("select.nimbus_gas_type", "LPG", "async_set_gas_type"),
         (
-            "select.nimbus_ariston_net_gas_energy_unit",
+            "select.nimbus_gas_energy_unit",
             "THERM",
             "async_set_gas_energy_unit",
         ),
         (
-            "select.nimbus_ariston_net_hybrid_mode",
+            "select.nimbus_hybrid_mode",
             "Heat pump only",
             "async_set_hybrid_mode",
         ),
         (
-            "select.nimbus_ariston_net_buffer_control_mode",
+            "select.nimbus_buffer_control_mode",
             "Time program",
             "async_set_buffer_control_mode",
         ),

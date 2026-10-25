@@ -19,7 +19,7 @@ from custom_components.ariston_net.const import DOMAIN
 
 from .conftest import GATEWAY, setup_integration, tracebacks
 
-HOLIDAY = "binary_sensor.nimbus_ariston_net_holiday_mode"
+HOLIDAY = "binary_sensor.nimbus_holiday_mode"
 WATER_HEATER = "water_heater.nimbus"
 
 SERVICE_API_METHODS = {

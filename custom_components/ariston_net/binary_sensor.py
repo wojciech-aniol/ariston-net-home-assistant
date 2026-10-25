@@ -40,6 +40,7 @@ ARISTON_BINARY_SENSOR_TYPES: list[AristonBinarySensorEntityDescription] = [
     AristonBinarySensorEntityDescription(
         key=DeviceProperties.IS_FLAME_ON,
         name=f"{NAME} is flame on",
+        translation_key="is_flame_on",
         icon="mdi:fire",
         get_is_on=lambda entity: entity.device.is_flame_on_value,
         get_is_supported=lambda device: device.is_flame_on_value is not None,
@@ -48,6 +49,7 @@ ARISTON_BINARY_SENSOR_TYPES: list[AristonBinarySensorEntityDescription] = [
     AristonBinarySensorEntityDescription(
         key=DeviceProperties.IS_HEATING_PUMP_ON,
         name=f"{NAME} is heating pump on",
+        translation_key="is_heating_pump_on",
         icon="mdi:heat-pump-outline",
         get_is_on=lambda entity: entity.device.is_heating_pump_on_value,
         device_features=[DeviceFeatures.HP_SYS],
@@ -56,6 +58,7 @@ ARISTON_BINARY_SENSOR_TYPES: list[AristonBinarySensorEntityDescription] = [
     AristonBinarySensorEntityDescription(
         key=DeviceProperties.HOLIDAY,
         name=f"{NAME} holiday mode",
+        translation_key="holiday_mode",
         icon="mdi:island",
         extra_states=[
             {
@@ -71,6 +74,7 @@ ARISTON_BINARY_SENSOR_TYPES: list[AristonBinarySensorEntityDescription] = [
     AristonBinarySensorEntityDescription(
         key=EvoLydosDeviceProperties.HEAT_REQ,
         name=f"{NAME} is heating",
+        translation_key="is_heating",
         icon="mdi:fire",
         get_is_on=lambda entity: entity.device.is_heating,
         system_types=[SystemType.VELIS],
@@ -87,6 +91,7 @@ ARISTON_BINARY_SENSOR_TYPES: list[AristonBinarySensorEntityDescription] = [
     AristonBinarySensorEntityDescription(
         key=EvoLydosDeviceProperties.ANTI_LEG,
         name=f"{NAME} anti-legionella cycle",
+        translation_key="anti_legionella_cycle",
         icon="mdi:bacteria",
         get_is_on=lambda entity: entity.device.is_antileg,
         system_types=[SystemType.VELIS],

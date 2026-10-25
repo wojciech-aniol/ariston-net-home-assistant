@@ -20,7 +20,7 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from .conftest import GATEWAY, PLANT_MODE_TEXTS
 
-PLANT_MODE = "select.nimbus_ariston_net_plant_mode"
+PLANT_MODE = "select.nimbus_plant_mode"
 CLIMATE = "climate.nimbus"
 
 

@@ -3,25 +3,39 @@
 from __future__ import annotations
 
 import importlib
+import json
+from pathlib import Path
 from typing import Any
 from unittest.mock import MagicMock
 
 from ariston_net_api import AristonGalevoDevice
+from homeassistant.const import ATTR_FRIENDLY_NAME
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers import device_registry as dr
+from homeassistant.helpers import device_registry as dr, entity_registry as er
+from homeassistant.helpers.entity import EntityDescription
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from custom_components.ariston_net.const import EXTRA_STATE_ATTRIBUTE
+from custom_components.ariston_net.const import DOMAIN, EXTRA_STATE_ATTRIBUTE
 from custom_components.ariston_net.sensor import (
     AristonSensor,
     AristonSensorEntityDescription,
 )
 
-from .conftest import runtime_data, setup_integration
+from .conftest import GATEWAY, runtime_data, setup_integration
 
-FLAME = "binary_sensor.nimbus_ariston_net_is_flame_on"
+FLAME = "binary_sensor.nimbus_flame"
 CH_RETURN_TEMP = "sensor.nimbus_ariston_net_ch_return_temp"
+
+INTEGRATION_DIR = Path(__file__).parents[1] / "custom_components" / DOMAIN
+# Platforms whose entities get names from translations.
+NAMED_PLATFORMS = ["binary_sensor", "number", "select", "switch"]
+
+
+def descriptions(platform: str) -> list[EntityDescription]:
+    """Return the entity descriptions of a platform."""
+    module = importlib.import_module(f"custom_components.ariston_net.{platform}")
+    return getattr(module, f"ARISTON_{platform.upper()}_TYPES")
 
 
 @pytest.mark.parametrize(("has_flame", "expected"), [(True, True), (False, False)])
@@ -120,6 +134,80 @@ async def test_extra_state_without_method_is_skipped(
 
 
 @pytest.mark.parametrize(
+    ("entity_id", "unique_id", "friendly_name"),
+    [
+        (
+            "binary_sensor.nimbus_ariston_net_holiday_mode",
+            f"{GATEWAY}-Ariston NET holiday mode",
+            "Nimbus Holiday mode",
+        ),
+        (
+            "binary_sensor.nimbus_ariston_net_is_heating_pump_on",
+            f"{GATEWAY}-Ariston NET is heating pump on",
+            "Nimbus Heat pump",
+        ),
+        ("climate.nimbus", f"{GATEWAY}_1", "Nimbus"),
+        ("climate.nimbus_2", f"{GATEWAY}_2", "Nimbus"),
+        (
+            "number.nimbus_ariston_net_elec_cost",
+            f"{GATEWAY}-Ariston NET elec cost",
+            "Nimbus Electricity cost",
+        ),
+        (
+            "number.nimbus_ariston_net_heating_flow_temperature_2",
+            f"{GATEWAY}-Ariston NET heating flow temperature 2-2",
+            "Nimbus Zone 2 heating flow temperature",
+        ),
+        (
+            "select.nimbus_ariston_net_plant_mode",
+            f"{GATEWAY}-Ariston NET plant mode",
+            "Nimbus Plant mode",
+        ),
+        (
+            "select.nimbus_ariston_net_currency",
+            f"{GATEWAY}-Ariston NET currency",
+            "Nimbus Currency",
+        ),
+        (
+            "switch.nimbus_ariston_net_automatic_thermoregulation",
+            f"{GATEWAY}-Ariston NET automatic thermoregulation",
+            "Nimbus Automatic thermoregulation",
+        ),
+        (
+            "switch.nimbus_ariston_net_is_quiet",
+            f"{GATEWAY}-Ariston NET is quiet",
+            "Nimbus Quiet mode",
+        ),
+        ("water_heater.nimbus", f"{GATEWAY}-water_heater", "Nimbus"),
+    ],
+)
+@pytest.mark.usefixtures("full_galevo", "second_zone")
+async def test_existing_entity_keeps_ids_with_new_name(
+    hass: HomeAssistant,
+    entity_registry: er.EntityRegistry,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+    entity_id: str,
+    unique_id: str,
+    friendly_name: str,
+) -> None:
+    """Test an entity of an older install keeps its IDs and shows the new name."""
+    domain, object_id = entity_id.split(".")
+    entity_registry.async_get_or_create(
+        domain,
+        DOMAIN,
+        unique_id,
+        suggested_object_id=object_id,
+        config_entry=config_entry,
+    )
+
+    await setup_integration(hass, config_entry)
+
+    assert entity_registry.async_get_entity_id(domain, DOMAIN, unique_id) == entity_id
+    assert hass.states.get(entity_id).attributes[ATTR_FRIENDLY_NAME] == friendly_name
+
+
+@pytest.mark.parametrize(
     ("platform", "expected"),
     [
         ("binary_sensor", 0),
@@ -136,3 +224,29 @@ def test_platform_parallel_updates(platform: str, expected: int) -> None:
     module = importlib.import_module(f"custom_components.ariston_net.{platform}")
 
     assert expected == module.PARALLEL_UPDATES
+
+
+@pytest.mark.parametrize(
+    "path", ["strings.json", "translations/en.json", "translations/pl.json"]
+)
+@pytest.mark.parametrize("platform", NAMED_PLATFORMS)
+def test_translation_keys_have_names(platform: str, path: str) -> None:
+    """Test each translation key of a platform has a name, and no name is unused."""
+    names = json.loads((INTEGRATION_DIR / path).read_text())["entity"][platform]
+
+    assert set(names) == {
+        description.translation_key for description in descriptions(platform)
+    }
+    assert all(name["name"] for name in names.values())
+
+
+async def test_entity_name_follows_ha_language(
+    hass: HomeAssistant, mock_ariston: MagicMock, config_entry: MockConfigEntry
+) -> None:
+    """Test new entities get names and entity IDs in the language of Home Assistant."""
+    hass.config.language = "pl"
+
+    await setup_integration(hass, config_entry)
+
+    state = hass.states.get("select.nimbus_tryb_instalacji")
+    assert state.attributes[ATTR_FRIENDLY_NAME] == "Nimbus Tryb instalacji"

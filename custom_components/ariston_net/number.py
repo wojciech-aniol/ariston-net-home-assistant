@@ -54,6 +54,7 @@ ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
     AristonNumberEntityDescription(
         key=ConsumptionProperties.ELEC_COST,
         name=f"{NAME} elec cost",
+        translation_key="elec_cost",
         icon="mdi:currency-sign",
         entity_category=EntityCategory.CONFIG,
         native_min_value=0,
@@ -70,6 +71,7 @@ ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
     AristonNumberEntityDescription(
         key=ConsumptionProperties.GAS_COST,
         name=f"{NAME} gas cost",
+        translation_key="gas_cost",
         icon="mdi:currency-sign",
         entity_category=EntityCategory.CONFIG,
         native_min_value=0,
@@ -84,6 +86,7 @@ ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
     AristonNumberEntityDescription(
         key=MedDeviceSettings.MED_MAX_SETPOINT_TEMPERATURE,
         name=f"{NAME} max setpoint temperature",
+        translation_key="max_setpoint_temperature",
         icon="mdi:thermometer-high",
         entity_category=EntityCategory.CONFIG,
         get_native_min_value=lambda entity: (
@@ -113,6 +116,7 @@ ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
     AristonNumberEntityDescription(
         key=SlpDeviceSettings.SLP_MIN_SETPOINT_TEMPERATURE,
         name=f"{NAME} min setpoint temperature",
+        translation_key="min_setpoint_temperature",
         icon="mdi:thermometer-low",
         entity_category=EntityCategory.CONFIG,
         get_native_min_value=lambda entity: (
@@ -134,6 +138,7 @@ ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
     AristonNumberEntityDescription(
         key=NuosSplitProperties.REDUCED_TEMP,
         name=f"{NAME} reduced temperature",
+        translation_key="reduced_temperature",
         icon="mdi:thermometer-chevron-down",
         entity_category=EntityCategory.CONFIG,
         get_native_min_value=lambda entity: (
@@ -153,6 +158,7 @@ ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
     AristonNumberEntityDescription(
         key=ThermostatProperties.HEATING_FLOW_TEMP,
         name=f"{NAME} heating flow temperature",
+        translation_key="heating_flow_temperature",
         icon="mdi:thermometer",
         entity_category=EntityCategory.CONFIG,
         zone=True,
@@ -176,6 +182,7 @@ ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
     AristonNumberEntityDescription(
         key=ThermostatProperties.HEATING_FLOW_OFFSET,
         name=f"{NAME} heating flow offset",
+        translation_key="heating_flow_offset",
         icon="mdi:progress-wrench",
         entity_category=EntityCategory.CONFIG,
         zone=True,
@@ -199,6 +206,7 @@ ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
     AristonNumberEntityDescription(
         key=EvoOneDeviceProperties.AV_SHW,
         name=f"{NAME} requested number of showers",
+        translation_key="requested_number_of_showers",
         icon="mdi:shower-head",
         native_min_value=0,
         get_native_max_value=lambda entity: entity.device.max_req_shower,
@@ -212,6 +220,7 @@ ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
     AristonNumberEntityDescription(
         key=SeDeviceSettings.SE_ANTI_COOLING_TEMPERATURE,
         name=f"{NAME} anti cooling temperature",
+        translation_key="anti_cooling_temperature",
         icon="mdi:thermometer-alert",
         entity_category=EntityCategory.CONFIG,
         get_native_min_value=lambda entity: (
@@ -268,9 +277,14 @@ class AristonNumber(AristonEntity, NumberEntity):
         zone: int = 0,
     ) -> None:
         """Initialize the entity."""
-        # Set before the base class, which builds the unique ID from it.
-        self._attr_name = f"{description.name} {zone}" if zone else description.name
-        super().__init__(coordinator, description, zone)
+        if zone:
+            self._attr_translation_placeholders = {"zone": str(zone)}
+        super().__init__(
+            coordinator,
+            description,
+            zone,
+            f"{description.name} {zone}" if zone else None,
+        )
 
     @property
     def native_value(self):

@@ -51,11 +51,11 @@ from .conftest import runtime_data
 
 CLIMATE = "climate.nimbus"
 WATER_HEATER = "water_heater.nimbus"
-PLANT_MODE = "select.nimbus_ariston_net_plant_mode"
-CURRENCY = "select.nimbus_ariston_net_currency"
-THERMOREGULATION = "switch.nimbus_ariston_net_automatic_thermoregulation"
-FLOW_TEMP = "number.nimbus_ariston_net_heating_flow_temperature_1"
-ELEC_COST = "number.nimbus_ariston_net_elec_cost"
+PLANT_MODE = "select.nimbus_plant_mode"
+CURRENCY = "select.nimbus_currency"
+THERMOREGULATION = "switch.nimbus_automatic_thermoregulation"
+FLOW_TEMP = "number.nimbus_zone_1_heating_flow_temperature"
+ELEC_COST = "number.nimbus_electricity_cost"
 
 # Fake routes of _async_get in the api fixture, counted instead of _async_get.
 ROUTED = "_async_get"

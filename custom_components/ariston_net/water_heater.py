@@ -47,6 +47,7 @@ class AristonWaterHeaterEntityDescription(
 ARISTON_WATER_HEATER_TYPES: list[AristonWaterHeaterEntityDescription] = [
     AristonWaterHeaterEntityDescription(
         key="AristonWaterHeater",
+        translation_key="water_heater",
         extra_states=[
             {
                 EXTRA_STATE_ATTRIBUTE: ATTR_TARGET_TEMP_STEP,
@@ -60,6 +61,7 @@ ARISTON_WATER_HEATER_TYPES: list[AristonWaterHeaterEntityDescription] = [
     ),
     AristonWaterHeaterEntityDescription(
         key="AristonWaterHeater",
+        translation_key="water_heater",
         extra_states=[
             {
                 EXTRA_STATE_ATTRIBUTE: ATTR_TARGET_TEMP_STEP,
@@ -102,6 +104,7 @@ async def async_setup_entry(
 class AristonWaterHeater(AristonEntity, WaterHeaterEntity):
     """Ariston Water Heater Device."""
 
+    _attr_name = None
     entity_description: AristonWaterHeaterEntityDescription
 
     def __init__(
@@ -112,11 +115,6 @@ class AristonWaterHeater(AristonEntity, WaterHeaterEntity):
         """Initialize the water heater."""
         super().__init__(coordinator, description)
         self._attr_unique_id = f"{self.device.gateway}-water_heater"
-
-    @property
-    def name(self) -> str:
-        """Return the name of the device."""
-        return self.device.name or ""
 
     @property
     def icon(self):
@@ -185,7 +183,7 @@ class AristonWaterHeater(AristonEntity, WaterHeaterEntity):
         _LOGGER.debug(
             "Setting temperature to %d for %s",
             temperature,
-            self.name,
+            self.entity_id,
         )
 
         if temperature == self.target_temperature:
