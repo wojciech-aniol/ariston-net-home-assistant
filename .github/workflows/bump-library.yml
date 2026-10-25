@@ -108,8 +108,6 @@ jobs:
           PR: ${{ needs.bump.outputs.pr }}
           SHA: ${{ needs.bump.outputs.sha }}
         run: |
-          branch=$(gh pr view "$PR" --json headRefName --jq .headRefName)
           gh pr merge "$PR" --merge --match-head-commit "$SHA"
-          gh api -X DELETE "repos/$GH_REPO/git/refs/heads/$branch"
           # A merge made with this token does not start auto-release.yml, so start it here.
           gh workflow run auto-release.yml --ref ariston-net
