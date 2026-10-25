@@ -32,7 +32,9 @@ upstream support, but they are not tested here.
 
 - Domain `ariston_net` instead of `ariston`. Config entries of the `ariston` domain are not
   migrated: set up the integration again.
-- Entity names and IDs differ from upstream (see [Good to know](#good-to-know)).
+- Entity names are shorter and translated (English and Polish), so names and entity IDs differ
+  from upstream. Entities made by an older version of this fork keep their entity IDs; new
+  installs get shorter ones (see [Good to know](#good-to-know)).
 - Services are `ariston_net.create_vacation` and `ariston_net.set_item_by_id`.
 - Entities the device never reports are not created: the flame sensor needs a flame value, the
   CH return temperature needs its menu value.
@@ -66,13 +68,14 @@ The commit messages list what was skipped from each pull request and why.
 
 ### New in this fork
 
-- Sensors "Ariston NET HP water flow temp" and "Ariston NET CH flow measured temp" (GALEVO): the
+- Sensors "Heat pump flow temperature" and "CH flow measured temperature" (GALEVO): the
   measured flow temperatures from the cloud menu items 348 and 349, in whole degrees. The library
   does not ask for them, so the integration adds them to its menu items request (still one request
-  per update). A device that never sends them gets no such sensors, and "CH flow measured temp" is
-  skipped when "CH flow temp" has a value. The cloud gives an owner account no return temperature
-  for Nimbus 120 S-T NET (menu items 1-500, all data items and the web user menu were checked).
-- Sensors "Ariston NET HP water return temp" and "Ariston NET HP evaporator temp" (GALEVO): the
+  per update). A device that never sends them gets no such sensors, and "CH flow measured
+  temperature" is skipped when "CH flow temperature" has a value. The cloud gives an owner
+  account no return temperature for Nimbus 120 S-T NET (menu items 1-500, all data items and the
+  web user menu were checked).
+- Sensors "Heat pump return temperature" and "Evaporator temperature" (GALEVO): the
   heat pump nodes T_13.8.2 and T_13.8.7. The cloud refuses them for an owner account so far, and a
   refused ID breaks the whole menu items request. So the integration asks for them once, when it
   starts (one extra request per start, none per update). If the cloud serves them one day, they
@@ -128,10 +131,12 @@ Home Assistant.
 - Entity names come from translations (English and Polish so far; other languages show
   English), and Home Assistant puts the device name in front: "Dom Heat pump" for a device named
   "Dom". Climate and water heater entities use only the device name (`climate.dom`,
-  `water_heater.dom`). Sensors still start with "Ariston NET".
+  `water_heater.dom`).
 - Entity IDs never change once made, so existing entities keep theirs. New installs get shorter
   ones made from the new names, like `binary_sensor.dom_heat_pump` (on Home Assistant 2026.10 in
   its language, like `binary_sensor.dom_pompa_ciepla`).
+- Energy sensors are main sensors, not diagnostic ones. New installs create the signal strength
+  sensor disabled; enable it in the entity settings if you need it.
 - Default polling: state every 180 s, energy every 60 min, bus errors every 600 s
   (**Configure** in the integration options, where you can also turn off energy and bus errors
   polling). The Ariston cloud throttles accounts (HTTP 429 and 500), so do not poll more often.

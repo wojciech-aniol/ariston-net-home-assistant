@@ -47,9 +47,9 @@ above "About the upstream integration" matters. Of `translations/` read only `en
 
 - Never change the unique_id or entity_id of an existing entity. `description.name` is only the
   unique_id source: never edit it. Visible names come from `translation_key` in strings.json
-  (`en.json` and `pl.json` too; icons in `icons.json`). Sensors have no `translation_key` yet,
-  so they still show `description.name`. Most unique_ids are built from `description.name`
-  (`entity.py`); zone numbers add the zone. Climate uses `{gateway}_{zone}` and the water heater
+  (`en.json` and `pl.json` too; icons in `icons.json`, where a sensor without one shows the icon
+  of its device class). Most unique_ids are built from `description.name` (`entity.py`); zone
+  numbers add the zone. Climate uses `{gateway}_{zone}` and the water heater
   `{gateway}-water_heater`. `tests/test_snapshots.py` guards this for a one-zone GALEVO device,
   BSB and the VELIS Evo family (device types come from the `device_type` fixture and
   `tests/fixtures/`): an unplanned snapshot change means the code change is wrong.

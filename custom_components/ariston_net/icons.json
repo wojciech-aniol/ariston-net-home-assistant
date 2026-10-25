@@ -78,6 +78,44 @@
         "default": "mdi:cog"
       }
     },
+    "sensor": {
+      "average_showers": {
+        "default": "mdi:shower-head"
+      },
+      "heating_gas_last_month": {
+        "default": "mdi:meter-gas"
+      },
+      "dhw_gas_last_month": {
+        "default": "mdi:meter-gas"
+      },
+      "heating_gas": {
+        "default": "mdi:meter-gas"
+      },
+      "dhw_gas": {
+        "default": "mdi:meter-gas"
+      },
+      "remaining_time": {
+        "default": "mdi:timer"
+      },
+      "heating_rate": {
+        "default": "mdi:chart-line"
+      },
+      "errors_count": {
+        "default": "mdi:alert-outline"
+      },
+      "current_temperature": {
+        "default": "mdi:thermometer-auto"
+      },
+      "requested_temperature": {
+        "default": "mdi:thermometer-auto"
+      },
+      "dhw_temperature": {
+        "default": "mdi:thermometer-water"
+      },
+      "dhw_target_temperature": {
+        "default": "mdi:thermometer-chevron-up"
+      }
+    },
     "switch": {
       "automatic_thermoregulation": {
         "default": "mdi:radiator"

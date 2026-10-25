@@ -166,6 +166,101 @@
         "name": "Operation mode"
       }
     },
+    "sensor": {
+      "heating_circuit_pressure": {
+        "name": "Heating circuit pressure"
+      },
+      "ch_flow_setpoint_temperature": {
+        "name": "CH flow setpoint temperature"
+      },
+      "ch_flow_temperature": {
+        "name": "CH flow temperature"
+      },
+      "signal_strength": {
+        "name": "Signal strength"
+      },
+      "ch_return_temperature": {
+        "name": "CH return temperature"
+      },
+      "hp_flow_temperature": {
+        "name": "Heat pump flow temperature"
+      },
+      "ch_flow_measured_temperature": {
+        "name": "CH flow measured temperature"
+      },
+      "hp_return_temperature": {
+        "name": "Heat pump return temperature"
+      },
+      "hp_evaporator_temperature": {
+        "name": "Evaporator temperature"
+      },
+      "outside_temperature": {
+        "name": "Outside temperature"
+      },
+      "average_showers": {
+        "name": "Average showers"
+      },
+      "heating_gas_last_month": {
+        "name": "Heating gas last month"
+      },
+      "heating_electricity_last_month": {
+        "name": "Heating electricity last month"
+      },
+      "cooling_electricity_last_month": {
+        "name": "Cooling electricity last month"
+      },
+      "dhw_gas_last_month": {
+        "name": "Hot water gas last month"
+      },
+      "dhw_electricity_last_month": {
+        "name": "Hot water electricity last month"
+      },
+      "heating_energy": {
+        "name": "Heating energy"
+      },
+      "dhw_energy": {
+        "name": "Hot water energy"
+      },
+      "heating_gas": {
+        "name": "Heating gas"
+      },
+      "dhw_heat_pump_electricity": {
+        "name": "Hot water heat pump electricity"
+      },
+      "dhw_resistor_electricity": {
+        "name": "Hot water heating element electricity"
+      },
+      "dhw_gas": {
+        "name": "Hot water gas"
+      },
+      "heating_electricity": {
+        "name": "Heating electricity"
+      },
+      "dhw_electricity": {
+        "name": "Hot water electricity"
+      },
+      "remaining_time": {
+        "name": "Remaining time"
+      },
+      "heating_rate": {
+        "name": "Heating rate"
+      },
+      "errors_count": {
+        "name": "Bus errors"
+      },
+      "current_temperature": {
+        "name": "Current temperature"
+      },
+      "requested_temperature": {
+        "name": "Requested temperature"
+      },
+      "dhw_temperature": {
+        "name": "Hot water temperature"
+      },
+      "dhw_target_temperature": {
+        "name": "Hot water target temperature"
+      }
+    },
     "switch": {
       "automatic_thermoregulation": {
         "name": "Automatic thermoregulation"
