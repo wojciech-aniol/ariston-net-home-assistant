@@ -1,4 +1,4 @@
-"""Tests for the climate and water heater actions of a BSB device."""
+"""Tests for the entities of a BSB device."""
 
 from __future__ import annotations
 
@@ -7,10 +7,13 @@ from unittest.mock import MagicMock
 
 from ariston_net_api.const import BsbOperativeMode, BsbZoneMode
 from homeassistant.components.climate import (
+    ATTR_CURRENT_TEMPERATURE,
+    ATTR_HVAC_ACTION,
     ATTR_HVAC_MODE,
     DOMAIN as CLIMATE_DOMAIN,
     SERVICE_SET_HVAC_MODE,
     SERVICE_SET_TEMPERATURE as CLIMATE_SET_TEMPERATURE,
+    HVACAction,
     HVACMode,
 )
 from homeassistant.components.water_heater import (
@@ -24,14 +27,18 @@ from homeassistant.const import (
     ATTR_ENTITY_ID,
     ATTR_SUPPORTED_FEATURES,
     ATTR_TEMPERATURE,
+    STATE_OFF,
+    STATE_ON,
 )
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers import entity_registry as er
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from .conftest import GATEWAY, setup_integration
 
 CLIMATE = "climate.boiler"
+HEAT_PUMP = "binary_sensor.boiler_heat_pump"
 WATER_HEATER = "water_heater.boiler"
 ZONE = 1
 
@@ -133,3 +140,68 @@ async def test_water_heater_has_no_on_off(
         WaterHeaterEntityFeature.TARGET_TEMPERATURE
         | WaterHeaterEntityFeature.OPERATION_MODE
     )
+
+
+@pytest.mark.parametrize(
+    ("hp_on", "expected_state"), [(True, STATE_ON), (False, STATE_OFF)]
+)
+async def test_heat_pump_follows_hp_on(
+    hass: HomeAssistant,
+    device_data: dict[str, Any],
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+    hp_on: bool,
+    expected_state: str,
+) -> None:
+    """Test the heat pump sensor shows hpOn when the cloud sends it."""
+    device_data["plant_data"]["hpOn"] = hp_on
+    await setup_integration(hass, config_entry)
+
+    assert hass.states.get(HEAT_PUMP).state == expected_state
+
+
+async def test_heat_pump_has_galevo_unique_id(
+    hass: HomeAssistant,
+    entity_registry: er.EntityRegistry,
+    device_data: dict[str, Any],
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+) -> None:
+    """Test the BSB heat pump sensor uses the unique ID format of GALEVO."""
+    device_data["plant_data"]["hpOn"] = True
+    await setup_integration(hass, config_entry)
+
+    entry = entity_registry.async_get(HEAT_PUMP)
+    assert entry.unique_id == f"{GATEWAY}-Ariston NET is heating pump on"
+
+
+async def test_climate_without_room_sensor_has_no_current_temperature(
+    hass: HomeAssistant,
+    device_data: dict[str, Any],
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+) -> None:
+    """Test a zone without a room sensor shows no current temperature."""
+    device_data["plant_data"]["zones"][str(ZONE)]["hasRoomSens"] = False
+    await setup_integration(hass, config_entry)
+
+    assert hass.states.get(CLIMATE).attributes[ATTR_CURRENT_TEMPERATURE] is None
+
+
+@pytest.mark.parametrize(
+    ("heat_request", "expected_action"),
+    [(True, HVACAction.HEATING), (False, HVACAction.IDLE)],
+)
+async def test_hvac_action_follows_zone_request(
+    hass: HomeAssistant,
+    device_data: dict[str, Any],
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+    heat_request: bool,
+    expected_action: HVACAction,
+) -> None:
+    """Test the zone heats only while it asks, even with the flame on."""
+    device_data["plant_data"]["zones"][str(ZONE)]["heatOrCoolReq"] = heat_request
+    await setup_integration(hass, config_entry)
+
+    assert hass.states.get(CLIMATE).attributes[ATTR_HVAC_ACTION] == expected_action
