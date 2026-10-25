@@ -1,4 +1,4 @@
-ariston-net-api==0.20.5
+ariston-net-api==0.21.0
 pytest-cov==7.1.0
 pytest-homeassistant-custom-component==0.13.373
 ruff==0.17.2
