@@ -118,6 +118,7 @@ async def poll(hass: HomeAssistant) -> None:
     await runtime_data(hass).coordinator.async_refresh()
 
 
+@pytest.mark.usefixtures("entity_registry_enabled_by_default")
 async def test_refusals_in_a_row_fall_back_to_library_items(
     hass: HomeAssistant,
     api: MagicMock,
@@ -234,6 +235,7 @@ async def test_auth_error_on_extra_items_is_raised(
     library_get_menu_items.assert_not_awaited()
 
 
+@pytest.mark.usefixtures("entity_registry_enabled_by_default")
 async def test_library_without_async_get_keeps_its_method(
     hass: HomeAssistant,
     api: MagicMock,

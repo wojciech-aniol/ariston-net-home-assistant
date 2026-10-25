@@ -74,6 +74,7 @@ async def setup_platforms(
         await refresh_energy(hass, api)
 
 
+@pytest.mark.usefixtures("entity_registry_enabled_by_default")
 @pytest.mark.parametrize("platform", PLATFORMS)
 @pytest.mark.parametrize("data_set", DATA_SETS)
 async def test_entities_match_snapshot(

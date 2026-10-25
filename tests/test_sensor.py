@@ -10,6 +10,7 @@ from homeassistant.components.sensor import ATTR_LAST_RESET
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.const import ATTR_UNIT_OF_MEASUREMENT, STATE_UNKNOWN
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers import entity_registry as er
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
@@ -29,6 +30,7 @@ CH_GAS = "sensor.nimbus_heating_gas_last_month"
 ERRORS_COUNT = "sensor.nimbus_bus_errors"
 
 
+@pytest.mark.usefixtures("entity_registry_enabled_by_default")
 async def test_sensor_unit_comes_from_device(
     hass: HomeAssistant,
     api: MagicMock,
@@ -43,6 +45,18 @@ async def test_sensor_unit_comes_from_device(
     state = hass.states.get(SIGNAL_STRENGTH)
     assert state.state == "-60"
     assert state.attributes[ATTR_UNIT_OF_MEASUREMENT] == "dBm"
+
+
+async def test_signal_strength_is_disabled_by_default(
+    hass: HomeAssistant,
+    entity_registry: er.EntityRegistry,
+    init_integration: MockConfigEntry,
+) -> None:
+    """Test a new install creates the signal strength sensor disabled."""
+    entry = entity_registry.async_get(SIGNAL_STRENGTH)
+
+    assert entry.disabled_by is er.RegistryEntryDisabler.INTEGRATION
+    assert hass.states.get(SIGNAL_STRENGTH) is None
 
 
 @pytest.mark.parametrize(

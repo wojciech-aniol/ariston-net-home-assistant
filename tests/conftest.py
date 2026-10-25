@@ -6,7 +6,7 @@ from collections.abc import Generator
 import copy
 import logging
 from typing import Any
-from unittest.mock import AsyncMock, MagicMock, patch
+from unittest.mock import AsyncMock, MagicMock, PropertyMock, patch
 
 from ariston_net_api import AristonGalevoDevice, _get_device
 from ariston_net_api.ariston_api import ConnectionException
@@ -266,6 +266,17 @@ def snapshot(snapshot: SnapshotAssertion) -> SnapshotAssertion:
 @pytest.fixture(autouse=True)
 def auto_enable_custom_integrations(enable_custom_integrations: None) -> None:
     """Load the integration from custom_components."""
+
+
+@pytest.fixture
+def entity_registry_enabled_by_default() -> Generator[None]:
+    """Create entities that are disabled by default as enabled."""
+    with patch(
+        "homeassistant.helpers.entity.Entity.entity_registry_enabled_default",
+        new_callable=PropertyMock,
+        return_value=True,
+    ):
+        yield
 
 
 @pytest.fixture(autouse=True)
