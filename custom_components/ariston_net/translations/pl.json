@@ -39,5 +39,111 @@
         "title": "Konfiguruj Ariston NET"
       }
     }
+  },
+  "entity": {
+    "binary_sensor": {
+      "is_flame_on": {
+        "name": "Płomień"
+      },
+      "is_heating_pump_on": {
+        "name": "Pompa ciepła"
+      },
+      "holiday_mode": {
+        "name": "Tryb wakacyjny"
+      },
+      "is_heating": {
+        "name": "Grzanie"
+      },
+      "anti_legionella_cycle": {
+        "name": "Cykl antylegionella"
+      }
+    },
+    "number": {
+      "elec_cost": {
+        "name": "Koszt energii elektrycznej"
+      },
+      "gas_cost": {
+        "name": "Koszt gazu"
+      },
+      "max_setpoint_temperature": {
+        "name": "Maksymalna temperatura zadana"
+      },
+      "min_setpoint_temperature": {
+        "name": "Minimalna temperatura zadana"
+      },
+      "reduced_temperature": {
+        "name": "Temperatura obniżona"
+      },
+      "heating_flow_temperature": {
+        "name": "Temperatura zasilania strefy {zone}"
+      },
+      "heating_flow_offset": {
+        "name": "Korekta temperatury zasilania strefy {zone}"
+      },
+      "requested_number_of_showers": {
+        "name": "Żądana liczba pryszniców"
+      },
+      "anti_cooling_temperature": {
+        "name": "Temperatura ochrony przed wychłodzeniem"
+      }
+    },
+    "select": {
+      "plant_mode": {
+        "name": "Tryb instalacji"
+      },
+      "currency": {
+        "name": "Waluta"
+      },
+      "gas_type": {
+        "name": "Rodzaj gazu"
+      },
+      "gas_energy_unit": {
+        "name": "Jednostka energii gazu"
+      },
+      "hybrid_mode": {
+        "name": "Tryb hybrydowy"
+      },
+      "buffer_control_mode": {
+        "name": "Tryb sterowania buforem"
+      },
+      "operation_mode": {
+        "name": "Tryb pracy"
+      }
+    },
+    "switch": {
+      "automatic_thermoregulation": {
+        "name": "Automatyczna termoregulacja"
+      },
+      "is_quiet": {
+        "name": "Tryb cichy"
+      },
+      "eco_mode": {
+        "name": "Tryb eko"
+      },
+      "power_option": {
+        "name": "Opcja mocy"
+      },
+      "power": {
+        "name": "Zasilanie"
+      },
+      "anti_legionella": {
+        "name": "Antylegionella"
+      },
+      "preheating": {
+        "name": "Podgrzewanie wstępne"
+      },
+      "boost": {
+        "name": "Boost"
+      },
+      "permanent_boost": {
+        "name": "Stały boost"
+      },
+      "anti_cooling": {
+        "name": "Ochrona przed wychłodzeniem"
+      },
+      "night_mode": {
+        "name": "Tryb nocny"
+      }
+    }
   }
 }

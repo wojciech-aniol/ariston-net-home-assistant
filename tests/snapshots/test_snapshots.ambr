@@ -255,7 +255,7 @@
     }),
   ])
 # ---
-# name: test_device_type_entities_match_snapshot[andris2-binary_sensor][binary_sensor.velis_ariston_net_anti_legionella_cycle-entry]
+# name: test_device_type_entities_match_snapshot[andris2-binary_sensor][binary_sensor.velis_anti_legionella_cycle-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -269,44 +269,43 @@
     'disabled_by': None,
     'domain': 'binary_sensor',
     'entity_category': None,
-    'entity_id': 'binary_sensor.velis_ariston_net_anti_legionella_cycle',
-    'has_entity_name': False,
+    'entity_id': 'binary_sensor.velis_anti_legionella_cycle',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET anti-legionella cycle',
+    'object_id_base': 'Anti-legionella cycle',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:bacteria',
-    'original_name': 'Ariston NET anti-legionella cycle',
+    'original_icon': None,
+    'original_name': 'Anti-legionella cycle',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'anti_legionella_cycle',
     'unique_id': 'F0AD4E000001-Ariston NET anti-legionella cycle',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[andris2-binary_sensor][binary_sensor.velis_ariston_net_anti_legionella_cycle-state]
+# name: test_device_type_entities_match_snapshot[andris2-binary_sensor][binary_sensor.velis_anti_legionella_cycle-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET anti-legionella cycle',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:bacteria',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Anti-legionella cycle',
     }),
     'context': <ANY>,
-    'entity_id': 'binary_sensor.velis_ariston_net_anti_legionella_cycle',
+    'entity_id': 'binary_sensor.velis_anti_legionella_cycle',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'off',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[andris2-binary_sensor][binary_sensor.velis_ariston_net_is_heating-entry]
+# name: test_device_type_entities_match_snapshot[andris2-binary_sensor][binary_sensor.velis_heating-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -320,44 +319,43 @@
     'disabled_by': None,
     'domain': 'binary_sensor',
     'entity_category': None,
-    'entity_id': 'binary_sensor.velis_ariston_net_is_heating',
-    'has_entity_name': False,
+    'entity_id': 'binary_sensor.velis_heating',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET is heating',
+    'object_id_base': 'Heating',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:fire',
-    'original_name': 'Ariston NET is heating',
+    'original_icon': None,
+    'original_name': 'Heating',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'is_heating',
     'unique_id': 'F0AD4E000001-Ariston NET is heating',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[andris2-binary_sensor][binary_sensor.velis_ariston_net_is_heating-state]
+# name: test_device_type_entities_match_snapshot[andris2-binary_sensor][binary_sensor.velis_heating-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET is heating',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:fire',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Heating',
     }),
     'context': <ANY>,
-    'entity_id': 'binary_sensor.velis_ariston_net_is_heating',
+    'entity_id': 'binary_sensor.velis_heating',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'on',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[andris2-number][number.velis_ariston_net_max_setpoint_temperature-entry]
+# name: test_device_type_entities_match_snapshot[andris2-number][number.velis_max_setpoint_temperature-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -376,41 +374,40 @@
     'disabled_by': None,
     'domain': 'number',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'number.velis_ariston_net_max_setpoint_temperature',
-    'has_entity_name': False,
+    'entity_id': 'number.velis_max_setpoint_temperature',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET max setpoint temperature',
+    'object_id_base': 'Max setpoint temperature',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:thermometer-high',
-    'original_name': 'Ariston NET max setpoint temperature',
+    'original_icon': None,
+    'original_name': 'Max setpoint temperature',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'max_setpoint_temperature',
     'unique_id': 'F0AD4E000001-Ariston NET max setpoint temperature',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[andris2-number][number.velis_ariston_net_max_setpoint_temperature-state]
+# name: test_device_type_entities_match_snapshot[andris2-number][number.velis_max_setpoint_temperature-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET max setpoint temperature',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:thermometer-high',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Max setpoint temperature',
       <NumberEntityCapabilityAttribute.MAX: 'max'>: 80.0,
       <NumberEntityCapabilityAttribute.MIN: 'min'>: 40.0,
       <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
       <NumberEntityCapabilityAttribute.STEP: 'step'>: 1,
     }),
     'context': <ANY>,
-    'entity_id': 'number.velis_ariston_net_max_setpoint_temperature',
+    'entity_id': 'number.velis_max_setpoint_temperature',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
@@ -434,7 +431,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.velis_ariston_net_average_showers',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -489,7 +486,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_central_heating_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -549,7 +546,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_central_heating_gas_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -609,7 +606,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_central_heating_total_energy_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -669,7 +666,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -729,7 +726,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_gas_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -789,7 +786,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -849,7 +846,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -909,7 +906,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -969,7 +966,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_errors_count',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -1026,7 +1023,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.velis_ariston_net_proc_req_temp',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -1068,7 +1065,7 @@
     'state': '55.0',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[andris2-switch][switch.velis_ariston_net_anti_legionella-entry]
+# name: test_device_type_entities_match_snapshot[andris2-switch][switch.velis_anti_legionella-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -1082,44 +1079,43 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'switch.velis_ariston_net_anti_legionella',
-    'has_entity_name': False,
+    'entity_id': 'switch.velis_anti_legionella',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET anti legionella',
+    'object_id_base': 'Anti-legionella',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:bacteria-outline',
-    'original_name': 'Ariston NET anti legionella',
+    'original_icon': None,
+    'original_name': 'Anti-legionella',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'anti_legionella',
     'unique_id': 'F0AD4E000001-Ariston NET anti legionella',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[andris2-switch][switch.velis_ariston_net_anti_legionella-state]
+# name: test_device_type_entities_match_snapshot[andris2-switch][switch.velis_anti_legionella-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET anti legionella',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:bacteria-outline',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Anti-legionella',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.velis_ariston_net_anti_legionella',
+    'entity_id': 'switch.velis_anti_legionella',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'on',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[andris2-switch][switch.velis_ariston_net_eco_mode-entry]
+# name: test_device_type_entities_match_snapshot[andris2-switch][switch.velis_eco_mode-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -1133,44 +1129,43 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': None,
-    'entity_id': 'switch.velis_ariston_net_eco_mode',
-    'has_entity_name': False,
+    'entity_id': 'switch.velis_eco_mode',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET eco mode',
+    'object_id_base': 'Eco mode',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:leaf',
-    'original_name': 'Ariston NET eco mode',
+    'original_icon': None,
+    'original_name': 'Eco mode',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'eco_mode',
     'unique_id': 'F0AD4E000001-Ariston NET eco mode',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[andris2-switch][switch.velis_ariston_net_eco_mode-state]
+# name: test_device_type_entities_match_snapshot[andris2-switch][switch.velis_eco_mode-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET eco mode',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:leaf',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Eco mode',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.velis_ariston_net_eco_mode',
+    'entity_id': 'switch.velis_eco_mode',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'off',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[andris2-switch][switch.velis_ariston_net_power-entry]
+# name: test_device_type_entities_match_snapshot[andris2-switch][switch.velis_power-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -1184,37 +1179,36 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': None,
-    'entity_id': 'switch.velis_ariston_net_power',
-    'has_entity_name': False,
+    'entity_id': 'switch.velis_power',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET power',
+    'object_id_base': 'Power',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:power',
-    'original_name': 'Ariston NET power',
+    'original_icon': None,
+    'original_name': 'Power',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'power',
     'unique_id': 'F0AD4E000001-Ariston NET power',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[andris2-switch][switch.velis_ariston_net_power-state]
+# name: test_device_type_entities_match_snapshot[andris2-switch][switch.velis_power-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET power',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:power',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Power',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.velis_ariston_net_power',
+    'entity_id': 'switch.velis_power',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
@@ -1243,24 +1237,24 @@
     'domain': 'water_heater',
     'entity_category': None,
     'entity_id': 'water_heater.velis',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Velis',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:water-pump',
-    'original_name': 'Velis',
+    'original_icon': None,
+    'original_name': None,
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': <WaterHeaterEntityFeature: 11>,
-    'translation_key': None,
+    'translation_key': 'water_heater',
     'unique_id': 'F0AD4E000001-water_heater',
     'unit_of_measurement': None,
   })
@@ -1270,7 +1264,6 @@
     'attributes': ReadOnlyDict({
       <WaterHeaterStateAttribute.CURRENT_TEMPERATURE: 'current_temperature'>: 48,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:water-pump',
       <WaterHeaterCapabilityAttribute.MAX_TEMP: 'max_temp'>: 70,
       <WaterHeaterCapabilityAttribute.MIN_TEMP: 'min_temp'>: 40,
       <WaterHeaterCapabilityAttribute.OPERATION_LIST: 'operation_list'>: list([
@@ -1292,7 +1285,7 @@
     'state': 'MANUAL',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[bsb-binary_sensor][binary_sensor.boiler_ariston_net_is_flame_on-entry]
+# name: test_device_type_entities_match_snapshot[bsb-binary_sensor][binary_sensor.boiler_flame-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -1306,37 +1299,36 @@
     'disabled_by': None,
     'domain': 'binary_sensor',
     'entity_category': None,
-    'entity_id': 'binary_sensor.boiler_ariston_net_is_flame_on',
-    'has_entity_name': False,
+    'entity_id': 'binary_sensor.boiler_flame',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET is flame on',
+    'object_id_base': 'Flame',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:fire',
-    'original_name': 'Ariston NET is flame on',
+    'original_icon': None,
+    'original_name': 'Flame',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'is_flame_on',
     'unique_id': 'F0AD4E000001-Ariston NET is flame on',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[bsb-binary_sensor][binary_sensor.boiler_ariston_net_is_flame_on-state]
+# name: test_device_type_entities_match_snapshot[bsb-binary_sensor][binary_sensor.boiler_flame-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Boiler Ariston NET is flame on',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:fire',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Boiler Flame',
     }),
     'context': <ANY>,
-    'entity_id': 'binary_sensor.boiler_ariston_net_is_flame_on',
+    'entity_id': 'binary_sensor.boiler_flame',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
@@ -1367,24 +1359,24 @@
     'domain': 'climate',
     'entity_category': None,
     'entity_id': 'climate.boiler',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Boiler',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:radiator',
-    'original_name': 'Boiler',
+    'original_icon': None,
+    'original_name': None,
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': <ClimateEntityFeature: 385>,
-    'translation_key': None,
+    'translation_key': 'thermostat',
     'unique_id': 'F0AD4E000001_1',
     'unit_of_measurement': None,
   })
@@ -1400,7 +1392,6 @@
         <HVACMode.AUTO: 'auto'>,
         <HVACMode.OFF: 'off'>,
       ]),
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:radiator',
       <ClimateEntityCapabilityAttribute.MAX_TEMP: 'max_temp'>: 24.0,
       <ClimateEntityCapabilityAttribute.MIN_TEMP: 'min_temp'>: 15.0,
       <EntityStateAttribute.SUPPORTED_FEATURES: 'supported_features'>: <ClimateEntityFeature: 385>,
@@ -1439,24 +1430,24 @@
     'domain': 'climate',
     'entity_category': None,
     'entity_id': 'climate.boiler_2',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Boiler',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:radiator',
-    'original_name': 'Boiler',
+    'original_icon': None,
+    'original_name': None,
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': <ClimateEntityFeature: 385>,
-    'translation_key': None,
+    'translation_key': 'thermostat',
     'unique_id': 'F0AD4E000001_2',
     'unit_of_measurement': None,
   })
@@ -1472,7 +1463,6 @@
         <HVACMode.AUTO: 'auto'>,
         <HVACMode.OFF: 'off'>,
       ]),
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:radiator',
       <ClimateEntityCapabilityAttribute.MAX_TEMP: 'max_temp'>: 24.0,
       <ClimateEntityCapabilityAttribute.MIN_TEMP: 'min_temp'>: 15.0,
       <EntityStateAttribute.SUPPORTED_FEATURES: 'supported_features'>: <ClimateEntityFeature: 385>,
@@ -1504,7 +1494,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.boiler_ariston_net_central_heating_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -1564,7 +1554,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.boiler_ariston_net_central_heating_gas_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -1624,7 +1614,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.boiler_ariston_net_central_heating_total_energy_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -1684,7 +1674,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.boiler_ariston_net_dhw_current_temperature',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -1743,7 +1733,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.boiler_ariston_net_dhw_target_temperature',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -1802,7 +1792,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.boiler_ariston_net_domestic_hot_water_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -1862,7 +1852,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.boiler_ariston_net_domestic_hot_water_gas_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -1922,7 +1912,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.boiler_ariston_net_domestic_hot_water_heating_pump_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -1982,7 +1972,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.boiler_ariston_net_domestic_hot_water_resistor_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -2042,7 +2032,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.boiler_ariston_net_domestic_hot_water_total_energy_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -2102,7 +2092,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.boiler_ariston_net_errors_count',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -2159,7 +2149,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.boiler_ariston_net_outside_temp',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -2222,24 +2212,24 @@
     'domain': 'water_heater',
     'entity_category': None,
     'entity_id': 'water_heater.boiler',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Boiler',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:water-pump',
-    'original_name': 'Boiler',
+    'original_icon': None,
+    'original_name': None,
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': <WaterHeaterEntityFeature: 3>,
-    'translation_key': None,
+    'translation_key': 'water_heater',
     'unique_id': 'F0AD4E000001-water_heater',
     'unit_of_measurement': None,
   })
@@ -2249,7 +2239,6 @@
     'attributes': ReadOnlyDict({
       <WaterHeaterStateAttribute.CURRENT_TEMPERATURE: 'current_temperature'>: 48.5,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Boiler',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:water-pump',
       <WaterHeaterCapabilityAttribute.MAX_TEMP: 'max_temp'>: 65.0,
       <WaterHeaterCapabilityAttribute.MIN_TEMP: 'min_temp'>: 35.0,
       <WaterHeaterCapabilityAttribute.OPERATION_LIST: 'operation_list'>: list([
@@ -2271,7 +2260,7 @@
     'state': 'ON',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[evo-binary_sensor][binary_sensor.velis_ariston_net_is_heating-entry]
+# name: test_device_type_entities_match_snapshot[evo-binary_sensor][binary_sensor.velis_heating-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -2285,44 +2274,43 @@
     'disabled_by': None,
     'domain': 'binary_sensor',
     'entity_category': None,
-    'entity_id': 'binary_sensor.velis_ariston_net_is_heating',
-    'has_entity_name': False,
+    'entity_id': 'binary_sensor.velis_heating',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET is heating',
+    'object_id_base': 'Heating',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:fire',
-    'original_name': 'Ariston NET is heating',
+    'original_icon': None,
+    'original_name': 'Heating',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'is_heating',
     'unique_id': 'F0AD4E000001-Ariston NET is heating',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[evo-binary_sensor][binary_sensor.velis_ariston_net_is_heating-state]
+# name: test_device_type_entities_match_snapshot[evo-binary_sensor][binary_sensor.velis_heating-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET is heating',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:fire',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Heating',
     }),
     'context': <ANY>,
-    'entity_id': 'binary_sensor.velis_ariston_net_is_heating',
+    'entity_id': 'binary_sensor.velis_heating',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'on',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[evo-number][number.velis_ariston_net_requested_number_of_showers-entry]
+# name: test_device_type_entities_match_snapshot[evo-number][number.velis_requested_number_of_showers-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -2341,48 +2329,47 @@
     'disabled_by': None,
     'domain': 'number',
     'entity_category': None,
-    'entity_id': 'number.velis_ariston_net_requested_number_of_showers',
-    'has_entity_name': False,
+    'entity_id': 'number.velis_requested_number_of_showers',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET requested number of showers',
+    'object_id_base': 'Requested number of showers',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:shower-head',
-    'original_name': 'Ariston NET requested number of showers',
+    'original_icon': None,
+    'original_name': 'Requested number of showers',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'requested_number_of_showers',
     'unique_id': 'F0AD4E000001-Ariston NET requested number of showers',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[evo-number][number.velis_ariston_net_requested_number_of_showers-state]
+# name: test_device_type_entities_match_snapshot[evo-number][number.velis_requested_number_of_showers-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET requested number of showers',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:shower-head',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Requested number of showers',
       <NumberEntityCapabilityAttribute.MAX: 'max'>: 4,
       <NumberEntityCapabilityAttribute.MIN: 'min'>: 0,
       <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
       <NumberEntityCapabilityAttribute.STEP: 'step'>: 1,
     }),
     'context': <ANY>,
-    'entity_id': 'number.velis_ariston_net_requested_number_of_showers',
+    'entity_id': 'number.velis_requested_number_of_showers',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '2',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[evo-select][select.velis_ariston_net_operation_mode-entry]
+# name: test_device_type_entities_match_snapshot[evo-select][select.velis_operation_mode-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -2402,34 +2389,33 @@
     'disabled_by': None,
     'domain': 'select',
     'entity_category': None,
-    'entity_id': 'select.velis_ariston_net_operation_mode',
-    'has_entity_name': False,
+    'entity_id': 'select.velis_operation_mode',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET operation mode',
+    'object_id_base': 'Operation mode',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:cog',
-    'original_name': 'Ariston NET operation mode',
+    'original_icon': None,
+    'original_name': 'Operation mode',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'operation_mode',
     'unique_id': 'F0AD4E000001-Ariston NET operation mode',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[evo-select][select.velis_ariston_net_operation_mode-state]
+# name: test_device_type_entities_match_snapshot[evo-select][select.velis_operation_mode-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET operation mode',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cog',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Operation mode',
       <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
         'MANUAL',
         'PROGRAM',
@@ -2437,7 +2423,7 @@
       ]),
     }),
     'context': <ANY>,
-    'entity_id': 'select.velis_ariston_net_operation_mode',
+    'entity_id': 'select.velis_operation_mode',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
@@ -2461,7 +2447,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.velis_ariston_net_average_showers',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -2516,7 +2502,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_central_heating_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -2576,7 +2562,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_central_heating_gas_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -2636,7 +2622,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_central_heating_total_energy_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -2696,7 +2682,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.velis_ariston_net_current_temperature',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -2755,7 +2741,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -2815,7 +2801,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_gas_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -2875,7 +2861,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -2935,7 +2921,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -2995,7 +2981,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -3055,7 +3041,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_errors_count',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -3112,7 +3098,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.velis_ariston_net_remaining_time',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -3150,7 +3136,7 @@
     'state': '90',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[evo-switch][switch.velis_ariston_net_eco_mode-entry]
+# name: test_device_type_entities_match_snapshot[evo-switch][switch.velis_eco_mode-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -3164,44 +3150,43 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': None,
-    'entity_id': 'switch.velis_ariston_net_eco_mode',
-    'has_entity_name': False,
+    'entity_id': 'switch.velis_eco_mode',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET eco mode',
+    'object_id_base': 'Eco mode',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:leaf',
-    'original_name': 'Ariston NET eco mode',
+    'original_icon': None,
+    'original_name': 'Eco mode',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'eco_mode',
     'unique_id': 'F0AD4E000001-Ariston NET eco mode',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[evo-switch][switch.velis_ariston_net_eco_mode-state]
+# name: test_device_type_entities_match_snapshot[evo-switch][switch.velis_eco_mode-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET eco mode',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:leaf',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Eco mode',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.velis_ariston_net_eco_mode',
+    'entity_id': 'switch.velis_eco_mode',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'off',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[evo-switch][switch.velis_ariston_net_power-entry]
+# name: test_device_type_entities_match_snapshot[evo-switch][switch.velis_power-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -3215,44 +3200,43 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': None,
-    'entity_id': 'switch.velis_ariston_net_power',
-    'has_entity_name': False,
+    'entity_id': 'switch.velis_power',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET power',
+    'object_id_base': 'Power',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:power',
-    'original_name': 'Ariston NET power',
+    'original_icon': None,
+    'original_name': 'Power',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'power',
     'unique_id': 'F0AD4E000001-Ariston NET power',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[evo-switch][switch.velis_ariston_net_power-state]
+# name: test_device_type_entities_match_snapshot[evo-switch][switch.velis_power-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET power',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:power',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Power',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.velis_ariston_net_power',
+    'entity_id': 'switch.velis_power',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'on',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[evo2-binary_sensor][binary_sensor.velis_ariston_net_anti_legionella_cycle-entry]
+# name: test_device_type_entities_match_snapshot[evo2-binary_sensor][binary_sensor.velis_anti_legionella_cycle-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -3266,44 +3250,43 @@
     'disabled_by': None,
     'domain': 'binary_sensor',
     'entity_category': None,
-    'entity_id': 'binary_sensor.velis_ariston_net_anti_legionella_cycle',
-    'has_entity_name': False,
+    'entity_id': 'binary_sensor.velis_anti_legionella_cycle',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET anti-legionella cycle',
+    'object_id_base': 'Anti-legionella cycle',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:bacteria',
-    'original_name': 'Ariston NET anti-legionella cycle',
+    'original_icon': None,
+    'original_name': 'Anti-legionella cycle',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'anti_legionella_cycle',
     'unique_id': 'F0AD4E000001-Ariston NET anti-legionella cycle',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[evo2-binary_sensor][binary_sensor.velis_ariston_net_anti_legionella_cycle-state]
+# name: test_device_type_entities_match_snapshot[evo2-binary_sensor][binary_sensor.velis_anti_legionella_cycle-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET anti-legionella cycle',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:bacteria',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Anti-legionella cycle',
     }),
     'context': <ANY>,
-    'entity_id': 'binary_sensor.velis_ariston_net_anti_legionella_cycle',
+    'entity_id': 'binary_sensor.velis_anti_legionella_cycle',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'off',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[evo2-binary_sensor][binary_sensor.velis_ariston_net_is_heating-entry]
+# name: test_device_type_entities_match_snapshot[evo2-binary_sensor][binary_sensor.velis_heating-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -3317,44 +3300,43 @@
     'disabled_by': None,
     'domain': 'binary_sensor',
     'entity_category': None,
-    'entity_id': 'binary_sensor.velis_ariston_net_is_heating',
-    'has_entity_name': False,
+    'entity_id': 'binary_sensor.velis_heating',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET is heating',
+    'object_id_base': 'Heating',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:fire',
-    'original_name': 'Ariston NET is heating',
+    'original_icon': None,
+    'original_name': 'Heating',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'is_heating',
     'unique_id': 'F0AD4E000001-Ariston NET is heating',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[evo2-binary_sensor][binary_sensor.velis_ariston_net_is_heating-state]
+# name: test_device_type_entities_match_snapshot[evo2-binary_sensor][binary_sensor.velis_heating-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET is heating',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:fire',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Heating',
     }),
     'context': <ANY>,
-    'entity_id': 'binary_sensor.velis_ariston_net_is_heating',
+    'entity_id': 'binary_sensor.velis_heating',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'on',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[evo2-number][number.velis_ariston_net_max_setpoint_temperature-entry]
+# name: test_device_type_entities_match_snapshot[evo2-number][number.velis_max_setpoint_temperature-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -3373,41 +3355,40 @@
     'disabled_by': None,
     'domain': 'number',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'number.velis_ariston_net_max_setpoint_temperature',
-    'has_entity_name': False,
+    'entity_id': 'number.velis_max_setpoint_temperature',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET max setpoint temperature',
+    'object_id_base': 'Max setpoint temperature',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:thermometer-high',
-    'original_name': 'Ariston NET max setpoint temperature',
+    'original_icon': None,
+    'original_name': 'Max setpoint temperature',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'max_setpoint_temperature',
     'unique_id': 'F0AD4E000001-Ariston NET max setpoint temperature',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[evo2-number][number.velis_ariston_net_max_setpoint_temperature-state]
+# name: test_device_type_entities_match_snapshot[evo2-number][number.velis_max_setpoint_temperature-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET max setpoint temperature',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:thermometer-high',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Max setpoint temperature',
       <NumberEntityCapabilityAttribute.MAX: 'max'>: 80.0,
       <NumberEntityCapabilityAttribute.MIN: 'min'>: 40.0,
       <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
       <NumberEntityCapabilityAttribute.STEP: 'step'>: 1,
     }),
     'context': <ANY>,
-    'entity_id': 'number.velis_ariston_net_max_setpoint_temperature',
+    'entity_id': 'number.velis_max_setpoint_temperature',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
@@ -3431,7 +3412,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.velis_ariston_net_average_showers',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -3486,7 +3467,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_central_heating_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -3546,7 +3527,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_central_heating_gas_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -3606,7 +3587,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_central_heating_total_energy_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -3666,7 +3647,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -3726,7 +3707,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_gas_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -3786,7 +3767,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -3846,7 +3827,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -3906,7 +3887,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -3966,7 +3947,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_errors_count',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -4023,7 +4004,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.velis_ariston_net_proc_req_temp',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -4082,7 +4063,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.velis_ariston_net_remaining_time',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -4120,7 +4101,7 @@
     'state': '45',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[evo2-switch][switch.velis_ariston_net_anti_legionella-entry]
+# name: test_device_type_entities_match_snapshot[evo2-switch][switch.velis_anti_legionella-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -4134,44 +4115,43 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'switch.velis_ariston_net_anti_legionella',
-    'has_entity_name': False,
+    'entity_id': 'switch.velis_anti_legionella',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET anti legionella',
+    'object_id_base': 'Anti-legionella',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:bacteria-outline',
-    'original_name': 'Ariston NET anti legionella',
+    'original_icon': None,
+    'original_name': 'Anti-legionella',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'anti_legionella',
     'unique_id': 'F0AD4E000001-Ariston NET anti legionella',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[evo2-switch][switch.velis_ariston_net_anti_legionella-state]
+# name: test_device_type_entities_match_snapshot[evo2-switch][switch.velis_anti_legionella-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET anti legionella',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:bacteria-outline',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Anti-legionella',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.velis_ariston_net_anti_legionella',
+    'entity_id': 'switch.velis_anti_legionella',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'on',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[evo2-switch][switch.velis_ariston_net_eco_mode-entry]
+# name: test_device_type_entities_match_snapshot[evo2-switch][switch.velis_eco_mode-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -4185,44 +4165,43 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': None,
-    'entity_id': 'switch.velis_ariston_net_eco_mode',
-    'has_entity_name': False,
+    'entity_id': 'switch.velis_eco_mode',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET eco mode',
+    'object_id_base': 'Eco mode',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:leaf',
-    'original_name': 'Ariston NET eco mode',
+    'original_icon': None,
+    'original_name': 'Eco mode',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'eco_mode',
     'unique_id': 'F0AD4E000001-Ariston NET eco mode',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[evo2-switch][switch.velis_ariston_net_eco_mode-state]
+# name: test_device_type_entities_match_snapshot[evo2-switch][switch.velis_eco_mode-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET eco mode',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:leaf',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Eco mode',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.velis_ariston_net_eco_mode',
+    'entity_id': 'switch.velis_eco_mode',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'off',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[evo2-switch][switch.velis_ariston_net_power-entry]
+# name: test_device_type_entities_match_snapshot[evo2-switch][switch.velis_power-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -4236,37 +4215,36 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': None,
-    'entity_id': 'switch.velis_ariston_net_power',
-    'has_entity_name': False,
+    'entity_id': 'switch.velis_power',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET power',
+    'object_id_base': 'Power',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:power',
-    'original_name': 'Ariston NET power',
+    'original_icon': None,
+    'original_name': 'Power',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'power',
     'unique_id': 'F0AD4E000001-Ariston NET power',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[evo2-switch][switch.velis_ariston_net_power-state]
+# name: test_device_type_entities_match_snapshot[evo2-switch][switch.velis_power-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET power',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:power',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Power',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.velis_ariston_net_power',
+    'entity_id': 'switch.velis_power',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
@@ -4295,24 +4273,24 @@
     'domain': 'water_heater',
     'entity_category': None,
     'entity_id': 'water_heater.velis',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Velis',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:water-pump',
-    'original_name': 'Velis',
+    'original_icon': None,
+    'original_name': None,
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': <WaterHeaterEntityFeature: 11>,
-    'translation_key': None,
+    'translation_key': 'water_heater',
     'unique_id': 'F0AD4E000001-water_heater',
     'unit_of_measurement': None,
   })
@@ -4322,7 +4300,6 @@
     'attributes': ReadOnlyDict({
       <WaterHeaterStateAttribute.CURRENT_TEMPERATURE: 'current_temperature'>: 48,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:water-pump',
       <WaterHeaterCapabilityAttribute.MAX_TEMP: 'max_temp'>: 70,
       <WaterHeaterCapabilityAttribute.MIN_TEMP: 'min_temp'>: 40,
       <WaterHeaterCapabilityAttribute.OPERATION_LIST: 'operation_list'>: list([
@@ -4344,7 +4321,7 @@
     'state': 'MANUAL',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[lux-binary_sensor][binary_sensor.velis_ariston_net_is_heating-entry]
+# name: test_device_type_entities_match_snapshot[lux-binary_sensor][binary_sensor.velis_heating-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -4358,44 +4335,43 @@
     'disabled_by': None,
     'domain': 'binary_sensor',
     'entity_category': None,
-    'entity_id': 'binary_sensor.velis_ariston_net_is_heating',
-    'has_entity_name': False,
+    'entity_id': 'binary_sensor.velis_heating',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET is heating',
+    'object_id_base': 'Heating',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:fire',
-    'original_name': 'Ariston NET is heating',
+    'original_icon': None,
+    'original_name': 'Heating',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'is_heating',
     'unique_id': 'F0AD4E000001-Ariston NET is heating',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[lux-binary_sensor][binary_sensor.velis_ariston_net_is_heating-state]
+# name: test_device_type_entities_match_snapshot[lux-binary_sensor][binary_sensor.velis_heating-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET is heating',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:fire',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Heating',
     }),
     'context': <ANY>,
-    'entity_id': 'binary_sensor.velis_ariston_net_is_heating',
+    'entity_id': 'binary_sensor.velis_heating',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'on',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[lux-number][number.velis_ariston_net_max_setpoint_temperature-entry]
+# name: test_device_type_entities_match_snapshot[lux-number][number.velis_max_setpoint_temperature-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -4414,41 +4390,40 @@
     'disabled_by': None,
     'domain': 'number',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'number.velis_ariston_net_max_setpoint_temperature',
-    'has_entity_name': False,
+    'entity_id': 'number.velis_max_setpoint_temperature',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET max setpoint temperature',
+    'object_id_base': 'Max setpoint temperature',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:thermometer-high',
-    'original_name': 'Ariston NET max setpoint temperature',
+    'original_icon': None,
+    'original_name': 'Max setpoint temperature',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'max_setpoint_temperature',
     'unique_id': 'F0AD4E000001-Ariston NET max setpoint temperature',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[lux-number][number.velis_ariston_net_max_setpoint_temperature-state]
+# name: test_device_type_entities_match_snapshot[lux-number][number.velis_max_setpoint_temperature-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET max setpoint temperature',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:thermometer-high',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Max setpoint temperature',
       <NumberEntityCapabilityAttribute.MAX: 'max'>: 80.0,
       <NumberEntityCapabilityAttribute.MIN: 'min'>: 40.0,
       <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
       <NumberEntityCapabilityAttribute.STEP: 'step'>: 1,
     }),
     'context': <ANY>,
-    'entity_id': 'number.velis_ariston_net_max_setpoint_temperature',
+    'entity_id': 'number.velis_max_setpoint_temperature',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
@@ -4472,7 +4447,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.velis_ariston_net_average_showers',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -4527,7 +4502,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_central_heating_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -4587,7 +4562,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_central_heating_gas_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -4647,7 +4622,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_central_heating_total_energy_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -4707,7 +4682,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -4767,7 +4742,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_gas_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -4827,7 +4802,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -4887,7 +4862,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -4947,7 +4922,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -5007,7 +4982,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_errors_count',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -5064,7 +5039,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.velis_ariston_net_proc_req_temp',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -5123,7 +5098,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.velis_ariston_net_remaining_time',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -5161,7 +5136,7 @@
     'state': '45',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[lux-switch][switch.velis_ariston_net_anti_legionella-entry]
+# name: test_device_type_entities_match_snapshot[lux-switch][switch.velis_anti_legionella-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -5175,44 +5150,43 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'switch.velis_ariston_net_anti_legionella',
-    'has_entity_name': False,
+    'entity_id': 'switch.velis_anti_legionella',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET anti legionella',
+    'object_id_base': 'Anti-legionella',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:bacteria-outline',
-    'original_name': 'Ariston NET anti legionella',
+    'original_icon': None,
+    'original_name': 'Anti-legionella',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'anti_legionella',
     'unique_id': 'F0AD4E000001-Ariston NET anti legionella',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[lux-switch][switch.velis_ariston_net_anti_legionella-state]
+# name: test_device_type_entities_match_snapshot[lux-switch][switch.velis_anti_legionella-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET anti legionella',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:bacteria-outline',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Anti-legionella',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.velis_ariston_net_anti_legionella',
+    'entity_id': 'switch.velis_anti_legionella',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'on',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[lux-switch][switch.velis_ariston_net_eco_mode-entry]
+# name: test_device_type_entities_match_snapshot[lux-switch][switch.velis_eco_mode-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -5226,44 +5200,43 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': None,
-    'entity_id': 'switch.velis_ariston_net_eco_mode',
-    'has_entity_name': False,
+    'entity_id': 'switch.velis_eco_mode',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET eco mode',
+    'object_id_base': 'Eco mode',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:leaf',
-    'original_name': 'Ariston NET eco mode',
+    'original_icon': None,
+    'original_name': 'Eco mode',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'eco_mode',
     'unique_id': 'F0AD4E000001-Ariston NET eco mode',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[lux-switch][switch.velis_ariston_net_eco_mode-state]
+# name: test_device_type_entities_match_snapshot[lux-switch][switch.velis_eco_mode-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET eco mode',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:leaf',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Eco mode',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.velis_ariston_net_eco_mode',
+    'entity_id': 'switch.velis_eco_mode',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'off',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[lux-switch][switch.velis_ariston_net_power-entry]
+# name: test_device_type_entities_match_snapshot[lux-switch][switch.velis_power-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -5277,37 +5250,36 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': None,
-    'entity_id': 'switch.velis_ariston_net_power',
-    'has_entity_name': False,
+    'entity_id': 'switch.velis_power',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET power',
+    'object_id_base': 'Power',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:power',
-    'original_name': 'Ariston NET power',
+    'original_icon': None,
+    'original_name': 'Power',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'power',
     'unique_id': 'F0AD4E000001-Ariston NET power',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[lux-switch][switch.velis_ariston_net_power-state]
+# name: test_device_type_entities_match_snapshot[lux-switch][switch.velis_power-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET power',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:power',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Power',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.velis_ariston_net_power',
+    'entity_id': 'switch.velis_power',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
@@ -5337,24 +5309,24 @@
     'domain': 'water_heater',
     'entity_category': None,
     'entity_id': 'water_heater.velis',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Velis',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:water-pump',
-    'original_name': 'Velis',
+    'original_icon': None,
+    'original_name': None,
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': <WaterHeaterEntityFeature: 11>,
-    'translation_key': None,
+    'translation_key': 'water_heater',
     'unique_id': 'F0AD4E000001-water_heater',
     'unit_of_measurement': None,
   })
@@ -5364,7 +5336,6 @@
     'attributes': ReadOnlyDict({
       <WaterHeaterStateAttribute.CURRENT_TEMPERATURE: 'current_temperature'>: 48,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:water-pump',
       <WaterHeaterCapabilityAttribute.MAX_TEMP: 'max_temp'>: 70,
       <WaterHeaterCapabilityAttribute.MIN_TEMP: 'min_temp'>: 40,
       <WaterHeaterCapabilityAttribute.OPERATION_LIST: 'operation_list'>: list([
@@ -5387,7 +5358,7 @@
     'state': 'MANUAL',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[lux2-binary_sensor][binary_sensor.velis_ariston_net_is_heating-entry]
+# name: test_device_type_entities_match_snapshot[lux2-binary_sensor][binary_sensor.velis_heating-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -5401,44 +5372,43 @@
     'disabled_by': None,
     'domain': 'binary_sensor',
     'entity_category': None,
-    'entity_id': 'binary_sensor.velis_ariston_net_is_heating',
-    'has_entity_name': False,
+    'entity_id': 'binary_sensor.velis_heating',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET is heating',
+    'object_id_base': 'Heating',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:fire',
-    'original_name': 'Ariston NET is heating',
+    'original_icon': None,
+    'original_name': 'Heating',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'is_heating',
     'unique_id': 'F0AD4E000001-Ariston NET is heating',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[lux2-binary_sensor][binary_sensor.velis_ariston_net_is_heating-state]
+# name: test_device_type_entities_match_snapshot[lux2-binary_sensor][binary_sensor.velis_heating-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET is heating',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:fire',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Heating',
     }),
     'context': <ANY>,
-    'entity_id': 'binary_sensor.velis_ariston_net_is_heating',
+    'entity_id': 'binary_sensor.velis_heating',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'on',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[lux2-number][number.velis_ariston_net_max_setpoint_temperature-entry]
+# name: test_device_type_entities_match_snapshot[lux2-number][number.velis_max_setpoint_temperature-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -5457,41 +5427,40 @@
     'disabled_by': None,
     'domain': 'number',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'number.velis_ariston_net_max_setpoint_temperature',
-    'has_entity_name': False,
+    'entity_id': 'number.velis_max_setpoint_temperature',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET max setpoint temperature',
+    'object_id_base': 'Max setpoint temperature',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:thermometer-high',
-    'original_name': 'Ariston NET max setpoint temperature',
+    'original_icon': None,
+    'original_name': 'Max setpoint temperature',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'max_setpoint_temperature',
     'unique_id': 'F0AD4E000001-Ariston NET max setpoint temperature',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[lux2-number][number.velis_ariston_net_max_setpoint_temperature-state]
+# name: test_device_type_entities_match_snapshot[lux2-number][number.velis_max_setpoint_temperature-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET max setpoint temperature',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:thermometer-high',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Max setpoint temperature',
       <NumberEntityCapabilityAttribute.MAX: 'max'>: 80.0,
       <NumberEntityCapabilityAttribute.MIN: 'min'>: 40.0,
       <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
       <NumberEntityCapabilityAttribute.STEP: 'step'>: 1,
     }),
     'context': <ANY>,
-    'entity_id': 'number.velis_ariston_net_max_setpoint_temperature',
+    'entity_id': 'number.velis_max_setpoint_temperature',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
@@ -5515,7 +5484,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.velis_ariston_net_average_showers',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -5570,7 +5539,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_central_heating_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -5630,7 +5599,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_central_heating_gas_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -5690,7 +5659,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_central_heating_total_energy_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -5750,7 +5719,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -5810,7 +5779,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_gas_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -5870,7 +5839,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_heating_pump_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -5930,7 +5899,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_resistor_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -5990,7 +5959,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_domestic_hot_water_total_energy_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -6050,7 +6019,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.velis_ariston_net_errors_count',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -6107,7 +6076,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.velis_ariston_net_proc_req_temp',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -6166,7 +6135,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.velis_ariston_net_remaining_time',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -6204,7 +6173,7 @@
     'state': '45',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[lux2-switch][switch.velis_ariston_net_anti_legionella-entry]
+# name: test_device_type_entities_match_snapshot[lux2-switch][switch.velis_anti_legionella-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -6218,44 +6187,43 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'switch.velis_ariston_net_anti_legionella',
-    'has_entity_name': False,
+    'entity_id': 'switch.velis_anti_legionella',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET anti legionella',
+    'object_id_base': 'Anti-legionella',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:bacteria-outline',
-    'original_name': 'Ariston NET anti legionella',
+    'original_icon': None,
+    'original_name': 'Anti-legionella',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'anti_legionella',
     'unique_id': 'F0AD4E000001-Ariston NET anti legionella',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[lux2-switch][switch.velis_ariston_net_anti_legionella-state]
+# name: test_device_type_entities_match_snapshot[lux2-switch][switch.velis_anti_legionella-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET anti legionella',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:bacteria-outline',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Anti-legionella',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.velis_ariston_net_anti_legionella',
+    'entity_id': 'switch.velis_anti_legionella',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'on',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[lux2-switch][switch.velis_ariston_net_eco_mode-entry]
+# name: test_device_type_entities_match_snapshot[lux2-switch][switch.velis_eco_mode-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -6269,44 +6237,43 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': None,
-    'entity_id': 'switch.velis_ariston_net_eco_mode',
-    'has_entity_name': False,
+    'entity_id': 'switch.velis_eco_mode',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET eco mode',
+    'object_id_base': 'Eco mode',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:leaf',
-    'original_name': 'Ariston NET eco mode',
+    'original_icon': None,
+    'original_name': 'Eco mode',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'eco_mode',
     'unique_id': 'F0AD4E000001-Ariston NET eco mode',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[lux2-switch][switch.velis_ariston_net_eco_mode-state]
+# name: test_device_type_entities_match_snapshot[lux2-switch][switch.velis_eco_mode-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET eco mode',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:leaf',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Eco mode',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.velis_ariston_net_eco_mode',
+    'entity_id': 'switch.velis_eco_mode',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'off',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[lux2-switch][switch.velis_ariston_net_power-entry]
+# name: test_device_type_entities_match_snapshot[lux2-switch][switch.velis_power-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -6320,44 +6287,43 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': None,
-    'entity_id': 'switch.velis_ariston_net_power',
-    'has_entity_name': False,
+    'entity_id': 'switch.velis_power',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET power',
+    'object_id_base': 'Power',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:power',
-    'original_name': 'Ariston NET power',
+    'original_icon': None,
+    'original_name': 'Power',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'power',
     'unique_id': 'F0AD4E000001-Ariston NET power',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[lux2-switch][switch.velis_ariston_net_power-state]
+# name: test_device_type_entities_match_snapshot[lux2-switch][switch.velis_power-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET power',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:power',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Power',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.velis_ariston_net_power',
+    'entity_id': 'switch.velis_power',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'on',
   })
 # ---
-# name: test_device_type_entities_match_snapshot[lux2-switch][switch.velis_ariston_net_power_option-entry]
+# name: test_device_type_entities_match_snapshot[lux2-switch][switch.velis_power_option-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -6371,37 +6337,36 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': None,
-    'entity_id': 'switch.velis_ariston_net_power_option',
-    'has_entity_name': False,
+    'entity_id': 'switch.velis_power_option',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET power option',
+    'object_id_base': 'Power option',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:leaf',
-    'original_name': 'Ariston NET power option',
+    'original_icon': None,
+    'original_name': 'Power option',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'power_option',
     'unique_id': 'F0AD4E000001-Ariston NET power option',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_device_type_entities_match_snapshot[lux2-switch][switch.velis_ariston_net_power_option-state]
+# name: test_device_type_entities_match_snapshot[lux2-switch][switch.velis_power_option-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Ariston NET power option',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:leaf',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis Power option',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.velis_ariston_net_power_option',
+    'entity_id': 'switch.velis_power_option',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
@@ -6430,24 +6395,24 @@
     'domain': 'water_heater',
     'entity_category': None,
     'entity_id': 'water_heater.velis',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Velis',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:water-pump',
-    'original_name': 'Velis',
+    'original_icon': None,
+    'original_name': None,
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': <WaterHeaterEntityFeature: 11>,
-    'translation_key': None,
+    'translation_key': 'water_heater',
     'unique_id': 'F0AD4E000001-water_heater',
     'unit_of_measurement': None,
   })
@@ -6457,7 +6422,6 @@
     'attributes': ReadOnlyDict({
       <WaterHeaterStateAttribute.CURRENT_TEMPERATURE: 'current_temperature'>: 48,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Velis',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:water-pump',
       <WaterHeaterCapabilityAttribute.MAX_TEMP: 'max_temp'>: 70,
       <WaterHeaterCapabilityAttribute.MIN_TEMP: 'min_temp'>: 40,
       <WaterHeaterCapabilityAttribute.OPERATION_LIST: 'operation_list'>: list([
@@ -6479,7 +6443,7 @@
     'state': 'MANUAL',
   })
 # ---
-# name: test_entities_match_snapshot[default-binary_sensor][binary_sensor.nimbus_ariston_net_holiday_mode-entry]
+# name: test_entities_match_snapshot[default-binary_sensor][binary_sensor.nimbus_flame-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -6493,95 +6457,43 @@
     'disabled_by': None,
     'domain': 'binary_sensor',
     'entity_category': None,
-    'entity_id': 'binary_sensor.nimbus_ariston_net_holiday_mode',
-    'has_entity_name': False,
+    'entity_id': 'binary_sensor.nimbus_flame',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET holiday mode',
+    'object_id_base': 'Flame',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:island',
-    'original_name': 'Ariston NET holiday mode',
+    'original_icon': None,
+    'original_name': 'Flame',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
-    'unique_id': 'F0AD4E000001-Ariston NET holiday mode',
-    'unit_of_measurement': None,
-  })
-# ---
-# name: test_entities_match_snapshot[default-binary_sensor][binary_sensor.nimbus_ariston_net_holiday_mode-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET holiday mode',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:island',
-    }),
-    'context': <ANY>,
-    'entity_id': 'binary_sensor.nimbus_ariston_net_holiday_mode',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': 'off',
-  })
-# ---
-# name: test_entities_match_snapshot[default-binary_sensor][binary_sensor.nimbus_ariston_net_is_flame_on-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': None,
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'binary_sensor',
-    'entity_category': None,
-    'entity_id': 'binary_sensor.nimbus_ariston_net_is_flame_on',
-    'has_entity_name': False,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': 'Ariston NET is flame on',
-    'options': dict({
-    }),
-    'original_device_class': None,
-    'original_icon': 'mdi:fire',
-    'original_name': 'Ariston NET is flame on',
-    'platform': 'ariston_net',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'is_flame_on',
     'unique_id': 'F0AD4E000001-Ariston NET is flame on',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[default-binary_sensor][binary_sensor.nimbus_ariston_net_is_flame_on-state]
+# name: test_entities_match_snapshot[default-binary_sensor][binary_sensor.nimbus_flame-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET is flame on',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:fire',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Flame',
     }),
     'context': <ANY>,
-    'entity_id': 'binary_sensor.nimbus_ariston_net_is_flame_on',
+    'entity_id': 'binary_sensor.nimbus_flame',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'off',
   })
 # ---
-# name: test_entities_match_snapshot[default-binary_sensor][binary_sensor.nimbus_ariston_net_is_heating_pump_on-entry]
+# name: test_entities_match_snapshot[default-binary_sensor][binary_sensor.nimbus_heat_pump-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -6595,41 +6507,90 @@
     'disabled_by': None,
     'domain': 'binary_sensor',
     'entity_category': None,
-    'entity_id': 'binary_sensor.nimbus_ariston_net_is_heating_pump_on',
-    'has_entity_name': False,
+    'entity_id': 'binary_sensor.nimbus_heat_pump',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET is heating pump on',
+    'object_id_base': 'Heat pump',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:heat-pump-outline',
-    'original_name': 'Ariston NET is heating pump on',
+    'original_icon': None,
+    'original_name': 'Heat pump',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'is_heating_pump_on',
     'unique_id': 'F0AD4E000001-Ariston NET is heating pump on',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[default-binary_sensor][binary_sensor.nimbus_ariston_net_is_heating_pump_on-state]
+# name: test_entities_match_snapshot[default-binary_sensor][binary_sensor.nimbus_heat_pump-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET is heating pump on',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:heat-pump-outline',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Heat pump',
     }),
     'context': <ANY>,
-    'entity_id': 'binary_sensor.nimbus_ariston_net_is_heating_pump_on',
+    'entity_id': 'binary_sensor.nimbus_heat_pump',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'on',
+  })
+# ---
+# name: test_entities_match_snapshot[default-binary_sensor][binary_sensor.nimbus_holiday_mode-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': None,
+    'entity_id': 'binary_sensor.nimbus_holiday_mode',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Holiday mode',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': None,
+    'original_name': 'Holiday mode',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': 'holiday_mode',
+    'unique_id': 'F0AD4E000001-Ariston NET holiday mode',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entities_match_snapshot[default-binary_sensor][binary_sensor.nimbus_holiday_mode-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Holiday mode',
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.nimbus_holiday_mode',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'off',
   })
 # ---
 # name: test_entities_match_snapshot[default-climate][climate.nimbus-entry]
@@ -6664,24 +6625,24 @@
     'domain': 'climate',
     'entity_category': None,
     'entity_id': 'climate.nimbus',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Nimbus',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:radiator',
-    'original_name': 'Nimbus',
+    'original_icon': None,
+    'original_name': None,
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': <ClimateEntityFeature: 401>,
-    'translation_key': None,
+    'translation_key': 'thermostat',
     'unique_id': 'F0AD4E000001_1',
     'unit_of_measurement': None,
   })
@@ -6700,7 +6661,6 @@
         <HVACMode.AUTO: 'auto'>,
         <HVACMode.OFF: 'off'>,
       ]),
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:radiator',
       <ClimateEntityCapabilityAttribute.MAX_TEMP: 'max_temp'>: 30.0,
       <ClimateEntityCapabilityAttribute.MIN_TEMP: 'min_temp'>: 10.0,
       <ClimateEntityStateAttribute.PRESET_MODE: 'preset_mode'>: 'Winter',
@@ -6724,7 +6684,7 @@
     'state': 'heat',
   })
 # ---
-# name: test_entities_match_snapshot[default-number][number.nimbus_ariston_net_elec_cost-entry]
+# name: test_entities_match_snapshot[default-number][number.nimbus_electricity_cost-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -6743,48 +6703,47 @@
     'disabled_by': None,
     'domain': 'number',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'number.nimbus_ariston_net_elec_cost',
-    'has_entity_name': False,
+    'entity_id': 'number.nimbus_electricity_cost',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET elec cost',
+    'object_id_base': 'Electricity cost',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:currency-sign',
-    'original_name': 'Ariston NET elec cost',
+    'original_icon': None,
+    'original_name': 'Electricity cost',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'elec_cost',
     'unique_id': 'F0AD4E000001-Ariston NET elec cost',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[default-number][number.nimbus_ariston_net_elec_cost-state]
+# name: test_entities_match_snapshot[default-number][number.nimbus_electricity_cost-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET elec cost',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:currency-sign',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Electricity cost',
       <NumberEntityCapabilityAttribute.MAX: 'max'>: 9223372036854775807,
       <NumberEntityCapabilityAttribute.MIN: 'min'>: 0,
       <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
       <NumberEntityCapabilityAttribute.STEP: 'step'>: 0.01,
     }),
     'context': <ANY>,
-    'entity_id': 'number.nimbus_ariston_net_elec_cost',
+    'entity_id': 'number.nimbus_electricity_cost',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'unknown',
   })
 # ---
-# name: test_entities_match_snapshot[default-number][number.nimbus_ariston_net_gas_cost-entry]
+# name: test_entities_match_snapshot[default-number][number.nimbus_gas_cost-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -6803,48 +6762,47 @@
     'disabled_by': None,
     'domain': 'number',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'number.nimbus_ariston_net_gas_cost',
-    'has_entity_name': False,
+    'entity_id': 'number.nimbus_gas_cost',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET gas cost',
+    'object_id_base': 'Gas cost',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:currency-sign',
-    'original_name': 'Ariston NET gas cost',
+    'original_icon': None,
+    'original_name': 'Gas cost',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'gas_cost',
     'unique_id': 'F0AD4E000001-Ariston NET gas cost',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[default-number][number.nimbus_ariston_net_gas_cost-state]
+# name: test_entities_match_snapshot[default-number][number.nimbus_gas_cost-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET gas cost',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:currency-sign',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Gas cost',
       <NumberEntityCapabilityAttribute.MAX: 'max'>: 9223372036854775807,
       <NumberEntityCapabilityAttribute.MIN: 'min'>: 0,
       <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
       <NumberEntityCapabilityAttribute.STEP: 'step'>: 0.01,
     }),
     'context': <ANY>,
-    'entity_id': 'number.nimbus_ariston_net_gas_cost',
+    'entity_id': 'number.nimbus_gas_cost',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'unknown',
   })
 # ---
-# name: test_entities_match_snapshot[default-number][number.nimbus_ariston_net_heating_flow_offset_1-entry]
+# name: test_entities_match_snapshot[default-number][number.nimbus_zone_1_heating_flow_offset-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -6863,48 +6821,47 @@
     'disabled_by': None,
     'domain': 'number',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'number.nimbus_ariston_net_heating_flow_offset_1',
-    'has_entity_name': False,
+    'entity_id': 'number.nimbus_zone_1_heating_flow_offset',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET heating flow offset 1',
+    'object_id_base': 'Zone 1 heating flow offset',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:progress-wrench',
-    'original_name': 'Ariston NET heating flow offset 1',
+    'original_icon': None,
+    'original_name': 'Zone 1 heating flow offset',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'heating_flow_offset',
     'unique_id': 'F0AD4E000001-Ariston NET heating flow offset 1-1',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[default-number][number.nimbus_ariston_net_heating_flow_offset_1-state]
+# name: test_entities_match_snapshot[default-number][number.nimbus_zone_1_heating_flow_offset-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET heating flow offset 1',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:progress-wrench',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Zone 1 heating flow offset',
       <NumberEntityCapabilityAttribute.MAX: 'max'>: 10.0,
       <NumberEntityCapabilityAttribute.MIN: 'min'>: -10.0,
       <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
       <NumberEntityCapabilityAttribute.STEP: 'step'>: 1.0,
     }),
     'context': <ANY>,
-    'entity_id': 'number.nimbus_ariston_net_heating_flow_offset_1',
+    'entity_id': 'number.nimbus_zone_1_heating_flow_offset',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0.0',
   })
 # ---
-# name: test_entities_match_snapshot[default-number][number.nimbus_ariston_net_heating_flow_temperature_1-entry]
+# name: test_entities_match_snapshot[default-number][number.nimbus_zone_1_heating_flow_temperature-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -6923,48 +6880,47 @@
     'disabled_by': None,
     'domain': 'number',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'number.nimbus_ariston_net_heating_flow_temperature_1',
-    'has_entity_name': False,
+    'entity_id': 'number.nimbus_zone_1_heating_flow_temperature',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET heating flow temperature 1',
+    'object_id_base': 'Zone 1 heating flow temperature',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:thermometer',
-    'original_name': 'Ariston NET heating flow temperature 1',
+    'original_icon': None,
+    'original_name': 'Zone 1 heating flow temperature',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'heating_flow_temperature',
     'unique_id': 'F0AD4E000001-Ariston NET heating flow temperature 1-1',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[default-number][number.nimbus_ariston_net_heating_flow_temperature_1-state]
+# name: test_entities_match_snapshot[default-number][number.nimbus_zone_1_heating_flow_temperature-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET heating flow temperature 1',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:thermometer',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Zone 1 heating flow temperature',
       <NumberEntityCapabilityAttribute.MAX: 'max'>: 45.0,
       <NumberEntityCapabilityAttribute.MIN: 'min'>: 20.0,
       <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
       <NumberEntityCapabilityAttribute.STEP: 'step'>: 1.0,
     }),
     'context': <ANY>,
-    'entity_id': 'number.nimbus_ariston_net_heating_flow_temperature_1',
+    'entity_id': 'number.nimbus_zone_1_heating_flow_temperature',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '38.0',
   })
 # ---
-# name: test_entities_match_snapshot[default-select][select.nimbus_ariston_net_currency-entry]
+# name: test_entities_match_snapshot[default-select][select.nimbus_currency-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -7001,35 +6957,34 @@
     'disabled_by': None,
     'domain': 'select',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'select.nimbus_ariston_net_currency',
-    'has_entity_name': False,
+    'entity_id': 'select.nimbus_currency',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET currency',
+    'object_id_base': 'Currency',
     'options': dict({
     }),
     'original_device_class': <SensorDeviceClass.MONETARY: 'monetary'>,
-    'original_icon': 'mdi:cash-100',
-    'original_name': 'Ariston NET currency',
+    'original_icon': None,
+    'original_name': 'Currency',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'currency',
     'unique_id': 'F0AD4E000001-Ariston NET currency',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[default-select][select.nimbus_ariston_net_currency-state]
+# name: test_entities_match_snapshot[default-select][select.nimbus_currency-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'monetary',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET currency',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash-100',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Currency',
       <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
         'ARS',
         'EUR',
@@ -7054,14 +7009,14 @@
       ]),
     }),
     'context': <ANY>,
-    'entity_id': 'select.nimbus_ariston_net_currency',
+    'entity_id': 'select.nimbus_currency',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'unknown',
   })
 # ---
-# name: test_entities_match_snapshot[default-select][select.nimbus_ariston_net_gas_energy_unit-entry]
+# name: test_entities_match_snapshot[default-select][select.nimbus_gas_energy_unit-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -7084,34 +7039,33 @@
     'disabled_by': None,
     'domain': 'select',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'select.nimbus_ariston_net_gas_energy_unit',
-    'has_entity_name': False,
+    'entity_id': 'select.nimbus_gas_energy_unit',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET gas energy unit',
+    'object_id_base': 'Gas energy unit',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:cube-scan',
-    'original_name': 'Ariston NET gas energy unit',
+    'original_icon': None,
+    'original_name': 'Gas energy unit',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'gas_energy_unit',
     'unique_id': 'F0AD4E000001-Ariston NET gas energy unit',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[default-select][select.nimbus_ariston_net_gas_energy_unit-state]
+# name: test_entities_match_snapshot[default-select][select.nimbus_gas_energy_unit-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET gas energy unit',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cube-scan',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Gas energy unit',
       <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
         'KWH',
         'GIGA_JOULE',
@@ -7122,14 +7076,14 @@
       ]),
     }),
     'context': <ANY>,
-    'entity_id': 'select.nimbus_ariston_net_gas_energy_unit',
+    'entity_id': 'select.nimbus_gas_energy_unit',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'unknown',
   })
 # ---
-# name: test_entities_match_snapshot[default-select][select.nimbus_ariston_net_gas_type-entry]
+# name: test_entities_match_snapshot[default-select][select.nimbus_gas_type-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -7151,34 +7105,33 @@
     'disabled_by': None,
     'domain': 'select',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'select.nimbus_ariston_net_gas_type',
-    'has_entity_name': False,
+    'entity_id': 'select.nimbus_gas_type',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET gas type',
+    'object_id_base': 'Gas type',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:gas-cylinder',
-    'original_name': 'Ariston NET gas type',
+    'original_icon': None,
+    'original_name': 'Gas type',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'gas_type',
     'unique_id': 'F0AD4E000001-Ariston NET gas type',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[default-select][select.nimbus_ariston_net_gas_type-state]
+# name: test_entities_match_snapshot[default-select][select.nimbus_gas_type-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET gas type',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:gas-cylinder',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Gas type',
       <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
         'NATURAL_GAS',
         'LPG',
@@ -7188,14 +7141,14 @@
       ]),
     }),
     'context': <ANY>,
-    'entity_id': 'select.nimbus_ariston_net_gas_type',
+    'entity_id': 'select.nimbus_gas_type',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'unknown',
   })
 # ---
-# name: test_entities_match_snapshot[default-select][select.nimbus_ariston_net_plant_mode-entry]
+# name: test_entities_match_snapshot[default-select][select.nimbus_plant_mode-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -7217,34 +7170,33 @@
     'disabled_by': None,
     'domain': 'select',
     'entity_category': None,
-    'entity_id': 'select.nimbus_ariston_net_plant_mode',
-    'has_entity_name': False,
+    'entity_id': 'select.nimbus_plant_mode',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET plant mode',
+    'object_id_base': 'Plant mode',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:sun-snowflake-variant',
-    'original_name': 'Ariston NET plant mode',
+    'original_icon': None,
+    'original_name': 'Plant mode',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'plant_mode',
     'unique_id': 'F0AD4E000001-Ariston NET plant mode',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[default-select][select.nimbus_ariston_net_plant_mode-state]
+# name: test_entities_match_snapshot[default-select][select.nimbus_plant_mode-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET plant mode',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:sun-snowflake-variant',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Plant mode',
       <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
         'Summer',
         'Winter',
@@ -7254,7 +7206,7 @@
       ]),
     }),
     'context': <ANY>,
-    'entity_id': 'select.nimbus_ariston_net_plant_mode',
+    'entity_id': 'select.nimbus_plant_mode',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
@@ -7278,7 +7230,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.nimbus_ariston_net_ch_flow_setpoint_temp',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -7336,7 +7288,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.nimbus_ariston_net_ch_flow_temp',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -7394,7 +7346,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.nimbus_ariston_net_dhw_current_temperature',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -7453,7 +7405,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.nimbus_ariston_net_dhw_target_temperature',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -7510,7 +7462,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.nimbus_ariston_net_electricity_consumption_for_heating_last_month',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -7566,7 +7518,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.nimbus_ariston_net_electricity_consumption_for_water_last_month',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -7624,7 +7576,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.nimbus_ariston_net_errors_count',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -7679,7 +7631,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.nimbus_ariston_net_gas_consumption_for_heating_last_month',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -7735,7 +7687,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.nimbus_ariston_net_gas_consumption_for_water_last_month',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -7793,7 +7745,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.nimbus_ariston_net_heating_circuit_pressure',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -7851,7 +7803,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.nimbus_ariston_net_outside_temp',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -7909,7 +7861,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.nimbus_ariston_net_signal_strength',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -7945,7 +7897,7 @@
     'state': 'unknown',
   })
 # ---
-# name: test_entities_match_snapshot[default-switch][switch.nimbus_ariston_net_automatic_thermoregulation-entry]
+# name: test_entities_match_snapshot[default-switch][switch.nimbus_automatic_thermoregulation-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -7959,37 +7911,36 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': None,
-    'entity_id': 'switch.nimbus_ariston_net_automatic_thermoregulation',
-    'has_entity_name': False,
+    'entity_id': 'switch.nimbus_automatic_thermoregulation',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET automatic thermoregulation',
+    'object_id_base': 'Automatic thermoregulation',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:radiator',
-    'original_name': 'Ariston NET automatic thermoregulation',
+    'original_icon': None,
+    'original_name': 'Automatic thermoregulation',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'automatic_thermoregulation',
     'unique_id': 'F0AD4E000001-Ariston NET automatic thermoregulation',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[default-switch][switch.nimbus_ariston_net_automatic_thermoregulation-state]
+# name: test_entities_match_snapshot[default-switch][switch.nimbus_automatic_thermoregulation-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET automatic thermoregulation',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:radiator',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Automatic thermoregulation',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.nimbus_ariston_net_automatic_thermoregulation',
+    'entity_id': 'switch.nimbus_automatic_thermoregulation',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
@@ -8018,24 +7969,24 @@
     'domain': 'water_heater',
     'entity_category': None,
     'entity_id': 'water_heater.nimbus',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Nimbus',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:water-pump',
-    'original_name': 'Nimbus',
+    'original_icon': None,
+    'original_name': None,
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': <WaterHeaterEntityFeature: 3>,
-    'translation_key': None,
+    'translation_key': 'water_heater',
     'unique_id': 'F0AD4E000001-water_heater',
     'unit_of_measurement': None,
   })
@@ -8045,7 +7996,6 @@
     'attributes': ReadOnlyDict({
       <WaterHeaterStateAttribute.CURRENT_TEMPERATURE: 'current_temperature'>: 48,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:water-pump',
       <WaterHeaterCapabilityAttribute.MAX_TEMP: 'max_temp'>: 65,
       <WaterHeaterCapabilityAttribute.MIN_TEMP: 'min_temp'>: 40,
       <WaterHeaterCapabilityAttribute.OPERATION_LIST: 'operation_list'>: list([
@@ -8067,7 +8017,7 @@
     'state': 'Time based',
   })
 # ---
-# name: test_entities_match_snapshot[full-binary_sensor][binary_sensor.nimbus_ariston_net_holiday_mode-entry]
+# name: test_entities_match_snapshot[full-binary_sensor][binary_sensor.nimbus_flame-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -8081,95 +8031,43 @@
     'disabled_by': None,
     'domain': 'binary_sensor',
     'entity_category': None,
-    'entity_id': 'binary_sensor.nimbus_ariston_net_holiday_mode',
-    'has_entity_name': False,
+    'entity_id': 'binary_sensor.nimbus_flame',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET holiday mode',
+    'object_id_base': 'Flame',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:island',
-    'original_name': 'Ariston NET holiday mode',
+    'original_icon': None,
+    'original_name': 'Flame',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
-    'unique_id': 'F0AD4E000001-Ariston NET holiday mode',
-    'unit_of_measurement': None,
-  })
-# ---
-# name: test_entities_match_snapshot[full-binary_sensor][binary_sensor.nimbus_ariston_net_holiday_mode-state]
-  StateSnapshot({
-    'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET holiday mode',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:island',
-    }),
-    'context': <ANY>,
-    'entity_id': 'binary_sensor.nimbus_ariston_net_holiday_mode',
-    'last_changed': <ANY>,
-    'last_reported': <ANY>,
-    'last_updated': <ANY>,
-    'state': 'off',
-  })
-# ---
-# name: test_entities_match_snapshot[full-binary_sensor][binary_sensor.nimbus_ariston_net_is_flame_on-entry]
-  EntityRegistryEntrySnapshot({
-    'aliases': list([
-      None,
-    ]),
-    'area_id': None,
-    'capabilities': None,
-    'config_entry_id': <ANY>,
-    'config_subentry_id': <ANY>,
-    'device_class': None,
-    'device_id': <ANY>,
-    'disabled_by': None,
-    'domain': 'binary_sensor',
-    'entity_category': None,
-    'entity_id': 'binary_sensor.nimbus_ariston_net_is_flame_on',
-    'has_entity_name': False,
-    'hidden_by': None,
-    'icon': None,
-    'id': <ANY>,
-    'labels': set({
-    }),
-    'name': None,
-    'object_id_base': 'Ariston NET is flame on',
-    'options': dict({
-    }),
-    'original_device_class': None,
-    'original_icon': 'mdi:fire',
-    'original_name': 'Ariston NET is flame on',
-    'platform': 'ariston_net',
-    'previous_unique_id': None,
-    'suggested_object_id': None,
-    'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'is_flame_on',
     'unique_id': 'F0AD4E000001-Ariston NET is flame on',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[full-binary_sensor][binary_sensor.nimbus_ariston_net_is_flame_on-state]
+# name: test_entities_match_snapshot[full-binary_sensor][binary_sensor.nimbus_flame-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET is flame on',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:fire',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Flame',
     }),
     'context': <ANY>,
-    'entity_id': 'binary_sensor.nimbus_ariston_net_is_flame_on',
+    'entity_id': 'binary_sensor.nimbus_flame',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'off',
   })
 # ---
-# name: test_entities_match_snapshot[full-binary_sensor][binary_sensor.nimbus_ariston_net_is_heating_pump_on-entry]
+# name: test_entities_match_snapshot[full-binary_sensor][binary_sensor.nimbus_heat_pump-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -8183,41 +8081,90 @@
     'disabled_by': None,
     'domain': 'binary_sensor',
     'entity_category': None,
-    'entity_id': 'binary_sensor.nimbus_ariston_net_is_heating_pump_on',
-    'has_entity_name': False,
+    'entity_id': 'binary_sensor.nimbus_heat_pump',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET is heating pump on',
+    'object_id_base': 'Heat pump',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:heat-pump-outline',
-    'original_name': 'Ariston NET is heating pump on',
+    'original_icon': None,
+    'original_name': 'Heat pump',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'is_heating_pump_on',
     'unique_id': 'F0AD4E000001-Ariston NET is heating pump on',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[full-binary_sensor][binary_sensor.nimbus_ariston_net_is_heating_pump_on-state]
+# name: test_entities_match_snapshot[full-binary_sensor][binary_sensor.nimbus_heat_pump-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET is heating pump on',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:heat-pump-outline',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Heat pump',
     }),
     'context': <ANY>,
-    'entity_id': 'binary_sensor.nimbus_ariston_net_is_heating_pump_on',
+    'entity_id': 'binary_sensor.nimbus_heat_pump',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'on',
+  })
+# ---
+# name: test_entities_match_snapshot[full-binary_sensor][binary_sensor.nimbus_holiday_mode-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': list([
+      None,
+    ]),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': None,
+    'entity_id': 'binary_sensor.nimbus_holiday_mode',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'object_id_base': 'Holiday mode',
+    'options': dict({
+    }),
+    'original_device_class': None,
+    'original_icon': None,
+    'original_name': 'Holiday mode',
+    'platform': 'ariston_net',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': 'holiday_mode',
+    'unique_id': 'F0AD4E000001-Ariston NET holiday mode',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_entities_match_snapshot[full-binary_sensor][binary_sensor.nimbus_holiday_mode-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Holiday mode',
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.nimbus_holiday_mode',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'off',
   })
 # ---
 # name: test_entities_match_snapshot[full-climate][climate.nimbus-entry]
@@ -8252,24 +8199,24 @@
     'domain': 'climate',
     'entity_category': None,
     'entity_id': 'climate.nimbus',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Nimbus',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:radiator',
-    'original_name': 'Nimbus',
+    'original_icon': None,
+    'original_name': None,
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': <ClimateEntityFeature: 401>,
-    'translation_key': None,
+    'translation_key': 'thermostat',
     'unique_id': 'F0AD4E000001_1',
     'unit_of_measurement': None,
   })
@@ -8288,7 +8235,6 @@
         <HVACMode.AUTO: 'auto'>,
         <HVACMode.OFF: 'off'>,
       ]),
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:radiator',
       <ClimateEntityCapabilityAttribute.MAX_TEMP: 'max_temp'>: 30.0,
       <ClimateEntityCapabilityAttribute.MIN_TEMP: 'min_temp'>: 10.0,
       <ClimateEntityStateAttribute.PRESET_MODE: 'preset_mode'>: 'Winter',
@@ -8312,7 +8258,7 @@
     'state': 'heat',
   })
 # ---
-# name: test_entities_match_snapshot[full-number][number.nimbus_ariston_net_elec_cost-entry]
+# name: test_entities_match_snapshot[full-number][number.nimbus_electricity_cost-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -8331,48 +8277,47 @@
     'disabled_by': None,
     'domain': 'number',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'number.nimbus_ariston_net_elec_cost',
-    'has_entity_name': False,
+    'entity_id': 'number.nimbus_electricity_cost',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET elec cost',
+    'object_id_base': 'Electricity cost',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:currency-sign',
-    'original_name': 'Ariston NET elec cost',
+    'original_icon': None,
+    'original_name': 'Electricity cost',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'elec_cost',
     'unique_id': 'F0AD4E000001-Ariston NET elec cost',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[full-number][number.nimbus_ariston_net_elec_cost-state]
+# name: test_entities_match_snapshot[full-number][number.nimbus_electricity_cost-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET elec cost',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:currency-sign',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Electricity cost',
       <NumberEntityCapabilityAttribute.MAX: 'max'>: 9223372036854775807,
       <NumberEntityCapabilityAttribute.MIN: 'min'>: 0,
       <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
       <NumberEntityCapabilityAttribute.STEP: 'step'>: 0.01,
     }),
     'context': <ANY>,
-    'entity_id': 'number.nimbus_ariston_net_elec_cost',
+    'entity_id': 'number.nimbus_electricity_cost',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0.25',
   })
 # ---
-# name: test_entities_match_snapshot[full-number][number.nimbus_ariston_net_gas_cost-entry]
+# name: test_entities_match_snapshot[full-number][number.nimbus_gas_cost-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -8391,48 +8336,47 @@
     'disabled_by': None,
     'domain': 'number',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'number.nimbus_ariston_net_gas_cost',
-    'has_entity_name': False,
+    'entity_id': 'number.nimbus_gas_cost',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET gas cost',
+    'object_id_base': 'Gas cost',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:currency-sign',
-    'original_name': 'Ariston NET gas cost',
+    'original_icon': None,
+    'original_name': 'Gas cost',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'gas_cost',
     'unique_id': 'F0AD4E000001-Ariston NET gas cost',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[full-number][number.nimbus_ariston_net_gas_cost-state]
+# name: test_entities_match_snapshot[full-number][number.nimbus_gas_cost-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET gas cost',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:currency-sign',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Gas cost',
       <NumberEntityCapabilityAttribute.MAX: 'max'>: 9223372036854775807,
       <NumberEntityCapabilityAttribute.MIN: 'min'>: 0,
       <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
       <NumberEntityCapabilityAttribute.STEP: 'step'>: 0.01,
     }),
     'context': <ANY>,
-    'entity_id': 'number.nimbus_ariston_net_gas_cost',
+    'entity_id': 'number.nimbus_gas_cost',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0.1',
   })
 # ---
-# name: test_entities_match_snapshot[full-number][number.nimbus_ariston_net_heating_flow_offset_1-entry]
+# name: test_entities_match_snapshot[full-number][number.nimbus_zone_1_heating_flow_offset-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -8451,48 +8395,47 @@
     'disabled_by': None,
     'domain': 'number',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'number.nimbus_ariston_net_heating_flow_offset_1',
-    'has_entity_name': False,
+    'entity_id': 'number.nimbus_zone_1_heating_flow_offset',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET heating flow offset 1',
+    'object_id_base': 'Zone 1 heating flow offset',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:progress-wrench',
-    'original_name': 'Ariston NET heating flow offset 1',
+    'original_icon': None,
+    'original_name': 'Zone 1 heating flow offset',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'heating_flow_offset',
     'unique_id': 'F0AD4E000001-Ariston NET heating flow offset 1-1',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[full-number][number.nimbus_ariston_net_heating_flow_offset_1-state]
+# name: test_entities_match_snapshot[full-number][number.nimbus_zone_1_heating_flow_offset-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET heating flow offset 1',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:progress-wrench',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Zone 1 heating flow offset',
       <NumberEntityCapabilityAttribute.MAX: 'max'>: 10.0,
       <NumberEntityCapabilityAttribute.MIN: 'min'>: -10.0,
       <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
       <NumberEntityCapabilityAttribute.STEP: 'step'>: 1.0,
     }),
     'context': <ANY>,
-    'entity_id': 'number.nimbus_ariston_net_heating_flow_offset_1',
+    'entity_id': 'number.nimbus_zone_1_heating_flow_offset',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '0.0',
   })
 # ---
-# name: test_entities_match_snapshot[full-number][number.nimbus_ariston_net_heating_flow_temperature_1-entry]
+# name: test_entities_match_snapshot[full-number][number.nimbus_zone_1_heating_flow_temperature-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -8511,48 +8454,47 @@
     'disabled_by': None,
     'domain': 'number',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'number.nimbus_ariston_net_heating_flow_temperature_1',
-    'has_entity_name': False,
+    'entity_id': 'number.nimbus_zone_1_heating_flow_temperature',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET heating flow temperature 1',
+    'object_id_base': 'Zone 1 heating flow temperature',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:thermometer',
-    'original_name': 'Ariston NET heating flow temperature 1',
+    'original_icon': None,
+    'original_name': 'Zone 1 heating flow temperature',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'heating_flow_temperature',
     'unique_id': 'F0AD4E000001-Ariston NET heating flow temperature 1-1',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[full-number][number.nimbus_ariston_net_heating_flow_temperature_1-state]
+# name: test_entities_match_snapshot[full-number][number.nimbus_zone_1_heating_flow_temperature-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET heating flow temperature 1',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:thermometer',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Zone 1 heating flow temperature',
       <NumberEntityCapabilityAttribute.MAX: 'max'>: 45.0,
       <NumberEntityCapabilityAttribute.MIN: 'min'>: 20.0,
       <NumberEntityCapabilityAttribute.MODE: 'mode'>: <NumberMode.AUTO: 'auto'>,
       <NumberEntityCapabilityAttribute.STEP: 'step'>: 1.0,
     }),
     'context': <ANY>,
-    'entity_id': 'number.nimbus_ariston_net_heating_flow_temperature_1',
+    'entity_id': 'number.nimbus_zone_1_heating_flow_temperature',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': '38.0',
   })
 # ---
-# name: test_entities_match_snapshot[full-select][select.nimbus_ariston_net_buffer_control_mode-entry]
+# name: test_entities_match_snapshot[full-select][select.nimbus_buffer_control_mode-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -8571,48 +8513,47 @@
     'disabled_by': None,
     'domain': 'select',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'select.nimbus_ariston_net_buffer_control_mode',
-    'has_entity_name': False,
+    'entity_id': 'select.nimbus_buffer_control_mode',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET buffer control mode',
+    'object_id_base': 'Buffer control mode',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:cup-water',
-    'original_name': 'Ariston NET buffer control mode',
+    'original_icon': None,
+    'original_name': 'Buffer control mode',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'buffer_control_mode',
     'unique_id': 'F0AD4E000001-Ariston NET buffer control mode',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[full-select][select.nimbus_ariston_net_buffer_control_mode-state]
+# name: test_entities_match_snapshot[full-select][select.nimbus_buffer_control_mode-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET buffer control mode',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cup-water',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Buffer control mode',
       <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
         'Off',
         'Time program',
       ]),
     }),
     'context': <ANY>,
-    'entity_id': 'select.nimbus_ariston_net_buffer_control_mode',
+    'entity_id': 'select.nimbus_buffer_control_mode',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'Off',
   })
 # ---
-# name: test_entities_match_snapshot[full-select][select.nimbus_ariston_net_currency-entry]
+# name: test_entities_match_snapshot[full-select][select.nimbus_currency-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -8649,35 +8590,34 @@
     'disabled_by': None,
     'domain': 'select',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'select.nimbus_ariston_net_currency',
-    'has_entity_name': False,
+    'entity_id': 'select.nimbus_currency',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET currency',
+    'object_id_base': 'Currency',
     'options': dict({
     }),
     'original_device_class': <SensorDeviceClass.MONETARY: 'monetary'>,
-    'original_icon': 'mdi:cash-100',
-    'original_name': 'Ariston NET currency',
+    'original_icon': None,
+    'original_name': 'Currency',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'currency',
     'unique_id': 'F0AD4E000001-Ariston NET currency',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[full-select][select.nimbus_ariston_net_currency-state]
+# name: test_entities_match_snapshot[full-select][select.nimbus_currency-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       <EntityStateAttribute.DEVICE_CLASS: 'device_class'>: 'monetary',
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET currency',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cash-100',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Currency',
       <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
         'ARS',
         'EUR',
@@ -8702,14 +8642,14 @@
       ]),
     }),
     'context': <ANY>,
-    'entity_id': 'select.nimbus_ariston_net_currency',
+    'entity_id': 'select.nimbus_currency',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'EUR',
   })
 # ---
-# name: test_entities_match_snapshot[full-select][select.nimbus_ariston_net_gas_energy_unit-entry]
+# name: test_entities_match_snapshot[full-select][select.nimbus_gas_energy_unit-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -8732,34 +8672,33 @@
     'disabled_by': None,
     'domain': 'select',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'select.nimbus_ariston_net_gas_energy_unit',
-    'has_entity_name': False,
+    'entity_id': 'select.nimbus_gas_energy_unit',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET gas energy unit',
+    'object_id_base': 'Gas energy unit',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:cube-scan',
-    'original_name': 'Ariston NET gas energy unit',
+    'original_icon': None,
+    'original_name': 'Gas energy unit',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'gas_energy_unit',
     'unique_id': 'F0AD4E000001-Ariston NET gas energy unit',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[full-select][select.nimbus_ariston_net_gas_energy_unit-state]
+# name: test_entities_match_snapshot[full-select][select.nimbus_gas_energy_unit-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET gas energy unit',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cube-scan',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Gas energy unit',
       <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
         'KWH',
         'GIGA_JOULE',
@@ -8770,14 +8709,14 @@
       ]),
     }),
     'context': <ANY>,
-    'entity_id': 'select.nimbus_ariston_net_gas_energy_unit',
+    'entity_id': 'select.nimbus_gas_energy_unit',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'KWH',
   })
 # ---
-# name: test_entities_match_snapshot[full-select][select.nimbus_ariston_net_gas_type-entry]
+# name: test_entities_match_snapshot[full-select][select.nimbus_gas_type-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -8799,34 +8738,33 @@
     'disabled_by': None,
     'domain': 'select',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'select.nimbus_ariston_net_gas_type',
-    'has_entity_name': False,
+    'entity_id': 'select.nimbus_gas_type',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET gas type',
+    'object_id_base': 'Gas type',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:gas-cylinder',
-    'original_name': 'Ariston NET gas type',
+    'original_icon': None,
+    'original_name': 'Gas type',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'gas_type',
     'unique_id': 'F0AD4E000001-Ariston NET gas type',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[full-select][select.nimbus_ariston_net_gas_type-state]
+# name: test_entities_match_snapshot[full-select][select.nimbus_gas_type-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET gas type',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:gas-cylinder',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Gas type',
       <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
         'NATURAL_GAS',
         'LPG',
@@ -8836,14 +8774,14 @@
       ]),
     }),
     'context': <ANY>,
-    'entity_id': 'select.nimbus_ariston_net_gas_type',
+    'entity_id': 'select.nimbus_gas_type',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'NATURAL_GAS',
   })
 # ---
-# name: test_entities_match_snapshot[full-select][select.nimbus_ariston_net_hybrid_mode-entry]
+# name: test_entities_match_snapshot[full-select][select.nimbus_hybrid_mode-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -8863,34 +8801,33 @@
     'disabled_by': None,
     'domain': 'select',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'select.nimbus_ariston_net_hybrid_mode',
-    'has_entity_name': False,
+    'entity_id': 'select.nimbus_hybrid_mode',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET hybrid mode',
+    'object_id_base': 'Hybrid mode',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:cog',
-    'original_name': 'Ariston NET hybrid mode',
+    'original_icon': None,
+    'original_name': 'Hybrid mode',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'hybrid_mode',
     'unique_id': 'F0AD4E000001-Ariston NET hybrid mode',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[full-select][select.nimbus_ariston_net_hybrid_mode-state]
+# name: test_entities_match_snapshot[full-select][select.nimbus_hybrid_mode-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET hybrid mode',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:cog',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Hybrid mode',
       <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
         'Economy',
         'Green',
@@ -8898,14 +8835,14 @@
       ]),
     }),
     'context': <ANY>,
-    'entity_id': 'select.nimbus_ariston_net_hybrid_mode',
+    'entity_id': 'select.nimbus_hybrid_mode',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'Green',
   })
 # ---
-# name: test_entities_match_snapshot[full-select][select.nimbus_ariston_net_plant_mode-entry]
+# name: test_entities_match_snapshot[full-select][select.nimbus_plant_mode-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -8927,34 +8864,33 @@
     'disabled_by': None,
     'domain': 'select',
     'entity_category': None,
-    'entity_id': 'select.nimbus_ariston_net_plant_mode',
-    'has_entity_name': False,
+    'entity_id': 'select.nimbus_plant_mode',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET plant mode',
+    'object_id_base': 'Plant mode',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:sun-snowflake-variant',
-    'original_name': 'Ariston NET plant mode',
+    'original_icon': None,
+    'original_name': 'Plant mode',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'plant_mode',
     'unique_id': 'F0AD4E000001-Ariston NET plant mode',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[full-select][select.nimbus_ariston_net_plant_mode-state]
+# name: test_entities_match_snapshot[full-select][select.nimbus_plant_mode-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET plant mode',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:sun-snowflake-variant',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Plant mode',
       <SelectEntityCapabilityAttribute.OPTIONS: 'options'>: list([
         'Summer',
         'Winter',
@@ -8964,7 +8900,7 @@
       ]),
     }),
     'context': <ANY>,
-    'entity_id': 'select.nimbus_ariston_net_plant_mode',
+    'entity_id': 'select.nimbus_plant_mode',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
@@ -8988,7 +8924,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.nimbus_ariston_net_central_heating_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -9048,7 +8984,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.nimbus_ariston_net_central_heating_gas_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -9108,7 +9044,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.nimbus_ariston_net_central_heating_total_energy_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -9168,7 +9104,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.nimbus_ariston_net_ch_flow_setpoint_temp',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -9226,7 +9162,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.nimbus_ariston_net_ch_flow_temp',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -9284,7 +9220,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.nimbus_ariston_net_ch_return_temp',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -9342,7 +9278,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.nimbus_ariston_net_dhw_current_temperature',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -9401,7 +9337,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.nimbus_ariston_net_dhw_target_temperature',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -9460,7 +9396,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.nimbus_ariston_net_domestic_hot_water_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -9520,7 +9456,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.nimbus_ariston_net_domestic_hot_water_gas_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -9580,7 +9516,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.nimbus_ariston_net_domestic_hot_water_heating_pump_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -9640,7 +9576,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.nimbus_ariston_net_domestic_hot_water_resistor_electricity_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -9700,7 +9636,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.nimbus_ariston_net_domestic_hot_water_total_energy_consumption',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -9758,7 +9694,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.nimbus_ariston_net_electricity_consumption_for_cooling_last_month',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -9814,7 +9750,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.nimbus_ariston_net_electricity_consumption_for_heating_last_month',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -9870,7 +9806,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.nimbus_ariston_net_electricity_consumption_for_water_last_month',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -9928,7 +9864,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.nimbus_ariston_net_errors_count',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -9994,7 +9930,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.nimbus_ariston_net_gas_consumption_for_heating_last_month',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -10050,7 +9986,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.nimbus_ariston_net_gas_consumption_for_water_last_month',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -10108,7 +10044,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.nimbus_ariston_net_heating_circuit_pressure',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -10166,7 +10102,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.nimbus_ariston_net_hp_water_flow_temp',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -10224,7 +10160,7 @@
     'domain': 'sensor',
     'entity_category': None,
     'entity_id': 'sensor.nimbus_ariston_net_outside_temp',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -10282,7 +10218,7 @@
     'domain': 'sensor',
     'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
     'entity_id': 'sensor.nimbus_ariston_net_signal_strength',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
@@ -10319,7 +10255,7 @@
     'state': '80.0',
   })
 # ---
-# name: test_entities_match_snapshot[full-switch][switch.nimbus_ariston_net_automatic_thermoregulation-entry]
+# name: test_entities_match_snapshot[full-switch][switch.nimbus_automatic_thermoregulation-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -10333,44 +10269,43 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': None,
-    'entity_id': 'switch.nimbus_ariston_net_automatic_thermoregulation',
-    'has_entity_name': False,
+    'entity_id': 'switch.nimbus_automatic_thermoregulation',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET automatic thermoregulation',
+    'object_id_base': 'Automatic thermoregulation',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:radiator',
-    'original_name': 'Ariston NET automatic thermoregulation',
+    'original_icon': None,
+    'original_name': 'Automatic thermoregulation',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'automatic_thermoregulation',
     'unique_id': 'F0AD4E000001-Ariston NET automatic thermoregulation',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[full-switch][switch.nimbus_ariston_net_automatic_thermoregulation-state]
+# name: test_entities_match_snapshot[full-switch][switch.nimbus_automatic_thermoregulation-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET automatic thermoregulation',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:radiator',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Automatic thermoregulation',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.nimbus_ariston_net_automatic_thermoregulation',
+    'entity_id': 'switch.nimbus_automatic_thermoregulation',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
     'state': 'on',
   })
 # ---
-# name: test_entities_match_snapshot[full-switch][switch.nimbus_ariston_net_is_quiet-entry]
+# name: test_entities_match_snapshot[full-switch][switch.nimbus_quiet_mode-entry]
   EntityRegistryEntrySnapshot({
     'aliases': list([
       None,
@@ -10384,37 +10319,36 @@
     'disabled_by': None,
     'domain': 'switch',
     'entity_category': <EntityCategory.CONFIG: 'config'>,
-    'entity_id': 'switch.nimbus_ariston_net_is_quiet',
-    'has_entity_name': False,
+    'entity_id': 'switch.nimbus_quiet_mode',
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Ariston NET is quiet',
+    'object_id_base': 'Quiet mode',
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:volume-off',
-    'original_name': 'Ariston NET is quiet',
+    'original_icon': None,
+    'original_name': 'Quiet mode',
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': 0,
-    'translation_key': None,
+    'translation_key': 'is_quiet',
     'unique_id': 'F0AD4E000001-Ariston NET is quiet',
     'unit_of_measurement': None,
   })
 # ---
-# name: test_entities_match_snapshot[full-switch][switch.nimbus_ariston_net_is_quiet-state]
+# name: test_entities_match_snapshot[full-switch][switch.nimbus_quiet_mode-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
-      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Ariston NET is quiet',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:volume-off',
+      <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus Quiet mode',
     }),
     'context': <ANY>,
-    'entity_id': 'switch.nimbus_ariston_net_is_quiet',
+    'entity_id': 'switch.nimbus_quiet_mode',
     'last_changed': <ANY>,
     'last_reported': <ANY>,
     'last_updated': <ANY>,
@@ -10443,24 +10377,24 @@
     'domain': 'water_heater',
     'entity_category': None,
     'entity_id': 'water_heater.nimbus',
-    'has_entity_name': False,
+    'has_entity_name': True,
     'hidden_by': None,
     'icon': None,
     'id': <ANY>,
     'labels': set({
     }),
     'name': None,
-    'object_id_base': 'Nimbus',
+    'object_id_base': None,
     'options': dict({
     }),
     'original_device_class': None,
-    'original_icon': 'mdi:water-pump',
-    'original_name': 'Nimbus',
+    'original_icon': None,
+    'original_name': None,
     'platform': 'ariston_net',
     'previous_unique_id': None,
     'suggested_object_id': None,
     'supported_features': <WaterHeaterEntityFeature: 3>,
-    'translation_key': None,
+    'translation_key': 'water_heater',
     'unique_id': 'F0AD4E000001-water_heater',
     'unit_of_measurement': None,
   })
@@ -10470,7 +10404,6 @@
     'attributes': ReadOnlyDict({
       <WaterHeaterStateAttribute.CURRENT_TEMPERATURE: 'current_temperature'>: 48,
       <EntityStateAttribute.FRIENDLY_NAME: 'friendly_name'>: 'Nimbus',
-      <EntityStateAttribute.ICON: 'icon'>: 'mdi:water-pump',
       <WaterHeaterCapabilityAttribute.MAX_TEMP: 'max_temp'>: 65,
       <WaterHeaterCapabilityAttribute.MIN_TEMP: 'min_temp'>: 40,
       <WaterHeaterCapabilityAttribute.OPERATION_LIST: 'operation_list'>: list([

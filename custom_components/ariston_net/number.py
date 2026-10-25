@@ -54,7 +54,7 @@ ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
     AristonNumberEntityDescription(
         key=ConsumptionProperties.ELEC_COST,
         name=f"{NAME} elec cost",
-        icon="mdi:currency-sign",
+        translation_key="elec_cost",
         entity_category=EntityCategory.CONFIG,
         native_min_value=0,
         native_max_value=sys.maxsize,
@@ -70,7 +70,7 @@ ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
     AristonNumberEntityDescription(
         key=ConsumptionProperties.GAS_COST,
         name=f"{NAME} gas cost",
-        icon="mdi:currency-sign",
+        translation_key="gas_cost",
         entity_category=EntityCategory.CONFIG,
         native_min_value=0,
         native_max_value=sys.maxsize,
@@ -84,7 +84,7 @@ ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
     AristonNumberEntityDescription(
         key=MedDeviceSettings.MED_MAX_SETPOINT_TEMPERATURE,
         name=f"{NAME} max setpoint temperature",
-        icon="mdi:thermometer-high",
+        translation_key="max_setpoint_temperature",
         entity_category=EntityCategory.CONFIG,
         get_native_min_value=lambda entity: (
             entity.device.water_heater_maximum_setpoint_temperature_minimum
@@ -113,7 +113,7 @@ ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
     AristonNumberEntityDescription(
         key=SlpDeviceSettings.SLP_MIN_SETPOINT_TEMPERATURE,
         name=f"{NAME} min setpoint temperature",
-        icon="mdi:thermometer-low",
+        translation_key="min_setpoint_temperature",
         entity_category=EntityCategory.CONFIG,
         get_native_min_value=lambda entity: (
             entity.device.water_heater_minimum_setpoint_temperature_minimum
@@ -134,7 +134,7 @@ ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
     AristonNumberEntityDescription(
         key=NuosSplitProperties.REDUCED_TEMP,
         name=f"{NAME} reduced temperature",
-        icon="mdi:thermometer-chevron-down",
+        translation_key="reduced_temperature",
         entity_category=EntityCategory.CONFIG,
         get_native_min_value=lambda entity: (
             entity.device.water_heater_minimum_temperature
@@ -153,7 +153,7 @@ ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
     AristonNumberEntityDescription(
         key=ThermostatProperties.HEATING_FLOW_TEMP,
         name=f"{NAME} heating flow temperature",
-        icon="mdi:thermometer",
+        translation_key="heating_flow_temperature",
         entity_category=EntityCategory.CONFIG,
         zone=True,
         get_native_min_value=lambda entity: entity.device.get_heating_flow_temp_min(
@@ -176,7 +176,7 @@ ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
     AristonNumberEntityDescription(
         key=ThermostatProperties.HEATING_FLOW_OFFSET,
         name=f"{NAME} heating flow offset",
-        icon="mdi:progress-wrench",
+        translation_key="heating_flow_offset",
         entity_category=EntityCategory.CONFIG,
         zone=True,
         get_native_min_value=lambda entity: entity.device.get_heating_flow_offset_min(
@@ -199,7 +199,7 @@ ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
     AristonNumberEntityDescription(
         key=EvoOneDeviceProperties.AV_SHW,
         name=f"{NAME} requested number of showers",
-        icon="mdi:shower-head",
+        translation_key="requested_number_of_showers",
         native_min_value=0,
         get_native_max_value=lambda entity: entity.device.max_req_shower,
         native_step=1,
@@ -212,7 +212,7 @@ ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
     AristonNumberEntityDescription(
         key=SeDeviceSettings.SE_ANTI_COOLING_TEMPERATURE,
         name=f"{NAME} anti cooling temperature",
-        icon="mdi:thermometer-alert",
+        translation_key="anti_cooling_temperature",
         entity_category=EntityCategory.CONFIG,
         get_native_min_value=lambda entity: (
             entity.device.anti_cooling_temperature_minimum
@@ -268,9 +268,14 @@ class AristonNumber(AristonEntity, NumberEntity):
         zone: int = 0,
     ) -> None:
         """Initialize the entity."""
-        # Set before the base class, which builds the unique ID from it.
-        self._attr_name = f"{description.name} {zone}" if zone else description.name
-        super().__init__(coordinator, description, zone)
+        if description.zone:
+            self._attr_translation_placeholders = {"zone": str(zone)}
+        super().__init__(
+            coordinator,
+            description,
+            zone,
+            f"{description.name} {zone}" if zone else None,
+        )
 
     @property
     def native_value(self):

@@ -1,0 +1,130 @@
+{
+  "entity": {
+    "binary_sensor": {
+      "is_flame_on": {
+        "default": "mdi:fire"
+      },
+      "is_heating_pump_on": {
+        "default": "mdi:heat-pump-outline"
+      },
+      "holiday_mode": {
+        "default": "mdi:island"
+      },
+      "is_heating": {
+        "default": "mdi:fire"
+      },
+      "anti_legionella_cycle": {
+        "default": "mdi:bacteria"
+      }
+    },
+    "climate": {
+      "thermostat": {
+        "default": "mdi:radiator",
+        "state": {
+          "off": "mdi:radiator-off",
+          "cool": "mdi:snowflake"
+        }
+      }
+    },
+    "number": {
+      "elec_cost": {
+        "default": "mdi:currency-sign"
+      },
+      "gas_cost": {
+        "default": "mdi:currency-sign"
+      },
+      "max_setpoint_temperature": {
+        "default": "mdi:thermometer-high"
+      },
+      "min_setpoint_temperature": {
+        "default": "mdi:thermometer-low"
+      },
+      "reduced_temperature": {
+        "default": "mdi:thermometer-chevron-down"
+      },
+      "heating_flow_temperature": {
+        "default": "mdi:thermometer"
+      },
+      "heating_flow_offset": {
+        "default": "mdi:progress-wrench"
+      },
+      "requested_number_of_showers": {
+        "default": "mdi:shower-head"
+      },
+      "anti_cooling_temperature": {
+        "default": "mdi:thermometer-alert"
+      }
+    },
+    "select": {
+      "plant_mode": {
+        "default": "mdi:sun-snowflake-variant"
+      },
+      "currency": {
+        "default": "mdi:cash-100"
+      },
+      "gas_type": {
+        "default": "mdi:gas-cylinder"
+      },
+      "gas_energy_unit": {
+        "default": "mdi:cube-scan"
+      },
+      "hybrid_mode": {
+        "default": "mdi:cog"
+      },
+      "buffer_control_mode": {
+        "default": "mdi:cup-water"
+      },
+      "operation_mode": {
+        "default": "mdi:cog"
+      }
+    },
+    "switch": {
+      "automatic_thermoregulation": {
+        "default": "mdi:radiator"
+      },
+      "is_quiet": {
+        "default": "mdi:volume-off"
+      },
+      "eco_mode": {
+        "default": "mdi:leaf"
+      },
+      "power_option": {
+        "default": "mdi:leaf"
+      },
+      "power": {
+        "default": "mdi:power"
+      },
+      "anti_legionella": {
+        "default": "mdi:bacteria-outline"
+      },
+      "preheating": {
+        "default": "mdi:heat-wave"
+      },
+      "boost": {
+        "default": "mdi:car-turbocharger"
+      },
+      "permanent_boost": {
+        "default": "mdi:car-turbocharger"
+      },
+      "anti_cooling": {
+        "default": "mdi:snowflake-thermometer"
+      },
+      "night_mode": {
+        "default": "mdi:weather-night"
+      }
+    },
+    "water_heater": {
+      "water_heater": {
+        "default": "mdi:water-pump"
+      }
+    }
+  },
+  "services": {
+    "create_vacation": {
+      "service": "mdi:island"
+    },
+    "set_item_by_id": {
+      "service": "mdi:tune"
+    }
+  }
+}

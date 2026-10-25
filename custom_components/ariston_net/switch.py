@@ -50,7 +50,7 @@ ARISTON_SWITCH_TYPES: list[AristonSwitchEntityDescription] = [
     AristonSwitchEntityDescription(
         key=DeviceProperties.AUTOMATIC_THERMOREGULATION,
         name=f"{NAME} automatic thermoregulation",
-        icon="mdi:radiator",
+        translation_key="automatic_thermoregulation",
         device_features=[DeviceFeatures.AUTO_THERMO_REG],
         set_value=lambda entity, value: (
             entity.device.async_set_automatic_thermoregulation(value)
@@ -61,7 +61,7 @@ ARISTON_SWITCH_TYPES: list[AristonSwitchEntityDescription] = [
     AristonSwitchEntityDescription(
         key=DeviceProperties.IS_QUIET,
         name=f"{NAME} is quiet",
-        icon="mdi:volume-off",
+        translation_key="is_quiet",
         entity_category=EntityCategory.CONFIG,
         device_features=[DeviceProperties.IS_QUIET],
         set_value=lambda entity, value: entity.device.async_set_is_quiet(value),
@@ -71,7 +71,7 @@ ARISTON_SWITCH_TYPES: list[AristonSwitchEntityDescription] = [
     AristonSwitchEntityDescription(
         key=EvoDeviceProperties.ECO,
         name=f"{NAME} eco mode",
-        icon="mdi:leaf",
+        translation_key="eco_mode",
         set_value=lambda entity, value: entity.device.async_set_eco_mode(value),
         get_is_on=lambda entity: entity.device.water_heater_eco_value,
         system_types=[SystemType.VELIS],
@@ -87,7 +87,7 @@ ARISTON_SWITCH_TYPES: list[AristonSwitchEntityDescription] = [
     AristonSwitchEntityDescription(
         key=EvoDeviceProperties.PWR_OPT,
         name=f"{NAME} power option",
-        icon="mdi:leaf",
+        translation_key="power_option",
         set_value=lambda entity, value: (
             entity.device.async_set_water_heater_power_option(value)
         ),
@@ -98,7 +98,7 @@ ARISTON_SWITCH_TYPES: list[AristonSwitchEntityDescription] = [
     AristonSwitchEntityDescription(
         key=VelisDeviceProperties.ON,
         name=f"{NAME} power",
-        icon="mdi:power",
+        translation_key="power",
         set_value=lambda entity, value: entity.device.async_set_power(value),
         get_is_on=lambda entity: entity.device.water_heater_power_value,
         system_types=[SystemType.VELIS],
@@ -106,7 +106,7 @@ ARISTON_SWITCH_TYPES: list[AristonSwitchEntityDescription] = [
     AristonSwitchEntityDescription(
         key=MedDeviceSettings.MED_ANTILEGIONELLA_ON_OFF,
         name=f"{NAME} anti legionella",
-        icon="mdi:bacteria-outline",
+        translation_key="anti_legionella",
         entity_category=EntityCategory.CONFIG,
         set_value=lambda entity, value: entity.device.async_set_antilegionella(value),
         get_is_on=lambda entity: entity.device.water_anti_leg_value,
@@ -124,7 +124,7 @@ ARISTON_SWITCH_TYPES: list[AristonSwitchEntityDescription] = [
     AristonSwitchEntityDescription(
         key=SlpDeviceSettings.SLP_PRE_HEATING_ON_OFF,
         name=f"{NAME} preheating",
-        icon="mdi:heat-wave",
+        translation_key="preheating",
         entity_category=EntityCategory.CONFIG,
         set_value=lambda entity, value: entity.device.async_set_preheating(value),
         get_is_on=lambda entity: entity.device.water_heater_preheating_on_off,
@@ -134,7 +134,7 @@ ARISTON_SWITCH_TYPES: list[AristonSwitchEntityDescription] = [
     AristonSwitchEntityDescription(
         key=NuosSplitProperties.BOOST_ON,
         name=f"{NAME} boost",
-        icon="mdi:car-turbocharger",
+        translation_key="boost",
         entity_category=EntityCategory.CONFIG,
         set_value=lambda entity, value: entity.device.async_set_water_heater_boost(
             value
@@ -146,7 +146,7 @@ ARISTON_SWITCH_TYPES: list[AristonSwitchEntityDescription] = [
     AristonSwitchEntityDescription(
         key=SeDeviceSettings.SE_PERMANENT_BOOST_ON_OFF,
         name=f"{NAME} permanent boost",
-        icon="mdi:car-turbocharger",
+        translation_key="permanent_boost",
         entity_category=EntityCategory.CONFIG,
         set_value=lambda entity, value: entity.device.async_set_permanent_boost_value(
             value
@@ -158,7 +158,7 @@ ARISTON_SWITCH_TYPES: list[AristonSwitchEntityDescription] = [
     AristonSwitchEntityDescription(
         key=SeDeviceSettings.SE_ANTI_COOLING_ON_OFF,
         name=f"{NAME} anti cooling",
-        icon="mdi:snowflake-thermometer",
+        translation_key="anti_cooling",
         entity_category=EntityCategory.CONFIG,
         set_value=lambda entity, value: entity.device.async_set_anti_cooling_value(
             value
@@ -170,7 +170,7 @@ ARISTON_SWITCH_TYPES: list[AristonSwitchEntityDescription] = [
     AristonSwitchEntityDescription(
         key=SeDeviceSettings.SE_NIGHT_MODE_ON_OFF,
         name=f"{NAME} night mode",
-        icon="mdi:weather-night",
+        translation_key="night_mode",
         entity_category=EntityCategory.CONFIG,
         set_value=lambda entity, value: entity.device.async_set_night_mode_value(value),
         get_is_on=lambda entity: entity.device.night_mode_value,

@@ -81,7 +81,7 @@ async def test_eco_switch_sends_eco_mode(
     device_data["plant_data"]["eco"] = not value
     await setup_integration(hass, config_entry)
 
-    await turn(hass, SWITCH_DOMAIN, service, "switch.velis_ariston_net_eco_mode")
+    await turn(hass, SWITCH_DOMAIN, service, "switch.velis_eco_mode")
 
     api.async_set_evo_eco_mode.assert_awaited_once_with(GATEWAY, value)
 
@@ -108,7 +108,7 @@ async def test_power_switch_sends_power(
     device_data["plant_data"]["on"] = not value
     await setup_integration(hass, config_entry)
 
-    await turn(hass, SWITCH_DOMAIN, service, "switch.velis_ariston_net_power")
+    await turn(hass, SWITCH_DOMAIN, service, "switch.velis_power")
 
     api.async_set_velis_power.assert_awaited_once_with(plant_data, GATEWAY, value)
 
@@ -128,7 +128,7 @@ async def test_anti_legionella_switch_sends_plant_setting(
     device_data["plant_settings"][ANTI_LEGIONELLA] = not value
     await setup_integration(hass, config_entry)
 
-    await turn(hass, SWITCH_DOMAIN, service, "switch.velis_ariston_net_anti_legionella")
+    await turn(hass, SWITCH_DOMAIN, service, "switch.velis_anti_legionella")
 
     api.async_set_velis_plant_setting.assert_awaited_once_with(
         PlantData.Med, GATEWAY, ANTI_LEGIONELLA, float(value), float(not value)
@@ -150,7 +150,7 @@ async def test_power_option_switch_sends_power_option(
     device_data["plant_data"]["pwrOpt"] = not value
     await setup_integration(hass, config_entry)
 
-    await turn(hass, SWITCH_DOMAIN, service, "switch.velis_ariston_net_power_option")
+    await turn(hass, SWITCH_DOMAIN, service, "switch.velis_power_option")
 
     api.async_set_lux_power_option.assert_awaited_once_with(GATEWAY, value)
 
@@ -164,7 +164,7 @@ async def test_max_setpoint_number_sends_plant_setting(
         NUMBER_DOMAIN,
         SERVICE_SET_VALUE,
         {
-            ATTR_ENTITY_ID: "number.velis_ariston_net_max_setpoint_temperature",
+            ATTR_ENTITY_ID: "number.velis_max_setpoint_temperature",
             ATTR_VALUE: 75,
         },
         blocking=True,
@@ -184,7 +184,7 @@ async def test_showers_number_sends_number_of_showers(
         NUMBER_DOMAIN,
         SERVICE_SET_VALUE,
         {
-            ATTR_ENTITY_ID: "number.velis_ariston_net_requested_number_of_showers",
+            ATTR_ENTITY_ID: "number.velis_requested_number_of_showers",
             ATTR_VALUE: 3,
         },
         blocking=True,
@@ -210,7 +210,7 @@ async def test_operation_mode_select_sends_evo_mode(
         SELECT_DOMAIN,
         SERVICE_SELECT_OPTION,
         {
-            ATTR_ENTITY_ID: "select.velis_ariston_net_operation_mode",
+            ATTR_ENTITY_ID: "select.velis_operation_mode",
             ATTR_OPTION: option,
         },
         blocking=True,
@@ -298,7 +298,7 @@ async def test_water_heater_turn_on_off_updates_power_switch(
     await turn(hass, WATER_HEATER_DOMAIN, service, WATER_HEATER)
 
     expected_state = STATE_ON if value else STATE_OFF
-    assert hass.states.get("switch.velis_ariston_net_power").state == expected_state
+    assert hass.states.get("switch.velis_power").state == expected_state
 
 
 @pytest.mark.parametrize("device_type", MED_TYPES)

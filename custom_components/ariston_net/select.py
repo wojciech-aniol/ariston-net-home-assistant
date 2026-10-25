@@ -58,7 +58,7 @@ ARISTON_SELECT_TYPES: list[AristonSelectEntityDescription] = [
     AristonSelectEntityDescription(
         key=DeviceProperties.PLANT_MODE,
         name=f"{NAME} plant mode",
-        icon="mdi:sun-snowflake-variant",
+        translation_key="plant_mode",
         get_current_option=lambda entity: entity.device.plant_mode_text,
         get_options=lambda entity: entity.device.plant_mode_opt_texts,
         select_option=_async_select_plant_mode,
@@ -67,7 +67,7 @@ ARISTON_SELECT_TYPES: list[AristonSelectEntityDescription] = [
     AristonSelectEntityDescription(
         key=ConsumptionProperties.CURRENCY,
         name=f"{NAME} currency",
-        icon="mdi:cash-100",
+        translation_key="currency",
         device_class=SensorDeviceClass.MONETARY,
         entity_category=EntityCategory.CONFIG,
         device_features=[DeviceFeatures.HAS_METERING],
@@ -80,7 +80,7 @@ ARISTON_SELECT_TYPES: list[AristonSelectEntityDescription] = [
     AristonSelectEntityDescription(
         key=ConsumptionProperties.GAS_TYPE,
         name=f"{NAME} gas type",
-        icon="mdi:gas-cylinder",
+        translation_key="gas_type",
         entity_category=EntityCategory.CONFIG,
         device_features=[DeviceFeatures.HAS_METERING],
         coordinator=ENERGY_COORDINATOR,
@@ -92,7 +92,7 @@ ARISTON_SELECT_TYPES: list[AristonSelectEntityDescription] = [
     AristonSelectEntityDescription(
         key=ConsumptionProperties.GAS_ENERGY_UNIT,
         name=f"{NAME} gas energy unit",
-        icon="mdi:cube-scan",
+        translation_key="gas_energy_unit",
         entity_category=EntityCategory.CONFIG,
         device_features=[DeviceFeatures.HAS_METERING],
         coordinator=ENERGY_COORDINATOR,
@@ -106,7 +106,7 @@ ARISTON_SELECT_TYPES: list[AristonSelectEntityDescription] = [
     AristonSelectEntityDescription(
         key=DeviceProperties.HYBRID_MODE,
         name=f"{NAME} hybrid mode",
-        icon="mdi:cog",
+        translation_key="hybrid_mode",
         entity_category=EntityCategory.CONFIG,
         device_features=[DeviceFeatures.HYBRID_SYS],
         get_current_option=lambda entity: entity.device.hybrid_mode,
@@ -119,7 +119,7 @@ ARISTON_SELECT_TYPES: list[AristonSelectEntityDescription] = [
     AristonSelectEntityDescription(
         key=DeviceProperties.BUFFER_CONTROL_MODE,
         name=f"{NAME} buffer control mode",
-        icon="mdi:cup-water",
+        translation_key="buffer_control_mode",
         entity_category=EntityCategory.CONFIG,
         device_features=[DeviceFeatures.BUFFER_TIME_PROG_AVAILABLE],
         get_current_option=lambda entity: entity.device.buffer_control_mode,
@@ -132,7 +132,7 @@ ARISTON_SELECT_TYPES: list[AristonSelectEntityDescription] = [
     AristonSelectEntityDescription(
         key=EvoOneDeviceProperties.MODE,
         name=f"{NAME} operation mode",
-        icon="mdi:cog",
+        translation_key="operation_mode",
         get_current_option=lambda entity: entity.device.water_heater_current_mode_text,
         get_options=lambda entity: entity.device.water_heater_mode_operation_texts,
         select_option=lambda entity, option: (

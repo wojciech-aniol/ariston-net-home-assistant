@@ -167,7 +167,7 @@ ACTIONS: list[tuple[str, str, dict[str, Any]]] = [
         SELECT_DOMAIN,
         SERVICE_SELECT_OPTION,
         {
-            ATTR_ENTITY_ID: "select.nimbus_ariston_net_plant_mode",
+            ATTR_ENTITY_ID: "select.nimbus_plant_mode",
             ATTR_OPTION: "Summer",
         },
     ),
@@ -175,14 +175,14 @@ ACTIONS: list[tuple[str, str, dict[str, Any]]] = [
         NUMBER_DOMAIN,
         SERVICE_SET_VALUE,
         {
-            ATTR_ENTITY_ID: "number.nimbus_ariston_net_heating_flow_temperature_1",
+            ATTR_ENTITY_ID: "number.nimbus_zone_1_heating_flow_temperature",
             ATTR_VALUE: 40,
         },
     ),
     (
         SWITCH_DOMAIN,
         SERVICE_TURN_OFF,
-        {ATTR_ENTITY_ID: "switch.nimbus_ariston_net_automatic_thermoregulation"},
+        {ATTR_ENTITY_ID: "switch.nimbus_automatic_thermoregulation"},
     ),
 ]
 ACTION_IDS = [
@@ -241,7 +241,7 @@ async def test_entity_action_error_message_has_status(
         await hass.services.async_call(
             SWITCH_DOMAIN,
             SERVICE_TURN_OFF,
-            {ATTR_ENTITY_ID: "switch.nimbus_ariston_net_automatic_thermoregulation"},
+            {ATTR_ENTITY_ID: "switch.nimbus_automatic_thermoregulation"},
             blocking=True,
         )
 
@@ -256,7 +256,7 @@ async def test_entity_action_auth_error_starts_reauth(
         await hass.services.async_call(
             SWITCH_DOMAIN,
             SERVICE_TURN_OFF,
-            {ATTR_ENTITY_ID: "switch.nimbus_ariston_net_automatic_thermoregulation"},
+            {ATTR_ENTITY_ID: "switch.nimbus_automatic_thermoregulation"},
             blocking=True,
         )
     await hass.async_block_till_done()
@@ -286,7 +286,7 @@ async def test_entity_action_error_shows_earlier_writes(
             blocking=True,
         )
 
-    assert hass.states.get("select.nimbus_ariston_net_plant_mode").state == "Winter"
+    assert hass.states.get("select.nimbus_plant_mode").state == "Winter"
 
 
 def entity_classes() -> list[type[AristonEntity]]:

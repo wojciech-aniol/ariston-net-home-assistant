@@ -40,8 +40,8 @@ from .conftest import runtime_data, setup_integration, tracebacks
 
 CLIMATE = "climate.nimbus"
 WATER_HEATER = "water_heater.nimbus"
-HEATING_PUMP = "binary_sensor.nimbus_ariston_net_is_heating_pump_on"
-PLANT_MODE = "select.nimbus_ariston_net_plant_mode"
+HEATING_PUMP = "binary_sensor.nimbus_heat_pump"
+PLANT_MODE = "select.nimbus_plant_mode"
 DHW_CURRENT_TEMP = "sensor.nimbus_ariston_net_dhw_current_temperature"
 ERRORS_COUNT = "sensor.nimbus_ariston_net_errors_count"
 CH_ENERGY = "sensor.nimbus_ariston_net_central_heating_total_energy_consumption"

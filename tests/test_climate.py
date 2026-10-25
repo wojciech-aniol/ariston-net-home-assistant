@@ -23,7 +23,6 @@ from homeassistant.components.climate import (
 )
 from homeassistant.const import (
     ATTR_ENTITY_ID,
-    ATTR_ICON,
     ATTR_SUPPORTED_FEATURES,
     ATTR_TEMPERATURE,
 )
@@ -35,7 +34,7 @@ from pytest_homeassistant_custom_component.common import MockConfigEntry
 from .conftest import PLANT_MODE_TEXTS, set_item
 
 CLIMATE = "climate.nimbus"
-PLANT_MODE_SELECT = "select.nimbus_ariston_net_plant_mode"
+PLANT_MODE_SELECT = "select.nimbus_plant_mode"
 
 
 @pytest.mark.parametrize(
@@ -601,31 +600,6 @@ async def test_hvac_modes_and_features_match_device(
     state = hass.states.get(CLIMATE)
     assert state.attributes[ATTR_HVAC_MODES] == expected_modes
     assert state.attributes[ATTR_SUPPORTED_FEATURES] == expected_features
-
-
-@pytest.mark.parametrize(
-    ("plant_mode", "expected_icon"),
-    [
-        (PlantMode.WINTER, "mdi:radiator"),
-        (PlantMode.HEATING_ONLY, "mdi:radiator"),
-        (PlantMode.SUMMER, "mdi:radiator-off"),
-        (PlantMode.COOLING_ONLY, "mdi:radiator-off"),
-    ],
-)
-async def test_icon_shows_heat_mode(
-    hass: HomeAssistant,
-    properties: dict[str, Any],
-    mock_ariston: MagicMock,
-    config_entry: MockConfigEntry,
-    plant_mode: PlantMode,
-    expected_icon: str,
-) -> None:
-    """Test the icon shows a radiator only when the plant heats."""
-    set_item(properties, "PlantMode", value=plant_mode.value)
-    await hass.config_entries.async_setup(config_entry.entry_id)
-    await hass.async_block_till_done()
-
-    assert hass.states.get(CLIMATE).attributes[ATTR_ICON] == expected_icon
 
 
 @pytest.mark.parametrize(

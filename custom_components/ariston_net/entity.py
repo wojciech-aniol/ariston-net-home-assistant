@@ -54,6 +54,7 @@ def is_entity_supported(
 class AristonEntity(CoordinatorEntity[DeviceDataUpdateCoordinator], ABC):
     """Generic Ariston entity (base class)."""
 
+    _attr_has_entity_name = True
     entity_description: AristonBaseEntityDescription
 
     def __init__(
@@ -61,6 +62,7 @@ class AristonEntity(CoordinatorEntity[DeviceDataUpdateCoordinator], ABC):
         coordinator: DeviceDataUpdateCoordinator,
         description: AristonBaseEntityDescription,
         zone: int = 0,
+        unique_id_name: str | None = None,
     ) -> None:
         """Initialize the entity."""
         super().__init__(coordinator)
@@ -68,8 +70,8 @@ class AristonEntity(CoordinatorEntity[DeviceDataUpdateCoordinator], ABC):
         self.device = coordinator.device
         self.entity_description = description
         self.zone = zone
-        # Not self.name: it needs the platform, which is set only later.
-        name = getattr(self, "_attr_name", description.name)
+        # Unique IDs keep the old names, so never change description.name.
+        name = unique_id_name or description.name
         self._attr_unique_id = (
             f"{self.device.gateway}-{name}-{zone}"
             if zone

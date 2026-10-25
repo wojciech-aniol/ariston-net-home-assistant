@@ -40,7 +40,7 @@ ARISTON_BINARY_SENSOR_TYPES: list[AristonBinarySensorEntityDescription] = [
     AristonBinarySensorEntityDescription(
         key=DeviceProperties.IS_FLAME_ON,
         name=f"{NAME} is flame on",
-        icon="mdi:fire",
+        translation_key="is_flame_on",
         get_is_on=lambda entity: entity.device.is_flame_on_value,
         get_is_supported=lambda device: device.is_flame_on_value is not None,
         system_types=[SystemType.GALEVO, SystemType.BSB],
@@ -48,7 +48,7 @@ ARISTON_BINARY_SENSOR_TYPES: list[AristonBinarySensorEntityDescription] = [
     AristonBinarySensorEntityDescription(
         key=DeviceProperties.IS_HEATING_PUMP_ON,
         name=f"{NAME} is heating pump on",
-        icon="mdi:heat-pump-outline",
+        translation_key="is_heating_pump_on",
         get_is_on=lambda entity: entity.device.is_heating_pump_on_value,
         device_features=[DeviceFeatures.HP_SYS],
         system_types=[SystemType.GALEVO],
@@ -56,7 +56,7 @@ ARISTON_BINARY_SENSOR_TYPES: list[AristonBinarySensorEntityDescription] = [
     AristonBinarySensorEntityDescription(
         key=DeviceProperties.HOLIDAY,
         name=f"{NAME} holiday mode",
-        icon="mdi:island",
+        translation_key="holiday_mode",
         extra_states=[
             {
                 EXTRA_STATE_ATTRIBUTE: ATTR_HOLIDAY,
@@ -71,7 +71,7 @@ ARISTON_BINARY_SENSOR_TYPES: list[AristonBinarySensorEntityDescription] = [
     AristonBinarySensorEntityDescription(
         key=EvoLydosDeviceProperties.HEAT_REQ,
         name=f"{NAME} is heating",
-        icon="mdi:fire",
+        translation_key="is_heating",
         get_is_on=lambda entity: entity.device.is_heating,
         system_types=[SystemType.VELIS],
         whe_types=[
@@ -87,7 +87,7 @@ ARISTON_BINARY_SENSOR_TYPES: list[AristonBinarySensorEntityDescription] = [
     AristonBinarySensorEntityDescription(
         key=EvoLydosDeviceProperties.ANTI_LEG,
         name=f"{NAME} anti-legionella cycle",
-        icon="mdi:bacteria",
+        translation_key="anti_legionella_cycle",
         get_is_on=lambda entity: entity.device.is_antileg,
         system_types=[SystemType.VELIS],
         whe_types=[

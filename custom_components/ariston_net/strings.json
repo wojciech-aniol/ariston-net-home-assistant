@@ -96,6 +96,112 @@
       "invalid_bus_errors_scan_interval": "Enter a whole number from {bus_errors_scan_interval_min} to {bus_errors_scan_interval_max}."
     }
   },
+  "entity": {
+    "binary_sensor": {
+      "is_flame_on": {
+        "name": "Flame"
+      },
+      "is_heating_pump_on": {
+        "name": "Heat pump"
+      },
+      "holiday_mode": {
+        "name": "Holiday mode"
+      },
+      "is_heating": {
+        "name": "Heating"
+      },
+      "anti_legionella_cycle": {
+        "name": "Anti-legionella cycle"
+      }
+    },
+    "number": {
+      "elec_cost": {
+        "name": "Electricity cost"
+      },
+      "gas_cost": {
+        "name": "Gas cost"
+      },
+      "max_setpoint_temperature": {
+        "name": "Max setpoint temperature"
+      },
+      "min_setpoint_temperature": {
+        "name": "Min setpoint temperature"
+      },
+      "reduced_temperature": {
+        "name": "Reduced temperature"
+      },
+      "heating_flow_temperature": {
+        "name": "Zone {zone} heating flow temperature"
+      },
+      "heating_flow_offset": {
+        "name": "Zone {zone} heating flow offset"
+      },
+      "requested_number_of_showers": {
+        "name": "Requested number of showers"
+      },
+      "anti_cooling_temperature": {
+        "name": "Anti-cooling temperature"
+      }
+    },
+    "select": {
+      "plant_mode": {
+        "name": "Plant mode"
+      },
+      "currency": {
+        "name": "Currency"
+      },
+      "gas_type": {
+        "name": "Gas type"
+      },
+      "gas_energy_unit": {
+        "name": "Gas energy unit"
+      },
+      "hybrid_mode": {
+        "name": "Hybrid mode"
+      },
+      "buffer_control_mode": {
+        "name": "Buffer control mode"
+      },
+      "operation_mode": {
+        "name": "Operation mode"
+      }
+    },
+    "switch": {
+      "automatic_thermoregulation": {
+        "name": "Automatic thermoregulation"
+      },
+      "is_quiet": {
+        "name": "Quiet mode"
+      },
+      "eco_mode": {
+        "name": "Eco mode"
+      },
+      "power_option": {
+        "name": "Power option"
+      },
+      "power": {
+        "name": "Power"
+      },
+      "anti_legionella": {
+        "name": "Anti-legionella"
+      },
+      "preheating": {
+        "name": "Preheating"
+      },
+      "boost": {
+        "name": "Boost"
+      },
+      "permanent_boost": {
+        "name": "Permanent boost"
+      },
+      "anti_cooling": {
+        "name": "Anti-cooling"
+      },
+      "night_mode": {
+        "name": "Night mode"
+      }
+    }
+  },
   "services": {
     "create_vacation": {
       "name": "Create vacation",
