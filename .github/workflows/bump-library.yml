@@ -23,7 +23,7 @@ jobs:
       pr: ${{ steps.pr.outputs.pr }}
       sha: ${{ steps.pr.outputs.sha }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ariston-net
       - name: Find a newer version
