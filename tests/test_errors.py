@@ -205,8 +205,10 @@ ACTION_IDS = [
         (ConnectionException(429, b"body"), "action_rate_limited"),
         (ConnectionException("Login failed (password changed?)"), "action_auth_failed"),
         (aiohttp.ClientError("reset"), "action_failed"),
+        (aiohttp.InvalidURL("bad"), "action_failed"),
+        (ValueError("Comfort temperature is unknown"), "action_missing_value"),
     ],
-    ids=["server", "rate-limit", "auth", "network"],
+    ids=["server", "rate-limit", "auth", "network", "invalid-url", "missing-value"],
 )
 async def test_entity_action_cloud_error_raises_ha_error(
     hass: HomeAssistant,
@@ -238,6 +240,21 @@ async def test_entity_action_error_message_has_status(
     api.async_set_property.side_effect = ConnectionException(500)
 
     with pytest.raises(HomeAssistantError, match=r"\(HTTP 500\)"):
+        await hass.services.async_call(
+            SWITCH_DOMAIN,
+            SERVICE_TURN_OFF,
+            {ATTR_ENTITY_ID: "switch.nimbus_automatic_thermoregulation"},
+            blocking=True,
+        )
+
+
+async def test_entity_action_missing_value_message(
+    hass: HomeAssistant, init_full_integration: MockConfigEntry, api: MagicMock
+) -> None:
+    """Test the message of a change the library refused names the missing value."""
+    api.async_set_property.side_effect = ValueError("Comfort temperature is unknown")
+
+    with pytest.raises(HomeAssistantError, match=r"\(Comfort temperature is unknown\)"):
         await hass.services.async_call(
             SWITCH_DOMAIN,
             SERVICE_TURN_OFF,

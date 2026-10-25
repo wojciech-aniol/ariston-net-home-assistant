@@ -369,6 +369,9 @@
     "action_rate_limited": {
       "message": "The Ariston cloud got too many requests from this account ({error}). Try again in a few minutes."
     },
+    "action_missing_value": {
+      "message": "The change was not sent, because the Ariston cloud has not sent a value it needs ({error}). Try again after the next update."
+    },
     "missing_temperature": {
       "message": "Set a target temperature."
     }
