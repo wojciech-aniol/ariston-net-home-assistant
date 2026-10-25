@@ -22,11 +22,11 @@ from custom_components.ariston_net.sensor import (
 
 from .conftest import BUS_ERRORS, refresh_energy, runtime_data, setup_integration
 
-SIGNAL_STRENGTH = "sensor.nimbus_ariston_net_signal_strength"
-DHW_CURRENT_TEMP = "sensor.nimbus_ariston_net_dhw_current_temperature"
-CH_ENERGY = "sensor.nimbus_ariston_net_central_heating_total_energy_consumption"
-CH_GAS = "sensor.nimbus_ariston_net_gas_consumption_for_heating_last_month"
-ERRORS_COUNT = "sensor.nimbus_ariston_net_errors_count"
+SIGNAL_STRENGTH = "sensor.nimbus_signal_strength"
+DHW_CURRENT_TEMP = "sensor.nimbus_hot_water_temperature"
+CH_ENERGY = "sensor.nimbus_heating_energy"
+CH_GAS = "sensor.nimbus_heating_gas_last_month"
+ERRORS_COUNT = "sensor.nimbus_bus_errors"
 
 
 async def test_sensor_unit_comes_from_device(

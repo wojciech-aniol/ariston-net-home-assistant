@@ -26,11 +26,21 @@ from custom_components.ariston_net.sensor import (
 from .conftest import CLOUD_DEVICE, GATEWAY, runtime_data, setup_integration
 
 FLAME = "binary_sensor.nimbus_flame"
-CH_RETURN_TEMP = "sensor.nimbus_ariston_net_ch_return_temp"
+CH_RETURN_TEMP = "sensor.nimbus_ch_return_temperature"
 
 INTEGRATION_DIR = Path(__file__).parents[1] / "custom_components" / DOMAIN
 # Platforms whose entities get names from translations.
-NAMED_PLATFORMS = ["binary_sensor", "number", "select", "switch"]
+NAMED_PLATFORMS = ["binary_sensor", "number", "select", "sensor", "switch"]
+# Platforms where every entity has an icon in icons.json. Sensors with a device
+# class get the icon of that class.
+ICON_PLATFORMS = [
+    "binary_sensor",
+    "climate",
+    "number",
+    "select",
+    "switch",
+    "water_heater",
+]
 
 
 def descriptions(platform: str) -> list[EntityDescription]:
@@ -175,6 +185,18 @@ OLDER_INSTALL_ENTITIES = [
         "Nimbus Currency",
     ),
     (
+        "sensor.nimbus_ariston_net_ch_flow_setpoint_temp",
+        f"{GATEWAY}-Ariston NET CH flow setpoint temp",
+        "Ariston NET CH flow setpoint temp",
+        "Nimbus CH flow setpoint temperature",
+    ),
+    (
+        "sensor.nimbus_ariston_net_signal_strength",
+        f"{GATEWAY}-Ariston NET signal strength",
+        "Ariston NET signal strength",
+        "Nimbus Signal strength",
+    ),
+    (
         "switch.nimbus_ariston_net_automatic_thermoregulation",
         f"{GATEWAY}-Ariston NET automatic thermoregulation",
         "Ariston NET automatic thermoregulation",
@@ -311,7 +333,7 @@ async def test_entity_name_follows_ha_language(
     assert state.attributes[ATTR_FRIENDLY_NAME] == "Nimbus Tryb instalacji"
 
 
-@pytest.mark.parametrize("platform", [*NAMED_PLATFORMS, "climate", "water_heater"])
+@pytest.mark.parametrize("platform", ICON_PLATFORMS)
 def test_translation_keys_have_icons(platform: str) -> None:
     """Test each translation key of a platform has an icon, and no icon is unused."""
     icons = json.loads((INTEGRATION_DIR / "icons.json").read_text())["entity"]
@@ -319,6 +341,21 @@ def test_translation_keys_have_icons(platform: str) -> None:
     assert set(icons[platform]) == {
         description.translation_key for description in descriptions(platform)
     }
+
+
+def test_sensor_icons_have_translation_keys() -> None:
+    """Test each sensor icon belongs to a sensor translation key."""
+    icons = json.loads((INTEGRATION_DIR / "icons.json").read_text())["entity"]
+
+    assert set(icons["sensor"]) <= {
+        description.translation_key for description in descriptions("sensor")
+    }
+
+
+@pytest.mark.parametrize("platform", [*NAMED_PLATFORMS, "climate", "water_heater"])
+def test_descriptions_have_no_icon(platform: str) -> None:
+    """Test icons come from icons.json, not from entity descriptions."""
+    assert all(description.icon is None for description in descriptions(platform))
 
 
 def test_services_have_icons() -> None:

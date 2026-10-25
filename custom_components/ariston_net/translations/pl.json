@@ -110,6 +110,101 @@
         "name": "Tryb pracy"
       }
     },
+    "sensor": {
+      "heating_circuit_pressure": {
+        "name": "Ciśnienie w obiegu grzewczym"
+      },
+      "ch_flow_setpoint_temperature": {
+        "name": "Zadana temperatura zasilania CO"
+      },
+      "ch_flow_temperature": {
+        "name": "Temperatura zasilania CO"
+      },
+      "signal_strength": {
+        "name": "Siła sygnału"
+      },
+      "ch_return_temperature": {
+        "name": "Temperatura powrotu CO"
+      },
+      "hp_flow_temperature": {
+        "name": "Temperatura zasilania pompy ciepła"
+      },
+      "ch_flow_measured_temperature": {
+        "name": "Zmierzona temperatura zasilania CO"
+      },
+      "hp_return_temperature": {
+        "name": "Temperatura powrotu pompy ciepła"
+      },
+      "hp_evaporator_temperature": {
+        "name": "Temperatura parownika"
+      },
+      "outside_temperature": {
+        "name": "Temperatura zewnętrzna"
+      },
+      "average_showers": {
+        "name": "Średnia liczba pryszniców"
+      },
+      "heating_gas_last_month": {
+        "name": "Gaz na ogrzewanie w zeszłym miesiącu"
+      },
+      "heating_electricity_last_month": {
+        "name": "Prąd na ogrzewanie w zeszłym miesiącu"
+      },
+      "cooling_electricity_last_month": {
+        "name": "Prąd na chłodzenie w zeszłym miesiącu"
+      },
+      "dhw_gas_last_month": {
+        "name": "Gaz na ciepłą wodę w zeszłym miesiącu"
+      },
+      "dhw_electricity_last_month": {
+        "name": "Prąd na ciepłą wodę w zeszłym miesiącu"
+      },
+      "heating_energy": {
+        "name": "Energia na ogrzewanie"
+      },
+      "dhw_energy": {
+        "name": "Energia na ciepłą wodę"
+      },
+      "heating_gas": {
+        "name": "Gaz na ogrzewanie"
+      },
+      "dhw_heat_pump_electricity": {
+        "name": "Prąd pompy ciepła na ciepłą wodę"
+      },
+      "dhw_resistor_electricity": {
+        "name": "Prąd grzałki na ciepłą wodę"
+      },
+      "dhw_gas": {
+        "name": "Gaz na ciepłą wodę"
+      },
+      "heating_electricity": {
+        "name": "Prąd na ogrzewanie"
+      },
+      "dhw_electricity": {
+        "name": "Prąd na ciepłą wodę"
+      },
+      "remaining_time": {
+        "name": "Pozostały czas"
+      },
+      "heating_rate": {
+        "name": "Szybkość grzania"
+      },
+      "errors_count": {
+        "name": "Błędy magistrali"
+      },
+      "current_temperature": {
+        "name": "Aktualna temperatura"
+      },
+      "requested_temperature": {
+        "name": "Żądana temperatura"
+      },
+      "dhw_temperature": {
+        "name": "Temperatura ciepłej wody"
+      },
+      "dhw_target_temperature": {
+        "name": "Zadana temperatura ciepłej wody"
+      }
+    },
     "switch": {
       "automatic_thermoregulation": {
         "name": "Automatyczna termoregulacja"

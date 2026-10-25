@@ -20,13 +20,13 @@ from custom_components.ariston_net.menu_items import add_extra_menu_items
 
 from .conftest import GATEWAY, MENU_ITEMS, runtime_data, setup_integration
 
-HP_WATER_FLOW_TEMP = "sensor.nimbus_ariston_net_hp_water_flow_temp"
-CH_FLOW_MEASURED_TEMP = "sensor.nimbus_ariston_net_ch_flow_measured_temp"
-CH_FLOW_TEMP = "sensor.nimbus_ariston_net_ch_flow_temp"
-SIGNAL_STRENGTH = "sensor.nimbus_ariston_net_signal_strength"
+HP_WATER_FLOW_TEMP = "sensor.nimbus_heat_pump_flow_temperature"
+CH_FLOW_MEASURED_TEMP = "sensor.nimbus_ch_flow_measured_temperature"
+CH_FLOW_TEMP = "sensor.nimbus_ch_flow_temperature"
+SIGNAL_STRENGTH = "sensor.nimbus_signal_strength"
 SIGNAL_ITEM = {"id": 119, "value": 80.0, "unit": "%"}
-HP_WATER_RETURN_TEMP = "sensor.nimbus_ariston_net_hp_water_return_temp"
-HP_EVAPORATOR_TEMP = "sensor.nimbus_ariston_net_hp_evaporator_temp"
+HP_WATER_RETURN_TEMP = "sensor.nimbus_heat_pump_return_temperature"
+HP_EVAPORATOR_TEMP = "sensor.nimbus_evaporator_temperature"
 RETURN_ITEM = {"id": 342, "nodeId": "T_13.8.2", "value": 24.0, "unit": "°C"}
 EVAPORATOR_ITEM = {"id": 347, "nodeId": "T_13.8.7", "value": -2.0, "unit": "°C"}
 

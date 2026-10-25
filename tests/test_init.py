@@ -42,9 +42,9 @@ CLIMATE = "climate.nimbus"
 WATER_HEATER = "water_heater.nimbus"
 HEATING_PUMP = "binary_sensor.nimbus_heat_pump"
 PLANT_MODE = "select.nimbus_plant_mode"
-DHW_CURRENT_TEMP = "sensor.nimbus_ariston_net_dhw_current_temperature"
-ERRORS_COUNT = "sensor.nimbus_ariston_net_errors_count"
-CH_ENERGY = "sensor.nimbus_ariston_net_central_heating_total_energy_consumption"
+DHW_CURRENT_TEMP = "sensor.nimbus_hot_water_temperature"
+ERRORS_COUNT = "sensor.nimbus_bus_errors"
+CH_ENERGY = "sensor.nimbus_heating_energy"
 
 CH_ENERGY_SEQUENCE: dict[str, Any] = {
     "k": ConsumptionType.CENTRAL_HEATING_TOTAL_ENERGY.value,
