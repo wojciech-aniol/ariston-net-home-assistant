@@ -15,6 +15,8 @@ from .const import DOMAIN
 HTTP_TOO_MANY_REQUESTS = 429
 # Only a login wraps network errors, other requests raise them as they are.
 CLOUD_ERRORS = (ConnectionException, aiohttp.ClientError, TimeoutError)
+# The library raises ValueError when the cloud has not sent a value a change needs.
+ACTION_ERRORS = (*CLOUD_ERRORS, ValueError)
 # The library raises these after a failed new login with the saved password.
 AUTH_ERROR_TEXTS = frozenset({"Invalid token", "Login failed (password changed?)"})
 
@@ -94,8 +96,10 @@ def action_error(
             key = "action_auth_failed"
         case CloudErrorKind.RATE_LIMIT:
             key = "action_rate_limited"
-        case _:
+        case _ if isinstance(error, CLOUD_ERRORS):
             key = "action_failed"
+        case _:
+            key = "action_missing_value"
     return HomeAssistantError(
         translation_domain=DOMAIN,
         translation_key=key,

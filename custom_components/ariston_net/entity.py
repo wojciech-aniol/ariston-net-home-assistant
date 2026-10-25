@@ -15,7 +15,7 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import COORDINATOR, DOMAIN, EXTRA_STATE_ATTRIBUTE, EXTRA_STATE_DEVICE_METHOD
 from .coordinator import DeviceDataUpdateCoordinator
-from .errors import CLOUD_ERRORS, action_error
+from .errors import ACTION_ERRORS, action_error
 
 
 @dataclass(kw_only=True, frozen=True)
@@ -127,7 +127,7 @@ def cloud_action[E: AristonEntity, **P, R](
     async def wrapper(self: E, *args: P.args, **kwargs: P.kwargs) -> R:
         try:
             return await func(self, *args, **kwargs)
-        except CLOUD_ERRORS as error:
+        except ACTION_ERRORS as error:
             # Earlier writes of the action may have worked, so show them.
             self.coordinator.async_update_listeners()
             raise action_error(
