@@ -345,3 +345,25 @@ async def test_water_heater_lux_boost_shows_highest_setpoint(
     state = hass.states.get(WATER_HEATER)
 
     assert state.attributes[ATTR_TEMPERATURE] == 80.0
+
+
+@pytest.mark.parametrize("device_type", ["lux"])
+async def test_water_heater_lux_boost_sends_highest_setpoint(
+    hass: HomeAssistant,
+    api: MagicMock,
+    device_data: dict[str, Any],
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+) -> None:
+    """Test a Lux in BOOST sends the temperature it shows as its target."""
+    device_data["plant_data"]["mode"] = LuxPlantMode.BOOST.value
+    await setup_integration(hass, config_entry)
+
+    await hass.services.async_call(
+        WATER_HEATER_DOMAIN,
+        SERVICE_SET_TEMPERATURE,
+        {ATTR_ENTITY_ID: WATER_HEATER, ATTR_TEMPERATURE: 80},
+        blocking=True,
+    )
+
+    api.async_set_evo_temperature.assert_awaited_once_with(GATEWAY, 80)

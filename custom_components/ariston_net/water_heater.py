@@ -5,7 +5,12 @@ from __future__ import annotations
 from dataclasses import dataclass
 import logging
 
-from ariston_net_api.const import CustomDeviceFeatures, SystemType, WheType
+from ariston_net_api.const import (
+    CustomDeviceFeatures,
+    LuxPlantMode,
+    SystemType,
+    WheType,
+)
 from homeassistant.components.water_heater import (
     WaterHeaterEntity,
     WaterHeaterEntityDescription,
@@ -181,7 +186,12 @@ class AristonWaterHeater(AristonEntity, WaterHeaterEntity):
             self.entity_id,
         )
 
-        if self._is_unchanged(temperature, self.target_temperature):
+        # A Lux in BOOST shows its highest setpoint, not the one a write sets.
+        lux_boost = (
+            self.device.whe_type is WheType.Lux
+            and self.device.water_heater_mode_value == LuxPlantMode.BOOST.value
+        )
+        if not lux_boost and self._is_unchanged(temperature, self.target_temperature):
             return
         await self.device.async_set_water_heater_temperature(temperature)
         self.async_write_ha_state()
