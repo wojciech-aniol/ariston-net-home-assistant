@@ -6,6 +6,7 @@ from collections import Counter
 from typing import Any
 from unittest.mock import MagicMock
 
+from freezegun.api import FrozenDateTimeFactory
 from homeassistant.components.climate import (
     ATTR_HVAC_MODE,
     ATTR_PRESET_MODE,
@@ -47,6 +48,7 @@ from custom_components.ariston_net.const import (
     ENERGY_COORDINATOR,
     METERING_COORDINATOR,
 )
+from custom_components.ariston_net.coordinator import RECENT_DATA
 
 from .conftest import runtime_data
 
@@ -339,3 +341,33 @@ async def test_action_requests(
     )
 
     assert sum(cloud_requests(full_galevo).values()) == expected
+
+
+@pytest.mark.parametrize(
+    ("domain", "service", "entity_id", "data"),
+    [
+        pytest.param(*action.values[:4], id=action.id)
+        for action in ACTIONS
+        if action.id.endswith("-same")
+    ],
+)
+async def test_action_after_old_poll_sends_shown_value(
+    hass: HomeAssistant,
+    freezer: FrozenDateTimeFactory,
+    init_full_integration: MockConfigEntry,
+    full_galevo: MagicMock,
+    domain: str,
+    service: str,
+    entity_id: str,
+    data: dict[str, Any],
+) -> None:
+    """Test a write of the shown value is sent when the last poll is old."""
+    data = with_current_values(hass, entity_id, data)
+    full_galevo.reset_mock()
+    freezer.tick(RECENT_DATA)
+
+    await hass.services.async_call(
+        domain, service, {ATTR_ENTITY_ID: entity_id, **data}, blocking=True
+    )
+
+    assert sum(cloud_requests(full_galevo).values()) == 1

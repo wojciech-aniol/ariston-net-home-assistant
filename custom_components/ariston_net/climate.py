@@ -304,12 +304,12 @@ class AristonThermostat(AristonEntity, ClimateEntity):
 
     async def _async_set_plant_mode(self, plant_mode: PlantMode) -> None:
         """Set the plant mode, unless the device already has it."""
-        if self.device.plant_mode != plant_mode:
+        if not self._is_unchanged(plant_mode, self.device.plant_mode):
             await self.device.async_set_plant_mode(plant_mode)
 
     async def _async_set_zone_mode(self, zone_mode: ZoneMode | BsbZoneMode) -> None:
         """Set the zone mode, unless the zone already has it."""
-        if self.device.get_zone_mode(self.zone) != zone_mode:
+        if not self._is_unchanged(zone_mode, self.device.get_zone_mode(self.zone)):
             await self.device.async_set_zone_mode(zone_mode, self.zone)
 
     @property
@@ -390,7 +390,9 @@ class AristonThermostat(AristonEntity, ClimateEntity):
             self.entity_id,
         )
 
-        if temperature == self.device.get_comfort_temp_value(self.zone):
+        if self._is_unchanged(
+            temperature, self.device.get_comfort_temp_value(self.zone)
+        ):
             return
         await self.device.async_set_comfort_temp(temperature, self.zone)
         self.async_write_ha_state()

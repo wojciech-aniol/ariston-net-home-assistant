@@ -181,7 +181,7 @@ class AristonWaterHeater(AristonEntity, WaterHeaterEntity):
             self.entity_id,
         )
 
-        if temperature == self.target_temperature:
+        if self._is_unchanged(temperature, self.target_temperature):
             return
         await self.device.async_set_water_heater_temperature(temperature)
         self.async_write_ha_state()
@@ -189,7 +189,7 @@ class AristonWaterHeater(AristonEntity, WaterHeaterEntity):
     @cloud_action
     async def async_set_operation_mode(self, operation_mode):
         """Set operation mode."""
-        if operation_mode == self.current_operation:
+        if self._is_unchanged(operation_mode, self.current_operation):
             return
         await self.device.async_set_water_heater_operation_mode(operation_mode)
         self.async_write_ha_state()
@@ -206,7 +206,7 @@ class AristonWaterHeater(AristonEntity, WaterHeaterEntity):
 
     async def _async_set_power(self, power: bool) -> None:
         """Send the power to the device, unless it already has it."""
-        if self.device.water_heater_power_value == power:
+        if self._is_unchanged(power, self.device.water_heater_power_value):
             return
         await self.device.async_set_power(power)
         # The VELIS power switch shows the same value.
