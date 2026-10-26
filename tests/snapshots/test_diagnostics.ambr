@@ -366,6 +366,197 @@
           'value': 25.0,
         }),
       ]),
+      'metering_data': dict({
+        'asKwhRaw': dict({
+          'histogramData': list([
+            dict({
+              'items': list([
+                dict({
+                  'x': '1',
+                  'y': 2.0,
+                }),
+                dict({
+                  'x': '2',
+                  'y': 1.5,
+                }),
+              ]),
+              'period': 'CurrentDay',
+              'series': 'Heating',
+              'tab': 'ProducedEnergy',
+            }),
+            dict({
+              'items': list([
+                dict({
+                  'x': '1',
+                  'y': 10.0,
+                }),
+                dict({
+                  'x': '2',
+                  'y': 6.0,
+                }),
+              ]),
+              'period': 'PreviousDay',
+              'series': 'Heating',
+              'tab': 'ProducedEnergy',
+            }),
+            dict({
+              'items': list([
+                dict({
+                  'x': '1',
+                  'y': 30.0,
+                }),
+                dict({
+                  'x': '2',
+                  'y': 20.0,
+                }),
+                dict({
+                  'x': '3',
+                  'y': 12.5,
+                }),
+              ]),
+              'period': 'CurrentMonth',
+              'series': 'Heating',
+              'tab': 'ProducedEnergy',
+            }),
+            dict({
+              'items': list([
+                dict({
+                  'x': '1',
+                  'y': 1.25,
+                }),
+              ]),
+              'period': 'CurrentDay',
+              'series': 'Dhw',
+              'tab': 'ProducedEnergy',
+            }),
+            dict({
+              'items': list([
+                dict({
+                  'x': '1',
+                  'y': 3.0,
+                }),
+              ]),
+              'period': 'PreviousDay',
+              'series': 'Dhw',
+              'tab': 'ProducedEnergy',
+            }),
+            dict({
+              'items': list([
+                dict({
+                  'x': '1',
+                  'y': 7.0,
+                }),
+                dict({
+                  'x': '2',
+                  'y': 3.5,
+                }),
+              ]),
+              'period': 'CurrentMonth',
+              'series': 'Dhw',
+              'tab': 'ProducedEnergy',
+            }),
+            dict({
+              'items': list([
+                dict({
+                  'x': '1',
+                  'y': 0.0,
+                }),
+              ]),
+              'period': 'CurrentDay',
+              'series': 'Cooling',
+              'tab': 'ProducedEnergy',
+            }),
+            dict({
+              'items': list([
+                dict({
+                  'x': '1',
+                  'y': 4.0,
+                }),
+                dict({
+                  'x': '2',
+                  'y': 0.0,
+                }),
+              ]),
+              'period': 'CurrentMonth',
+              'series': 'Cooling',
+              'tab': 'ProducedEnergy',
+            }),
+            dict({
+              'items': list([
+                dict({
+                  'x': '1',
+                  'y': 0.5,
+                }),
+                dict({
+                  'x': '2',
+                  'y': 0.25,
+                }),
+              ]),
+              'period': 'CurrentDay',
+              'series': 'Heating',
+              'tab': 'ConsumedElectricity',
+            }),
+            dict({
+              'items': list([
+                dict({
+                  'x': '1',
+                  'y': 2.5,
+                }),
+                dict({
+                  'x': '2',
+                  'y': 1.5,
+                }),
+              ]),
+              'period': 'PreviousDay',
+              'series': 'Heating',
+              'tab': 'ConsumedElectricity',
+            }),
+            dict({
+              'items': list([
+                dict({
+                  'x': '1',
+                  'y': 10.0,
+                }),
+                dict({
+                  'x': '2',
+                  'y': 2.5,
+                }),
+              ]),
+              'period': 'CurrentMonth',
+              'series': 'Heating',
+              'tab': 'ConsumedElectricity',
+            }),
+            dict({
+              'items': list([
+                dict({
+                  'x': '1',
+                  'y': 1.0,
+                }),
+              ]),
+              'period': 'PreviousDay',
+              'series': 'Dhw',
+              'tab': 'ConsumedElectricity',
+            }),
+            dict({
+              'items': list([
+                dict({
+                  'x': '1',
+                  'y': 2.0,
+                }),
+                dict({
+                  'x': '2',
+                  'y': 1.0,
+                }),
+              ]),
+              'period': 'CurrentMonth',
+              'series': 'Dhw',
+              'tab': 'ConsumedElectricity',
+            }),
+          ]),
+        }),
+        'isIntensiveLogsActive': False,
+        'oldestMonth': 'January 2025',
+      }),
       'system_type': 'GALEVO',
       'whe_model_type': 0,
       'whe_type': 'Unknown',

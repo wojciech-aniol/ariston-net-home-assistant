@@ -11,7 +11,7 @@ from ariston_net_api import (
     SystemType,
 )
 from ariston_net_api.ariston_api import ConnectionException
-from ariston_net_api.const import ARISTON_API_URL, ARISTON_USER_AGENT
+from ariston_net_api.const import ARISTON_API_URL, ARISTON_USER_AGENT, DeviceFeatures
 from homeassistant.const import (
     CONF_DEVICE,
     CONF_PASSWORD,
@@ -178,7 +178,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: AristonConfigEntry) -> b
                     error,
                 )
 
-            if isinstance(device, AristonGalevoDevice):
+            if isinstance(device, AristonGalevoDevice) and _has_heat_pump(device):
                 # Heat produced comes from the web app, as often as the energy data.
                 data.metering_coordinator = DeviceDataUpdateCoordinator(
                     hass,
@@ -188,14 +188,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: AristonConfigEntry) -> b
                     METERING_COORDINATOR,
                     device.async_update_metering,
                 )
-                try:
-                    await data.metering_coordinator.async_config_entry_first_refresh()
-                except ConfigEntryNotReady as error:
-                    _LOGGER.warning(
-                        "Could not fetch Ariston heat produced data, continuing "
-                        "without heat produced sensors for now: %s",
-                        error,
-                    )
+                # Its sensors do not need the data to be added, so do not wait.
+                entry.async_create_background_task(
+                    hass,
+                    data.metering_coordinator.async_refresh(),
+                    f"{DOMAIN} first metering update",
+                )
 
         entry.runtime_data = data
         await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
@@ -208,6 +206,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: AristonConfigEntry) -> b
         raise ConfigEntryNotReady from error
 
     return True
+
+
+def _has_heat_pump(device: AristonGalevoDevice) -> bool:
+    """Return True if the plant has a heat pump, alone or in a hybrid."""
+    return any(
+        device.features.get(feature) is True
+        for feature in (DeviceFeatures.HP_SYS, DeviceFeatures.HYBRID_SYS)
+    )
 
 
 def _setup_error(error: Exception) -> HomeAssistantError:

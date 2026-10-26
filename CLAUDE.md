@@ -27,7 +27,7 @@ Tests and lint pass before every commit.
   `coordinator.py`, typed as `AristonConfigEntry`); a disabled one is None.
 - `coordinator.py`: polling, HTTP 429 backoff, auth errors start reauth. Up to four coordinators
   per entry: state, bus errors, energy and metering (heat produced from the web app, GALEVO
-  only); all but state are optional. Metering errors never start reauth.
+  heat pumps only); all but state are optional. Metering errors never start reauth.
 - `errors.py`: sorts library errors (auth, 429, 5xx, other); `action_error` turns one into a
   translated `HomeAssistantError` and starts reauth on an auth error.
 - `services.py`: `create_vacation` and `set_item_by_id`, registered once in `async_setup`.
@@ -55,7 +55,9 @@ above "About the upstream integration" matters. Of `translations/` read only `en
   BSB and the VELIS Evo family (device types come from the `device_type` fixture and
   `tests/fixtures/`): an unplanned snapshot change means the code change is wrong.
 - Never shorten the default polling intervals or add cloud requests per poll. The cloud throttles
-  accounts (HTTP 429 and 500).
+  accounts (HTTP 429 and 500). One approved exception (owner's choice in plan 26): the metering
+  coordinator sends 2 web requests (login and `GetData`) per energy interval, for heat pumps
+  with metering while energy polling is on.
 - Keep config entry data and option keys. A change needs a config entry migration and a test.
 - Keep the keys of `strings.json` and `translations/en.json` the same. `strings.json` may use
   `[%key:...%]` references, `en.json` holds the final English text.

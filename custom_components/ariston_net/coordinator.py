@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Awaitable, Callable, Mapping
 from dataclasses import dataclass
-from datetime import timedelta
+from datetime import datetime, timedelta
 import logging
 from typing import Any
 
@@ -14,10 +14,8 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_SCAN_INTERVAL
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed
-from homeassistant.helpers.update_coordinator import (
-    TimestampDataUpdateCoordinator,
-    UpdateFailed,
-)
+from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from homeassistant.util import dt as dt_util
 
 from .const import (
     BUS_ERRORS_COORDINATOR,
@@ -72,7 +70,7 @@ def interval_option(options: Mapping[str, Any], key: str) -> int:
     return min(max(options.get(key, default), minimum), maximum)
 
 
-class DeviceDataUpdateCoordinator(TimestampDataUpdateCoordinator[None]):
+class DeviceDataUpdateCoordinator(DataUpdateCoordinator[None]):
     """Manages polling for state changes from the device."""
 
     config_entry: AristonConfigEntry
@@ -99,9 +97,12 @@ class DeviceDataUpdateCoordinator(TimestampDataUpdateCoordinator[None]):
         self._async_update_state = async_update_state
         self._default_update_interval = timedelta(seconds=scan_interval_seconds)
         self._backoff_factor = 1
+        # Start of the last good update.
+        self.data_requested_at: datetime | None = None
 
     async def _async_update_data(self) -> None:
         """Update the device and poll less often while the cloud rate limits us."""
+        requested_at = dt_util.utcnow()
         try:
             await self._async_update_state()
         except ConnectionException as error:
@@ -133,6 +134,7 @@ class DeviceDataUpdateCoordinator(TimestampDataUpdateCoordinator[None]):
                 translation_placeholders=placeholders,
             ) from error
 
+        self.data_requested_at = requested_at
         if self._backoff_factor > 1:
             self._backoff_factor = 1
             self.update_interval = self._default_update_interval

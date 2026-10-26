@@ -32,6 +32,7 @@ from .conftest import (
     METERING_SENSORS,
     metering_data,
     refresh_energy,
+    refresh_metering,
     runtime_data,
     set_item,
     setup_integration,
@@ -180,13 +181,13 @@ async def test_energy_sensors_listener_removed_after_adding(
     hass: HomeAssistant, energy_late: DeviceDataUpdateCoordinator
 ) -> None:
     """Test the late energy sensor listener goes away once the sensors are added."""
-    assert "async_add_late_sensors" in listener_names(energy_late)
+    assert "async_add_energy_sensors" in listener_names(energy_late)
 
     await energy_late.async_refresh()
     await hass.async_block_till_done()
 
     assert CH_ENERGY in hass.states.async_entity_ids("sensor")
-    assert "async_add_late_sensors" not in listener_names(energy_late)
+    assert "async_add_energy_sensors" not in listener_names(energy_late)
 
 
 async def test_energy_sensors_wait_while_energy_fails(
@@ -197,7 +198,7 @@ async def test_energy_sensors_wait_while_energy_fails(
     await hass.async_block_till_done()
 
     assert CH_ENERGY not in hass.states.async_entity_ids("sensor")
-    assert "async_add_late_sensors" in listener_names(energy_late)
+    assert "async_add_energy_sensors" in listener_names(energy_late)
 
 
 @pytest.mark.parametrize("energy_arrived", [False, True], ids=["waiting", "added"])
@@ -224,12 +225,6 @@ async def test_errors_count_lists_bus_errors(
 
     assert state.state == "1"
     assert state.attributes[ATTR_ERRORS] == BUS_ERRORS
-
-
-async def refresh_metering(hass: HomeAssistant) -> None:
-    """Fetch the metering data again."""
-    await runtime_data(hass).metering_coordinator.async_refresh()
-    await hass.async_block_till_done()
 
 
 @pytest.mark.parametrize(
@@ -276,6 +271,27 @@ async def test_produced_energy_resets_at_local_period_start(
     assert hass.states.get(entity_id).attributes[ATTR_LAST_RESET] == expected
 
 
+async def test_produced_energy_resets_on_day_of_request(
+    hass: HomeAssistant,
+    api: MagicMock,
+    freezer: FrozenDateTimeFactory,
+    init_full_integration: MockConfigEntry,
+) -> None:
+    """Test data asked for before midnight keeps the old day if it comes after."""
+    freezer.move_to("2026-10-26 06:59:50+00:00")
+
+    async def answer_after_midnight(*args: Any) -> dict[str, Any]:
+        freezer.tick(20)
+        return metering_data(METERING_BINS)
+
+    api.async_get_metering_data.side_effect = answer_after_midnight
+
+    await refresh_metering(hass)
+
+    state = hass.states.get(HEATING_TODAY)
+    assert state.attributes[ATTR_LAST_RESET] == "2026-10-25T00:00:00-07:00"
+
+
 async def test_produced_energy_keeps_reset_of_update_day(
     hass: HomeAssistant,
     freezer: FrozenDateTimeFactory,
@@ -297,26 +313,47 @@ async def test_produced_energy_keeps_reset_of_update_day(
     "bins",
     [
         METERING_BINS | {HEATING_USED_YESTERDAY: [0.0, 0.0]},
+        METERING_BINS | {HEATING_USED_YESTERDAY: [0.25, 0.2]},
         {
             key: bins
             for key, bins in METERING_BINS.items()
             if key != HEATING_USED_YESTERDAY
         },
     ],
-    ids=["zero", "missing"],
+    ids=["zero", "little", "missing"],
 )
-async def test_cop_unknown_without_electricity_used(
+async def test_cop_unknown_with_too_little_electricity_used(
     hass: HomeAssistant,
     api: MagicMock,
     init_full_integration: MockConfigEntry,
     bins: dict[tuple[str, str, str], list[float]],
 ) -> None:
-    """Test a COP has no value when no electricity use is known."""
+    """Test a COP has no value below half a kWh of electricity used."""
     api.async_get_metering_data.return_value = metering_data(bins)
 
     await refresh_metering(hass)
 
     assert hass.states.get(HEATING_COP_YESTERDAY).state == STATE_UNKNOWN
+
+
+async def test_metering_sensors_added_before_metering_data(
+    hass: HomeAssistant,
+    api: MagicMock,
+    mock_ariston: MagicMock,
+    full_galevo: MagicMock,
+    config_entry: MockConfigEntry,
+) -> None:
+    """Test the sensors exist without metering rows and show them when they come."""
+    api.async_get_metering_data.return_value = {}
+    await setup_integration(hass, config_entry)
+    assert {hass.states.get(entity_id).state for entity_id in METERING_SENSORS} == {
+        STATE_UNKNOWN
+    }
+
+    api.async_get_metering_data.return_value = metering_data(METERING_BINS)
+    await refresh_metering(hass)
+
+    assert hass.states.get(HEATING_TODAY).state == "3.5"
 
 
 @pytest.mark.parametrize("options", [[0, 1, 2, 5], None], ids=["no-cooling", "unknown"])

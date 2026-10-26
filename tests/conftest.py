@@ -298,6 +298,12 @@ async def refresh_energy(hass: HomeAssistant, api: MagicMock) -> None:
     await hass.async_block_till_done()
 
 
+async def refresh_metering(hass: HomeAssistant) -> None:
+    """Fetch the metering data again."""
+    await runtime_data(hass).metering_coordinator.async_refresh()
+    await hass.async_block_till_done()
+
+
 def tracebacks(caplog: pytest.LogCaptureFixture) -> list[str]:
     """Return the messages logged with a traceback, apart from debug ones."""
     return [

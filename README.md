@@ -80,16 +80,17 @@ The commit messages list what was skipped from each pull request and why.
   refused ID breaks the whole menu items request. So the integration asks for them once, when it
   starts (one extra request per start, none per update). If the cloud serves them one day, they
   join the polled request and the sensors appear; until then nothing changes.
-- Heat produced and COP sensors (GALEVO with metering): energy produced today and this month for
-  heating, hot water and cooling (cooling only when a plant mode can cool), and the COP of
-  heating and hot water yesterday and this month. Ariston has these estimates only in its web
-  app, so each update logs in to the web app (2 requests), as often as the energy data. Energy
-  of the last hours of a day can reach the cloud after midnight, so "today" may miss it; "this
-  month" still counts it, apart from the last day of a month.
+- Heat produced and COP sensors (GALEVO heat pumps with metering): energy produced today and this
+  month for heating, hot water and cooling (cooling only when a plant mode can cool), and the
+  COP of heating and hot water yesterday and this month (unknown below 0.5 kWh of electricity
+  used). Ariston has these estimates only in its web app, so each update logs in to the web app
+  (2 requests), as often as the energy data. Energy of the last hours of a day can reach the
+  cloud after midnight, so "today" may miss it; "this month" still counts it, apart from the
+  last day of a month.
 - Select entity "Plant mode" (GALEVO): Summer, Winter, Heating only and so on, as listed by the
   cloud. It does the same as the climate preset, for the whole plant.
 - An error from the bus errors endpoint no longer stops the setup.
-- Energy and heat produced sensors are added when their data first loads after a failed start.
+- Energy sensors are added when the energy data first loads after a failed start.
 - Options **Poll energy data** and **Poll bus errors** turn off these cloud requests and their
   entities. **Poll energy data** also turns off heat produced and COP.
 - Total energy sensors stay `unknown` until the cloud energy data changes once. Before that the
