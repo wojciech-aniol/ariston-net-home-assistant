@@ -119,15 +119,18 @@ Requires Home Assistant 2025.10.0 or newer.
 
 ### HACS (custom repository)
 
-[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=wojciech-aniol&repository=ariston-remotethermo-home-assistant-v3&category=integration)
+[![Open your Home Assistant instance and open a repository inside the Home Assistant Community Store.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=wojciech-aniol&repository=ariston-net-home-assistant&category=integration)
 
 1. In HACS open the menu (⋮) → **Custom repositories**.
-2. Repository: `https://github.com/wojciech-aniol/ariston-remotethermo-home-assistant-v3`,
+2. Repository: `https://github.com/wojciech-aniol/ariston-net-home-assistant`,
    type: **Integration**. Select **Add**.
 3. Open **Ariston NET** in HACS and select **Download**.
 4. Restart Home Assistant.
 5. **Settings → Devices & services → Add integration → Ariston NET**. Log in with your Ariston NET
    account.
+
+Until October 2026 this repository was called `ariston-remotethermo-home-assistant-v3`. Old links
+and HACS entries keep working.
 
 ### Manual
 
