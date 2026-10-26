@@ -134,7 +134,8 @@ def cloud_action[E: AristonEntity, **P, R](
     @wraps(func)
     async def wrapper(self: E, *args: P.args, **kwargs: P.kwargs) -> R:
         try:
-            return await func(self, *args, **kwargs)
+            async with self.coordinator.config_entry.runtime_data.write_lock:
+                return await func(self, *args, **kwargs)
         except ACTION_ERRORS as error:
             # Earlier writes of the action may have worked, so show them.
             self.coordinator.async_update_listeners()

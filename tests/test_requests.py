@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import asyncio
 from collections import Counter
 from typing import Any
 from unittest.mock import MagicMock
@@ -33,18 +34,21 @@ from homeassistant.components.water_heater import (
     SERVICE_SET_OPERATION_MODE,
 )
 from homeassistant.const import (
+    ATTR_DEVICE_ID,
     ATTR_ENTITY_ID,
     ATTR_TEMPERATURE,
     SERVICE_TURN_OFF,
     SERVICE_TURN_ON,
 )
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers import device_registry as dr
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.ariston_net.const import (
     BUS_ERRORS_COORDINATOR,
     COORDINATOR,
+    DOMAIN,
     ENERGY_COORDINATOR,
     METERING_COORDINATOR,
 )
@@ -371,3 +375,59 @@ async def test_action_after_old_poll_sends_shown_value(
     )
 
     assert sum(cloud_requests(full_galevo).values()) == 1
+
+
+async def test_writes_of_all_platforms_go_one_at_a_time(
+    hass: HomeAssistant,
+    init_full_integration: MockConfigEntry,
+    full_galevo: MagicMock,
+) -> None:
+    """Test writes of other platforms and services wait for each other."""
+    order: list[str] = []
+
+    async def set_property(*args: Any) -> None:
+        item_id = args[3]
+        order.append(f"start {item_id}")
+        # The other writes run while this one waits for the cloud.
+        await asyncio.sleep(0)
+        order.append(f"end {item_id}")
+
+    full_galevo.async_set_property.side_effect = set_property
+    (device,) = dr.async_entries_for_config_entry(
+        dr.async_get(hass), init_full_integration.entry_id
+    )
+
+    await asyncio.gather(
+        hass.services.async_call(
+            CLIMATE_DOMAIN,
+            SERVICE_SET_TEMPERATURE,
+            {ATTR_ENTITY_ID: CLIMATE, ATTR_TEMPERATURE: 23.0},
+            blocking=True,
+        ),
+        hass.services.async_call(
+            SELECT_DOMAIN,
+            SERVICE_SELECT_OPTION,
+            {ATTR_ENTITY_ID: PLANT_MODE, ATTR_OPTION: "Summer"},
+            blocking=True,
+        ),
+        hass.services.async_call(
+            DOMAIN,
+            "set_item_by_id",
+            {
+                ATTR_DEVICE_ID: device.id,
+                "item_id": "ZoneEconomyTemp",
+                "zone": 1,
+                "value": 18,
+            },
+            blocking=True,
+        ),
+    )
+
+    assert order == [
+        "start ZoneComfortTemp",
+        "end ZoneComfortTemp",
+        "start PlantMode",
+        "end PlantMode",
+        "start ZoneEconomyTemp",
+        "end ZoneEconomyTemp",
+    ]

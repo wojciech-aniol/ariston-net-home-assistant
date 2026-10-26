@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+import asyncio
 from collections.abc import Awaitable, Callable, Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import timedelta
 import logging
 from typing import Any
@@ -162,6 +163,8 @@ class AristonData:
     bus_errors_coordinator: DeviceDataUpdateCoordinator | None = None
     energy_coordinator: DeviceDataUpdateCoordinator | None = None
     metering_coordinator: DeviceDataUpdateCoordinator | None = None
+    # Sends the writes of all platforms and services one at a time.
+    write_lock: asyncio.Lock = field(default_factory=asyncio.Lock)
 
     @property
     def coordinators(self) -> dict[str, DeviceDataUpdateCoordinator | None]:
