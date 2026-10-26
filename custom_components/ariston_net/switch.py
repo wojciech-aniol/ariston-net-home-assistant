@@ -230,7 +230,7 @@ class AristonSwitch(AristonEntity, SwitchEntity):
 
     async def _async_set(self, is_on: bool) -> None:
         """Turn the switch on or off, unless it already is."""
-        if self.is_on == is_on:
+        if self._is_unchanged(is_on, self.is_on):
             return
         await self.entity_description.set_value(self, is_on)
         self.async_write_ha_state()

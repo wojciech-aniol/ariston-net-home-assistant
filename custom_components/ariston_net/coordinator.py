@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+import asyncio
 from collections.abc import Awaitable, Callable, Mapping
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import timedelta
 import logging
 from typing import Any
@@ -14,7 +15,11 @@ from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_SCAN_INTERVAL
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed
-from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
+from homeassistant.helpers.update_coordinator import (
+    TimestampDataUpdateCoordinator,
+    UpdateFailed,
+)
+from homeassistant.util import dt as dt_util
 
 from .const import (
     BUS_ERRORS_COORDINATOR,
@@ -39,6 +44,9 @@ from .errors import CloudErrorKind, classify_error, describe_error
 _LOGGER = logging.getLogger(__name__)
 
 MAX_BACKOFF_FACTOR = 8
+
+# Polled values older than this may have changed in the Ariston app.
+RECENT_DATA = timedelta(seconds=60)
 
 # Default, minimum and maximum of each interval option.
 INTERVAL_OPTIONS: dict[str, tuple[int, int, int]] = {
@@ -69,7 +77,7 @@ def interval_option(options: Mapping[str, Any], key: str) -> int:
     return min(max(options.get(key, default), minimum), maximum)
 
 
-class DeviceDataUpdateCoordinator(DataUpdateCoordinator[None]):
+class DeviceDataUpdateCoordinator(TimestampDataUpdateCoordinator[None]):
     """Manages polling for state changes from the device."""
 
     config_entry: AristonConfigEntry
@@ -138,6 +146,14 @@ class DeviceDataUpdateCoordinator(DataUpdateCoordinator[None]):
                 self.name,
             )
 
+    @property
+    def data_is_recent(self) -> bool:
+        """Return True if the last successful poll was recent."""
+        return (
+            self.last_update_success_time is not None
+            and dt_util.utcnow() - self.last_update_success_time < RECENT_DATA
+        )
+
 
 @dataclass
 class AristonData:
@@ -147,6 +163,8 @@ class AristonData:
     bus_errors_coordinator: DeviceDataUpdateCoordinator | None = None
     energy_coordinator: DeviceDataUpdateCoordinator | None = None
     metering_coordinator: DeviceDataUpdateCoordinator | None = None
+    # Sends the writes of all platforms and services one at a time.
+    write_lock: asyncio.Lock = field(default_factory=asyncio.Lock)
 
     @property
     def coordinators(self) -> dict[str, DeviceDataUpdateCoordinator | None]:

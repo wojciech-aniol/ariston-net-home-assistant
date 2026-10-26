@@ -92,7 +92,8 @@ def async_setup_services(hass: HomeAssistant) -> None:
         """Create a vacation on the target device, or end it without a date."""
         coordinator = _get_galevo_coordinator(hass, call)
         try:
-            await coordinator.device.async_set_holiday(call.data.get(ATTR_END_DATE))
+            async with coordinator.config_entry.runtime_data.write_lock:
+                await coordinator.device.async_set_holiday(call.data.get(ATTR_END_DATE))
         except CLOUD_ERRORS as error:
             raise action_error(hass, coordinator.config_entry, error) from error
         coordinator.async_update_listeners()
@@ -101,9 +102,12 @@ def async_setup_services(hass: HomeAssistant) -> None:
         """Set a device or zone item on the target device."""
         coordinator = _get_galevo_coordinator(hass, call)
         try:
-            await coordinator.device.async_set_item_by_id(
-                call.data[ATTR_ITEM_ID], call.data[ATTR_VALUE], call.data[ATTR_ZONE]
-            )
+            async with coordinator.config_entry.runtime_data.write_lock:
+                await coordinator.device.async_set_item_by_id(
+                    call.data[ATTR_ITEM_ID],
+                    call.data[ATTR_VALUE],
+                    call.data[ATTR_ZONE],
+                )
         except CLOUD_ERRORS as error:
             raise action_error(hass, coordinator.config_entry, error) from error
         coordinator.async_update_listeners()

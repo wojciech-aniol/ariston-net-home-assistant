@@ -117,6 +117,14 @@ class AristonEntity(CoordinatorEntity[DeviceDataUpdateCoordinator], ABC):
 
         return state_attributes
 
+    def _is_unchanged(self, value: Any, current: Any) -> bool:
+        """Return True if the device has the value, so a write can be skipped.
+
+        Old polled values may have changed in the Ariston app, so only recent
+        ones count.
+        """
+        return value == current and self.coordinator.data_is_recent
+
 
 def cloud_action[E: AristonEntity, **P, R](
     func: Callable[Concatenate[E, P], Awaitable[R]],
@@ -126,7 +134,8 @@ def cloud_action[E: AristonEntity, **P, R](
     @wraps(func)
     async def wrapper(self: E, *args: P.args, **kwargs: P.kwargs) -> R:
         try:
-            return await func(self, *args, **kwargs)
+            async with self.coordinator.config_entry.runtime_data.write_lock:
+                return await func(self, *args, **kwargs)
         except ACTION_ERRORS as error:
             # Earlier writes of the action may have worked, so show them.
             self.coordinator.async_update_listeners()

@@ -2,10 +2,12 @@
 
 from __future__ import annotations
 
+import asyncio
 from collections import Counter
 from typing import Any
 from unittest.mock import MagicMock
 
+from freezegun.api import FrozenDateTimeFactory
 from homeassistant.components.climate import (
     ATTR_HVAC_MODE,
     ATTR_PRESET_MODE,
@@ -32,21 +34,25 @@ from homeassistant.components.water_heater import (
     SERVICE_SET_OPERATION_MODE,
 )
 from homeassistant.const import (
+    ATTR_DEVICE_ID,
     ATTR_ENTITY_ID,
     ATTR_TEMPERATURE,
     SERVICE_TURN_OFF,
     SERVICE_TURN_ON,
 )
 from homeassistant.core import HomeAssistant
+from homeassistant.helpers import device_registry as dr
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.ariston_net.const import (
     BUS_ERRORS_COORDINATOR,
     COORDINATOR,
+    DOMAIN,
     ENERGY_COORDINATOR,
     METERING_COORDINATOR,
 )
+from custom_components.ariston_net.coordinator import RECENT_DATA
 
 from .conftest import runtime_data
 
@@ -339,3 +345,89 @@ async def test_action_requests(
     )
 
     assert sum(cloud_requests(full_galevo).values()) == expected
+
+
+@pytest.mark.parametrize(
+    ("domain", "service", "entity_id", "data"),
+    [
+        pytest.param(*action.values[:4], id=action.id)
+        for action in ACTIONS
+        if action.id.endswith("-same")
+    ],
+)
+async def test_action_after_old_poll_sends_shown_value(
+    hass: HomeAssistant,
+    freezer: FrozenDateTimeFactory,
+    init_full_integration: MockConfigEntry,
+    full_galevo: MagicMock,
+    domain: str,
+    service: str,
+    entity_id: str,
+    data: dict[str, Any],
+) -> None:
+    """Test a write of the shown value is sent when the last poll is old."""
+    data = with_current_values(hass, entity_id, data)
+    full_galevo.reset_mock()
+    freezer.tick(RECENT_DATA)
+
+    await hass.services.async_call(
+        domain, service, {ATTR_ENTITY_ID: entity_id, **data}, blocking=True
+    )
+
+    assert sum(cloud_requests(full_galevo).values()) == 1
+
+
+async def test_writes_of_all_platforms_go_one_at_a_time(
+    hass: HomeAssistant,
+    init_full_integration: MockConfigEntry,
+    full_galevo: MagicMock,
+) -> None:
+    """Test writes of other platforms and services wait for each other."""
+    order: list[str] = []
+
+    async def set_property(*args: Any) -> None:
+        item_id = args[3]
+        order.append(f"start {item_id}")
+        # The other writes run while this one waits for the cloud.
+        await asyncio.sleep(0)
+        order.append(f"end {item_id}")
+
+    full_galevo.async_set_property.side_effect = set_property
+    (device,) = dr.async_entries_for_config_entry(
+        dr.async_get(hass), init_full_integration.entry_id
+    )
+
+    await asyncio.gather(
+        hass.services.async_call(
+            CLIMATE_DOMAIN,
+            SERVICE_SET_TEMPERATURE,
+            {ATTR_ENTITY_ID: CLIMATE, ATTR_TEMPERATURE: 23.0},
+            blocking=True,
+        ),
+        hass.services.async_call(
+            SELECT_DOMAIN,
+            SERVICE_SELECT_OPTION,
+            {ATTR_ENTITY_ID: PLANT_MODE, ATTR_OPTION: "Summer"},
+            blocking=True,
+        ),
+        hass.services.async_call(
+            DOMAIN,
+            "set_item_by_id",
+            {
+                ATTR_DEVICE_ID: device.id,
+                "item_id": "ZoneEconomyTemp",
+                "zone": 1,
+                "value": 18,
+            },
+            blocking=True,
+        ),
+    )
+
+    assert order == [
+        "start ZoneComfortTemp",
+        "end ZoneComfortTemp",
+        "start PlantMode",
+        "end PlantMode",
+        "start ZoneEconomyTemp",
+        "end ZoneEconomyTemp",
+    ]
