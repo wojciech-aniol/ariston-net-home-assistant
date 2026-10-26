@@ -9,6 +9,7 @@ from typing import Any
 from unittest.mock import MagicMock, patch
 
 import aiohttp
+from ariston_net_api import AristonGalevoDevice
 from ariston_net_api.ariston_api import ConnectionException
 from ariston_net_api.const import (
     ARISTON_API_URL,
@@ -283,7 +284,6 @@ async def test_metering_failure_makes_only_metering_sensors_unavailable(
     hass: HomeAssistant,
     api: MagicMock,
     mock_ariston: MagicMock,
-    full_galevo: MagicMock,
     config_entry: MockConfigEntry,
 ) -> None:
     """Test a failing heat produced update keeps every other entity working."""
@@ -303,7 +303,6 @@ async def test_setup_does_not_wait_for_metering(
     hass: HomeAssistant,
     api: MagicMock,
     mock_ariston: MagicMock,
-    full_galevo: MagicMock,
     config_entry: MockConfigEntry,
 ) -> None:
     """Test setup ends before the slow web app answers, and its data comes later."""
@@ -358,7 +357,7 @@ async def test_metering_error_does_not_start_reauth(
         (GALEVO, {ENABLE_ENERGY: False}, {}),
         (GALEVO, {}, {"hasMetering": False}),
         (GALEVO, {}, {"hpSys": False}),
-        ("bsb", {}, {"hasMetering": True}),
+        ("bsb", {}, {"hasMetering": True, "hpSys": True}),
     ],
     ids=["energy-off", "no-metering", "gas-boiler", "bsb"],
 )
@@ -382,15 +381,28 @@ async def test_metering_needs_galevo_heat_pump_metering_and_energy_option(
     api.async_get_metering_data.assert_not_called()
 
 
-async def test_metering_fetched_for_hybrid_plant(
+@pytest.mark.parametrize(
+    ("changed_features", "changed_attributes"),
+    [
+        ({"hpSys": False, "hybridSys": True}, {}),
+        ({"hpSys": False, "hpCascadeSys": True}, {}),
+        ({"hpSys": False}, {"hpmpSys": True}),
+    ],
+    ids=["hybrid", "cascade", "hpmp"],
+)
+async def test_metering_fetched_for_every_heat_pump_kind(
     hass: HomeAssistant,
     api: MagicMock,
     features: dict[str, Any],
+    device: AristonGalevoDevice,
     mock_ariston: MagicMock,
     config_entry: MockConfigEntry,
+    changed_features: dict[str, Any],
+    changed_attributes: dict[str, Any],
 ) -> None:
-    """Test heat produced is fetched for the heat pump of a hybrid plant."""
-    features.update({"hpSys": False, "hybridSys": True})
+    """Test heat produced is fetched for a heat pump in a hybrid or a cascade."""
+    features.update(changed_features)
+    device.attributes.update(changed_attributes)
 
     await setup_integration(hass, config_entry)
 

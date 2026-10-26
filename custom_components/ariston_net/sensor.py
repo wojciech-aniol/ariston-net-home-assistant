@@ -41,7 +41,6 @@ from homeassistant.const import (
 )
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
-from homeassistant.util import dt as dt_util
 
 from .const import (
     ATTR_ERRORS,
@@ -70,18 +69,12 @@ class AristonSensorEntityDescription(
     """A class that describes sensor entities."""
 
     get_native_unit_of_measurement: Callable[[Any], str] | None = None
-    get_last_reset: Callable[[Any], datetime | None] | None = None
+    get_last_reset: Callable[[Any], datetime] | None = None
     get_available: Callable[[Any], bool] | None = None
     get_native_value: Callable[[Any], Any]
 
 
 MIN_COP_ELECTRICITY_KWH = 0.5
-
-METERING_SERIES_FEATURES: dict[MeteringSeries, list[str]] = {
-    MeteringSeries.HEATING: [DeviceFeatures.HAS_METERING],
-    MeteringSeries.DHW: [DeviceFeatures.HAS_METERING, CustomDeviceFeatures.HAS_DHW],
-    MeteringSeries.COOLING: [DeviceFeatures.HAS_METERING],
-}
 
 
 def _can_cool(device: Any) -> bool:
@@ -93,26 +86,20 @@ def _can_cool(device: Any) -> bool:
     )
 
 
+def _is_not_hybrid(device: Any) -> bool:
+    """Return True if the plant has no gas boiler next to the heat pump."""
+    # A hybrid's heat produced may hold the boiler's heat, so its COP means nothing.
+    return device.features.get(DeviceFeatures.HYBRID_SYS) is not True
+
+
 def _is_metering_on(entity: Any) -> bool:
     """Return False while the web app shows metering as off."""
     return not entity.device.is_metering_intensive_logs_active
 
 
-def _metering_day_start(entity: Any) -> datetime | None:
-    """Return the start of the local day the data was asked for."""
-    # Not now: data asked for before midnight is still the old day.
-    if (requested_at := entity.coordinator.data_requested_at) is None:
-        return None
-    return dt_util.start_of_local_day(dt_util.as_local(requested_at))
-
-
-def _metering_month_start(entity: Any) -> datetime | None:
-    """Return the start of the local month the data was asked for."""
-    if (requested_at := entity.coordinator.data_requested_at) is None:
-        return None
-    return dt_util.start_of_local_day(
-        dt_util.as_local(requested_at).date().replace(day=1)
-    )
+def _metering_features(series: MeteringSeries) -> list[str] | None:
+    """Return the features a metering series needs."""
+    return [CustomDeviceFeatures.HAS_DHW] if series is MeteringSeries.DHW else None
 
 
 def _cop(device: Any, series: MeteringSeries, period: MeteringPeriod) -> float | None:
@@ -130,18 +117,18 @@ def _produced_energy_description(
     name: str,
     series: MeteringSeries,
     period: MeteringPeriod,
-    get_last_reset: Callable[[Any], datetime | None],
+    state_class: SensorStateClass | None,
 ) -> AristonSensorEntityDescription:
     """Describe a sensor of the energy produced in a period."""
     return AristonSensorEntityDescription(
         key=key,
         name=name,
         translation_key=key,
-        state_class=SensorStateClass.TOTAL,
+        state_class=state_class,
         device_class=SensorDeviceClass.ENERGY,
         native_unit_of_measurement=UnitOfEnergy.KILO_WATT_HOUR,
         suggested_display_precision=1,
-        device_features=METERING_SERIES_FEATURES[series],
+        device_features=_metering_features(series),
         system_types=[SystemType.GALEVO],
         coordinator=METERING_COORDINATOR,
         get_is_supported=_can_cool if series is MeteringSeries.COOLING else None,
@@ -149,7 +136,6 @@ def _produced_energy_description(
         get_native_value=lambda entity: entity.device.get_metering_total(
             MeteringTab.PRODUCED_ENERGY, series, period
         ),
-        get_last_reset=get_last_reset,
     )
 
 
@@ -163,10 +149,10 @@ def _cop_description(
         translation_key=key,
         state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=1,
-        device_features=METERING_SERIES_FEATURES[series],
+        device_features=_metering_features(series),
         system_types=[SystemType.GALEVO],
         coordinator=METERING_COORDINATOR,
-        get_is_supported=_can_cool if series is MeteringSeries.COOLING else None,
+        get_is_supported=_is_not_hybrid,
         get_available=_is_metering_on,
         get_native_value=lambda entity: _cop(entity.device, series, period),
     )
@@ -544,47 +530,48 @@ ARISTON_SENSOR_TYPES: list[AristonSensorEntityDescription] = [
             entity.device.consumption_sequence_last_changed_utc
         ),
     ),
+    # "Today" keeps no statistics: polls miss the end of each day. "This month" does.
     _produced_energy_description(
         "heating_produced_today",
         f"{NAME} heating energy produced today",
         MeteringSeries.HEATING,
         MeteringPeriod.CURRENT_DAY,
-        _metering_day_start,
+        None,
     ),
     _produced_energy_description(
         "dhw_produced_today",
         f"{NAME} DHW energy produced today",
         MeteringSeries.DHW,
         MeteringPeriod.CURRENT_DAY,
-        _metering_day_start,
+        None,
     ),
     _produced_energy_description(
         "cooling_produced_today",
         f"{NAME} cooling energy produced today",
         MeteringSeries.COOLING,
         MeteringPeriod.CURRENT_DAY,
-        _metering_day_start,
+        None,
     ),
     _produced_energy_description(
         "heating_produced_this_month",
         f"{NAME} heating energy produced this month",
         MeteringSeries.HEATING,
         MeteringPeriod.CURRENT_MONTH,
-        _metering_month_start,
+        SensorStateClass.TOTAL_INCREASING,
     ),
     _produced_energy_description(
         "dhw_produced_this_month",
         f"{NAME} DHW energy produced this month",
         MeteringSeries.DHW,
         MeteringPeriod.CURRENT_MONTH,
-        _metering_month_start,
+        SensorStateClass.TOTAL_INCREASING,
     ),
     _produced_energy_description(
         "cooling_produced_this_month",
         f"{NAME} cooling energy produced this month",
         MeteringSeries.COOLING,
         MeteringPeriod.CURRENT_MONTH,
-        _metering_month_start,
+        SensorStateClass.TOTAL_INCREASING,
     ),
     _cop_description(
         "heating_cop_yesterday",

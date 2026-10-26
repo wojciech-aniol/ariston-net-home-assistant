@@ -209,10 +209,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: AristonConfigEntry) -> b
 
 
 def _has_heat_pump(device: AristonGalevoDevice) -> bool:
-    """Return True if the plant has a heat pump, alone or in a hybrid."""
-    return any(
+    """Return True if the plant has a heat pump: alone, in a cascade or a hybrid."""
+    return device.hpmp_sys is True or any(
         device.features.get(feature) is True
-        for feature in (DeviceFeatures.HP_SYS, DeviceFeatures.HYBRID_SYS)
+        for feature in (
+            DeviceFeatures.HP_SYS,
+            DeviceFeatures.HP_CASCADE_SYS,
+            DeviceFeatures.HYBRID_SYS,
+        )
     )
 
 

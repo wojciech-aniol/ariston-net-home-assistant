@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Awaitable, Callable, Mapping
 from dataclasses import dataclass
-from datetime import datetime, timedelta
+from datetime import timedelta
 import logging
 from typing import Any
 
@@ -15,7 +15,6 @@ from homeassistant.const import CONF_SCAN_INTERVAL
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, UpdateFailed
-from homeassistant.util import dt as dt_util
 
 from .const import (
     BUS_ERRORS_COORDINATOR,
@@ -97,12 +96,9 @@ class DeviceDataUpdateCoordinator(DataUpdateCoordinator[None]):
         self._async_update_state = async_update_state
         self._default_update_interval = timedelta(seconds=scan_interval_seconds)
         self._backoff_factor = 1
-        # Start of the last good update.
-        self.data_requested_at: datetime | None = None
 
     async def _async_update_data(self) -> None:
         """Update the device and poll less often while the cloud rate limits us."""
-        requested_at = dt_util.utcnow()
         try:
             await self._async_update_state()
         except ConnectionException as error:
@@ -134,7 +130,6 @@ class DeviceDataUpdateCoordinator(DataUpdateCoordinator[None]):
                 translation_placeholders=placeholders,
             ) from error
 
-        self.data_requested_at = requested_at
         if self._backoff_factor > 1:
             self._backoff_factor = 1
             self.update_interval = self._default_update_interval

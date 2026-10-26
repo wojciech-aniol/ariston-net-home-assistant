@@ -7,7 +7,11 @@ from unittest.mock import MagicMock
 
 from ariston_net_api.ariston_api import ConnectionException
 from freezegun.api import FrozenDateTimeFactory
-from homeassistant.components.sensor import ATTR_LAST_RESET
+from homeassistant.components.sensor import (
+    ATTR_LAST_RESET,
+    ATTR_STATE_CLASS,
+    SensorStateClass,
+)
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.const import (
     ATTR_UNIT_OF_MEASUREMENT,
@@ -239,7 +243,7 @@ async def test_errors_count_lists_bus_errors(
 )
 async def test_metering_sensor_shows_metering_totals(
     hass: HomeAssistant,
-    init_full_integration: MockConfigEntry,
+    init_metering_integration: MockConfigEntry,
     entity_id: str,
     expected: str,
 ) -> None:
@@ -248,65 +252,23 @@ async def test_metering_sensor_shows_metering_totals(
 
 
 @pytest.mark.parametrize(
-    ("now", "entity_id", "expected"),
+    ("entity_id", "expected"),
     [
-        ("2026-10-26 06:30:00+00:00", HEATING_TODAY, "2026-10-25T00:00:00-07:00"),
-        # The month began in summer time.
-        ("2026-11-15 12:00:00+00:00", HEATING_THIS_MONTH, "2026-11-01T00:00:00-07:00"),
+        (HEATING_TODAY, None),
+        (HEATING_THIS_MONTH, SensorStateClass.TOTAL_INCREASING),
     ],
 )
-async def test_produced_energy_resets_at_local_period_start(
+async def test_produced_energy_statistics_only_for_this_month(
     hass: HomeAssistant,
-    freezer: FrozenDateTimeFactory,
-    init_full_integration: MockConfigEntry,
-    now: str,
+    init_metering_integration: MockConfigEntry,
     entity_id: str,
-    expected: str,
+    expected: SensorStateClass | None,
 ) -> None:
-    """Test heat produced resets at the start of the local day or month."""
-    freezer.move_to(now)
+    """Test only "this month" keeps statistics, and it has no reset time."""
+    state = hass.states.get(entity_id)
 
-    await refresh_metering(hass)
-
-    assert hass.states.get(entity_id).attributes[ATTR_LAST_RESET] == expected
-
-
-async def test_produced_energy_resets_on_day_of_request(
-    hass: HomeAssistant,
-    api: MagicMock,
-    freezer: FrozenDateTimeFactory,
-    init_full_integration: MockConfigEntry,
-) -> None:
-    """Test data asked for before midnight keeps the old day if it comes after."""
-    freezer.move_to("2026-10-26 06:59:50+00:00")
-
-    async def answer_after_midnight(*args: Any) -> dict[str, Any]:
-        freezer.tick(20)
-        return metering_data(METERING_BINS)
-
-    api.async_get_metering_data.side_effect = answer_after_midnight
-
-    await refresh_metering(hass)
-
-    state = hass.states.get(HEATING_TODAY)
-    assert state.attributes[ATTR_LAST_RESET] == "2026-10-25T00:00:00-07:00"
-
-
-async def test_produced_energy_keeps_reset_of_update_day(
-    hass: HomeAssistant,
-    freezer: FrozenDateTimeFactory,
-    init_full_integration: MockConfigEntry,
-) -> None:
-    """Test data fetched before midnight keeps its day after midnight."""
-    freezer.move_to("2026-10-26 06:30:00+00:00")
-    await refresh_metering(hass)
-    freezer.move_to("2026-10-26 07:30:00+00:00")
-
-    runtime_data(hass).metering_coordinator.async_update_listeners()
-    await hass.async_block_till_done()
-
-    state = hass.states.get(HEATING_TODAY)
-    assert state.attributes[ATTR_LAST_RESET] == "2026-10-25T00:00:00-07:00"
+    assert state.attributes.get(ATTR_STATE_CLASS) == expected
+    assert ATTR_LAST_RESET not in state.attributes
 
 
 @pytest.mark.parametrize(
@@ -325,7 +287,7 @@ async def test_produced_energy_keeps_reset_of_update_day(
 async def test_cop_unknown_with_too_little_electricity_used(
     hass: HomeAssistant,
     api: MagicMock,
-    init_full_integration: MockConfigEntry,
+    init_metering_integration: MockConfigEntry,
     bins: dict[tuple[str, str, str], list[float]],
 ) -> None:
     """Test a COP has no value below half a kWh of electricity used."""
@@ -336,16 +298,29 @@ async def test_cop_unknown_with_too_little_electricity_used(
     assert hass.states.get(HEATING_COP_YESTERDAY).state == STATE_UNKNOWN
 
 
+async def test_cop_sensors_skipped_for_hybrid_plant(
+    hass: HomeAssistant,
+    features: dict[str, Any],
+    mock_ariston: MagicMock,
+    metering: MagicMock,
+    config_entry: MockConfigEntry,
+) -> None:
+    """Test a hybrid plant gets heat produced but no COP, as gas may make its heat."""
+    features["hybridSys"] = True
+
+    await setup_integration(hass, config_entry)
+
+    assert hass.states.get(HEATING_COP_YESTERDAY) is None
+    assert hass.states.get(DHW_COP_THIS_MONTH) is None
+    assert hass.states.get(HEATING_TODAY).state == "3.5"
+
+
 async def test_metering_sensors_added_before_metering_data(
     hass: HomeAssistant,
     api: MagicMock,
-    mock_ariston: MagicMock,
-    full_galevo: MagicMock,
-    config_entry: MockConfigEntry,
+    init_integration: MockConfigEntry,
 ) -> None:
     """Test the sensors exist without metering rows and show them when they come."""
-    api.async_get_metering_data.return_value = {}
-    await setup_integration(hass, config_entry)
     assert {hass.states.get(entity_id).state for entity_id in METERING_SENSORS} == {
         STATE_UNKNOWN
     }
@@ -361,7 +336,6 @@ async def test_cooling_sensors_need_a_cooling_mode(
     hass: HomeAssistant,
     properties: dict[str, Any],
     mock_ariston: MagicMock,
-    full_galevo: MagicMock,
     config_entry: MockConfigEntry,
     options: list[int] | None,
 ) -> None:
@@ -378,7 +352,7 @@ async def test_cooling_sensors_need_a_cooling_mode(
 async def test_metering_sensors_unavailable_while_metering_is_off(
     hass: HomeAssistant,
     api: MagicMock,
-    init_full_integration: MockConfigEntry,
+    init_metering_integration: MockConfigEntry,
 ) -> None:
     """Test the sensors are unavailable while the web app shows metering as off."""
     api.async_get_metering_data.return_value = metering_data(

@@ -459,6 +459,13 @@ def full_galevo(
 
 
 @pytest.fixture
+def metering(api: MagicMock) -> MagicMock:
+    """Make the fake web app send metering rows for the default heat pump."""
+    api.async_get_metering_data.return_value = metering_data(METERING_BINS)
+    return api
+
+
+@pytest.fixture
 def second_zone(features: dict[str, Any], properties: dict[str, Any]) -> int:
     """Add a second zone with its own values and return its number."""
     zone = 2
@@ -524,6 +531,19 @@ async def init_full_integration(
     full_galevo: MagicMock,
 ) -> MockConfigEntry:
     """Set up the integration with the full GALEVO data."""
+    await hass.config_entries.async_setup(config_entry.entry_id)
+    await hass.async_block_till_done()
+    return config_entry
+
+
+@pytest.fixture
+async def init_metering_integration(
+    hass: HomeAssistant,
+    config_entry: MockConfigEntry,
+    mock_ariston: MagicMock,
+    metering: MagicMock,
+) -> MockConfigEntry:
+    """Set up the integration with the default heat pump and its metering rows."""
     await hass.config_entries.async_setup(config_entry.entry_id)
     await hass.async_block_till_done()
     return config_entry

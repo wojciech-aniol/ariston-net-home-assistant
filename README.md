@@ -83,10 +83,11 @@ The commit messages list what was skipped from each pull request and why.
 - Heat produced and COP sensors (GALEVO heat pumps with metering): energy produced today and this
   month for heating, hot water and cooling (cooling only when a plant mode can cool), and the
   COP of heating and hot water yesterday and this month (unknown below 0.5 kWh of electricity
-  used). Ariston has these estimates only in its web app, so each update logs in to the web app
-  (2 requests), as often as the energy data. Energy of the last hours of a day can reach the
-  cloud after midnight, so "today" may miss it; "this month" still counts it, apart from the
-  last day of a month.
+  used; none for hybrid plants, whose heat may come from gas). Ariston has these estimates only
+  in its web app, so each update logs in to the web app (2 requests), as often as the energy
+  data. Use "this month" for statistics and the energy dashboard: "today" keeps no long-term
+  statistics, because an update misses what the end of a day adds, and energy of the last hours
+  of a day can reach the cloud after midnight.
 - Select entity "Plant mode" (GALEVO): Summer, Winter, Heating only and so on, as listed by the
   cloud. It does the same as the climate preset, for the whole plant.
 - An error from the bus errors endpoint no longer stops the setup.
