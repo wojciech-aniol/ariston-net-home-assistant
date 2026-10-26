@@ -216,6 +216,59 @@ ENERGY_ACCOUNT: dict[str, Any] = {
     ]
 }
 
+# kWh bins of the web app metering rows, by (tab, series, period). COPs: heating
+# 4.0 yesterday and 5.0 this month, hot water 3.0 and 3.5.
+METERING_BINS: dict[tuple[str, str, str], list[float]] = {
+    ("ProducedEnergy", "Heating", "CurrentDay"): [2.0, 1.5],
+    ("ProducedEnergy", "Heating", "PreviousDay"): [10.0, 6.0],
+    ("ProducedEnergy", "Heating", "CurrentMonth"): [30.0, 20.0, 12.5],
+    ("ProducedEnergy", "Dhw", "CurrentDay"): [1.25],
+    ("ProducedEnergy", "Dhw", "PreviousDay"): [3.0],
+    ("ProducedEnergy", "Dhw", "CurrentMonth"): [7.0, 3.5],
+    ("ProducedEnergy", "Cooling", "CurrentDay"): [0.0],
+    ("ProducedEnergy", "Cooling", "CurrentMonth"): [4.0, 0.0],
+    ("ConsumedElectricity", "Heating", "CurrentDay"): [0.5, 0.25],
+    ("ConsumedElectricity", "Heating", "PreviousDay"): [2.5, 1.5],
+    ("ConsumedElectricity", "Heating", "CurrentMonth"): [10.0, 2.5],
+    ("ConsumedElectricity", "Dhw", "PreviousDay"): [1.0],
+    ("ConsumedElectricity", "Dhw", "CurrentMonth"): [2.0, 1.0],
+}
+
+
+METERING_SENSORS: tuple[str, ...] = (
+    "sensor.nimbus_heating_energy_produced_today",
+    "sensor.nimbus_hot_water_energy_produced_today",
+    "sensor.nimbus_cooling_energy_produced_today",
+    "sensor.nimbus_heating_energy_produced_this_month",
+    "sensor.nimbus_hot_water_energy_produced_this_month",
+    "sensor.nimbus_cooling_energy_produced_this_month",
+    "sensor.nimbus_heating_cop_yesterday",
+    "sensor.nimbus_hot_water_cop_yesterday",
+    "sensor.nimbus_heating_cop_this_month",
+    "sensor.nimbus_hot_water_cop_this_month",
+)
+
+
+def metering_data(
+    bins: dict[tuple[str, str, str], list[float]], intensive_logs: bool = False
+) -> dict[str, Any]:
+    """Return the web app metering data with these bins."""
+    return {
+        "oldestMonth": "January 2025",
+        "isIntensiveLogsActive": intensive_logs,
+        "asKwhRaw": {
+            "histogramData": [
+                {
+                    "tab": tab,
+                    "series": series,
+                    "period": period,
+                    "items": [{"x": str(x), "y": y} for x, y in enumerate(values, 1)],
+                }
+                for (tab, series, period), values in bins.items()
+            ]
+        },
+    }
+
 
 async def setup_integration(hass: HomeAssistant, entry: MockConfigEntry) -> None:
     """Set up the config entry."""
@@ -242,6 +295,12 @@ async def refresh_energy(hass: HomeAssistant, api: MagicMock) -> None:
         for sequence in api.async_get_consumptions_sequences.return_value
     ]
     await runtime_data(hass).energy_coordinator.async_refresh()
+    await hass.async_block_till_done()
+
+
+async def refresh_metering(hass: HomeAssistant) -> None:
+    """Fetch the metering data again."""
+    await runtime_data(hass).metering_coordinator.async_refresh()
     await hass.async_block_till_done()
 
 
@@ -352,6 +411,7 @@ def api(
     )
     api.async_get_consumptions_settings = AsyncMock(return_value={})
     api.async_get_energy_account = AsyncMock(return_value={})
+    api.async_get_metering_data = AsyncMock(return_value={})
     api.async_set_consumptions_settings = AsyncMock()
     api.async_set_property = AsyncMock()
     api.async_set_holiday = AsyncMock()
@@ -394,6 +454,14 @@ def full_galevo(
         CONSUMPTIONS_SETTINGS
     )
     api.async_get_energy_account.return_value = copy.deepcopy(ENERGY_ACCOUNT)
+    api.async_get_metering_data.return_value = metering_data(METERING_BINS)
+    return api
+
+
+@pytest.fixture
+def metering(api: MagicMock) -> MagicMock:
+    """Make the fake web app send metering rows for the default heat pump."""
+    api.async_get_metering_data.return_value = metering_data(METERING_BINS)
     return api
 
 
@@ -463,6 +531,19 @@ async def init_full_integration(
     full_galevo: MagicMock,
 ) -> MockConfigEntry:
     """Set up the integration with the full GALEVO data."""
+    await hass.config_entries.async_setup(config_entry.entry_id)
+    await hass.async_block_till_done()
+    return config_entry
+
+
+@pytest.fixture
+async def init_metering_integration(
+    hass: HomeAssistant,
+    config_entry: MockConfigEntry,
+    mock_ariston: MagicMock,
+    metering: MagicMock,
+) -> MockConfigEntry:
+    """Set up the integration with the default heat pump and its metering rows."""
     await hass.config_entries.async_setup(config_entry.entry_id)
     await hass.async_block_till_done()
     return config_entry

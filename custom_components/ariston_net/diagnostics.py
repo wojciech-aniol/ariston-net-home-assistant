@@ -46,6 +46,7 @@ async def async_get_config_entry_diagnostics(
                 "menu_items": getattr(device, "menu_items", None),
                 "bus_errors": device.bus_errors,
                 "consumptions_sequences": device.consumptions_sequences,
+                "metering_data": getattr(device, "metering_data", None),
             },
             "coordinators": {
                 name: {

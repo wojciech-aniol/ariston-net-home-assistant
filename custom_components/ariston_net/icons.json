@@ -94,6 +94,36 @@
       "dhw_gas": {
         "default": "mdi:meter-gas"
       },
+      "heating_produced_today": {
+        "default": "mdi:radiator"
+      },
+      "dhw_produced_today": {
+        "default": "mdi:water-boiler"
+      },
+      "cooling_produced_today": {
+        "default": "mdi:snowflake"
+      },
+      "heating_produced_this_month": {
+        "default": "mdi:radiator"
+      },
+      "dhw_produced_this_month": {
+        "default": "mdi:water-boiler"
+      },
+      "cooling_produced_this_month": {
+        "default": "mdi:snowflake"
+      },
+      "heating_cop_yesterday": {
+        "default": "mdi:heat-pump"
+      },
+      "dhw_cop_yesterday": {
+        "default": "mdi:heat-pump"
+      },
+      "heating_cop_this_month": {
+        "default": "mdi:heat-pump"
+      },
+      "dhw_cop_this_month": {
+        "default": "mdi:heat-pump"
+      },
       "remaining_time": {
         "default": "mdi:timer"
       },

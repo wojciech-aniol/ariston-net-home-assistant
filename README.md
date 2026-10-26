@@ -80,12 +80,20 @@ The commit messages list what was skipped from each pull request and why.
   refused ID breaks the whole menu items request. So the integration asks for them once, when it
   starts (one extra request per start, none per update). If the cloud serves them one day, they
   join the polled request and the sensors appear; until then nothing changes.
+- Heat produced and COP sensors (GALEVO heat pumps with metering): energy produced today and this
+  month for heating, hot water and cooling (cooling only when a plant mode can cool), and the
+  COP of heating and hot water yesterday and this month (unknown below 0.5 kWh of electricity
+  used; none for hybrid plants, whose heat may come from gas). Ariston has these estimates only
+  in its web app, so each update logs in to the web app (2 requests), as often as the energy
+  data. Use "this month" for statistics and the energy dashboard: "today" keeps no long-term
+  statistics, because an update misses what the end of a day adds, and energy of the last hours
+  of a day can reach the cloud after midnight.
 - Select entity "Plant mode" (GALEVO): Summer, Winter, Heating only and so on, as listed by the
   cloud. It does the same as the climate preset, for the whole plant.
 - An error from the bus errors endpoint no longer stops the setup.
 - Energy sensors are added when the energy data first loads after a failed start.
 - Options **Poll energy data** and **Poll bus errors** turn off these cloud requests and their
-  entities.
+  entities. **Poll energy data** also turns off heat produced and COP.
 - Total energy sensors stay `unknown` until the cloud energy data changes once. Before that the
   library has no reset time, so statistics would count the same value again after each restart.
 - Clear errors: a refused password starts re-authentication (password only), and cloud errors
@@ -137,7 +145,7 @@ Home Assistant.
   its language, like `binary_sensor.dom_pompa_ciepla`).
 - Energy sensors are main sensors, not diagnostic ones. New installs create the signal strength
   sensor disabled; enable it in the entity settings if you need it.
-- Default polling: state every 180 s, energy every 60 min, bus errors every 600 s
+- Default polling: state every 180 s, energy and heat produced every 60 min, bus errors every 600 s
   (**Configure** in the integration options, where you can also turn off energy and bus errors
   polling). The Ariston cloud throttles accounts (HTTP 429 and 500), so do not poll more often.
   The options do not take less than 60 s for state and bus errors and 15 min for energy.

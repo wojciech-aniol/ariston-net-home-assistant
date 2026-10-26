@@ -29,6 +29,7 @@ from .const import (
     MAX_BUS_ERRORS_SCAN_INTERVAL_SECONDS,
     MAX_ENERGY_SCAN_INTERVAL_MINUTES,
     MAX_SCAN_INTERVAL_SECONDS,
+    METERING_COORDINATOR,
     MIN_BUS_ERRORS_SCAN_INTERVAL_SECONDS,
     MIN_ENERGY_SCAN_INTERVAL_MINUTES,
     MIN_SCAN_INTERVAL_SECONDS,
@@ -145,6 +146,7 @@ class AristonData:
     coordinator: DeviceDataUpdateCoordinator
     bus_errors_coordinator: DeviceDataUpdateCoordinator | None = None
     energy_coordinator: DeviceDataUpdateCoordinator | None = None
+    metering_coordinator: DeviceDataUpdateCoordinator | None = None
 
     @property
     def coordinators(self) -> dict[str, DeviceDataUpdateCoordinator | None]:
@@ -153,6 +155,7 @@ class AristonData:
             COORDINATOR: self.coordinator,
             BUS_ERRORS_COORDINATOR: self.bus_errors_coordinator,
             ENERGY_COORDINATOR: self.energy_coordinator,
+            METERING_COORDINATOR: self.metering_coordinator,
         }
 
     def get_coordinator(self, name: str) -> DeviceDataUpdateCoordinator | None:

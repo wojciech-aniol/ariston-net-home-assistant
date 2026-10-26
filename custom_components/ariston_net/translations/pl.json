@@ -183,6 +183,36 @@
       "dhw_electricity": {
         "name": "Prąd na ciepłą wodę"
       },
+      "heating_produced_today": {
+        "name": "Energia wytworzona na ogrzewanie dziś"
+      },
+      "dhw_produced_today": {
+        "name": "Energia wytworzona na ciepłą wodę dziś"
+      },
+      "cooling_produced_today": {
+        "name": "Energia wytworzona na chłodzenie dziś"
+      },
+      "heating_produced_this_month": {
+        "name": "Energia wytworzona na ogrzewanie w tym miesiącu"
+      },
+      "dhw_produced_this_month": {
+        "name": "Energia wytworzona na ciepłą wodę w tym miesiącu"
+      },
+      "cooling_produced_this_month": {
+        "name": "Energia wytworzona na chłodzenie w tym miesiącu"
+      },
+      "heating_cop_yesterday": {
+        "name": "COP ogrzewania wczoraj"
+      },
+      "dhw_cop_yesterday": {
+        "name": "COP ciepłej wody wczoraj"
+      },
+      "heating_cop_this_month": {
+        "name": "COP ogrzewania w tym miesiącu"
+      },
+      "dhw_cop_this_month": {
+        "name": "COP ciepłej wody w tym miesiącu"
+      },
       "remaining_time": {
         "name": "Pozostały czas"
       },
