@@ -8,7 +8,8 @@ library ([fustom/python-ariston-api](https://github.com/fustom/python-ariston-ap
 [@fustom](https://github.com/fustom). This fork uses
 [`ariston-net-api`](https://pypi.org/project/ariston-net-api/)
 ([wojciech-aniol/python-ariston-net-api](https://github.com/wojciech-aniol/python-ariston-net-api)),
-a fork of `ariston` 0.19.9 that fixes turning on a BSB zone that is off and the Lux BOOST mode.
+a fork of `ariston` 0.19.9 with fixes for BSB, GALEVO, Lux and Nuos Split devices, no requests
+while the cloud rate limits, and heat produced data from the Ariston web app.
 
 > [!WARNING]
 > **This fork is completely vibe-coded.** An AI coding assistant
@@ -103,11 +104,11 @@ The commit messages list what was skipped from each pull request and why.
 - Diagnostics (**Download diagnostics** on the integration page) with the raw cloud data. Login,
   gateway, serial numbers and names are removed.
 - Its own icon (`custom_components/ariston_net/brand`).
-- Unit tests with a fake Ariston cloud, run in GitHub Actions.
+- Unit tests with a fake Ariston cloud (over 99% code coverage), run in GitHub Actions.
 
 ### Offered back to upstream
 
-Draft pull requests to fustom:
+Pull requests to fustom, closed without a merge:
 [#494](https://github.com/fustom/ariston-remotethermo-home-assistant-v3/pull/494) (rate limit backoff),
 [#495](https://github.com/fustom/ariston-remotethermo-home-assistant-v3/pull/495) (bus errors no
 longer stop the setup) and
