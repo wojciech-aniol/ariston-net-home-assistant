@@ -1,7 +1,8 @@
 name: Auto release
 
-# Each merged PR into ariston-net that changes custom_components/ gets a release.
-# A patch bump by default; PR labels minor, major or no-release change it.
+# Each merged PR into ariston-net that changes custom_components/ gets a patch release.
+# Labels patch, minor and major release any PR (HACS shows the README of the
+# installed release); no-release skips it.
 on:
   push:
     branches: [ariston-net]
@@ -59,14 +60,16 @@ jobs:
             labels=$(jq -r '.labels[].name' <<<"$pr")
             if grep -qx no-release <<<"$labels"; then
               bump="none"
-            elif ! gh api --paginate "repos/$GH_REPO/pulls/$number/files" \
-              --jq '.[].filename' | grep -q '^custom_components/'; then
-              echo "PR #$number does not change custom_components/."
-              bump="none"
             elif grep -qx major <<<"$labels"; then
               bump="major"
             elif grep -qx minor <<<"$labels"; then
               bump="minor"
+            elif grep -qx patch <<<"$labels"; then
+              bump="patch"
+            elif ! gh api --paginate "repos/$GH_REPO/pulls/$number/files" \
+              --jq '.[].filename' | grep -q '^custom_components/'; then
+              echo "PR #$number does not change custom_components/."
+              bump="none"
             else
               bump="patch"
             fi

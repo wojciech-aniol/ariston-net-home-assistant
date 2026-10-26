@@ -41,8 +41,8 @@ Tests and lint pass before every commit.
   `bsb_device.py`, `velis_*`, `evo_*`, `lux*`, `lydos*`, `nuos_split_device.py`; HTTP and
   `ConnectionException` in `ariston_api.py`.
 
-Save context: `sensor.py` has 600+ lines of descriptions, so grep it. In `README.md` only the part
-above "About the upstream integration" matters. Of `translations/` read only `en.json`.
+Save context: `sensor.py` has 600+ lines of descriptions, so grep it. Of `translations/` read only
+`en.json`.
 
 ## Hard rules
 
@@ -72,7 +72,9 @@ above "About the upstream integration" matters. Of `translations/` read only `en
 - Releases are automatic (`.github/workflows/auto-release.yml`). Each PR merged into
   `ariston-net` that changes `custom_components/` bumps the `manifest.json` version, moves `main`
   and publishes a GitHub release, which HACS picks up. The bump is a patch; the PR label `minor`,
-  `major` or `no-release` changes that. Never bump the version, tag or release by hand. If a merge
+  `major` or `no-release` changes that. The label `patch`, `minor` or `major` also releases a PR
+  that does not change `custom_components/`: HACS shows the README of the installed release, so
+  a README fix needs one. Never bump the version, tag or release by hand. If a merge
   got no release by mistake, re-run its "Auto release" run (`gh run rerun <id>`).
 - PR titles become the release notes, so write them for users. To ship several PRs as one
   release, label all but the last `no-release`.
