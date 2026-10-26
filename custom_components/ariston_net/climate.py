@@ -225,7 +225,7 @@ class AristonThermostat(AristonEntity, ClimateEntity):
 
         curr_hvac_action = HVACAction.OFF
         if self.device.is_plant_in_heat_mode:
-            # The flame or pump may run for hot water only. BSB has no request.
+            # The flame or pump may run for hot water only.
             get_request = getattr(self.device, "get_zone_heat_request_value", None)
             heat_request = get_request(self.zone) if get_request else None
             if heat_request is not None:
