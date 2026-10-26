@@ -9,5 +9,5 @@
   "issue_tracker": "https://github.com/wojciech-aniol/ariston-net-home-assistant/issues",
   "loggers": ["ariston_net_api"],
   "requirements": ["ariston-net-api==0.21.1"],
-  "version": "1.0.2"
+  "version": "1.0.3"
 }
