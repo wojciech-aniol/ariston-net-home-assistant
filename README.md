@@ -25,7 +25,8 @@ The fork uses its own domain `ariston_net`, so it can be installed:
   virtual integration (Ariston air conditioners through Midea).
 
 It is tested on an Ariston Nimbus 120 S-T NET R32 heat pump (GALEVO). Other devices keep the
-upstream support, but they are not tested here.
+upstream support (upstream was tested on Alteas One 24, Velis Evo, Velis Lux and Lydos Hybrid),
+but they are not tested here.
 
 ## What is different from the original
 
@@ -91,6 +92,11 @@ The commit messages list what was skipped from each pull request and why.
   of a day can reach the cloud after midnight.
 - Select entity "Plant mode" (GALEVO): Summer, Winter, Heating only and so on, as listed by the
   cloud. It does the same as the climate preset, for the whole plant.
+- Climate: the HVAC action is heating only while the zone asks for heat, so hot water alone shows
+  idle. HEAT or AUTO from off picks "Heating only" (no hot water) when the plant has it. Zones
+  without mode options work.
+- Binary sensor "Heat pump" on BSB devices that send the heat pump state.
+- Water heater on and off show the new state at once, also on the VELIS power switch.
 - An error from the bus errors endpoint no longer stops the setup.
 - Energy sensors are added when the energy data first loads after a failed start.
 - Options **Poll energy data** and **Poll bus errors** turn off these cloud requests and their
@@ -98,7 +104,9 @@ The commit messages list what was skipped from each pull request and why.
 - Total energy sensors stay `unknown` until the cloud energy data changes once. Before that the
   library has no reset time, so statistics would count the same value again after each restart.
 - Clear errors: a refused password starts re-authentication (password only), and cloud errors
-  of an action show a message instead of a traceback. The interval options have minimums.
+  of an action show a message instead of a traceback. The interval options have limits.
+- Setup and options forms explain each field, and the API settings are folded away. Change them
+  later with **Reconfigure**.
 - Fewer cloud requests: an action that sets the value the device already has sends nothing, a
   preset change no longer reads the whole state again, and actions reach the cloud one at a time.
 - Diagnostics (**Download diagnostics** on the integration page) with the raw cloud data. Login,
@@ -152,7 +160,8 @@ Home Assistant.
 - Default polling: state every 180 s, energy and heat produced every 60 min, bus errors every 600 s
   (**Configure** in the integration options, where you can also turn off energy and bus errors
   polling). The Ariston cloud throttles accounts (HTTP 429 and 500), so do not poll more often.
-  The options do not take less than 60 s for state and bus errors and 15 min for energy.
+  The options take at least 60 s for state and bus errors and 15 min for energy, and at most
+  one day.
   Every other integration that uses the same account adds to the load.
 - Cloud errors: when the cloud refuses the saved password, Home Assistant asks for the new one
   (under **Settings → Devices & services**; it asks only for the password). Other
@@ -175,39 +184,3 @@ Home Assistant.
   another fork with the same domain. Some changes here follow its approach.
 
 MIT License, see [LICENSE](LICENSE).
-
-## About the upstream integration
-
-The rest of this page is from the upstream README.
-
-This integration inspired by chomupashchuk fantastic work https://github.com/chomupashchuk/ariston-remotethermo-home-assistant-v2
-But it does not use Ariston website. It uses Ariston API what I reversed engineered.
-
-
-| [This integration](https://github.com/fustom/ariston-remotethermo-home-assistant-v3)  | [Chomupashchuk's v2 integration](https://github.com/chomupashchuk/ariston-remotethermo-home-assistant-v2) |
-| ------------- | ------------- |
-| Uses real API  | Uses Ariston website  |
-| Faster set/get data  | Sometimes needs minutes to set/get data |
-| Easy to setup with UI | Not so easy to setup (only with configuration.yaml) |
-| Integration & devices & entites | Only entites |
-| Proper asynchronous integration, clean code | Hard to understand and maintain (ariston.py has more than 4000 lines) |
-| Less sensors, switches, etc |  More sensors, switches, etc |
-| New code, may contains lot of bugs | Old, tested code |
-
-### Integration was tested on and works with:
-- Ariston Alteas One 24
-- Ariston Velis Evo
-- Ariston Velis Lux
-- Ariston Lydos Hybrid
-
-| ![Kazam_screenshot_00003](https://user-images.githubusercontent.com/6751243/146653448-ff7b6f9d-cbf1-4555-9a75-61bf68bc9d3e.png) | ![Kazam_screenshot_00004](https://user-images.githubusercontent.com/6751243/146653484-52e39d78-7c6f-44ae-888d-acf246147290.png) | ![Kazam_screenshot_00010](https://user-images.githubusercontent.com/6751243/147890590-6c4ebf38-16d9-421f-9b81-8f43298ec62f.png) |
-:-------------------------:|:-------------------------:|:-------------------------:
-
-![Kazam_screenshot_00011](https://user-images.githubusercontent.com/6751243/147890611-54ae2d28-bf5a-45f8-ba92-e7a00a22615c.png)
-
-![Kazam_screenshot_00012](https://user-images.githubusercontent.com/6751243/147989103-cdac510f-e6f6-461f-a88e-b8ff0204c34f.png)
-
-| ![Kazam_screenshot_00013](https://user-images.githubusercontent.com/6751243/148247717-5211c01c-561f-4a4e-b4b5-47a680e04a68.png) | ![Kazam_screenshot_00009](https://user-images.githubusercontent.com/6751243/146657797-ed14b741-595a-48a6-9126-1acca3beb69f.png) |
-:-------------------------:|:-------------------------:
-
-<h1 align="center">Peace Love Freedom</h1>
