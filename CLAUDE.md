@@ -55,9 +55,10 @@ Save context: `sensor.py` has 600+ lines of descriptions, so grep it. Of `transl
   BSB and the VELIS Evo family (device types come from the `device_type` fixture and
   `tests/fixtures/`): an unplanned snapshot change means the code change is wrong.
 - Never shorten the default polling intervals or add cloud requests per poll. The cloud throttles
-  accounts (HTTP 429 and 500). One approved exception (owner's choice in plan 26): the metering
+  accounts (HTTP 429 and 500). Approved exceptions: (owner's choice in plan 26) the metering
   coordinator sends 2 web requests (login and `GetData`) per energy interval, for heat pumps
-  with metering while energy polling is on.
+  with metering while energy polling is on; (owner's choice in plan 28) VELIS
+  devices read `plantSettings` again on every 10th state poll (`velis_update_state`).
 - Keep config entry data and option keys. A change needs a config entry migration and a test.
 - Keep the keys of `strings.json` and `translations/en.json` the same. `strings.json` may use
   `[%key:...%]` references, `en.json` holds the final English text.

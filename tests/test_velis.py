@@ -5,6 +5,7 @@ from __future__ import annotations
 from typing import Any
 from unittest.mock import MagicMock
 
+from ariston_net_api.ariston_api import ConnectionException
 from ariston_net_api.const import (
     EvoPlantMode,
     LuxPlantMode,
@@ -38,12 +39,13 @@ from homeassistant.const import (
     SERVICE_TURN_ON,
     STATE_OFF,
     STATE_ON,
+    STATE_UNAVAILABLE,
 )
 from homeassistant.core import HomeAssistant
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from .conftest import GATEWAY, setup_integration
+from .conftest import GATEWAY, runtime_data, setup_integration
 
 # VELIS types the library builds as AristonEvoDevice or a subclass.
 MED_TYPES = ["evo2", "andris2", "lux", "lux2"]
@@ -51,6 +53,10 @@ MED_TYPES = ["evo2", "andris2", "lux", "lux2"]
 WATER_HEATER = "water_heater.velis"
 ANTI_LEGIONELLA = "MedAntilegionellaOnOff"
 MAX_SETPOINT = "MedMaxSetpointTemperature"
+ANTI_LEGIONELLA_SWITCH = "switch.velis_anti_legionella"
+MAX_SETPOINT_NUMBER = "number.velis_max_setpoint_temperature"
+# Polls after setup until the settings are read again; the setup poll is the first.
+POLLS_TO_SETTINGS = 9
 
 TURN_ON_OFF = pytest.mark.parametrize(
     ("service", "value"),
@@ -367,3 +373,70 @@ async def test_water_heater_lux_boost_sends_highest_setpoint(
     )
 
     api.async_set_evo_temperature.assert_awaited_once_with(GATEWAY, 80)
+
+
+async def poll(hass: HomeAssistant, times: int) -> None:
+    """Poll the state coordinator."""
+    for _ in range(times):
+        await runtime_data(hass).coordinator.async_refresh()
+    await hass.async_block_till_done()
+
+
+def changed_settings(device_data: dict[str, Any]) -> dict[str, Any]:
+    """Return the settings with anti legionella off and max setpoint 75."""
+    return device_data["plant_settings"] | {ANTI_LEGIONELLA: False, MAX_SETPOINT: 75.0}
+
+
+@pytest.mark.parametrize("device_type", ["evo2"])
+async def test_settings_change_reaches_entities_on_tenth_poll(
+    hass: HomeAssistant,
+    api: MagicMock,
+    device_data: dict[str, Any],
+    init_integration: MockConfigEntry,
+) -> None:
+    """Test settings changed in the app show after the tenth state poll."""
+    api.async_get_velis_plant_settings.return_value = changed_settings(device_data)
+
+    await poll(hass, POLLS_TO_SETTINGS)
+
+    assert hass.states.get(ANTI_LEGIONELLA_SWITCH).state == STATE_OFF
+    assert hass.states.get(MAX_SETPOINT_NUMBER).state == "75.0"
+
+
+@pytest.mark.parametrize("device_type", ["evo2"])
+async def test_settings_change_not_read_before_tenth_poll(
+    hass: HomeAssistant,
+    api: MagicMock,
+    device_data: dict[str, Any],
+    init_integration: MockConfigEntry,
+) -> None:
+    """Test earlier state polls do not read the settings."""
+    api.async_get_velis_plant_settings.return_value = changed_settings(device_data)
+
+    await poll(hass, POLLS_TO_SETTINGS - 1)
+
+    assert hass.states.get(ANTI_LEGIONELLA_SWITCH).state == STATE_ON
+    assert hass.states.get(MAX_SETPOINT_NUMBER).state == "70.0"
+
+
+@pytest.mark.parametrize(
+    "answer",
+    [{"side_effect": ConnectionException(500)}, {"return_value": {}}],
+    ids=["error", "empty"],
+)
+@pytest.mark.parametrize("device_type", ["evo2"])
+async def test_settings_failure_keeps_old_settings(
+    hass: HomeAssistant,
+    api: MagicMock,
+    init_integration: MockConfigEntry,
+    answer: dict[str, Any],
+) -> None:
+    """Test a failed settings read keeps the entities and the state poll."""
+    api.async_get_velis_plant_settings.configure_mock(**answer)
+
+    await poll(hass, POLLS_TO_SETTINGS)
+
+    assert runtime_data(hass).coordinator.last_update_success
+    assert hass.states.get(ANTI_LEGIONELLA_SWITCH).state == STATE_ON
+    assert hass.states.get(MAX_SETPOINT_NUMBER).state == "70.0"
+    assert hass.states.get(WATER_HEATER).state != STATE_UNAVAILABLE

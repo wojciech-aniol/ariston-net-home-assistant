@@ -136,6 +136,34 @@ async def test_poll_requests(
     assert cloud_requests(full_galevo) == expected
 
 
+@pytest.mark.parametrize(
+    ("polls", "expected"),
+    [
+        (1, {"async_get_velis_plant_data": 1}),
+        (
+            9,
+            {"async_get_velis_plant_data": 9, "async_get_velis_plant_settings": 1},
+        ),
+    ],
+    ids=["one", "tenth"],
+)
+@pytest.mark.parametrize("device_type", ["evo", "evo2"])
+async def test_velis_poll_requests(
+    hass: HomeAssistant,
+    api: MagicMock,
+    init_integration: MockConfigEntry,
+    polls: int,
+    expected: dict[str, int],
+) -> None:
+    """Test VELIS state polls read the settings on every tenth poll only."""
+    api.reset_mock()
+
+    for _ in range(polls):
+        await runtime_data(hass).coordinator.async_refresh()
+
+    assert cloud_requests(api) == expected
+
+
 # Stands for the value the entity shows now.
 CURRENT = object()
 # Where the state holds that value: an attribute, or None for the state itself.
