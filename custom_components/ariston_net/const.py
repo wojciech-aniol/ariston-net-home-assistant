@@ -24,6 +24,8 @@ MIN_BUS_ERRORS_SCAN_INTERVAL_SECONDS: Final[int] = 60
 MAX_SCAN_INTERVAL_SECONDS: Final[int] = 86400
 MAX_ENERGY_SCAN_INTERVAL_MINUTES: Final[int] = 1440
 MAX_BUS_ERRORS_SCAN_INTERVAL_SECONDS: Final[int] = 86400
+# VELIS settings are read again on every Nth state poll (owner's choice in plan 28).
+SETTINGS_EVERY_POLLS: Final[int] = 10
 
 ATTR_TARGET_TEMP_STEP: Final[str] = "target_temp_step"
 ATTR_HEAT_REQUEST: Final[str] = "heat_request"

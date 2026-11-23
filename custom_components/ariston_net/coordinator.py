@@ -11,6 +11,7 @@ from typing import Any
 
 from ariston_net_api.ariston_api import ConnectionException
 from ariston_net_api.base_device import AristonBaseDevice
+from ariston_net_api.velis_base_device import AristonVelisBaseDevice
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_SCAN_INTERVAL
 from homeassistant.core import HomeAssistant
@@ -38,8 +39,9 @@ from .const import (
     MIN_BUS_ERRORS_SCAN_INTERVAL_SECONDS,
     MIN_ENERGY_SCAN_INTERVAL_MINUTES,
     MIN_SCAN_INTERVAL_SECONDS,
+    SETTINGS_EVERY_POLLS,
 )
-from .errors import CloudErrorKind, classify_error, describe_error
+from .errors import CLOUD_ERRORS, CloudErrorKind, classify_error, describe_error
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -75,6 +77,37 @@ def interval_option(options: Mapping[str, Any], key: str) -> int:
     """
     default, minimum, maximum = INTERVAL_OPTIONS[key]
     return min(max(options.get(key, default), minimum), maximum)
+
+
+def velis_update_state(
+    device: AristonVelisBaseDevice,
+) -> Callable[[], Awaitable[None]]:
+    """Return a state update that also reads the settings every Nth poll.
+
+    The settings come from a second request. Its failure keeps the old settings.
+    """
+    polls = 0
+
+    async def async_update() -> None:
+        nonlocal polls
+        await device.async_update_state()
+        polls += 1
+        if polls % SETTINGS_EVERY_POLLS:
+            return
+        old_settings = device.plant_settings
+        try:
+            await device.async_update_settings()
+        except CLOUD_ERRORS as error:
+            _LOGGER.warning(
+                "Keeping old settings of %s: %s", device.name, describe_error(error)
+            )
+            return
+        if not device.plant_settings:
+            # The library gives {} for an empty answer.
+            device.plant_settings = old_settings
+            _LOGGER.warning("Keeping old settings of %s: empty answer", device.name)
+
+    return async_update
 
 
 class DeviceDataUpdateCoordinator(TimestampDataUpdateCoordinator[None]):

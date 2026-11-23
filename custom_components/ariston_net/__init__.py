@@ -7,6 +7,7 @@ import logging
 from ariston_net_api import (
     Ariston,
     AristonGalevoDevice,
+    AristonVelisBaseDevice,
     DeviceAttribute,
     SystemType,
 )
@@ -47,6 +48,7 @@ from .coordinator import (
     AristonData,
     DeviceDataUpdateCoordinator,
     interval_option,
+    velis_update_state,
 )
 from .errors import CLOUD_ERRORS, CloudErrorKind, classify_error, describe_error
 from .menu_items import add_extra_menu_items, async_find_blocked_menu_items
@@ -125,7 +127,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: AristonConfigEntry) -> b
             device,
             scan_interval_seconds,
             COORDINATOR,
-            device.async_update_state,
+            velis_update_state(device)
+            if isinstance(device, AristonVelisBaseDevice)
+            else device.async_update_state,
         )
         await coordinator.async_config_entry_first_refresh()
         data = AristonData(coordinator)
