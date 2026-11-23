@@ -141,6 +141,12 @@
       },
       "anti_cooling_temperature": {
         "name": "Anti-cooling temperature"
+      },
+      "dhw_comfort_temperature": {
+        "name": "Hot water comfort temperature"
+      },
+      "dhw_economy_temperature": {
+        "name": "Hot water economy temperature"
       }
     },
     "select": {

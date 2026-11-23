@@ -155,6 +155,17 @@ FULL_FEATURES: dict[str, Any] = {
 
 FULL_ITEMS: list[dict[str, Any]] = [
     {"id": "IsQuite", "zone": 0, "value": False},
+    # No limits, so the number takes those of DhwTemp.
+    {"id": "DhwTimeProgComfortTemp", "zone": 0, "value": 41.0, "unit": "°C"},
+    {
+        "id": "DhwTimeProgEconomyTemp",
+        "zone": 0,
+        "value": 40.0,
+        "min": 35.0,
+        "max": 55.0,
+        "step": 0.5,
+        "unit": "°C",
+    },
     {
         "id": "HybridMode",
         "zone": 0,

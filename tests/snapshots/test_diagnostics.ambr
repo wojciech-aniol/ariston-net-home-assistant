@@ -297,6 +297,21 @@
             'zone': 0,
           }),
           dict({
+            'id': 'DhwTimeProgComfortTemp',
+            'unit': '°C',
+            'value': 41.0,
+            'zone': 0,
+          }),
+          dict({
+            'id': 'DhwTimeProgEconomyTemp',
+            'max': 55.0,
+            'min': 35.0,
+            'step': 0.5,
+            'unit': '°C',
+            'value': 40.0,
+            'zone': 0,
+          }),
+          dict({
             'id': 'HybridMode',
             'optTexts': list([
               'Economy',

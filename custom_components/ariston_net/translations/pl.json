@@ -85,6 +85,12 @@
       },
       "anti_cooling_temperature": {
         "name": "Temperatura ochrony przed wychłodzeniem"
+      },
+      "dhw_comfort_temperature": {
+        "name": "Temperatura komfortowa ciepłej wody"
+      },
+      "dhw_economy_temperature": {
+        "name": "Temperatura ekonomiczna ciepłej wody"
       }
     },
     "select": {
