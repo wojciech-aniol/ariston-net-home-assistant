@@ -166,7 +166,8 @@ def add_extra_menu_items(
 
     The library builds that request from a fixed list. Replacing the method on
     this API object adds the extra items (and more_ids) without a second cloud
-    request. The heat pump items are added only when heat_pump is True. If the cloud refuses the longer list in several polls in a row
+    request. The heat pump items are added only when heat_pump is True.
+    If the cloud refuses the longer list in several polls in a row
     while the library's list works, it goes back to the library's list until
     the next reload.
     """
