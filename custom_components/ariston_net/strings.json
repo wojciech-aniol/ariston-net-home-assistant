@@ -104,6 +104,9 @@
       "is_heating_pump_on": {
         "name": "Heat pump"
       },
+      "backup_heater": {
+        "name": "Backup heater"
+      },
       "holiday_mode": {
         "name": "Holiday mode"
       },
@@ -199,6 +202,33 @@
       },
       "hp_evaporator_temperature": {
         "name": "Evaporator temperature"
+      },
+      "heat_pump_mode": {
+        "name": "Heat pump mode",
+        "state": {
+          "off": "Off",
+          "standby": "Standby",
+          "cooling": "Cooling",
+          "heating": "Heating",
+          "booster_heating": "Booster heating",
+          "booster_cooling": "Booster cooling",
+          "rating_heating": "Rating heating mode",
+          "rating_cooling": "Rating cooling mode",
+          "freeze_protection": "Freeze protection",
+          "defrost": "Defrost",
+          "high_temperature_protection": "High temperature protection",
+          "timeguard": "Timeguard",
+          "system_fail": "System fail",
+          "hard_system_fail": "Hard system fail",
+          "pump_down": "Pump down",
+          "soft_fail": "Soft fail mode",
+          "rating_fan_only": "Rating fan only",
+          "cascade_heating": "Cascade heating",
+          "cascade_cooling": "Cascade cooling"
+        }
+      },
+      "hp_outside_air_temperature": {
+        "name": "Heat pump outside air temperature"
       },
       "outside_temperature": {
         "name": "Outside temperature"

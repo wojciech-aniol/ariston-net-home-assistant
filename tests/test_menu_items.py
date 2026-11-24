@@ -34,6 +34,9 @@ HP_WATER_RETURN_TEMP = "sensor.nimbus_heat_pump_return_temperature"
 HP_EVAPORATOR_TEMP = "sensor.nimbus_evaporator_temperature"
 RETURN_ITEM = {"id": 342, "nodeId": "T_13.8.2", "value": 24.0, "unit": "°C"}
 EVAPORATOR_ITEM = {"id": 347, "nodeId": "T_13.8.7", "value": -2.0, "unit": "°C"}
+BACKUP_HEATER = "binary_sensor.nimbus_backup_heater"
+HEAT_PUMP_MODE = "sensor.nimbus_heat_pump_mode"
+HP_OUTSIDE_AIR_TEMP = "sensor.nimbus_heat_pump_outside_air_temperature"
 HEAT_PUMP_ITEMS = [
     {"id": 337, "value": 1.0, "unit": ""},
     {"id": 340, "value": 9.0, "unit": ""},
@@ -384,6 +387,28 @@ async def test_blocked_items_error_does_not_stop_setup(
     assert api.menu_items_request.await_args.args[0].endswith(HEAT_PUMP_ITEMS_URL)
 
 
+async def test_heat_pump_menu_sensors(
+    hass: HomeAssistant,
+    api: MagicMock,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+) -> None:
+    """Test the backup heater, heat pump mode and outside air sensors."""
+    api.menu_items_request.return_value = copy.deepcopy(HEAT_PUMP_ITEMS)
+
+    await setup_integration(hass, config_entry)
+
+    assert hass.states.get(BACKUP_HEATER).state == "on"
+    assert hass.states.get(BACKUP_HEATER).attributes["device_class"] == "running"
+    mode = hass.states.get(HEAT_PUMP_MODE)
+    assert mode.state == "defrost"
+    assert mode.attributes["options"].count("defrost") == 1
+    assert len(mode.attributes["options"]) == 19
+    air = hass.states.get(HP_OUTSIDE_AIR_TEMP)
+    assert air.state == "11.0"
+    assert air.attributes["unit_of_measurement"] == "°C"
+
+
 async def test_gas_galevo_asks_no_heat_pump_items(
     hass: HomeAssistant,
     api: MagicMock,
@@ -462,3 +487,23 @@ def test_menu_item_value_skips_missing_probe(item: dict[str, Any], value: Any) -
 
     assert menu_item_value(device, 341) == value
     assert menu_item_value(device, 341, "unit") is None
+
+
+async def test_heat_pump_limit_value_gives_no_entity(
+    hass: HomeAssistant,
+    api: MagicMock,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+) -> None:
+    """Test items without a real value give no entities; an off heater stays."""
+    api.menu_items_request.return_value = [
+        {"id": 337, "value": 0.0, "unit": ""},
+        {"id": 340, "value": 1.0, "unit": "", "error": True},
+        {"id": 341, "value": 3276.7, "unit": "°C"},
+    ]
+
+    await setup_integration(hass, config_entry)
+
+    assert hass.states.get(BACKUP_HEATER).state == "off"
+    assert hass.states.get(HEAT_PUMP_MODE) is None
+    assert hass.states.get(HP_OUTSIDE_AIR_TEMP) is None
