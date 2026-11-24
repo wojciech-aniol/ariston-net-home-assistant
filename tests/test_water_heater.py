@@ -22,6 +22,7 @@ from homeassistant.const import (
     ATTR_ENTITY_ID,
     ATTR_SUPPORTED_FEATURES,
     ATTR_TEMPERATURE,
+    STATE_OFF,
 )
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ServiceValidationError
@@ -29,6 +30,8 @@ import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
 from custom_components.ariston_net.const import ATTR_TARGET_TEMP_STEP
+
+from .conftest import set_item
 
 WATER_HEATER = "water_heater.nimbus"
 
@@ -48,6 +51,35 @@ async def test_water_heater_state_comes_from_device(
     assert state.attributes[ATTR_MIN_TEMP] == 40.0
     assert state.attributes[ATTR_MAX_TEMP] == 65.0
     assert state.attributes[ATTR_TARGET_TEMP_STEP] == 1.0
+
+
+@pytest.mark.parametrize(
+    ("plant_mode", "expected_state"),
+    [
+        (0, "Time based"),
+        (1, "Time based"),
+        (2, STATE_OFF),
+        (4, STATE_OFF),
+        (5, STATE_OFF),
+    ],
+    ids=["summer", "winter", "heating-only", "cooling-only", "off"],
+)
+async def test_water_heater_state_follows_plant_mode(
+    hass: HomeAssistant,
+    properties: dict[str, Any],
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+    plant_mode: int,
+    expected_state: str,
+) -> None:
+    """Test the water heater is off in plant modes that make no hot water."""
+    set_item(properties, "PlantMode", value=plant_mode)
+    await hass.config_entries.async_setup(config_entry.entry_id)
+    await hass.async_block_till_done()
+
+    state = hass.states.get(WATER_HEATER)
+    assert state.state == expected_state
+    assert state.attributes[ATTR_OPERATION_LIST] == ["Time based", "Always active"]
 
 
 @pytest.mark.parametrize(

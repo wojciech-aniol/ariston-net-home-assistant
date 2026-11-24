@@ -9,10 +9,13 @@ from typing import Any
 
 from ariston_net_api.const import (
     ConsumptionProperties,
+    CustomDeviceFeatures,
     DeviceFeatures,
+    DeviceProperties,
     EvoOneDeviceProperties,
     MedDeviceSettings,
     NuosSplitProperties,
+    PropertyType,
     SeDeviceSettings,
     SlpDeviceSettings,
     SystemType,
@@ -50,6 +53,47 @@ class AristonNumberEntityDescription(
     get_native_step: Callable[[Any], Coroutine] | None = None
 
 
+def _dhw_program_item(device: Any, item_id: str, key: str) -> Any:
+    """Return a key of a hot water program item, else the key of DhwTemp."""
+    # The library has no getter for these items.
+    value = device._get_item_by_id(item_id, key)
+    if value is None and key != PropertyType.VALUE:
+        return device._get_item_by_id(DeviceProperties.DHW_TEMP, key)
+    return value
+
+
+def _dhw_program_number(
+    item_id: str, name: str, translation_key: str
+) -> AristonNumberEntityDescription:
+    """Describe a number for a hot water program temperature."""
+    return AristonNumberEntityDescription(
+        key=item_id,
+        name=f"{NAME} {name}",
+        translation_key=translation_key,
+        entity_category=EntityCategory.CONFIG,
+        get_native_min_value=lambda entity: _dhw_program_item(
+            entity.device, item_id, PropertyType.MIN
+        ),
+        get_native_max_value=lambda entity: _dhw_program_item(
+            entity.device, item_id, PropertyType.MAX
+        ),
+        get_native_step=lambda entity: _dhw_program_item(
+            entity.device, item_id, PropertyType.STEP
+        ),
+        get_native_value=lambda entity: _dhw_program_item(
+            entity.device, item_id, PropertyType.VALUE
+        ),
+        set_native_value=lambda entity, value: entity.device.async_set_item_by_id(
+            item_id, value
+        ),
+        get_is_supported=lambda device: (
+            _dhw_program_item(device, item_id, PropertyType.VALUE) is not None
+        ),
+        device_features=[CustomDeviceFeatures.HAS_DHW],
+        system_types=[SystemType.GALEVO],
+    )
+
+
 ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
     AristonNumberEntityDescription(
         key=ConsumptionProperties.ELEC_COST,
@@ -58,7 +102,7 @@ ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
         entity_category=EntityCategory.CONFIG,
         native_min_value=0,
         native_max_value=sys.maxsize,
-        native_step=0.01,
+        native_step=0.0001,
         device_features=[DeviceFeatures.HAS_METERING],
         coordinator=ENERGY_COORDINATOR,
         get_native_value=lambda entity: entity.device.elect_cost,
@@ -74,7 +118,7 @@ ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
         entity_category=EntityCategory.CONFIG,
         native_min_value=0,
         native_max_value=sys.maxsize,
-        native_step=0.01,
+        native_step=0.0001,
         device_features=[DeviceFeatures.HAS_METERING],
         coordinator=ENERGY_COORDINATOR,
         get_native_value=lambda entity: entity.device.gas_cost,
@@ -195,6 +239,16 @@ ARISTON_NUMBER_TYPES: list[AristonNumberEntityDescription] = [
             entity.device.async_set_heating_flow_offset(value, entity.zone)
         ),
         system_types=[SystemType.GALEVO],
+    ),
+    _dhw_program_number(
+        DeviceProperties.DHW_TIMEPROG_COMFORT_TEMP,
+        "dhw comfort temperature",
+        "dhw_comfort_temperature",
+    ),
+    _dhw_program_number(
+        DeviceProperties.DHW_TIMEPROG_ECONOMY_TEMP,
+        "dhw economy temperature",
+        "dhw_economy_temperature",
     ),
     AristonNumberEntityDescription(
         key=EvoOneDeviceProperties.AV_SHW,

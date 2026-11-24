@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from typing import Any
-from unittest.mock import AsyncMock, MagicMock
+from unittest.mock import ANY, AsyncMock, MagicMock
 
 from ariston_net_api import AristonGalevoDevice
 from homeassistant.components.number import (
@@ -22,7 +22,7 @@ from homeassistant.core import HomeAssistant
 import pytest
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 
-from .conftest import set_item
+from .conftest import GATEWAY, set_item
 
 
 @pytest.fixture
@@ -145,6 +145,73 @@ async def test_number_calls_library(
         method,
         expected_args,
     )
+
+
+@pytest.mark.parametrize(
+    ("entity_id", "item_id", "value", "old_value"),
+    [
+        (
+            "number.nimbus_hot_water_comfort_temperature",
+            "DhwTimeProgComfortTemp",
+            45.0,
+            41.0,
+        ),
+        (
+            "number.nimbus_hot_water_economy_temperature",
+            "DhwTimeProgEconomyTemp",
+            37.5,
+            40.0,
+        ),
+    ],
+    ids=["comfort", "economy"],
+)
+async def test_dhw_program_number_sends_its_item(
+    hass: HomeAssistant,
+    init_full_integration: MockConfigEntry,
+    api: MagicMock,
+    entity_id: str,
+    item_id: str,
+    value: float,
+    old_value: float,
+) -> None:
+    """Test a hot water program temperature goes to the cloud as its item."""
+    assert hass.states.get(entity_id).state == str(old_value)
+
+    await hass.services.async_call(
+        NUMBER_DOMAIN,
+        SERVICE_SET_VALUE,
+        {ATTR_ENTITY_ID: entity_id, ATTR_VALUE: value},
+        blocking=True,
+    )
+
+    api.async_set_property.assert_awaited_once_with(
+        GATEWAY, 0, ANY, item_id, value, old_value, "si"
+    )
+    assert hass.states.get(entity_id).state == str(value)
+
+
+async def test_dhw_program_numbers_need_values(
+    hass: HomeAssistant, init_integration: MockConfigEntry
+) -> None:
+    """Test the program temperature numbers are skipped without their items."""
+    assert hass.states.get("number.nimbus_hot_water_comfort_temperature") is None
+    assert hass.states.get("number.nimbus_hot_water_economy_temperature") is None
+
+
+async def test_cost_keeps_four_decimals(
+    hass: HomeAssistant, init_full_integration: MockConfigEntry, api: MagicMock
+) -> None:
+    """Test a price with four decimals goes to the cloud as is."""
+    await hass.services.async_call(
+        NUMBER_DOMAIN,
+        SERVICE_SET_VALUE,
+        {ATTR_ENTITY_ID: "number.nimbus_electricity_cost", ATTR_VALUE: 0.1036},
+        blocking=True,
+    )
+
+    settings = api.async_set_consumptions_settings.await_args.args[1]
+    assert settings["elecCost"] == 0.1036
+    assert hass.states.get("number.nimbus_electricity_cost").state == "0.1036"
 
 
 @pytest.mark.parametrize(

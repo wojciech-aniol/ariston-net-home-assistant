@@ -8,6 +8,7 @@ import logging
 from ariston_net_api.const import (
     CustomDeviceFeatures,
     LuxPlantMode,
+    PlantMode,
     SystemType,
     WheType,
 )
@@ -16,7 +17,7 @@ from homeassistant.components.water_heater import (
     WaterHeaterEntityDescription,
     WaterHeaterEntityFeature,
 )
-from homeassistant.const import ATTR_TEMPERATURE
+from homeassistant.const import ATTR_TEMPERATURE, STATE_OFF
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ServiceValidationError
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
@@ -40,6 +41,9 @@ _LOGGER = logging.getLogger(__name__)
 
 # Send writes to the cloud one at a time.
 PARALLEL_UPDATES = 1
+
+# A GALEVO plant makes no hot water in these modes.
+NO_DHW_PLANT_MODES = (PlantMode.HEATING_ONLY, PlantMode.COOLING_ONLY, PlantMode.OFF)
 
 
 @dataclass(kw_only=True, frozen=True)
@@ -169,6 +173,11 @@ class AristonWaterHeater(AristonEntity, WaterHeaterEntity):
     @property
     def current_operation(self):
         """Return current operation."""
+        if (
+            self.device.system_type == SystemType.GALEVO
+            and self.device.plant_mode in NO_DHW_PLANT_MODES
+        ):
+            return STATE_OFF
         return self.device.water_heater_current_mode_text
 
     @cloud_action

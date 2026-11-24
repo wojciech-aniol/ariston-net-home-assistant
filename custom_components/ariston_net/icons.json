@@ -53,6 +53,12 @@
       },
       "anti_cooling_temperature": {
         "default": "mdi:thermometer-alert"
+      },
+      "dhw_comfort_temperature": {
+        "default": "mdi:water-thermometer"
+      },
+      "dhw_economy_temperature": {
+        "default": "mdi:water-thermometer-outline"
       }
     },
     "select": {
