@@ -26,8 +26,48 @@ BLOCKED_MENU_IDS = range(342, 348)
 class ExtraMenuItem(IntEnum):
     """Menu items the library does not ask for."""
 
+    BACKUP_HEATER = 337
+    HEAT_PUMP_MODE = 340
+    HP_OUTSIDE_AIR_TEMP = 341
     HP_WATER_FLOW_TEMP = 348
     CH_FLOW_TEMP = 349
+
+
+# Asked only for heat pumps: other gateways may refuse the request for them.
+HEAT_PUMP_MENU_ITEMS = frozenset(
+    {
+        ExtraMenuItem.BACKUP_HEATER,
+        ExtraMenuItem.HEAT_PUMP_MODE,
+        ExtraMenuItem.HP_OUTSIDE_AIR_TEMP,
+    }
+)
+
+# Heat pump mode values; 9 and 17 have the same text in the cloud.
+HEAT_PUMP_MODES = {
+    0: "off",
+    1: "standby",
+    2: "cooling",
+    3: "heating",
+    4: "booster_heating",
+    5: "booster_cooling",
+    6: "rating_heating",
+    7: "rating_cooling",
+    8: "freeze_protection",
+    9: "defrost",
+    10: "high_temperature_protection",
+    11: "timeguard",
+    12: "system_fail",
+    13: "hard_system_fail",
+    14: "pump_down",
+    15: "soft_fail",
+    16: "rating_fan_only",
+    17: "defrost",
+    18: "cascade_heating",
+    19: "cascade_cooling",
+}
+
+# A missing probe reports one of these values.
+MENU_LIMIT_VALUES = frozenset({3276.0, 3276.7, -3276.8, -3277.0})
 
 
 class MenuNode(StrEnum):
@@ -37,20 +77,34 @@ class MenuNode(StrEnum):
     HP_EVAPORATOR_TEMP = "T_13.8.7"
 
 
+def _has_value(item: dict[str, Any]) -> bool:
+    """Tell if a menu item holds a real value, as the library does."""
+    value = item.get(PropertyType.VALUE)
+    if item.get("error") or value is None:
+        return False
+    try:
+        return float(value) not in MENU_LIMIT_VALUES
+    except (TypeError, ValueError):
+        return True
+
+
+def _menu_field(device: AristonBaseDevice, key: str, match: Any, field: str) -> Any:
+    item = next(
+        (item for item in getattr(device, "menu_items", []) if item.get(key) == match),
+        None,
+    )
+    if item is None or (field == PropertyType.VALUE and not _has_value(item)):
+        return None
+    return item.get(field)
+
+
 def menu_item_value(
     device: AristonBaseDevice,
     item_id: int,
     field: str = PropertyType.VALUE,
 ) -> Any:
     """Return a field of a menu item, or None when the cloud did not send it."""
-    return next(
-        (
-            item.get(field)
-            for item in getattr(device, "menu_items", [])
-            if item.get("id") == item_id
-        ),
-        None,
-    )
+    return _menu_field(device, "id", item_id, field)
 
 
 def menu_node_value(
@@ -59,14 +113,19 @@ def menu_node_value(
     field: str = PropertyType.VALUE,
 ) -> Any:
     """Return a field of the menu item of a node, or None when the cloud did not send it."""
-    return next(
-        (
-            item.get(field)
-            for item in getattr(device, "menu_items", [])
-            if item.get("nodeId") == node
-        ),
-        None,
-    )
+    return _menu_field(device, "nodeId", node, field)
+
+
+def heat_pump_mode(device: AristonBaseDevice) -> str | None:
+    """Return the heat pump mode key, or None for a value we do not know."""
+    value = menu_item_value(device, ExtraMenuItem.HEAT_PUMP_MODE)
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return None
+    if not number.is_integer():
+        return None
+    return HEAT_PUMP_MODES.get(int(number))
 
 
 async def async_find_blocked_menu_items(
@@ -98,13 +157,16 @@ async def async_find_blocked_menu_items(
 
 
 def add_extra_menu_items(
-    api: AristonAPI, api_url: str, more_ids: Iterable[int] = ()
+    api: AristonAPI,
+    api_url: str,
+    more_ids: Iterable[int] = (),
+    heat_pump: bool = False,
 ) -> None:
     """Ask for the extra menu items in the library's own menu items request.
 
     The library builds that request from a fixed list. Replacing the method on
     this API object adds the extra items (and more_ids) without a second cloud
-    request. If the cloud refuses the longer list in several polls in a row
+    request. The heat pump items are added only when heat_pump is True. If the cloud refuses the longer list in several polls in a row
     while the library's list works, it goes back to the library's list until
     the next reload.
     """
@@ -119,7 +181,11 @@ def add_extra_menu_items(
     item_ids = ",".join(
         [
             MenuItemNames.values(),
-            *(str(item.value) for item in ExtraMenuItem),
+            *(
+                str(item.value)
+                for item in ExtraMenuItem
+                if heat_pump or item not in HEAT_PUMP_MENU_ITEMS
+            ),
             *(str(item_id) for item_id in more_ids),
         ]
     )
