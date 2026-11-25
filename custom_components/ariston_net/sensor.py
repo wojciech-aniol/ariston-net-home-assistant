@@ -53,7 +53,14 @@ from .const import (
 )
 from .coordinator import AristonConfigEntry, DeviceDataUpdateCoordinator
 from .entity import AristonBaseEntityDescription, AristonEntity, is_entity_supported
-from .menu_items import ExtraMenuItem, MenuNode, menu_item_value, menu_node_value
+from .menu_items import (
+    HEAT_PUMP_MODES,
+    ExtraMenuItem,
+    MenuNode,
+    heat_pump_mode,
+    menu_item_value,
+    menu_node_value,
+)
 
 # The library uses this reset time until the energy data changes once.
 UNKNOWN_RESET = datetime.fromtimestamp(0, UTC)
@@ -285,6 +292,35 @@ ARISTON_SENSOR_TYPES: list[AristonSensorEntityDescription] = [
                 "hp_evaporator_temperature",
             ),
         )
+    ),
+    AristonSensorEntityDescription(
+        key=str(ExtraMenuItem.HEAT_PUMP_MODE),
+        name=f"{NAME} HP mode",
+        translation_key="heat_pump_mode",
+        device_class=SensorDeviceClass.ENUM,
+        options=list(dict.fromkeys(HEAT_PUMP_MODES.values())),
+        get_native_value=lambda entity: heat_pump_mode(entity.device),
+        get_is_supported=lambda device: (
+            menu_item_value(device, ExtraMenuItem.HEAT_PUMP_MODE) is not None
+        ),
+        system_types=[SystemType.GALEVO],
+    ),
+    AristonSensorEntityDescription(
+        key=str(ExtraMenuItem.HP_OUTSIDE_AIR_TEMP),
+        name=f"{NAME} HP outside air temp",
+        translation_key="hp_outside_air_temperature",
+        device_class=SensorDeviceClass.TEMPERATURE,
+        state_class=SensorStateClass.MEASUREMENT,
+        get_native_value=lambda entity: menu_item_value(
+            entity.device, ExtraMenuItem.HP_OUTSIDE_AIR_TEMP
+        ),
+        get_native_unit_of_measurement=lambda entity: menu_item_value(
+            entity.device, ExtraMenuItem.HP_OUTSIDE_AIR_TEMP, PropertyType.UNIT
+        ),
+        get_is_supported=lambda device: (
+            menu_item_value(device, ExtraMenuItem.HP_OUTSIDE_AIR_TEMP) is not None
+        ),
+        system_types=[SystemType.GALEVO],
     ),
     AristonSensorEntityDescription(
         key=DeviceProperties.OUTSIDE_TEMP,

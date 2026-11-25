@@ -48,6 +48,9 @@
       "is_heating_pump_on": {
         "name": "Pompa ciepła"
       },
+      "backup_heater": {
+        "name": "Grzałka wspomagająca"
+      },
       "holiday_mode": {
         "name": "Tryb wakacyjny"
       },
@@ -143,6 +146,33 @@
       },
       "hp_evaporator_temperature": {
         "name": "Temperatura parownika"
+      },
+      "heat_pump_mode": {
+        "name": "Tryb pompy ciepła",
+        "state": {
+          "off": "Wyłączona",
+          "standby": "Czuwanie",
+          "cooling": "Chłodzenie",
+          "heating": "Grzanie",
+          "booster_heating": "Grzanie wzmocnione",
+          "booster_cooling": "Chłodzenie wzmocnione",
+          "rating_heating": "Tryb pomiarowy grzania",
+          "rating_cooling": "Tryb pomiarowy chłodzenia",
+          "freeze_protection": "Ochrona przed zamarzaniem",
+          "defrost": "Odszranianie",
+          "high_temperature_protection": "Ochrona przed wysoką temperaturą",
+          "timeguard": "Blokada czasowa",
+          "system_fail": "Błąd systemu",
+          "hard_system_fail": "Poważny błąd systemu",
+          "pump_down": "Odpompowanie czynnika",
+          "soft_fail": "Tryb łagodnej awarii",
+          "rating_fan_only": "Tryb pomiarowy, tylko wentylator",
+          "cascade_heating": "Grzanie w kaskadzie",
+          "cascade_cooling": "Chłodzenie w kaskadzie"
+        }
+      },
+      "hp_outside_air_temperature": {
+        "name": "Temperatura powietrza na pompie"
       },
       "outside_temperature": {
         "name": "Temperatura zewnętrzna"

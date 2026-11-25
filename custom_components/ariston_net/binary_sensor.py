@@ -14,6 +14,7 @@ from ariston_net_api.const import (
     WheType,
 )
 from homeassistant.components.binary_sensor import (
+    BinarySensorDeviceClass,
     BinarySensorEntity,
     BinarySensorEntityDescription,
 )
@@ -23,8 +24,15 @@ from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from .const import ATTR_HOLIDAY, EXTRA_STATE_ATTRIBUTE, EXTRA_STATE_DEVICE_METHOD, NAME
 from .coordinator import AristonConfigEntry, DeviceDataUpdateCoordinator
 from .entity import AristonBaseEntityDescription, AristonEntity, is_entity_supported
+from .menu_items import ExtraMenuItem, menu_item_value
 
 PARALLEL_UPDATES = 0
+
+
+def _menu_bool(device: Any, item_id: int) -> bool | None:
+    """Return an on/off menu item (0.0 or 1.0) as a bool."""
+    value = menu_item_value(device, item_id)
+    return None if value is None else bool(value)
 
 
 @dataclass(kw_only=True, frozen=True)
@@ -61,6 +69,17 @@ ARISTON_BINARY_SENSOR_TYPES: list[AristonBinarySensorEntityDescription] = [
         get_is_on=lambda entity: entity.device.is_heating_pump_on_value,
         get_is_supported=lambda device: device.is_heating_pump_on_value is not None,
         system_types=[SystemType.BSB],
+    ),
+    AristonBinarySensorEntityDescription(
+        key=str(ExtraMenuItem.BACKUP_HEATER),
+        name=f"{NAME} HP backup heater",
+        translation_key="backup_heater",
+        device_class=BinarySensorDeviceClass.RUNNING,
+        get_is_on=lambda entity: _menu_bool(entity.device, ExtraMenuItem.BACKUP_HEATER),
+        get_is_supported=lambda device: (
+            menu_item_value(device, ExtraMenuItem.BACKUP_HEATER) is not None
+        ),
+        system_types=[SystemType.GALEVO],
     ),
     AristonBinarySensorEntityDescription(
         key=DeviceProperties.HOLIDAY,

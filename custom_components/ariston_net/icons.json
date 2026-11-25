@@ -7,6 +7,9 @@
       "is_heating_pump_on": {
         "default": "mdi:heat-pump-outline"
       },
+      "backup_heater": {
+        "default": "mdi:heating-coil"
+      },
       "holiday_mode": {
         "default": "mdi:island"
       },
@@ -85,6 +88,9 @@
       }
     },
     "sensor": {
+      "heat_pump_mode": {
+        "default": "mdi:heat-pump"
+      },
       "average_showers": {
         "default": "mdi:shower-head"
       },

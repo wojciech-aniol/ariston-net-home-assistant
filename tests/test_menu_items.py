@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import copy
+from types import SimpleNamespace
 from typing import Any
 from unittest.mock import AsyncMock, MagicMock, patch
 
@@ -16,7 +17,11 @@ from pytest_homeassistant_custom_component.common import (
     MockConfigEntry,
 )
 
-from custom_components.ariston_net.menu_items import add_extra_menu_items
+from custom_components.ariston_net.menu_items import (
+    add_extra_menu_items,
+    heat_pump_mode,
+    menu_item_value,
+)
 
 from .conftest import GATEWAY, MENU_ITEMS, runtime_data, setup_integration
 
@@ -29,6 +34,16 @@ HP_WATER_RETURN_TEMP = "sensor.nimbus_heat_pump_return_temperature"
 HP_EVAPORATOR_TEMP = "sensor.nimbus_evaporator_temperature"
 RETURN_ITEM = {"id": 342, "nodeId": "T_13.8.2", "value": 24.0, "unit": "°C"}
 EVAPORATOR_ITEM = {"id": 347, "nodeId": "T_13.8.7", "value": -2.0, "unit": "°C"}
+BACKUP_HEATER = "binary_sensor.nimbus_backup_heater"
+HEAT_PUMP_MODE = "sensor.nimbus_heat_pump_mode"
+HP_OUTSIDE_AIR_TEMP = "sensor.nimbus_heat_pump_outside_air_temperature"
+HEAT_PUMP_ITEMS = [
+    {"id": 337, "value": 1.0, "unit": ""},
+    {"id": 340, "value": 9.0, "unit": ""},
+    {"id": 341, "value": 11.0, "unit": "°C"},
+]
+# The test device is a heat pump, so the heat pump items are asked for too.
+HEAT_PUMP_ITEMS_URL = "menuItems=124,119,337,340,341,348,349"
 
 
 async def test_flow_sensors_show_menu_values(
@@ -70,7 +85,7 @@ async def test_menu_items_come_in_one_request(api: MagicMock) -> None:
     api.menu_items_request.assert_awaited_once()
     url = api.menu_items_request.await_args.args[0]
     assert f"menuItems/{GATEWAY}?menuItems=" in url
-    assert url.endswith("menuItems=124,119,348,349")
+    assert url.endswith(HEAT_PUMP_ITEMS_URL)
 
 
 @pytest.mark.parametrize(
@@ -289,9 +304,7 @@ async def test_blocked_items_are_left_out_while_refused(api: MagicMock) -> None:
     api.blocked_menu_items_request.assert_awaited_once()
     url = api.blocked_menu_items_request.await_args.args[0]
     assert url.endswith(f"menuItems/{GATEWAY}?menuItems=342,343,344,345,346,347")
-    assert api.menu_items_request.await_args.args[0].endswith(
-        "menuItems=124,119,348,349"
-    )
+    assert api.menu_items_request.await_args.args[0].endswith(HEAT_PUMP_ITEMS_URL)
 
 
 async def test_blocked_items_are_read_when_served(
@@ -312,7 +325,7 @@ async def test_blocked_items_are_read_when_served(
     await setup_integration(hass, config_entry)
 
     url = api.menu_items_request.await_args.args[0]
-    assert url.endswith("menuItems=124,119,348,349,342,347")
+    assert url.endswith(f"{HEAT_PUMP_ITEMS_URL},342,347")
     for entity_id, value in (
         (HP_WATER_RETURN_TEMP, "24.0"),
         (HP_EVAPORATOR_TEMP, "-2.0"),
@@ -344,9 +357,7 @@ async def test_blocked_items_need_their_node_and_value(
 
     await setup_integration(hass, config_entry)
 
-    assert api.menu_items_request.await_args.args[0].endswith(
-        "menuItems=124,119,348,349"
-    )
+    assert api.menu_items_request.await_args.args[0].endswith(HEAT_PUMP_ITEMS_URL)
     assert hass.states.get(HP_WATER_RETURN_TEMP) is None
 
 
@@ -373,6 +384,126 @@ async def test_blocked_items_error_does_not_stop_setup(
     await setup_integration(hass, config_entry)
 
     assert config_entry.state is ConfigEntryState.LOADED
+    assert api.menu_items_request.await_args.args[0].endswith(HEAT_PUMP_ITEMS_URL)
+
+
+async def test_heat_pump_menu_sensors(
+    hass: HomeAssistant,
+    api: MagicMock,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+) -> None:
+    """Test the backup heater, heat pump mode and outside air sensors."""
+    api.menu_items_request.return_value = copy.deepcopy(HEAT_PUMP_ITEMS)
+
+    await setup_integration(hass, config_entry)
+
+    assert hass.states.get(BACKUP_HEATER).state == "on"
+    assert hass.states.get(BACKUP_HEATER).attributes["device_class"] == "running"
+    mode = hass.states.get(HEAT_PUMP_MODE)
+    assert mode.state == "defrost"
+    assert mode.attributes["options"].count("defrost") == 1
+    assert len(mode.attributes["options"]) == 19
+    air = hass.states.get(HP_OUTSIDE_AIR_TEMP)
+    assert air.state == "11.0"
+    assert air.attributes["unit_of_measurement"] == "°C"
+
+
+async def test_gas_galevo_asks_no_heat_pump_items(
+    hass: HomeAssistant,
+    api: MagicMock,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+    features: dict[str, Any],
+) -> None:
+    """Test a GALEVO without a heat pump keeps the old menu items request."""
+    features["hpSys"] = False
+    api.menu_items_request.return_value = copy.deepcopy(HEAT_PUMP_ITEMS)
+
+    await setup_integration(hass, config_entry)
+
     assert api.menu_items_request.await_args.args[0].endswith(
         "menuItems=124,119,348,349"
     )
+
+
+async def test_heat_pump_items_url_extends_library_url() -> None:
+    """Test heat pump items join the request only for a heat pump."""
+    api = AristonAPI("user", "password")
+    with patch.object(AristonAPI, "_async_get", AsyncMock(return_value=[])) as get:
+        await api.async_get_menu_items(GATEWAY)
+        library_url = get.await_args.args[0]
+        add_extra_menu_items(api, ARISTON_API_URL, heat_pump=True)
+        await api.async_get_menu_items(GATEWAY)
+
+    assert get.await_args.args[0] == f"{library_url},337,340,341,348,349"
+
+
+@pytest.mark.parametrize(
+    ("value", "mode"),
+    [
+        (0.0, "off"),
+        (3, "heating"),
+        (9.0, "defrost"),
+        (17.0, "defrost"),
+        (19.0, "cascade_cooling"),
+        (20.0, None),
+        (3.5, None),
+        ("heating", None),
+        (None, None),
+    ],
+)
+def test_heat_pump_mode_values(value: Any, mode: str | None) -> None:
+    """Test cloud numbers map to mode keys and unknown values give None."""
+    device = SimpleNamespace(menu_items=[{"id": 340, "value": value}])
+
+    assert heat_pump_mode(device) == mode
+
+
+@pytest.mark.parametrize(
+    ("item", "value"),
+    [
+        ({"id": 341, "value": 0.0}, 0.0),
+        ({"id": 341, "value": "text"}, "text"),
+        ({"id": 341, "value": 11.0, "error": True}, None),
+        ({"id": 341, "value": 3276.7}, None),
+        ({"id": 341, "value": 3276.0}, None),
+        ({"id": 341, "value": -3276.8}, None),
+        ({"id": 341, "value": -3277.0}, None),
+    ],
+    ids=[
+        "zero",
+        "text",
+        "error",
+        "limit-3276.7",
+        "limit-3276",
+        "limit--3276.8",
+        "limit--3277",
+    ],
+)
+def test_menu_item_value_skips_missing_probe(item: dict[str, Any], value: Any) -> None:
+    """Test an error or a limit value counts as no value, a real 0.0 stays."""
+    device = SimpleNamespace(menu_items=[item])
+
+    assert menu_item_value(device, 341) == value
+    assert menu_item_value(device, 341, "unit") is None
+
+
+async def test_heat_pump_limit_value_gives_no_entity(
+    hass: HomeAssistant,
+    api: MagicMock,
+    mock_ariston: MagicMock,
+    config_entry: MockConfigEntry,
+) -> None:
+    """Test items without a real value give no entities; an off heater stays."""
+    api.menu_items_request.return_value = [
+        {"id": 337, "value": 0.0, "unit": ""},
+        {"id": 340, "value": 1.0, "unit": "", "error": True},
+        {"id": 341, "value": 3276.7, "unit": "°C"},
+    ]
+
+    await setup_integration(hass, config_entry)
+
+    assert hass.states.get(BACKUP_HEATER).state == "off"
+    assert hass.states.get(HEAT_PUMP_MODE) is None
+    assert hass.states.get(HP_OUTSIDE_AIR_TEMP) is None

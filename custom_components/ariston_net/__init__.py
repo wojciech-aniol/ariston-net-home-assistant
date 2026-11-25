@@ -109,6 +109,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: AristonConfigEntry) -> b
                 },
             )
 
+        await device.async_get_features()
+
+        # Before the first refresh, which reads the menu items.
         if device.system_type is SystemType.GALEVO:
             add_extra_menu_items(
                 device.api,
@@ -116,9 +119,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: AristonConfigEntry) -> b
                 await async_find_blocked_menu_items(
                     device.api, api_url_setting, device.gw
                 ),
+                heat_pump=isinstance(device, AristonGalevoDevice)
+                and _has_heat_pump(device),
             )
-
-        await device.async_get_features()
 
         scan_interval_seconds = interval_option(entry.options, CONF_SCAN_INTERVAL)
         coordinator = DeviceDataUpdateCoordinator(
